@@ -17,7 +17,9 @@ import {
   RCA_CATEGORY_LABELS,
   RCA_CATEGORY_ICONS,
   type RCASummary,
+  type RegressionInfo,
 } from "../../../schemas/alerting";
+import { buildRegressionContent } from "../regression-template";
 
 /**
  * Slack Block Kit block types
@@ -179,6 +181,11 @@ export class SlackAdapter extends BaseAlertingAdapter {
       blocks.push(...this.buildRCABlocks(payload.rca));
     }
 
+    // Add regression blocks if available (for eval pipeline alerts)
+    if (payload.regressionInfo) {
+      blocks.push(...this.buildRegressionBlocks(payload.regressionInfo));
+    }
+
     // Action buttons
     const actionButtons: SlackButton[] = [];
 
@@ -210,14 +217,18 @@ export class SlackAdapter extends BaseAlertingAdapter {
     }
 
     // Footer context
+    const getFooterText = (): string => {
+      if (payload.rca) return "🤖 AI-Powered Root Cause Analysis by CognObserve";
+      if (payload.regressionInfo) return "📊 Eval Pipeline Regression Detection by CognObserve";
+      return "Sent by CognObserve Alerting";
+    };
+
     blocks.push({
       type: "context",
       elements: [
         {
           type: "mrkdwn",
-          text: payload.rca
-            ? "🤖 AI-Powered Root Cause Analysis by CognObserve"
-            : "Sent by CognObserve Alerting",
+          text: getFooterText(),
         },
       ],
     });
@@ -294,6 +305,41 @@ export class SlackAdapter extends BaseAlertingAdapter {
         text: {
           type: "mrkdwn",
           text: `*🛠️ Recommended Actions*\n${remediationList}`,
+        },
+      });
+    }
+
+    return blocks;
+  }
+
+  /**
+   * Build regression-specific blocks for eval pipeline alerts
+   * Uses shared regression template for consistent messaging
+   */
+  private buildRegressionBlocks(regressionInfo: RegressionInfo): SlackBlock[] {
+    const content = buildRegressionContent(regressionInfo);
+    const blocks: SlackBlock[] = [];
+
+    // Divider before regression section
+    blocks.push({ type: "divider" });
+
+    // Header with trigger ref
+    const headerText = content.triggerText
+      ? `*⚠️ ${content.header}*\n${content.triggerText}`
+      : `*⚠️ ${content.header}*`;
+
+    blocks.push({
+      type: "section",
+      text: { type: "mrkdwn", text: headerText },
+    });
+
+    // Add each regression detail
+    for (const detail of content.details) {
+      blocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*📉 ${detail.label}*\n${detail.message}\n_Baseline: ${detail.baselineFormatted} → Current: ${detail.currentFormatted}_`,
         },
       });
     }
