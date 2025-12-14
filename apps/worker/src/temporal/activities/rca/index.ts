@@ -6,9 +6,12 @@
  * Activities:
  * - analyzeTraces (#136): Extract error patterns, anomalies from trace data
  * - correlateCodeChanges (#137): Correlate alerts with recent code changes
+ * - generateRCA (#138): Generate LLM-based root cause analysis
  *
- * IMPORTANT: These are read-only operations, no database mutations.
+ * IMPORTANT: analyzeTraces and correlateCodeChanges are read-only.
+ * generateRCA uses LLM Center for structured output (no DB mutations).
  */
 
 export { analyzeTraces } from "./analyze-traces";
 export { correlateCodeChanges } from "./correlate-changes";
+export { generateRCA } from "./generate-rca";
