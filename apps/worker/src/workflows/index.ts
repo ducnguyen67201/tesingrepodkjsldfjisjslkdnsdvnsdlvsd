@@ -29,3 +29,6 @@ export { repositoryIndexWorkflow } from "./repository-index.workflow";
 
 // RCA analysis workflow (manual/automatic)
 export { rcaAnalysisWorkflow } from "./rca-analysis.workflow";
+
+// Eval pipeline workflow (PR merge / manual / scheduled)
+export { evalPipelineWorkflow } from "./eval.workflow";

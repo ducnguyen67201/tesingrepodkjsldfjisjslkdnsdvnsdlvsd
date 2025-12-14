@@ -16,7 +16,10 @@ import {
   formatConfidence,
   RCA_CATEGORY_LABELS,
   RCA_CATEGORY_ICONS,
+  REGRESSION_METRIC_LABELS,
+  formatRegressionValue,
   type RCASummary,
+  type RegressionInfo,
 } from "../../../schemas/alerting";
 
 /**
@@ -126,8 +129,13 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       fields.push(...this.buildRCAFields(payload.rca));
     }
 
-    // Dashboard link (if available and no RCA)
-    if (payload.dashboardUrl && !payload.rca) {
+    // Add regression fields if available (for eval pipeline alerts)
+    if (payload.regressionInfo) {
+      fields.push(...this.buildRegressionFields(payload.regressionInfo));
+    }
+
+    // Dashboard link (if available and no RCA or regression)
+    if (payload.dashboardUrl && !payload.rca && !payload.regressionInfo) {
       fields.push({
         name: "📈 Dashboard",
         value: `[View Dashboard](${payload.dashboardUrl})`,
@@ -213,6 +221,47 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       value: `[View Complete RCA](${rca.detailUrl})`,
       inline: false,
     });
+
+    return fields;
+  }
+
+  /**
+   * Build regression-specific embed fields for eval pipeline alerts
+   */
+  private buildRegressionFields(regressionInfo: RegressionInfo): DiscordEmbed["fields"] {
+    const fields: DiscordEmbed["fields"] = [];
+
+    // Separator
+    fields.push({ name: "\u200B", value: "───────────────", inline: false });
+
+    // Header with trigger ref if available
+    if (regressionInfo.triggerRef) {
+      fields.push({
+        name: "⚠️ Regression Detected",
+        value: `After: **${regressionInfo.triggerRef}**`,
+        inline: false,
+      });
+    } else {
+      fields.push({
+        name: "⚠️ Regression Detected",
+        value: "Performance regression detected in eval suite",
+        inline: false,
+      });
+    }
+
+    // Add each regression detail
+    for (const detail of regressionInfo.details) {
+      const metricLabel = REGRESSION_METRIC_LABELS[detail.metric] || detail.metric;
+      const baselineFormatted = formatRegressionValue(detail.metric, detail.baseline);
+      const currentFormatted = formatRegressionValue(detail.metric, detail.current);
+      const changeDirection = detail.changePercent > 0 ? "📈" : "📉";
+
+      fields.push({
+        name: `${changeDirection} ${metricLabel}`,
+        value: `${baselineFormatted} → **${currentFormatted}** (+${detail.changePercent.toFixed(1)}%)`,
+        inline: true,
+      });
+    }
 
     return fields;
   }

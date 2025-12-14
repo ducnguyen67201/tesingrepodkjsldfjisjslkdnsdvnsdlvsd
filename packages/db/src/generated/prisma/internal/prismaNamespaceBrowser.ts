@@ -77,7 +77,9 @@ export const ModelName = {
   GitCommit: 'GitCommit',
   GitPullRequest: 'GitPullRequest',
   CodeChunk: 'CodeChunk',
-  AlertRCA: 'AlertRCA'
+  AlertRCA: 'AlertRCA',
+  EvalSuite: 'EvalSuite',
+  EvalRun: 'EvalRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -503,6 +505,49 @@ export const AlertRCAScalarFieldEnum = {
 } as const
 
 export type AlertRCAScalarFieldEnum = (typeof AlertRCAScalarFieldEnum)[keyof typeof AlertRCAScalarFieldEnum]
+
+
+export const EvalSuiteScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  description: 'description',
+  enabled: 'enabled',
+  endpoint: 'endpoint',
+  prompts: 'prompts',
+  expectedBehaviors: 'expectedBehaviors',
+  baselineLatencyP95: 'baselineLatencyP95',
+  baselineErrorRate: 'baselineErrorRate',
+  baselineScores: 'baselineScores',
+  latencyRegressionThreshold: 'latencyRegressionThreshold',
+  errorRegressionThreshold: 'errorRegressionThreshold',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvalSuiteScalarFieldEnum = (typeof EvalSuiteScalarFieldEnum)[keyof typeof EvalSuiteScalarFieldEnum]
+
+
+export const EvalRunScalarFieldEnum = {
+  id: 'id',
+  suiteId: 'suiteId',
+  triggeredBy: 'triggeredBy',
+  triggerRef: 'triggerRef',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  totalPrompts: 'totalPrompts',
+  passedPrompts: 'passedPrompts',
+  failedPrompts: 'failedPrompts',
+  latencyP95: 'latencyP95',
+  errorRate: 'errorRate',
+  scores: 'scores',
+  isRegression: 'isRegression',
+  regressionDetails: 'regressionDetails',
+  createdAt: 'createdAt'
+} as const
+
+export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
 
 
 export const SortOrder = {

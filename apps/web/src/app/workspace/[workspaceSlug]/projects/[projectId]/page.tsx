@@ -13,6 +13,7 @@ import { TracesTable } from "@/components/traces/traces-table";
 import { SessionsTable } from "@/components/sessions/sessions-table";
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
+import { EvalsPanel } from "@/components/evals";
 import { useProjectUserCount } from "@/hooks/project-user-count/use-project-user-count";
 import { Badge } from "@/components/ui/badge";
 
@@ -111,7 +112,10 @@ export default function ProjectDetailPage() {
             </p>
           </div>
         </div>
-        <AlertsPanel workspaceSlug={workspaceSlug ?? ""} projectId={projectId} />
+        <div className="flex items-center gap-2">
+          <EvalsPanel workspaceSlug={workspaceSlug ?? ""} projectId={projectId} />
+          <AlertsPanel workspaceSlug={workspaceSlug ?? ""} projectId={projectId} />
+        </div>
       </div>
 
       {/* Tabs */}

@@ -167,6 +167,8 @@ This document contains:
 | `scoreIngestionWorkflow` | Process score | Short-lived |
 | `alertEvaluationWorkflow` | Evaluate alerts | Long-running |
 | `githubIndexWorkflow` | Index GitHub events | Short-lived |
+| `rcaAnalysisWorkflow` | Root cause analysis | Short-lived |
+| `evalPipelineWorkflow` | Eval regression detection | Short-lived |
 
 **Key files:**
 | File | Purpose |
@@ -317,6 +319,9 @@ export async function myActivity(data: MyInput): Promise<MyResult> {
 | `internal.validateScoreConfig` | `{ configId, value }` | Validate score config |
 | `internal.transitionAlertState` | `{ alertId, conditionMet }` | Transition alert state |
 | `internal.dispatchNotification` | `{ alertId, state, value, threshold }` | Send notifications |
+| `internal.createEvalRun` | `{ suiteId, triggeredBy, ... }` | Create eval run record |
+| `internal.updateEvalRun` | `{ runId, status, metrics }` | Update eval run with results |
+| `internal.dispatchRegressionAlert` | `{ suiteId, runId, regressionDetails }` | Send regression alert notifications |
 
 ### Additional Temporal Details
 
@@ -328,6 +333,77 @@ For detailed information on:
 - Go ingest service integration
 
 **See `docs/WORKFLOWS.md`**
+
+## Eval Pipeline (Regression Detection)
+
+The Eval Pipeline provides proactive regression detection for AI endpoints. When PRs merge, it automatically runs eval suites and alerts if performance regresses.
+
+### Architecture
+
+```
+GitHub PR Merge → Webhook → evalPipelineWorkflow → Eval Prompts → Compare Baseline → Alert
+```
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `packages/db/prisma/schema.prisma` | EvalSuite, EvalRun models |
+| `packages/api/src/schemas/eval.ts` | Eval Zod schemas |
+| `packages/api/src/routers/evals.ts` | Public eval tRPC router |
+| `packages/api/src/routers/internal.ts` | Internal procedures (createEvalRun, updateEvalRun, dispatchRegressionAlert) |
+| `apps/worker/src/workflows/eval.workflow.ts` | Eval pipeline workflow |
+| `apps/worker/src/temporal/activities/eval.activities.ts` | Eval activities (READ-ONLY pattern) |
+| `apps/web/src/app/api/webhooks/github/route.ts` | PR merge detection |
+
+### Eval Workflow Steps
+
+1. **getEvalSuite** - Fetch suite config from DB (READ)
+2. **createEvalRun** - Create run via `internal.createEvalRun` (tRPC)
+3. **runEvalPrompts** - Execute prompts against endpoint (HTTP)
+4. **calculateMetrics** - Compute latency, error rate, pass % (pure)
+5. **detectRegression** - Compare metrics to baseline (pure)
+6. **storeResults** - Store via `internal.updateEvalRun` (tRPC)
+7. **triggerAlert** - If regression, dispatch via `internal.dispatchRegressionAlert` (tRPC)
+
+### Activity Pattern
+
+The eval pipeline follows the same READ-ONLY activity pattern as other workflows:
+
+```typescript
+// ✅ GOOD - Read operations in activities
+export async function getEvalSuite(suiteId: string): Promise<EvalSuite | null> {
+  return prisma.evalSuite.findUnique({ where: { id: suiteId } });
+}
+
+// ✅ GOOD - Mutations via tRPC internal caller
+export async function createEvalRun(input: CreateRunInput): Promise<string> {
+  const caller = getInternalCaller();
+  const result = await caller.internal.createEvalRun(input);
+  return result.runId;
+}
+
+// ❌ FORBIDDEN - Direct database mutations
+export async function createEvalRun(input: CreateRunInput): Promise<string> {
+  const run = await prisma.evalRun.create({ data: input }); // NEVER DO THIS
+  return run.id;
+}
+```
+
+### Triggers
+
+| Trigger | Source | When |
+|---------|--------|------|
+| PR Merge | GitHub Webhook | `action === "closed" && pull_request.merged` |
+| Manual | tRPC `evals.triggerRun` | User clicks "Run Eval" button |
+| Scheduled | Future | Cron-based (not yet implemented) |
+
+### Database Models
+
+- **EvalSuite**: Suite config with prompts, endpoint, baseline thresholds
+- **EvalRun**: Individual run with status, metrics, regression details
+
+Always use `pnpm db:migrate --name <name>` for schema changes to create versioned migrations.
 
 ## LLM Center (CRITICAL)
 

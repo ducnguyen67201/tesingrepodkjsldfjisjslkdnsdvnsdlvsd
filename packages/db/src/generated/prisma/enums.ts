@@ -96,3 +96,14 @@ export const IndexStatus = {
 } as const
 
 export type IndexStatus = (typeof IndexStatus)[keyof typeof IndexStatus]
+
+
+export const EvalRunStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  REGRESSION_DETECTED: 'REGRESSION_DETECTED'
+} as const
+
+export type EvalRunStatus = (typeof EvalRunStatus)[keyof typeof EvalRunStatus]

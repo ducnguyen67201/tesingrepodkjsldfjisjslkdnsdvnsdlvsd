@@ -152,3 +152,13 @@ export type CodeChunk = Prisma.CodeChunkModel
  * 
  */
 export type AlertRCA = Prisma.AlertRCAModel
+/**
+ * Model EvalSuite
+ * 
+ */
+export type EvalSuite = Prisma.EvalSuiteModel
+/**
+ * Model EvalRun
+ * 
+ */
+export type EvalRun = Prisma.EvalRunModel

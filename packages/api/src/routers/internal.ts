@@ -947,6 +947,188 @@ export const internalRouter = createRouter({
       requestedBy: z.string(),
     }))
     .mutation(({ input }) => RCAService.trackRCARequest(input)),
+
+  // ============================================================
+  // EVAL PIPELINE PROCEDURES
+  // ============================================================
+
+  /**
+   * Create a new eval run
+   * Called by: eval.activities.ts → createEvalRun
+   *
+   * Creates an EvalRun record with RUNNING status.
+   */
+  createEvalRun: internalProcedure
+    .input(z.object({
+      suiteId: z.string(),
+      triggeredBy: z.enum(["pr_merge", "manual", "scheduled"]),
+      triggerRef: z.string().optional(),
+      totalPrompts: z.number().int().positive(),
+    }))
+    .mutation(async ({ input }) => {
+      const run = await prisma.evalRun.create({
+        data: {
+          suiteId: input.suiteId,
+          triggeredBy: input.triggeredBy,
+          triggerRef: input.triggerRef,
+          status: "RUNNING",
+          startedAt: new Date(),
+          totalPrompts: input.totalPrompts,
+        },
+      });
+
+      console.log(`[Internal:createEvalRun] Created run ${run.id} for suite ${input.suiteId}`);
+      return { runId: run.id };
+    }),
+
+  /**
+   * Update eval run with results
+   * Called by: eval.activities.ts → storeResults
+   *
+   * Updates EvalRun with metrics, status, and regression details.
+   */
+  updateEvalRun: internalProcedure
+    .input(z.object({
+      runId: z.string(),
+      status: z.enum(["PENDING", "RUNNING", "PASSED", "FAILED", "REGRESSION_DETECTED"]),
+      completedAt: z.date().optional(),
+      passedPrompts: z.number().int().nonnegative().optional(),
+      failedPrompts: z.number().int().nonnegative().optional(),
+      latencyP95: z.number().optional(),
+      errorRate: z.number().optional(),
+      scores: z.record(z.string(), z.number()).optional(),
+      isRegression: z.boolean().optional(),
+      regressionDetails: z.array(z.object({
+        metric: z.enum(["latency_p95", "error_rate", "pass_rate"]),
+        baseline: z.number(),
+        current: z.number(),
+        threshold: z.number(),
+        changePercent: z.number(),
+        message: z.string(),
+      })).optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const { runId, ...updateData } = input;
+
+      const run = await prisma.evalRun.update({
+        where: { id: runId },
+        data: {
+          status: updateData.status,
+          completedAt: updateData.completedAt ?? (updateData.status !== "RUNNING" ? new Date() : undefined),
+          passedPrompts: updateData.passedPrompts,
+          failedPrompts: updateData.failedPrompts,
+          latencyP95: updateData.latencyP95,
+          errorRate: updateData.errorRate,
+          scores: updateData.scores as Prisma.InputJsonValue ?? undefined,
+          isRegression: updateData.isRegression,
+          regressionDetails: updateData.regressionDetails as Prisma.InputJsonValue ?? undefined,
+        },
+      });
+
+      console.log(`[Internal:updateEvalRun] Updated run ${runId} to ${updateData.status}`);
+      return { runId: run.id, status: run.status };
+    }),
+
+  /**
+   * Dispatch regression alert notification
+   * Called by: eval.activities.ts → triggerAlert
+   *
+   * Sends notifications to workspace channels when regression is detected.
+   */
+  dispatchRegressionAlert: internalProcedure
+    .input(z.object({
+      suiteId: z.string(),
+      runId: z.string(),
+      regressionDetails: z.array(z.object({
+        metric: z.enum(["latency_p95", "error_rate", "pass_rate"]),
+        baseline: z.number(),
+        current: z.number(),
+        threshold: z.number(),
+        changePercent: z.number(),
+        message: z.string(),
+      })),
+    }))
+    .mutation(async ({ input }) => {
+      const { suiteId, runId, regressionDetails } = input;
+
+      // Fetch suite with project and workspace
+      const suite = await prisma.evalSuite.findUnique({
+        where: { id: suiteId },
+        include: {
+          project: {
+            include: {
+              workspace: {
+                include: {
+                  notificationChannels: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!suite) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Eval suite not found" });
+      }
+
+      const channels = suite.project.workspace.notificationChannels;
+      if (channels.length === 0) {
+        console.log(`[Internal:dispatchRegressionAlert] No channels configured`);
+        return { channelCount: 0, sentCount: 0, failedCount: 0 };
+      }
+
+      const workspaceSlug = suite.project.workspace.slug;
+      const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${suite.projectId}/evals/${suiteId}/runs/${runId}`;
+
+      // Build regression alert payload
+      const payload: AlertPayload = {
+        alertId: runId,
+        alertName: `Regression: ${suite.name}`,
+        projectId: suite.projectId,
+        projectName: suite.project.name,
+        type: "ERROR_RATE", // Use ERROR_RATE as placeholder for regression alerts
+        threshold: 0,
+        actualValue: 0,
+        operator: "GREATER_THAN",
+        triggeredAt: new Date().toISOString(),
+        dashboardUrl,
+      };
+
+      // Send to each channel
+      let sentCount = 0;
+      let failedCount = 0;
+
+      for (const channel of channels) {
+        const provider = channel.provider as ChannelProvider;
+
+        try {
+          if (!AdapterRegistry.has(provider)) {
+            console.warn(`[Internal:dispatchRegressionAlert] No adapter for ${provider}`);
+            failedCount++;
+            continue;
+          }
+
+          const adapter = AdapterRegistry.get(provider);
+          // Add regression details to the payload for adapters that support it
+          const enhancedPayload = { ...payload, regressionInfo: { details: regressionDetails } };
+          const result = await adapter.send(channel.config, enhancedPayload);
+
+          if (result.success) {
+            sentCount++;
+            console.log(`[Internal:dispatchRegressionAlert] Sent to ${provider} channel: ${channel.name}`);
+          } else {
+            failedCount++;
+            console.error(`[Internal:dispatchRegressionAlert] Failed ${provider}: ${result.error}`);
+          }
+        } catch (error) {
+          failedCount++;
+          console.error(`[Internal:dispatchRegressionAlert] Error sending to ${provider}:`, error);
+        }
+      }
+
+      console.log(`[Internal:dispatchRegressionAlert] Sent to ${sentCount}/${channels.length} channels`);
+      return { channelCount: channels.length, sentCount, failedCount };
+    }),
 });
 
 export type InternalRouter = typeof internalRouter;
