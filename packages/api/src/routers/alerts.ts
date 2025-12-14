@@ -19,6 +19,8 @@ import {
   PRESET_LABELS,
   STATE_LABELS,
 } from "../schemas/alerting";
+import { LLMRCAOutputSchema, type LLMRCAOutput } from "../schemas/rca";
+import { generateFixPrompt, type FixPromptContext } from "../lib/rca/prompt-generator";
 import { getMetric } from "../lib/alerting/metrics-service";
 import {
   LinkChannelSchema,
@@ -774,6 +776,353 @@ export const alertsRouter = createRouter({
       },
     };
   }),
+
+  // ============================================================
+  // RCA DETAIL ENDPOINTS (#141)
+  // ============================================================
+
+  /**
+   * Get RCA detail with related data
+   */
+  getRCADetail: protectedProcedure
+    .input(z.object({ workspaceSlug: z.string(), rcaId: z.string() }))
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // 1. Fetch RCA with related data
+      const rca = await prisma.alertRCA.findUnique({
+        where: { id: input.rcaId },
+        include: {
+          alert: {
+            include: {
+              project: {
+                include: {
+                  githubRepo: {
+                    select: { owner: true, repo: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!rca) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "RCA not found" });
+      }
+
+      // 2. Verify workspace access
+      if (rca.alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      // 3. Validate analysisJson with Zod
+      const parseResult = LLMRCAOutputSchema.safeParse(rca.analysisJson);
+      if (!parseResult.success) {
+        console.error(
+          `[Alerts:getRCADetail] Invalid analysisJson for RCA ${rca.id}:`,
+          parseResult.error.flatten()
+        );
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Invalid RCA analysis data",
+        });
+      }
+      const analysis = parseResult.data;
+
+      // 4. Fetch alert history entry
+      const alertHistory = await prisma.alertHistory.findFirst({
+        where: {
+          alertId: rca.alertId,
+          triggeredAt: rca.triggeredAt,
+        },
+      });
+
+      // 5. Fetch related commits with repo info (if any)
+      const commits =
+        rca.suspectedCommits.length > 0
+          ? await prisma.gitCommit.findMany({
+              where: { sha: { in: rca.suspectedCommits } },
+              include: {
+                repo: {
+                  select: { owner: true, repo: true },
+                },
+              },
+              orderBy: { timestamp: "desc" },
+              take: 10,
+            })
+          : [];
+
+      // 6. Fetch related PRs with repo info (if any)
+      const pullRequests =
+        rca.suspectedPRs.length > 0
+          ? await prisma.gitPullRequest.findMany({
+              where: { number: { in: rca.suspectedPRs.map(Number) } },
+              include: {
+                repo: {
+                  select: { owner: true, repo: true },
+                },
+              },
+              orderBy: { createdAt: "desc" },
+              take: 5,
+            })
+          : [];
+
+      // Get project GitHub repo for fallback links (already included in query)
+      const projectRepo = rca.alert.project.githubRepo;
+
+      // 7. Fetch affected traces (sample - from alert history timeframe)
+      const traces = alertHistory
+        ? await prisma.trace.findMany({
+            where: {
+              projectId: rca.alert.projectId,
+              timestamp: {
+                gte: new Date(alertHistory.triggeredAt.getTime() - 5 * 60 * 1000),
+                lte: alertHistory.triggeredAt,
+              },
+            },
+            include: {
+              spans: {
+                where: { level: "ERROR" },
+                take: 3,
+                orderBy: { startTime: "desc" },
+              },
+            },
+            take: 5,
+            orderBy: { timestamp: "desc" },
+          })
+        : [];
+
+      return {
+        rca: {
+          id: rca.id,
+          alertId: rca.alertId,
+          triggeredAt: rca.triggeredAt,
+          confidence: rca.confidence,
+          analysis,
+          helpful: rca.helpful,
+          feedback: rca.feedback,
+        },
+        alert: {
+          id: rca.alert.id,
+          name: rca.alert.name,
+          type: rca.alert.type,
+          threshold: rca.alert.threshold,
+          operator: rca.alert.operator,
+          severity: rca.alert.severity,
+        },
+        project: {
+          id: rca.alert.project.id,
+          name: rca.alert.project.name,
+        },
+        // GitHub repo info for building links
+        githubRepo: projectRepo,
+        alertHistory,
+        commits,
+        pullRequests,
+        traces,
+      };
+    }),
+
+  /**
+   * Submit RCA feedback
+   */
+  submitRCAFeedback: protectedProcedure
+    .input(
+      z.object({
+        workspaceSlug: z.string(),
+        rcaId: z.string(),
+        helpful: z.boolean(),
+        feedback: z.string().max(1000).optional(),
+      })
+    )
+    .use(workspaceMiddleware)
+    .mutation(async ({ ctx, input }) => {
+      // 1. Verify RCA exists and user has access
+      const rca = await prisma.alertRCA.findUnique({
+        where: { id: input.rcaId },
+        include: {
+          alert: {
+            include: {
+              project: { select: { workspaceId: true } },
+            },
+          },
+        },
+      });
+
+      if (!rca) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "RCA not found" });
+      }
+
+      if (rca.alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      // 2. Update feedback
+      const updated = await prisma.alertRCA.update({
+        where: { id: input.rcaId },
+        data: {
+          helpful: input.helpful,
+          feedback: input.feedback ?? null,
+          feedbackAt: new Date(),
+          feedbackUserId: ctx.session.user.id,
+        },
+      });
+
+      return {
+        success: true,
+        helpful: updated.helpful,
+      };
+    }),
+
+  /**
+   * Get RCAs for an alert
+   */
+  listRCAs: protectedProcedure
+    .input(
+      z.object({
+        workspaceSlug: z.string(),
+        alertId: z.string(),
+        limit: z.number().int().min(1).max(50).default(10),
+      })
+    )
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // Verify alert exists and belongs to workspace
+      const alert = await prisma.alert.findUnique({
+        where: { id: input.alertId },
+        include: { project: { select: { workspaceId: true } } },
+      });
+
+      if (!alert) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Alert not found" });
+      }
+
+      if (alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      return prisma.alertRCA.findMany({
+        where: { alertId: input.alertId },
+        orderBy: { triggeredAt: "desc" },
+        take: input.limit,
+        select: {
+          id: true,
+          triggeredAt: true,
+          confidence: true,
+          helpful: true,
+        },
+      });
+    }),
+
+  /**
+   * Generate AI fix prompt for an RCA
+   */
+  generateFixPrompt: protectedProcedure
+    .input(z.object({ workspaceSlug: z.string(), rcaId: z.string() }))
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // 1. Fetch RCA with all related data
+      const rca = await prisma.alertRCA.findUnique({
+        where: { id: input.rcaId },
+        include: {
+          alert: {
+            include: {
+              project: {
+                include: {
+                  githubRepo: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!rca) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "RCA not found" });
+      }
+
+      // 2. Verify workspace access
+      if (rca.alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      // 3. Validate analysisJson with Zod
+      const parseResult = LLMRCAOutputSchema.safeParse(rca.analysisJson);
+      if (!parseResult.success) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Invalid RCA analysis data",
+        });
+      }
+      const analysis = parseResult.data;
+
+      // 4. Fetch code chunks if IDs are available in relatedChanges
+      const codeChunks: Array<{
+        filePath: string;
+        startLine: number;
+        endLine: number;
+        content: string;
+      }> = [];
+
+      // 5. Fetch commits
+      const commits =
+        rca.suspectedCommits.length > 0
+          ? await prisma.gitCommit.findMany({
+              where: { sha: { in: rca.suspectedCommits } },
+              select: {
+                sha: true,
+                message: true,
+                author: true,
+              },
+              take: 5,
+            })
+          : [];
+
+      // 6. Get alert history for current value
+      const alertHistory = await prisma.alertHistory.findFirst({
+        where: {
+          alertId: rca.alertId,
+          triggeredAt: rca.triggeredAt,
+        },
+      });
+
+      // 7. Build prompt context
+      const promptContext: FixPromptContext = {
+        alertName: rca.alert.name,
+        alertType: rca.alert.type,
+        currentValue: alertHistory?.value ?? 0,
+        threshold: rca.alert.threshold,
+        triggeredAt: rca.triggeredAt.toISOString(),
+        hypothesis: analysis.hypothesis,
+        confidence: rca.confidence ?? 0,
+        category: analysis.rootCause.category,
+        reasoning: analysis.reasoning,
+        evidence: analysis.rootCause.evidence,
+        suspectedFiles: codeChunks.map((c) => ({
+          path: c.filePath,
+          startLine: c.startLine,
+          endLine: c.endLine,
+          content: c.content,
+          similarity: 0.8,
+        })),
+        relatedCommits: commits.map((c) => ({
+          sha: c.sha,
+          message: c.message,
+          author: c.author,
+          relevance: "high",
+        })),
+        immediateSteps: analysis.remediation.immediate,
+        longTermSteps: analysis.remediation.longTerm,
+        repoUrl: rca.alert.project.githubRepo
+          ? `https://github.com/${rca.alert.project.githubRepo.owner}/${rca.alert.project.githubRepo.repo}`
+          : undefined,
+      };
+
+      // 8. Generate prompt
+      const prompt = generateFixPrompt(promptContext);
+
+      return { prompt };
+    }),
 });
 
 export type AlertsRouter = typeof alertsRouter;

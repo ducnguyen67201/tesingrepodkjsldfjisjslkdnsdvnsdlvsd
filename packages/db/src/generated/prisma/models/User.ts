@@ -211,6 +211,7 @@ export type UserWhereInput = {
   projects?: Prisma.ProjectMemberListRelationFilter
   workspaces?: Prisma.WorkspaceMemberListRelationFilter
   domainsCreated?: Prisma.AllowedDomainListRelationFilter
+  rcaFeedback?: Prisma.AlertRCAListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -227,6 +228,7 @@ export type UserOrderByWithRelationInput = {
   projects?: Prisma.ProjectMemberOrderByRelationAggregateInput
   workspaces?: Prisma.WorkspaceMemberOrderByRelationAggregateInput
   domainsCreated?: Prisma.AllowedDomainOrderByRelationAggregateInput
+  rcaFeedback?: Prisma.AlertRCAOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -246,6 +248,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   projects?: Prisma.ProjectMemberListRelationFilter
   workspaces?: Prisma.WorkspaceMemberListRelationFilter
   domainsCreated?: Prisma.AllowedDomainListRelationFilter
+  rcaFeedback?: Prisma.AlertRCAListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -290,6 +293,7 @@ export type UserCreateInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -306,6 +310,7 @@ export type UserUncheckedCreateInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUpdateInput = {
@@ -322,6 +327,7 @@ export type UserUpdateInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -338,6 +344,7 @@ export type UserUncheckedUpdateInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -409,6 +416,11 @@ export type UserMinOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
+}
+
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -497,6 +509,22 @@ export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProjectsInput, Prisma.UserUpdateWithoutProjectsInput>, Prisma.UserUncheckedUpdateWithoutProjectsInput>
 }
 
+export type UserCreateNestedOneWithoutRcaFeedbackInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRcaFeedbackInput, Prisma.UserUncheckedCreateWithoutRcaFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRcaFeedbackInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutRcaFeedbackNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRcaFeedbackInput, Prisma.UserUncheckedCreateWithoutRcaFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRcaFeedbackInput
+  upsert?: Prisma.UserUpsertWithoutRcaFeedbackInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRcaFeedbackInput, Prisma.UserUpdateWithoutRcaFeedbackInput>, Prisma.UserUncheckedUpdateWithoutRcaFeedbackInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name?: string | null
@@ -510,6 +538,7 @@ export type UserCreateWithoutAccountsInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -525,6 +554,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -556,6 +586,7 @@ export type UserUpdateWithoutAccountsInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -571,6 +602,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -586,6 +618,7 @@ export type UserCreateWithoutSessionsInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -601,6 +634,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -632,6 +666,7 @@ export type UserUpdateWithoutSessionsInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -647,6 +682,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserCreateWithoutWorkspacesInput = {
@@ -662,6 +698,7 @@ export type UserCreateWithoutWorkspacesInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateWithoutWorkspacesInput = {
@@ -677,6 +714,7 @@ export type UserUncheckedCreateWithoutWorkspacesInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserCreateOrConnectWithoutWorkspacesInput = {
@@ -708,6 +746,7 @@ export type UserUpdateWithoutWorkspacesInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkspacesInput = {
@@ -723,6 +762,7 @@ export type UserUncheckedUpdateWithoutWorkspacesInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserCreateWithoutDomainsCreatedInput = {
@@ -738,6 +778,7 @@ export type UserCreateWithoutDomainsCreatedInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateWithoutDomainsCreatedInput = {
@@ -753,6 +794,7 @@ export type UserUncheckedCreateWithoutDomainsCreatedInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserCreateOrConnectWithoutDomainsCreatedInput = {
@@ -784,6 +826,7 @@ export type UserUpdateWithoutDomainsCreatedInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
@@ -799,6 +842,7 @@ export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
@@ -814,6 +858,7 @@ export type UserCreateWithoutProjectsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -829,6 +874,7 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -860,6 +906,7 @@ export type UserUpdateWithoutProjectsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -875,6 +922,87 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+}
+
+export type UserCreateWithoutRcaFeedbackInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutRcaFeedbackInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutRcaFeedbackInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRcaFeedbackInput, Prisma.UserUncheckedCreateWithoutRcaFeedbackInput>
+}
+
+export type UserUpsertWithoutRcaFeedbackInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRcaFeedbackInput, Prisma.UserUncheckedUpdateWithoutRcaFeedbackInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRcaFeedbackInput, Prisma.UserUncheckedCreateWithoutRcaFeedbackInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutRcaFeedbackInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRcaFeedbackInput, Prisma.UserUncheckedUpdateWithoutRcaFeedbackInput>
+}
+
+export type UserUpdateWithoutRcaFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -888,6 +1016,7 @@ export type UserCountOutputType = {
   projects: number
   workspaces: number
   domainsCreated: number
+  rcaFeedback: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -896,6 +1025,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   projects?: boolean | UserCountOutputTypeCountProjectsArgs
   workspaces?: boolean | UserCountOutputTypeCountWorkspacesArgs
   domainsCreated?: boolean | UserCountOutputTypeCountDomainsCreatedArgs
+  rcaFeedback?: boolean | UserCountOutputTypeCountRcaFeedbackArgs
 }
 
 /**
@@ -943,6 +1073,13 @@ export type UserCountOutputTypeCountDomainsCreatedArgs<ExtArgs extends runtime.T
   where?: Prisma.AllowedDomainWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRcaFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AlertRCAWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -958,6 +1095,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   workspaces?: boolean | Prisma.User$workspacesArgs<ExtArgs>
   domainsCreated?: boolean | Prisma.User$domainsCreatedArgs<ExtArgs>
+  rcaFeedback?: boolean | Prisma.User$rcaFeedbackArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1001,6 +1139,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
   workspaces?: boolean | Prisma.User$workspacesArgs<ExtArgs>
   domainsCreated?: boolean | Prisma.User$domainsCreatedArgs<ExtArgs>
+  rcaFeedback?: boolean | Prisma.User$rcaFeedbackArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1014,6 +1153,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     projects: Prisma.$ProjectMemberPayload<ExtArgs>[]
     workspaces: Prisma.$WorkspaceMemberPayload<ExtArgs>[]
     domainsCreated: Prisma.$AllowedDomainPayload<ExtArgs>[]
+    rcaFeedback: Prisma.$AlertRCAPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1423,6 +1563,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   projects<T extends Prisma.User$projectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workspaces<T extends Prisma.User$workspacesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workspacesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   domainsCreated<T extends Prisma.User$domainsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$domainsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AllowedDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  rcaFeedback<T extends Prisma.User$rcaFeedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rcaFeedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertRCAPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1965,6 +2106,30 @@ export type User$domainsCreatedArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.AllowedDomainScalarFieldEnum | Prisma.AllowedDomainScalarFieldEnum[]
+}
+
+/**
+ * User.rcaFeedback
+ */
+export type User$rcaFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AlertRCA
+   */
+  select?: Prisma.AlertRCASelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AlertRCA
+   */
+  omit?: Prisma.AlertRCAOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AlertRCAInclude<ExtArgs> | null
+  where?: Prisma.AlertRCAWhereInput
+  orderBy?: Prisma.AlertRCAOrderByWithRelationInput | Prisma.AlertRCAOrderByWithRelationInput[]
+  cursor?: Prisma.AlertRCAWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AlertRCAScalarFieldEnum | Prisma.AlertRCAScalarFieldEnum[]
 }
 
 /**

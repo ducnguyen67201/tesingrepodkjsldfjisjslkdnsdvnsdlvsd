@@ -493,7 +493,11 @@ export const AlertRCAScalarFieldEnum = {
   suspectedPRs: 'suspectedPRs',
   suspectedCommits: 'suspectedCommits',
   confidence: 'confidence',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  helpful: 'helpful',
+  feedback: 'feedback',
+  feedbackAt: 'feedbackAt',
+  feedbackUserId: 'feedbackUserId'
 } as const
 
 export type AlertRCAScalarFieldEnum = (typeof AlertRCAScalarFieldEnum)[keyof typeof AlertRCAScalarFieldEnum]

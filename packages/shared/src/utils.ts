@@ -80,3 +80,20 @@ export function toISOString(
 
   return undefined;
 }
+
+/** Default max characters for code content in AI prompts */
+const DEFAULT_MAX_CODE_LENGTH = 2000;
+
+/**
+ * Truncate code content to prevent overly large AI prompts.
+ * Useful across multiple AI workflows that embed code context.
+ */
+export function truncateCodeContent(
+  content: string,
+  maxLength: number = DEFAULT_MAX_CODE_LENGTH
+): string {
+  if (content.length <= maxLength) {
+    return content;
+  }
+  return content.slice(0, maxLength) + "\n// ... truncated ...";
+}
