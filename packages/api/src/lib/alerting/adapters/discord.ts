@@ -248,7 +248,7 @@ export class DiscordAdapter extends BaseAlertingAdapter {
 
       fields.push({
         name: `${changeDirection} ${detail.label}`,
-        value: `${detail.baselineFormatted} → **${detail.currentFormatted}** (+${detail.changePercent.toFixed(1)}%)`,
+        value: `${detail.baselineFormatted} → **${detail.currentFormatted}** (${detail.changePercent > 0 ? "+" : ""}${detail.changePercent.toFixed(1)}%)`,
         inline: true,
       });
     }
