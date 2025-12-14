@@ -5,6 +5,13 @@
  * to help fix issues identified by RCA analysis.
  */
 
+import {
+  ALERT_TYPE_LABELS,
+  formatAlertValue,
+  type AlertType,
+} from "../../schemas/alerting";
+import { truncateCodeContent } from "@cognobserve/shared";
+
 /**
  * Context for generating a fix prompt
  */
@@ -61,15 +68,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   UNKNOWN: "Unknown",
 };
 
-/**
- * Alert type labels for display
- */
-const ALERT_TYPE_LABELS: Record<string, string> = {
-  ERROR_RATE: "Error Rate",
-  LATENCY_P50: "P50 Latency",
-  LATENCY_P95: "P95 Latency",
-  LATENCY_P99: "P99 Latency",
-};
 
 /**
  * Generate a structured fix prompt for AI coding assistants
@@ -95,7 +93,8 @@ export function generateFixPrompt(context: FixPromptContext): string {
 
   const confidencePercent = Math.round(confidence * 100);
   const categoryLabel = CATEGORY_LABELS[category] ?? category;
-  const alertTypeLabel = ALERT_TYPE_LABELS[alertType] ?? alertType;
+  const alertTypeLabel =
+    ALERT_TYPE_LABELS[alertType as AlertType] ?? alertType;
 
   let prompt = `# Fix Request: ${alertName}
 
@@ -103,7 +102,7 @@ export function generateFixPrompt(context: FixPromptContext): string {
 
 **Alert Type:** ${alertTypeLabel}
 **Triggered:** ${triggeredAt}
-**Current Value:** ${formatValue(alertType, currentValue)} (Threshold: ${formatValue(alertType, threshold)})
+**Current Value:** ${formatAlertValue(alertType as AlertType, currentValue)} (Threshold: ${formatAlertValue(alertType as AlertType, threshold)})
 
 ## Root Cause Analysis (${confidencePercent}% confidence)
 
@@ -127,10 +126,11 @@ The following files have been identified as potentially related to the issue:
 `;
     for (const file of suspectedFiles.slice(0, 5)) {
       const similarityPercent = Math.round(file.similarity * 100);
+      const truncatedContent = truncateCodeContent(file.content);
       prompt += `### ${file.path}:${file.startLine}-${file.endLine} (${similarityPercent}% match)
 
 \`\`\`
-${file.content}
+${truncatedContent}
 \`\`\`
 
 `;
@@ -181,14 +181,4 @@ Please analyze the code locations above and implement a fix that:
 `;
 
   return prompt;
-}
-
-/**
- * Format value based on alert type
- */
-function formatValue(alertType: string, value: number): string {
-  if (alertType === "ERROR_RATE") {
-    return `${value.toFixed(2)}%`;
-  }
-  return `${value.toFixed(0)}ms`;
 }

@@ -25,7 +25,8 @@ model User {
   sessions       Session[]
   projects       ProjectMember[]
   workspaces     WorkspaceMember[]
-  domainsCreated AllowedDomain[] @relation("DomainCreatedBy")
+  domainsCreated AllowedDomain[]  @relation("DomainCreatedBy")
+  rcaFeedback    AlertRCA[]       @relation("RCAFeedbackUser")
 
   @@map("users")
 }
@@ -633,7 +634,8 @@ model AlertRCA {
   feedbackAt     DateTime?
   feedbackUserId String?
 
-  alert Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  alert        Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  feedbackUser User? @relation("RCAFeedbackUser", fields: [feedbackUserId], references: [id], onDelete: SetNull)
 
   @@index([alertId])
   @@index([triggeredAt(sort: Desc)])

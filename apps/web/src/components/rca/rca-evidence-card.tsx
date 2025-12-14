@@ -19,7 +19,7 @@ function formatDateTime(date: Date): string {
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-  }).format(new Date(date));
+  }).format(date);
 }
 
 export function RCAEvidenceCard({ analysis, alertHistory }: RCAEvidenceCardProps) {
