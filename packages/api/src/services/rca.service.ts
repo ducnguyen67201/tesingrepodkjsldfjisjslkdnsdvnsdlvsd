@@ -10,6 +10,17 @@ import type { StoreRCAInput, StoreRCAOutput } from "../schemas/rca";
 
 export type { StoreRCAOutput };
 
+/** Input for trackRCARequest */
+export interface TrackRCARequestInput {
+  alertHistoryId: string;
+  requestedBy: string;
+}
+
+/** Output for trackRCARequest */
+export interface TrackRCARequestOutput {
+  alertHistoryId: string;
+}
+
 /**
  * RCAService - Business logic for RCA operations
  */
@@ -75,5 +86,29 @@ export class RCAService {
       alertId: alertHistory.alertId,
       confidence: alertRCA.confidence,
     };
+  }
+
+  /**
+   * Track manual RCA request
+   *
+   * Updates alertHistory with RCA request metadata (who requested, when).
+   * Called when a user manually triggers RCA analysis.
+   *
+   * @param input - Request tracking data
+   * @returns Updated alertHistory ID
+   */
+  static async trackRCARequest(input: TrackRCARequestInput): Promise<TrackRCARequestOutput> {
+    const { alertHistoryId, requestedBy } = input;
+
+    const updated = await prisma.alertHistory.update({
+      where: { id: alertHistoryId },
+      data: {
+        rcaRequestedAt: new Date(),
+        rcaRequestedBy: requestedBy,
+      },
+    });
+
+    console.log(`[RCAService:trackRCARequest] Tracked RCA request for ${alertHistoryId} by ${requestedBy}`);
+    return { alertHistoryId: updated.id };
   }
 }

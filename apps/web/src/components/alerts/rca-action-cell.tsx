@@ -38,7 +38,7 @@ export function RCAActionCell({
     case "completed":
       return (
         <Link
-          href={`/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}/rca/${rcaId}`}
+          href={`/workspace/${encodeURIComponent(workspaceSlug)}/projects/${encodeURIComponent(projectId)}/alerts/${encodeURIComponent(alertId)}/rca/${encodeURIComponent(rcaId ?? "")}`}
         >
           <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80">
             <CheckCircle className="h-3 w-3 mr-1 text-green-500" />

@@ -22,6 +22,7 @@ import {
 import { LLMRCAOutputSchema } from "../schemas/rca";
 import { generateFixPrompt, type FixPromptContext } from "../lib/rca/prompt-generator";
 import { getMetric } from "../lib/alerting/metrics-service";
+import { RCAService } from "../services";
 import {
   LinkChannelSchema,
   UnlinkChannelSchema,
@@ -1190,7 +1191,18 @@ export const alertsRouter = createRouter({
             message: "RCA analysis is already in progress",
           };
         }
-      } catch {
+      } catch (error) {
+        // Distinguish between "workflow doesn't exist" vs other Temporal errors
+        const isNotFound =
+          error &&
+          typeof error === "object" &&
+          "code" in error &&
+          (error as { code: string }).code === "NOT_FOUND";
+
+        if (!isNotFound) {
+          // Re-throw unexpected Temporal errors
+          throw error;
+        }
         // Workflow doesn't exist, proceed to start
       }
 
@@ -1218,13 +1230,10 @@ export const alertsRouter = createRouter({
         ],
       });
 
-      // 6. Track manual trigger in database
-      await prisma.alertHistory.update({
-        where: { id: input.alertHistoryId },
-        data: {
-          rcaRequestedAt: new Date(),
-          rcaRequestedBy: ctx.session.user.id,
-        },
+      // 6. Track manual trigger in database (via service - centralized business logic)
+      await RCAService.trackRCARequest({
+        alertHistoryId: input.alertHistoryId,
+        requestedBy: ctx.session.user.id,
       });
 
       return {
@@ -1288,25 +1297,54 @@ export const alertsRouter = createRouter({
         const handle = client.workflow.getHandle(workflowId);
         const desc = await handle.describe();
 
-        const statusMap: Record<string, string> = {
-          RUNNING: "running",
-          COMPLETED: "completed",
-          FAILED: "failed",
-          CANCELED: "failed",
-          TERMINATED: "failed",
-          TIMED_OUT: "failed",
-        };
+        // Map Temporal status to our status
+        // Note: If Temporal says COMPLETED but we didn't find an RCA above,
+        // it means the storeRCA activity is still writing to DB (race condition).
+        // Treat as "running" so the frontend continues polling.
+        const temporalStatus = desc.status.name;
+
+        if (temporalStatus === "RUNNING") {
+          return {
+            status: "running" as const,
+            workflowId,
+            startedAt: desc.startTime,
+          };
+        }
+
+        if (temporalStatus === "COMPLETED") {
+          // Workflow completed but RCA not in DB yet - still processing
+          return {
+            status: "running" as const,
+            workflowId,
+            startedAt: desc.startTime,
+          };
+        }
+
+        // Failed states
+        if (["FAILED", "CANCELED", "TERMINATED", "TIMED_OUT"].includes(temporalStatus)) {
+          return {
+            status: "failed" as const,
+            workflowId,
+            startedAt: desc.startTime,
+          };
+        }
 
         return {
-          status: (statusMap[desc.status.name] ?? "not_started") as
-            | "running"
-            | "completed"
-            | "failed"
-            | "not_started",
-          workflowId,
-          startedAt: desc.startTime,
+          status: "not_started" as const,
         };
-      } catch {
+      } catch (error) {
+        // Distinguish between "workflow doesn't exist" vs other errors
+        const isNotFound =
+          error &&
+          typeof error === "object" &&
+          "code" in error &&
+          (error as { code: string }).code === "NOT_FOUND";
+
+        if (!isNotFound) {
+          // Re-throw unexpected Temporal errors
+          throw error;
+        }
+
         // No workflow and no RCA
         return {
           status: "not_started" as const,
