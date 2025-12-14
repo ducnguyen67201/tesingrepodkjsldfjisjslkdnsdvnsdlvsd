@@ -14,7 +14,7 @@
 // - triggerAlert (tRPC mutation)
 // ============================================================
 
-import { prisma, type EvalSuite, type EvalRun } from "@cognobserve/db";
+import { prisma, type EvalSuite } from "@cognobserve/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type {
   EvalPrompt,
