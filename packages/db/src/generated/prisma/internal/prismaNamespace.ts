@@ -410,7 +410,9 @@ export const ModelName = {
   GitCommit: 'GitCommit',
   GitPullRequest: 'GitPullRequest',
   CodeChunk: 'CodeChunk',
-  AlertRCA: 'AlertRCA'
+  AlertRCA: 'AlertRCA',
+  EvalSuite: 'EvalSuite',
+  EvalRun: 'EvalRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -426,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "workspace" | "workspaceMember" | "allowedDomain" | "project" | "projectMember" | "apiKey" | "trace" | "span" | "modelPricing" | "costDailySummary" | "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "trackedUser" | "traceSession" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "alertRCA"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "workspace" | "workspaceMember" | "allowedDomain" | "project" | "projectMember" | "apiKey" | "trace" | "span" | "modelPricing" | "costDailySummary" | "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "trackedUser" | "traceSession" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "alertRCA" | "evalSuite" | "evalRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2428,6 +2430,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EvalSuite: {
+      payload: Prisma.$EvalSuitePayload<ExtArgs>
+      fields: Prisma.EvalSuiteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EvalSuiteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EvalSuiteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        findFirst: {
+          args: Prisma.EvalSuiteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EvalSuiteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        findMany: {
+          args: Prisma.EvalSuiteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>[]
+        }
+        create: {
+          args: Prisma.EvalSuiteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        createMany: {
+          args: Prisma.EvalSuiteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EvalSuiteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>[]
+        }
+        delete: {
+          args: Prisma.EvalSuiteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        update: {
+          args: Prisma.EvalSuiteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        deleteMany: {
+          args: Prisma.EvalSuiteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EvalSuiteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EvalSuiteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>[]
+        }
+        upsert: {
+          args: Prisma.EvalSuiteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalSuitePayload>
+        }
+        aggregate: {
+          args: Prisma.EvalSuiteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEvalSuite>
+        }
+        groupBy: {
+          args: Prisma.EvalSuiteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalSuiteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EvalSuiteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalSuiteCountAggregateOutputType> | number
+        }
+      }
+    }
+    EvalRun: {
+      payload: Prisma.$EvalRunPayload<ExtArgs>
+      fields: Prisma.EvalRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EvalRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EvalRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        findFirst: {
+          args: Prisma.EvalRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EvalRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        findMany: {
+          args: Prisma.EvalRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>[]
+        }
+        create: {
+          args: Prisma.EvalRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        createMany: {
+          args: Prisma.EvalRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EvalRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>[]
+        }
+        delete: {
+          args: Prisma.EvalRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        update: {
+          args: Prisma.EvalRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.EvalRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EvalRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EvalRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.EvalRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalRunPayload>
+        }
+        aggregate: {
+          args: Prisma.EvalRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEvalRun>
+        }
+        groupBy: {
+          args: Prisma.EvalRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EvalRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2876,6 +3026,49 @@ export const AlertRCAScalarFieldEnum = {
 export type AlertRCAScalarFieldEnum = (typeof AlertRCAScalarFieldEnum)[keyof typeof AlertRCAScalarFieldEnum]
 
 
+export const EvalSuiteScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  description: 'description',
+  enabled: 'enabled',
+  endpoint: 'endpoint',
+  prompts: 'prompts',
+  expectedBehaviors: 'expectedBehaviors',
+  baselineLatencyP95: 'baselineLatencyP95',
+  baselineErrorRate: 'baselineErrorRate',
+  baselineScores: 'baselineScores',
+  latencyRegressionThreshold: 'latencyRegressionThreshold',
+  errorRegressionThreshold: 'errorRegressionThreshold',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvalSuiteScalarFieldEnum = (typeof EvalSuiteScalarFieldEnum)[keyof typeof EvalSuiteScalarFieldEnum]
+
+
+export const EvalRunScalarFieldEnum = {
+  id: 'id',
+  suiteId: 'suiteId',
+  triggeredBy: 'triggeredBy',
+  triggerRef: 'triggerRef',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  totalPrompts: 'totalPrompts',
+  passedPrompts: 'passedPrompts',
+  failedPrompts: 'failedPrompts',
+  latencyP95: 'latencyP95',
+  errorRate: 'errorRate',
+  scores: 'scores',
+  isRegression: 'isRegression',
+  regressionDetails: 'regressionDetails',
+  createdAt: 'createdAt'
+} as const
+
+export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3160,6 +3353,20 @@ export type EnumIndexStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 export type ListEnumIndexStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndexStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'EvalRunStatus'
+ */
+export type EnumEvalRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvalRunStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'EvalRunStatus[]'
+ */
+export type ListEnumEvalRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvalRunStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3266,6 +3473,8 @@ export type GlobalOmitConfig = {
   gitPullRequest?: Prisma.GitPullRequestOmit
   codeChunk?: Prisma.CodeChunkOmit
   alertRCA?: Prisma.AlertRCAOmit
+  evalSuite?: Prisma.EvalSuiteOmit
+  evalRun?: Prisma.EvalRunOmit
 }
 
 /* Types for Logging */

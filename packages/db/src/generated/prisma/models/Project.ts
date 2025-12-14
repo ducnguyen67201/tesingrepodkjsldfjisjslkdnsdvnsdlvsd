@@ -191,6 +191,7 @@ export type ProjectWhereInput = {
   costSummary?: Prisma.CostDailySummaryListRelationFilter
   alerts?: Prisma.AlertListRelationFilter
   githubRepo?: Prisma.XOR<Prisma.GitHubRepositoryNullableScalarRelationFilter, Prisma.GitHubRepositoryWhereInput> | null
+  evalSuites?: Prisma.EvalSuiteListRelationFilter
 }
 
 export type ProjectOrderByWithRelationInput = {
@@ -208,6 +209,7 @@ export type ProjectOrderByWithRelationInput = {
   costSummary?: Prisma.CostDailySummaryOrderByRelationAggregateInput
   alerts?: Prisma.AlertOrderByRelationAggregateInput
   githubRepo?: Prisma.GitHubRepositoryOrderByWithRelationInput
+  evalSuites?: Prisma.EvalSuiteOrderByRelationAggregateInput
 }
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -228,6 +230,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   costSummary?: Prisma.CostDailySummaryListRelationFilter
   alerts?: Prisma.AlertListRelationFilter
   githubRepo?: Prisma.XOR<Prisma.GitHubRepositoryNullableScalarRelationFilter, Prisma.GitHubRepositoryWhereInput> | null
+  evalSuites?: Prisma.EvalSuiteListRelationFilter
 }, "id">
 
 export type ProjectOrderByWithAggregationInput = {
@@ -266,6 +269,7 @@ export type ProjectCreateInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateInput = {
@@ -282,6 +286,7 @@ export type ProjectUncheckedCreateInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUpdateInput = {
@@ -298,6 +303,7 @@ export type ProjectUpdateInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateInput = {
@@ -314,6 +320,7 @@ export type ProjectUncheckedUpdateInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyInput = {
@@ -539,6 +546,20 @@ export type ProjectUpdateOneWithoutGithubRepoNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutGithubRepoInput, Prisma.ProjectUpdateWithoutGithubRepoInput>, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
 }
 
+export type ProjectCreateNestedOneWithoutEvalSuitesInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutEvalSuitesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
+  upsert?: Prisma.ProjectUpsertWithoutEvalSuitesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutEvalSuitesInput, Prisma.ProjectUpdateWithoutEvalSuitesInput>, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+}
+
 export type ProjectCreateWithoutWorkspaceInput = {
   id?: string
   name: string
@@ -552,6 +573,7 @@ export type ProjectCreateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutWorkspaceInput = {
@@ -567,6 +589,7 @@ export type ProjectUncheckedCreateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -619,6 +642,7 @@ export type ProjectCreateWithoutMembersInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutMembersInput = {
@@ -634,6 +658,7 @@ export type ProjectUncheckedCreateWithoutMembersInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutMembersInput = {
@@ -665,6 +690,7 @@ export type ProjectUpdateWithoutMembersInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutMembersInput = {
@@ -680,6 +706,7 @@ export type ProjectUncheckedUpdateWithoutMembersInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutApiKeysInput = {
@@ -695,6 +722,7 @@ export type ProjectCreateWithoutApiKeysInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutApiKeysInput = {
@@ -710,6 +738,7 @@ export type ProjectUncheckedCreateWithoutApiKeysInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutApiKeysInput = {
@@ -741,6 +770,7 @@ export type ProjectUpdateWithoutApiKeysInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutApiKeysInput = {
@@ -756,6 +786,7 @@ export type ProjectUncheckedUpdateWithoutApiKeysInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutTracesInput = {
@@ -771,6 +802,7 @@ export type ProjectCreateWithoutTracesInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutTracesInput = {
@@ -786,6 +818,7 @@ export type ProjectUncheckedCreateWithoutTracesInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutTracesInput = {
@@ -817,6 +850,7 @@ export type ProjectUpdateWithoutTracesInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutTracesInput = {
@@ -832,6 +866,7 @@ export type ProjectUncheckedUpdateWithoutTracesInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutCostSummaryInput = {
@@ -847,6 +882,7 @@ export type ProjectCreateWithoutCostSummaryInput = {
   members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutCostSummaryInput = {
@@ -862,6 +898,7 @@ export type ProjectUncheckedCreateWithoutCostSummaryInput = {
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutCostSummaryInput = {
@@ -893,6 +930,7 @@ export type ProjectUpdateWithoutCostSummaryInput = {
   members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutCostSummaryInput = {
@@ -908,6 +946,7 @@ export type ProjectUncheckedUpdateWithoutCostSummaryInput = {
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutAlertsInput = {
@@ -923,6 +962,7 @@ export type ProjectCreateWithoutAlertsInput = {
   members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutAlertsInput = {
@@ -938,6 +978,7 @@ export type ProjectUncheckedCreateWithoutAlertsInput = {
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutAlertsInput = {
@@ -969,6 +1010,7 @@ export type ProjectUpdateWithoutAlertsInput = {
   members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutAlertsInput = {
@@ -984,6 +1026,7 @@ export type ProjectUncheckedUpdateWithoutAlertsInput = {
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutTrackedUsersInput = {
@@ -999,6 +1042,7 @@ export type ProjectCreateWithoutTrackedUsersInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutTrackedUsersInput = {
@@ -1014,6 +1058,7 @@ export type ProjectUncheckedCreateWithoutTrackedUsersInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutTrackedUsersInput = {
@@ -1045,6 +1090,7 @@ export type ProjectUpdateWithoutTrackedUsersInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutTrackedUsersInput = {
@@ -1060,6 +1106,7 @@ export type ProjectUncheckedUpdateWithoutTrackedUsersInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutTraceSessionsInput = {
@@ -1075,6 +1122,7 @@ export type ProjectCreateWithoutTraceSessionsInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutTraceSessionsInput = {
@@ -1090,6 +1138,7 @@ export type ProjectUncheckedCreateWithoutTraceSessionsInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutTraceSessionsInput = {
@@ -1121,6 +1170,7 @@ export type ProjectUpdateWithoutTraceSessionsInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutTraceSessionsInput = {
@@ -1136,6 +1186,7 @@ export type ProjectUncheckedUpdateWithoutTraceSessionsInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutGithubRepoInput = {
@@ -1151,6 +1202,7 @@ export type ProjectCreateWithoutGithubRepoInput = {
   members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutGithubRepoInput = {
@@ -1166,6 +1218,7 @@ export type ProjectUncheckedCreateWithoutGithubRepoInput = {
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutGithubRepoInput = {
@@ -1197,6 +1250,7 @@ export type ProjectUpdateWithoutGithubRepoInput = {
   members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutGithubRepoInput = {
@@ -1212,6 +1266,87 @@ export type ProjectUncheckedUpdateWithoutGithubRepoInput = {
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutEvalSuitesInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutEvalSuitesInput = {
+  id?: string
+  name: string
+  workspaceId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutEvalSuitesInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+}
+
+export type ProjectUpsertWithoutEvalSuitesInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutEvalSuitesInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+}
+
+export type ProjectUpdateWithoutEvalSuitesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutEvalSuitesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyWorkspaceInput = {
@@ -1234,6 +1369,7 @@ export type ProjectUpdateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
@@ -1249,6 +1385,7 @@ export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -1271,6 +1408,7 @@ export type ProjectCountOutputType = {
   members: number
   costSummary: number
   alerts: number
+  evalSuites: number
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1281,6 +1419,7 @@ export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   members?: boolean | ProjectCountOutputTypeCountMembersArgs
   costSummary?: boolean | ProjectCountOutputTypeCountCostSummaryArgs
   alerts?: boolean | ProjectCountOutputTypeCountAlertsArgs
+  evalSuites?: boolean | ProjectCountOutputTypeCountEvalSuitesArgs
 }
 
 /**
@@ -1342,6 +1481,13 @@ export type ProjectCountOutputTypeCountAlertsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AlertWhereInput
 }
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountEvalSuitesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EvalSuiteWhereInput
+}
+
 
 export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1358,6 +1504,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   costSummary?: boolean | Prisma.Project$costSummaryArgs<ExtArgs>
   alerts?: boolean | Prisma.Project$alertsArgs<ExtArgs>
   githubRepo?: boolean | Prisma.Project$githubRepoArgs<ExtArgs>
+  evalSuites?: boolean | Prisma.Project$evalSuitesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
 
@@ -1398,6 +1545,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   costSummary?: boolean | Prisma.Project$costSummaryArgs<ExtArgs>
   alerts?: boolean | Prisma.Project$alertsArgs<ExtArgs>
   githubRepo?: boolean | Prisma.Project$githubRepoArgs<ExtArgs>
+  evalSuites?: boolean | Prisma.Project$evalSuitesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1419,6 +1567,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     costSummary: Prisma.$CostDailySummaryPayload<ExtArgs>[]
     alerts: Prisma.$AlertPayload<ExtArgs>[]
     githubRepo: Prisma.$GitHubRepositoryPayload<ExtArgs> | null
+    evalSuites: Prisma.$EvalSuitePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1829,6 +1978,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   costSummary<T extends Prisma.Project$costSummaryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$costSummaryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CostDailySummaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   alerts<T extends Prisma.Project$alertsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   githubRepo<T extends Prisma.Project$githubRepoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$githubRepoArgs<ExtArgs>>): Prisma.Prisma__GitHubRepositoryClient<runtime.Types.Result.GetResult<Prisma.$GitHubRepositoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  evalSuites<T extends Prisma.Project$evalSuitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$evalSuitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvalSuitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2443,6 +2593,30 @@ export type Project$githubRepoArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.GitHubRepositoryInclude<ExtArgs> | null
   where?: Prisma.GitHubRepositoryWhereInput
+}
+
+/**
+ * Project.evalSuites
+ */
+export type Project$evalSuitesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EvalSuite
+   */
+  select?: Prisma.EvalSuiteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EvalSuite
+   */
+  omit?: Prisma.EvalSuiteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EvalSuiteInclude<ExtArgs> | null
+  where?: Prisma.EvalSuiteWhereInput
+  orderBy?: Prisma.EvalSuiteOrderByWithRelationInput | Prisma.EvalSuiteOrderByWithRelationInput[]
+  cursor?: Prisma.EvalSuiteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EvalSuiteScalarFieldEnum | Prisma.EvalSuiteScalarFieldEnum[]
 }
 
 /**

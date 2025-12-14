@@ -622,6 +622,23 @@ export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
+export type EnumEvalRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.EvalRunStatus | Prisma.EnumEvalRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel> | $Enums.EvalRunStatus
+}
+
+export type EnumEvalRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EvalRunStatus | Prisma.EnumEvalRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEvalRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.EvalRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1165,6 +1182,23 @@ export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumEvalRunStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.EvalRunStatus | Prisma.EnumEvalRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel> | $Enums.EvalRunStatus
+}
+
+export type NestedEnumEvalRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EvalRunStatus | Prisma.EnumEvalRunStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EvalRunStatus[] | Prisma.ListEnumEvalRunStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEvalRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.EvalRunStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEvalRunStatusFilter<$PrismaModel>
 }
 
 

@@ -41,7 +41,7 @@ type WorkflowStarter = (
 ) => Promise<{ started: number; skipped: number }>;
 
 /** Supported workflow types */
-type WorkflowType = "alerts" | "github" | "traces" | "scores";
+type WorkflowType = "alerts" | "github" | "traces" | "scores" | "evals";
 
 /** Workflow configuration */
 interface WorkflowConfig {
@@ -86,6 +86,12 @@ const WORKFLOW_REGISTRY: Record<WorkflowType, WorkflowConfig> = {
     startOnBoot: false,
     // No starter - triggered by ingest service
   },
+  evals: {
+    name: "Eval Pipeline",
+    description: "Event-driven workflows for regression detection on PR merge",
+    startOnBoot: false,
+    // No starter - triggered by GitHub webhook (PR merge) or manual API
+  },
 };
 
 // ============================================
@@ -117,6 +123,7 @@ export async function startAllWorkflows(): Promise<StartupResult> {
       github: { started: 0, skipped: 0, errors: [] },
       traces: { started: 0, skipped: 0, errors: [] },
       scores: { started: 0, skipped: 0, errors: [] },
+      evals: { started: 0, skipped: 0, errors: [] },
     },
   };
 

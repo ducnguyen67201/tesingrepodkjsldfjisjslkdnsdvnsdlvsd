@@ -29,6 +29,7 @@ import { channelsRouter } from "./channels";
 import { trackedUsersRouter } from "./trackedUsers";
 import { internalRouter } from "./internal";
 import { githubRouter } from "./github";
+import { evalsRouter } from "./evals";
 
 /**
  * Main application router.
@@ -209,6 +210,27 @@ export const appRouter = createRouter({
   github: githubRouter,
 
   /**
+   * Eval Pipeline (Regression Detection)
+   * @see ./evals.ts
+   *
+   * Proactive regression detection for AI endpoints.
+   *
+   * - evals.listSuites    - List eval suites for a project
+   * - evals.getSuite      - Get eval suite details
+   * - evals.createSuite   - Create new eval suite
+   * - evals.updateSuite   - Update eval suite config
+   * - evals.deleteSuite   - Delete eval suite
+   * - evals.toggleSuite   - Enable/disable eval suite
+   * - evals.listRuns      - List runs for a suite
+   * - evals.getRun        - Get run details
+   * - evals.triggerRun    - Trigger manual eval run
+   * - evals.updateBaseline - Set baseline from a run
+   * - evals.getRunStatus  - Get run status for polling
+   * - evals.getPresets    - Get labels and defaults
+   */
+  evals: evalsRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -238,4 +260,5 @@ export {
   trackedUsersRouter,
   internalRouter,
   githubRouter,
+  evalsRouter,
 };

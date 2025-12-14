@@ -105,7 +105,7 @@ export type WebhookConfig = z.infer<typeof WebhookConfigSchema>;
 
 /**
  * Alert notification payload - sent to adapters
- * Extended with optional RCA enrichment
+ * Extended with optional RCA enrichment and regression info
  */
 export const AlertPayloadSchema = z.object({
   alertId: z.string(),
@@ -120,6 +120,8 @@ export const AlertPayloadSchema = z.object({
   dashboardUrl: z.string().url().optional(),
   /** Optional RCA enrichment - populated when RCA is available */
   rca: z.lazy(() => RCASummarySchema).optional(),
+  /** Optional regression info - populated when eval regression detected */
+  regressionInfo: z.lazy(() => RegressionInfoSchema).optional(),
 });
 export type AlertPayload = z.infer<typeof AlertPayloadSchema>;
 
@@ -419,3 +421,48 @@ export const RCA_CATEGORY_ICONS: Record<RCACategory, string> = {
   CONFIGURATION: "⚙️",
   UNKNOWN: "❓",
 };
+
+// ============================================================
+// REGRESSION ALERT PAYLOAD (for eval pipeline)
+// ============================================================
+
+/**
+ * Regression detail from eval pipeline
+ */
+export const EvalRegressionDetailSchema = z.object({
+  metric: z.enum(["latency_p95", "error_rate", "pass_rate"]),
+  baseline: z.number(),
+  current: z.number(),
+  threshold: z.number(),
+  changePercent: z.number(),
+  message: z.string(),
+});
+export type EvalRegressionDetail = z.infer<typeof EvalRegressionDetailSchema>;
+
+/**
+ * Regression info attached to alert payload (optional)
+ */
+export const RegressionInfoSchema = z.object({
+  triggerRef: z.string().optional(),
+  details: z.array(EvalRegressionDetailSchema),
+});
+export type RegressionInfo = z.infer<typeof RegressionInfoSchema>;
+
+/**
+ * Metric labels for regression display
+ */
+export const REGRESSION_METRIC_LABELS: Record<string, string> = {
+  latency_p95: "P95 Latency",
+  error_rate: "Error Rate",
+  pass_rate: "Pass Rate",
+};
+
+/**
+ * Format regression metric value for display
+ */
+export function formatRegressionValue(metric: string, value: number): string {
+  if (metric === "latency_p95") {
+    return `${value.toFixed(0)}ms`;
+  }
+  return `${value.toFixed(1)}%`;
+}

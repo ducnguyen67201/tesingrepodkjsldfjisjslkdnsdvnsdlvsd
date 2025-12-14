@@ -7,7 +7,7 @@ import {
   type GitHubWebhookEvent,
 } from "@cognobserve/api/schemas";
 import { env } from "@/lib/env";
-import { startGitHubIndexWorkflow } from "@/lib/temporal-client";
+import { startGitHubIndexWorkflow, startEvalWorkflow } from "@/lib/temporal-client";
 import {
   webhookSuccess,
   webhookError,
@@ -106,6 +106,57 @@ export async function POST(req: NextRequest) {
       }
       owner = repoInfo.owner;
       repo = repoInfo.repo;
+
+      // Check if PR was merged - trigger eval workflows
+      if (parsed.action === "closed" && parsed.pull_request.merged) {
+        // Look up repository to get projectId for eval suites
+        const prRepo = await prisma.gitHubRepository.findFirst({
+          where: { owner, repo, enabled: true },
+          select: { id: true, projectId: true },
+        });
+
+        if (prRepo?.projectId) {
+          // Find enabled eval suites for this project
+          const evalSuites = await prisma.evalSuite.findMany({
+            where: { projectId: prRepo.projectId, enabled: true },
+            select: { id: true, name: true },
+          });
+
+          if (evalSuites.length > 0) {
+            const prNumber = parsed.pull_request.number;
+            console.log("PR merged, starting eval workflows", {
+              delivery,
+              prNumber,
+              suiteCount: evalSuites.length,
+            });
+
+            // Start eval workflows for each enabled suite
+            for (const suite of evalSuites) {
+              try {
+                const workflowId = await startEvalWorkflow({
+                  projectId: prRepo.projectId,
+                  suiteId: suite.id,
+                  triggeredBy: "pr_merge",
+                  triggerRef: `PR #${prNumber}`,
+                });
+                console.log("Eval workflow started", {
+                  delivery,
+                  prNumber,
+                  suiteName: suite.name,
+                  workflowId,
+                });
+              } catch (error) {
+                console.error("Failed to start eval workflow", {
+                  delivery,
+                  prNumber,
+                  suiteId: suite.id,
+                  error,
+                });
+              }
+            }
+          }
+        }
+      }
 
       // Only process opened, closed, and synchronize events
       const relevantActions = ["opened", "closed", "synchronize"];

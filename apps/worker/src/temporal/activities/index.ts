@@ -60,3 +60,14 @@ export {
 
 // RCA (Root Cause Analysis) activities
 export { analyzeTraces, correlateCodeChanges, generateRCA, storeRCA } from "./rca";
+
+// Eval Pipeline activities
+export {
+  getEvalSuite,
+  createEvalRun,
+  runEvalPrompts,
+  calculateMetrics,
+  detectRegression,
+  storeResults,
+  triggerAlert,
+} from "./eval.activities";
