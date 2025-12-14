@@ -6,4 +6,5 @@
  */
 
 export { GitHubService } from "./github.service";
+export { RCAService } from "./rca.service";
 export { TrackedUserService } from "./trackedUser.service";

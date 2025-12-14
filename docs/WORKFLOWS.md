@@ -236,6 +236,7 @@ export async function getDetails(id: string): Promise<Details | null> {
 | `internal.deleteRepositoryChunks` | `{ repositoryId }` | Delete chunks for reindex |
 | `internal.storeRepositoryChunks` | `{ repositoryId, chunks }` | Store code chunks (returns chunkIds) |
 | `internal.storeChunkEmbeddings` | `{ embeddings: [{ chunkId, embedding }] }` | Store embeddings in pgvector |
+| `internal.storeRCA` | `{ alertHistoryId, rcaReport, ... }` | Persist RCA analysis results |
 
 ## Startup Summary Output
 
@@ -386,6 +387,38 @@ interface SearchCodebaseInput {
 **Performance Targets:**
 - P95 latency < 500ms for 100K chunks
 - Uses HNSW index with cosine similarity
+
+## RCA (Root Cause Analysis) Activities
+
+Automated root cause analysis for alerts using LLM and code correlation:
+
+### Activity Pipeline
+
+```
+Alert Fires → analyzeTraces → correlateCodeChanges → generateRCA → storeRCA
+```
+
+### RCA Activities
+
+| Activity | Input | Output | Purpose |
+|----------|-------|--------|---------|
+| `analyzeTraces` | `TraceAnalysisInput` | `TraceAnalysisOutput` | Extract error patterns, anomalies from traces |
+| `correlateCodeChanges` | `CodeCorrelationInput` | `CodeCorrelationOutput` | Correlate alerts with recent commits/PRs |
+| `generateRCA` | `RCAGenerationInput` | `RCAReport` | Generate LLM-based root cause analysis |
+| `storeRCA` | `StoreRCAInput` | `StoreRCAOutput` | Persist RCA to database via tRPC |
+
+**Key files:**
+- Activities: `apps/worker/src/temporal/activities/rca/`
+- Schemas: `packages/api/src/schemas/rca.ts`
+- Prompts: `apps/worker/src/prompts/rca/`
+- Internal Procedure: `packages/api/src/routers/internal.ts` (storeRCA)
+
+**LLM Metadata Tracked:**
+- Model and provider used
+- Tokens consumed
+- Estimated cost
+- Latency in milliseconds
+- Whether template fallback was used
 
 ## Debugging
 

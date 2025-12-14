@@ -6,6 +6,7 @@
  */
 
 import { getLLM } from "../../../../lib/llm-manager";
+import { getLogger } from "@cognobserve/shared/llm";
 import {
   RCA_SYSTEM_PROMPT,
   RCA_PROMPT_CONFIG,
@@ -18,6 +19,8 @@ import {
 import type { RCAGenerationInput, RCAReport } from "../../../types";
 import { getModelForSeverity } from "./model-selection";
 import { shouldUseTemplate, generateTemplateRCA } from "./template";
+
+const logger = getLogger();
 
 /**
  * Generates a Root Cause Analysis report using LLM Center.
@@ -43,19 +46,21 @@ export async function generateRCA(
   const { alertContext } = input;
   const startTime = Date.now();
 
-  console.log(
-    `[generateRCA] Starting RCA for alert ${alertContext.alertName} (${alertContext.severity})`
-  );
+  logger.info("[generateRCA] Starting RCA generation", {
+    alertName: alertContext.alertName,
+    severity: alertContext.severity,
+    alertType: alertContext.alertType,
+  });
 
   // 1. Check if template fallback applies
   if (shouldUseTemplate(input)) {
-    console.log(`[generateRCA] Using template-based RCA (cost optimization)`);
+    logger.info("[generateRCA] Using template-based RCA (cost optimization)");
     return generateTemplateRCA(input, startTime);
   }
 
   // 2. Select model based on severity (call-time override)
   const { provider, model } = getModelForSeverity(alertContext.severity);
-  console.log(`[generateRCA] Using model: ${provider}/${model}`);
+  logger.info("[generateRCA] Model selected", { provider, model });
 
   // 3. Build prompt from prompts module
   const systemPrompt = RCA_SYSTEM_PROMPT;
@@ -80,10 +85,11 @@ export async function generateRCA(
 
     const latencyMs = Date.now() - startTime;
 
-    console.log(
-      `[generateRCA] LLM response received in ${latencyMs}ms ` +
-        `(${result.usage.totalTokens} tokens, $${result.usage.estimatedCost.toFixed(4)})`
-    );
+    logger.info("[generateRCA] LLM response received", {
+      latencyMs,
+      tokensUsed: result.usage.totalTokens,
+      estimatedCost: result.usage.estimatedCost,
+    });
 
     // 5. Return validated report with metadata from LLM Center
     return {
@@ -100,10 +106,10 @@ export async function generateRCA(
   } catch (error) {
     // LLM Center already handles retries and fallbacks
     // This catches non-retryable errors (auth, schema validation, etc.)
-    console.error(`[generateRCA] LLM call failed:`, error);
+    logger.error("[generateRCA] LLM call failed", { error });
 
     // Fallback to template on LLM failure
-    console.log(`[generateRCA] Falling back to template due to LLM error`);
+    logger.info("[generateRCA] Falling back to template due to LLM error");
     return generateTemplateRCA(input, startTime, true);
   }
 }
