@@ -16,11 +16,10 @@ import {
   formatConfidence,
   RCA_CATEGORY_LABELS,
   RCA_CATEGORY_ICONS,
-  REGRESSION_METRIC_LABELS,
-  formatRegressionValue,
   type RCASummary,
   type RegressionInfo,
 } from "../../../schemas/alerting";
+import { buildRegressionContent } from "../regression-template";
 
 /**
  * Discord embed structure
@@ -227,38 +226,29 @@ export class DiscordAdapter extends BaseAlertingAdapter {
 
   /**
    * Build regression-specific embed fields for eval pipeline alerts
+   * Uses shared regression template for consistent messaging
    */
   private buildRegressionFields(regressionInfo: RegressionInfo): DiscordEmbed["fields"] {
+    const content = buildRegressionContent(regressionInfo);
     const fields: DiscordEmbed["fields"] = [];
 
     // Separator
     fields.push({ name: "\u200B", value: "───────────────", inline: false });
 
     // Header with trigger ref if available
-    if (regressionInfo.triggerRef) {
-      fields.push({
-        name: "⚠️ Regression Detected",
-        value: `After: **${regressionInfo.triggerRef}**`,
-        inline: false,
-      });
-    } else {
-      fields.push({
-        name: "⚠️ Regression Detected",
-        value: "Performance regression detected in eval suite",
-        inline: false,
-      });
-    }
+    fields.push({
+      name: `⚠️ ${content.header}`,
+      value: content.triggerText ?? "Performance regression detected in eval suite",
+      inline: false,
+    });
 
     // Add each regression detail
-    for (const detail of regressionInfo.details) {
-      const metricLabel = REGRESSION_METRIC_LABELS[detail.metric] || detail.metric;
-      const baselineFormatted = formatRegressionValue(detail.metric, detail.baseline);
-      const currentFormatted = formatRegressionValue(detail.metric, detail.current);
+    for (const detail of content.details) {
       const changeDirection = detail.changePercent > 0 ? "📈" : "📉";
 
       fields.push({
-        name: `${changeDirection} ${metricLabel}`,
-        value: `${baselineFormatted} → **${currentFormatted}** (+${detail.changePercent.toFixed(1)}%)`,
+        name: `${changeDirection} ${detail.label}`,
+        value: `${detail.baselineFormatted} → **${detail.currentFormatted}** (+${detail.changePercent.toFixed(1)}%)`,
         inline: true,
       });
     }
