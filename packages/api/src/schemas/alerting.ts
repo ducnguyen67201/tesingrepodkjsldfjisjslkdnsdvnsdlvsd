@@ -379,12 +379,20 @@ export const RCASummarySchema = z.object({
 export type RCASummary = z.infer<typeof RCASummarySchema>;
 
 /**
+ * Confidence level thresholds (percentage)
+ */
+export const CONFIDENCE_THRESHOLDS = {
+  HIGH: 80,
+  MEDIUM: 50,
+} as const;
+
+/**
  * Format confidence as percentage with label
  */
 export function formatConfidence(confidence: number): string {
   const pct = Math.round(confidence * 100);
-  if (pct >= 80) return `${pct}% (High)`;
-  if (pct >= 50) return `${pct}% (Medium)`;
+  if (pct >= CONFIDENCE_THRESHOLDS.HIGH) return `${pct}% (High)`;
+  if (pct >= CONFIDENCE_THRESHOLDS.MEDIUM) return `${pct}% (Medium)`;
   return `${pct}% (Low)`;
 }
 

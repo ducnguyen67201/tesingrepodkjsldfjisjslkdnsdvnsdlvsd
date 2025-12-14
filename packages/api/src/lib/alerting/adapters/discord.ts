@@ -190,9 +190,16 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       });
     }
 
-    // Recommended actions
+    // Recommended actions (Discord field value limit: 1024 chars)
     if (rca.remediation.length > 0) {
-      const remediationList = rca.remediation.map((r, i) => `${i + 1}. ${r}`).join("\n");
+      const DISCORD_FIELD_LIMIT = 1024;
+      let remediationList = rca.remediation.map((r, i) => `${i + 1}. ${r}`).join("\n");
+
+      // Truncate if exceeds Discord limit
+      if (remediationList.length > DISCORD_FIELD_LIMIT) {
+        remediationList = remediationList.slice(0, DISCORD_FIELD_LIMIT - 3) + "...";
+      }
+
       fields.push({
         name: "🛠️ Recommended Actions",
         value: remediationList,

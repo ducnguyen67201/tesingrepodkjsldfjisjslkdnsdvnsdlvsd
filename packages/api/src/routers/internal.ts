@@ -21,9 +21,8 @@ import {
   type RCATopChange,
   RCA_CATEGORY_LABELS,
 } from "../schemas/alerting";
-import type { LLMRCAOutput } from "../schemas/rca";
 import { StoreGitHubIndexSchema } from "../schemas/github";
-import { StoreRCAInputSchema } from "../schemas/rca";
+import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
 import { AdapterRegistry } from "../lib/alerting/registry";
 import { GitHubService, RCAService } from "../services";
 
@@ -236,8 +235,16 @@ async function lookupRecentRCA(
       return undefined;
     }
 
-    // Parse analysisJson (stored LLMRCAOutput)
-    const analysis = alertRCA.analysisJson as LLMRCAOutput;
+    // Validate analysisJson with Zod schema
+    const parseResult = LLMRCAOutputSchema.safeParse(alertRCA.analysisJson);
+    if (!parseResult.success) {
+      console.error(
+        `[Internal:lookupRecentRCA] Invalid analysisJson for RCA ${alertRCA.id}:`,
+        parseResult.error.flatten()
+      );
+      return undefined;
+    }
+    const analysis = parseResult.data;
 
     // Extract top suspected change
     let topChange: RCATopChange | undefined;

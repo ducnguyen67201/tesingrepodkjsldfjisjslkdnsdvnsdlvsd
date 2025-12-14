@@ -116,8 +116,16 @@ export class SlackAdapter extends BaseAlertingAdapter {
 
       if (!response.ok) {
         const text = await response.text();
+        // Attempt to parse JSON error response from Slack
+        let errorMessage = text;
+        try {
+          const json = JSON.parse(text) as { error?: string; message?: string };
+          errorMessage = json.error ?? json.message ?? text;
+        } catch {
+          // Response is not JSON, use raw text
+        }
         return this.createErrorResult(
-          `Slack API error: ${response.status} - ${text}`
+          `Slack API error: ${response.status} - ${errorMessage}`
         );
       }
 
@@ -161,7 +169,7 @@ export class SlackAdapter extends BaseAlertingAdapter {
         { type: "mrkdwn", text: `*Project*\n${payload.projectName}` },
         {
           type: "mrkdwn",
-          text: `*Triggered*\n${new Date(payload.triggeredAt).toLocaleString()}`,
+          text: `*Triggered*\n<!date^${Math.floor(new Date(payload.triggeredAt).getTime() / 1000)}^{date_short_pretty} at {time}|${payload.triggeredAt}>`,
         },
       ],
     });
