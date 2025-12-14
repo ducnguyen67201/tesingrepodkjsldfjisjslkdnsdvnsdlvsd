@@ -13,9 +13,16 @@ import { TRPCError } from "@trpc/server";
 import { prisma, Prisma, SpanLevel, setChunkEmbeddings } from "@cognobserve/db";
 import { createRouter, publicProcedure, middleware } from "../trpc";
 import { calculateSpanCost } from "../lib/cost";
-import { SEVERITY_DEFAULTS, type AlertPayload, type ChannelProvider } from "../schemas/alerting";
+import {
+  SEVERITY_DEFAULTS,
+  type AlertPayload,
+  type ChannelProvider,
+  type RCASummary,
+  type RCATopChange,
+  RCA_CATEGORY_LABELS,
+} from "../schemas/alerting";
 import { StoreGitHubIndexSchema } from "../schemas/github";
-import { StoreRCAInputSchema } from "../schemas/rca";
+import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
 import { AdapterRegistry } from "../lib/alerting/registry";
 import { GitHubService, RCAService } from "../services";
 
@@ -187,6 +194,90 @@ async function resolveSessionId(
   });
 
   return session.id;
+}
+
+// ============================================================
+// RCA NOTIFICATION HELPERS
+// ============================================================
+
+/** Minimum RCA confidence to include in notifications */
+const MIN_RCA_CONFIDENCE = 0.30;
+
+/** Maximum age of RCA to include (5 minutes) */
+const MAX_RCA_AGE_MS = 5 * 60 * 1000;
+
+/**
+ * Lookup most recent RCA for an alert within reasonable time window
+ * Returns undefined if no RCA available, too old, or below confidence threshold
+ */
+async function lookupRecentRCA(
+  alertId: string,
+  workspaceSlug: string,
+  projectId: string
+): Promise<RCASummary | undefined> {
+  try {
+    const alertRCA = await prisma.alertRCA.findFirst({
+      where: {
+        alertId,
+        createdAt: { gte: new Date(Date.now() - MAX_RCA_AGE_MS) },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!alertRCA) {
+      console.log(`[Internal:lookupRecentRCA] No recent RCA for alert ${alertId}`);
+      return undefined;
+    }
+
+    // Check confidence threshold
+    if (alertRCA.confidence && alertRCA.confidence < MIN_RCA_CONFIDENCE) {
+      console.log(`[Internal:lookupRecentRCA] RCA confidence ${alertRCA.confidence} below threshold`);
+      return undefined;
+    }
+
+    // Validate analysisJson with Zod schema
+    const parseResult = LLMRCAOutputSchema.safeParse(alertRCA.analysisJson);
+    if (!parseResult.success) {
+      console.error(
+        `[Internal:lookupRecentRCA] Invalid analysisJson for RCA ${alertRCA.id}:`,
+        parseResult.error.flatten()
+      );
+      return undefined;
+    }
+    const analysis = parseResult.data;
+
+    // Extract top suspected change
+    let topChange: RCATopChange | undefined;
+    if (analysis.relatedChanges && analysis.relatedChanges.length > 0) {
+      const top = analysis.relatedChanges[0]!;
+      topChange = {
+        id: top.changeId,
+        type: top.type,
+        summary: top.explanation.slice(0, 100),
+        author: "Unknown", // Would need to join with GitCommit/GitPullRequest
+        relevance: top.relevance,
+      };
+    }
+
+    return {
+      hypothesis: analysis.hypothesis,
+      confidence: analysis.confidence,
+      category: analysis.rootCause.category,
+      topChange,
+      remediation: analysis.remediation.immediate.slice(0, 3),
+      detailUrl: `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${projectId}/alerts/${alertId}/rca/${alertRCA.id}`,
+    };
+  } catch (error) {
+    console.error(`[Internal:lookupRecentRCA] Error fetching RCA:`, error);
+    return undefined;
+  }
+}
+
+/**
+ * Build dashboard URL for alert
+ */
+function buildDashboardUrl(workspaceSlug: string, projectId: string): string {
+  return `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${projectId}/dashboard`;
 }
 
 // ============================================================
@@ -538,6 +629,7 @@ export const internalRouter = createRouter({
   /**
    * Dispatch notification for an alert
    * Called by: alert.activities.ts → dispatchNotification
+   * Enhanced with RCA lookup for enriched notifications
    */
   dispatchNotification: internalProcedure
     .input(z.object({
@@ -552,7 +644,9 @@ export const internalRouter = createRouter({
       const alert = await prisma.alert.findUnique({
         where: { id: alertId },
         include: {
-          project: true,
+          project: {
+            include: { workspace: true },
+          },
           channelLinks: {
             include: { channel: true },
           },
@@ -568,7 +662,15 @@ export const internalRouter = createRouter({
         return { channelCount: 0, sentCount: 0, failedCount: 0 };
       }
 
-      // Build alert payload
+      const workspaceSlug = alert.project.workspace.slug;
+
+      // Lookup most recent RCA for this alert (if available)
+      const rcaData = await lookupRecentRCA(alertId, workspaceSlug, alert.projectId);
+      if (rcaData) {
+        console.log(`[Internal:dispatchNotification] Including RCA with confidence ${rcaData.confidence}`);
+      }
+
+      // Build alert payload with optional RCA
       const payload: AlertPayload = {
         alertId: alert.id,
         alertName: alert.name,
@@ -579,6 +681,8 @@ export const internalRouter = createRouter({
         actualValue: value,
         operator: alert.operator as AlertPayload["operator"],
         triggeredAt: new Date().toISOString(),
+        dashboardUrl: buildDashboardUrl(workspaceSlug, alert.projectId),
+        rca: rcaData,
       };
 
       // Send to each channel
