@@ -31,7 +31,7 @@ import {
 import { AlertingAdapter } from "../lib/alerting";
 import { getAvailableProviders } from "../lib/alerting/init";
 import { subMinutes } from "date-fns";
-import { getTemporalClient, getTaskQueue } from "../lib/temporal";
+import { getTemporalClient, getTaskQueue, WorkflowNotFoundError } from "../lib/temporal";
 
 /**
  * Input schemas
@@ -1192,14 +1192,8 @@ export const alertsRouter = createRouter({
           };
         }
       } catch (error) {
-        // Distinguish between "workflow doesn't exist" vs other Temporal errors
-        const isNotFound =
-          error &&
-          typeof error === "object" &&
-          "code" in error &&
-          (error as { code: string }).code === "NOT_FOUND";
-
-        if (!isNotFound) {
+        // WorkflowNotFoundError means workflow doesn't exist - proceed to start
+        if (!(error instanceof WorkflowNotFoundError)) {
           // Re-throw unexpected Temporal errors
           throw error;
         }
@@ -1333,14 +1327,8 @@ export const alertsRouter = createRouter({
           status: "not_started" as const,
         };
       } catch (error) {
-        // Distinguish between "workflow doesn't exist" vs other errors
-        const isNotFound =
-          error &&
-          typeof error === "object" &&
-          "code" in error &&
-          (error as { code: string }).code === "NOT_FOUND";
-
-        if (!isNotFound) {
+        // WorkflowNotFoundError means no workflow exists
+        if (!(error instanceof WorkflowNotFoundError)) {
           // Re-throw unexpected Temporal errors
           throw error;
         }

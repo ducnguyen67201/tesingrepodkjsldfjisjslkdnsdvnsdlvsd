@@ -5,7 +5,7 @@
  * Used by the GitHub router to start repository indexing workflows.
  */
 
-import { Client, Connection } from "@temporalio/client";
+import { Client, Connection, WorkflowNotFoundError } from "@temporalio/client";
 
 let _client: Client | null = null;
 let _connectionPromise: Promise<Connection> | null = null;
@@ -64,4 +64,4 @@ export async function closeTemporalClient(): Promise<void> {
   }
 }
 
-export { getTaskQueue };
+export { getTaskQueue, WorkflowNotFoundError };
