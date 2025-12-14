@@ -1,3 +1,6 @@
+# Project name for Docker Desktop grouping
+name: cognobserve
+
 services:
   postgres:
     image: pgvector/pgvector:pg16
