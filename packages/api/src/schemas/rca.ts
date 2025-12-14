@@ -6,6 +6,7 @@
  */
 
 import { z } from "zod";
+import { AlertSeveritySchema } from "./alerting";
 
 // ============================================================
 // ALERT TYPE (reuse from alerting for consistency)
@@ -341,3 +342,129 @@ export const CodeCorrelationOutputSchema = z.object({
   prsAnalyzed: z.number().int().min(0),
 });
 export type CodeCorrelationOutput = z.infer<typeof CodeCorrelationOutputSchema>;
+
+// ============================================================
+// RCA GENERATION SCHEMAS (for #138)
+// ============================================================
+
+/**
+ * Root cause category enum
+ */
+export const RootCauseCategorySchema = z.enum([
+  "CODE_CHANGE",
+  "INFRASTRUCTURE",
+  "EXTERNAL_DEPENDENCY",
+  "DATA_ISSUE",
+  "CONFIGURATION",
+  "UNKNOWN",
+]);
+export type RootCauseCategory = z.infer<typeof RootCauseCategorySchema>;
+
+/**
+ * Related change relevance level
+ */
+export const RelevanceLevelSchema = z.enum(["high", "medium", "low"]);
+export type RelevanceLevel = z.infer<typeof RelevanceLevelSchema>;
+
+/**
+ * Related change from commits/PRs
+ */
+export const RelatedChangeSchema = z.object({
+  changeId: z.string().describe("Commit SHA or PR number"),
+  type: z.enum(["commit", "pr"]),
+  relevance: RelevanceLevelSchema,
+  explanation: z.string().describe("Why this change is related to the incident"),
+});
+export type RelatedChange = z.infer<typeof RelatedChangeSchema>;
+
+/**
+ * Root cause details
+ */
+export const RootCauseSchema = z.object({
+  category: RootCauseCategorySchema.describe("Category of root cause"),
+  summary: z.string().describe("Brief summary of the root cause"),
+  evidence: z.array(z.string()).describe("Evidence supporting this conclusion"),
+});
+export type RootCause = z.infer<typeof RootCauseSchema>;
+
+/**
+ * Remediation recommendations
+ */
+export const RemediationSchema = z.object({
+  immediate: z.array(z.string()).describe("Steps to mitigate the issue now"),
+  longTerm: z.array(z.string()).describe("Steps to prevent recurrence"),
+});
+export type Remediation = z.infer<typeof RemediationSchema>;
+
+/**
+ * LLM RCA output schema - passed to llm.chat() for structured output
+ * LLM Center validates response against this schema automatically
+ */
+export const LLMRCAOutputSchema = z.object({
+  hypothesis: z.string().describe(
+    "One sentence stating the most likely root cause of the incident"
+  ),
+  confidence: z.number().min(0).max(1).describe(
+    "Confidence score from 0 (no confidence) to 1 (certain)"
+  ),
+  reasoning: z.string().describe(
+    "2-4 sentences explaining the reasoning chain"
+  ),
+  rootCause: RootCauseSchema,
+  relatedChanges: z.array(RelatedChangeSchema).max(5),
+  affectedComponents: z.array(z.string()).describe(
+    "System components affected by this incident"
+  ),
+  remediation: RemediationSchema,
+});
+export type LLMRCAOutput = z.infer<typeof LLMRCAOutputSchema>;
+
+/**
+ * Alert context for RCA generation
+ */
+export const AlertContextSchema = z.object({
+  alertId: z.string(),
+  alertHistoryId: z.string(),
+  alertName: z.string(),
+  projectId: z.string(),
+  projectName: z.string(),
+  alertType: RCAAlertTypeSchema,
+  severity: AlertSeveritySchema,
+  currentValue: z.number(),
+  threshold: z.number(),
+  triggeredAt: z.string().datetime(),
+  windowMins: z.number().positive(),
+});
+export type AlertContext = z.infer<typeof AlertContextSchema>;
+
+/**
+ * Input for generateRCA activity
+ */
+export const RCAGenerationInputSchema = z.object({
+  alertContext: AlertContextSchema,
+  traceAnalysis: TraceAnalysisOutputSchema,
+  codeCorrelation: CodeCorrelationOutputSchema,
+});
+export type RCAGenerationInput = z.infer<typeof RCAGenerationInputSchema>;
+
+/**
+ * LLM metadata for cost tracking (populated from LLM Center result)
+ */
+export const LLMMetadataSchema = z.object({
+  model: z.string(),
+  provider: z.string(),
+  tokensUsed: z.number().int().min(0),
+  estimatedCost: z.number().min(0),
+  latencyMs: z.number().int().min(0),
+  usedTemplate: z.boolean(),
+});
+export type LLMMetadata = z.infer<typeof LLMMetadataSchema>;
+
+/**
+ * Full RCA Report output (LLM output + metadata)
+ */
+export const RCAReportSchema = LLMRCAOutputSchema.extend({
+  llmMetadata: LLMMetadataSchema,
+});
+export type RCAReport = z.infer<typeof RCAReportSchema>;
+

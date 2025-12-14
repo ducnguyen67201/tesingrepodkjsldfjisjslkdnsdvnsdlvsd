@@ -693,3 +693,144 @@ export interface CodeCorrelationOutput {
   /** Total PRs analyzed */
   prsAnalyzed: number;
 }
+
+// ============================================
+// RCA Generation Types (for #138)
+// ============================================
+
+/**
+ * Alert severity level for RCA generation.
+ */
+export type AlertSeverity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+
+/**
+ * Alert context for RCA generation.
+ */
+export interface AlertContext {
+  /** Alert ID */
+  alertId: string;
+  /** Alert history ID for this firing */
+  alertHistoryId: string;
+  /** Alert name */
+  alertName: string;
+  /** Project ID */
+  projectId: string;
+  /** Project name */
+  projectName: string;
+  /** Type of alert */
+  alertType: RCAAlertType;
+  /** Severity level */
+  severity: AlertSeverity;
+  /** Current value that triggered the alert */
+  currentValue: number;
+  /** Alert threshold that was exceeded */
+  threshold: number;
+  /** When the alert was triggered (ISO 8601) */
+  triggeredAt: string;
+  /** Analysis window in minutes */
+  windowMins: number;
+}
+
+/**
+ * Input for generateRCA activity.
+ */
+export interface RCAGenerationInput {
+  /** Alert context */
+  alertContext: AlertContext;
+  /** Output from analyzeTraces activity */
+  traceAnalysis: TraceAnalysisOutput;
+  /** Output from correlateCodeChanges activity */
+  codeCorrelation: CodeCorrelationOutput;
+}
+
+/**
+ * Root cause category.
+ */
+export type RootCauseCategory =
+  | "CODE_CHANGE"
+  | "INFRASTRUCTURE"
+  | "EXTERNAL_DEPENDENCY"
+  | "DATA_ISSUE"
+  | "CONFIGURATION"
+  | "UNKNOWN";
+
+/**
+ * Relevance level for related changes.
+ */
+export type RelevanceLevel = "high" | "medium" | "low";
+
+/**
+ * Related change from commits/PRs.
+ */
+export interface RelatedChange {
+  /** ID (commit SHA or PR number) */
+  changeId: string;
+  /** Type of change */
+  type: "commit" | "pr";
+  /** Relevance level */
+  relevance: RelevanceLevel;
+  /** Explanation of why this change is related */
+  explanation: string;
+}
+
+/**
+ * Root cause details.
+ */
+export interface RootCause {
+  /** Category of root cause */
+  category: RootCauseCategory;
+  /** Summary of the root cause */
+  summary: string;
+  /** Evidence supporting this conclusion */
+  evidence: string[];
+}
+
+/**
+ * Remediation recommendations.
+ */
+export interface Remediation {
+  /** Immediate steps to mitigate the issue */
+  immediate: string[];
+  /** Long-term steps to prevent recurrence */
+  longTerm: string[];
+}
+
+/**
+ * LLM metadata for cost tracking.
+ */
+export interface LLMMetadata {
+  /** Model used */
+  model: string;
+  /** Provider used */
+  provider: string;
+  /** Total tokens used */
+  tokensUsed: number;
+  /** Estimated cost in USD */
+  estimatedCost: number;
+  /** Latency in milliseconds */
+  latencyMs: number;
+  /** Whether template was used instead of LLM */
+  usedTemplate: boolean;
+}
+
+/**
+ * RCA Report output from generateRCA activity.
+ */
+export interface RCAReport {
+  /** One-sentence hypothesis of the root cause */
+  hypothesis: string;
+  /** Confidence score (0-1) */
+  confidence: number;
+  /** Reasoning chain explaining the analysis */
+  reasoning: string;
+  /** Root cause details */
+  rootCause: RootCause;
+  /** Changes related to this incident */
+  relatedChanges: RelatedChange[];
+  /** Affected system components */
+  affectedComponents: string[];
+  /** Remediation recommendations */
+  remediation: Remediation;
+  /** LLM metadata for cost tracking */
+  llmMetadata: LLMMetadata;
+}
