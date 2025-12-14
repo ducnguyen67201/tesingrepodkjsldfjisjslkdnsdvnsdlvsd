@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   Bell,
   Plus,
@@ -137,10 +138,55 @@ type AlertForEdit = {
 };
 
 export function AlertsPanel({ workspaceSlug, projectId }: AlertsPanelProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("alerts");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingAlert, setEditingAlert] = useState<AlertForEdit | null>(null);
+
+  // Read URL params on mount and auto-open panel if alertPanel param exists
+  // Uses unique param names to avoid conflict with page-level tabs
+  useEffect(() => {
+    const alertPanelParam = searchParams.get("alertPanel");
+    const alertTabParam = searchParams.get("alertTab");
+
+    if (alertPanelParam) {
+      setIsOpen(true);
+      if (alertTabParam === "history" || alertTabParam === "alerts") {
+        setActiveTab(alertTabParam);
+      } else {
+        setActiveTab("history"); // Default to history when coming from RCA
+      }
+    }
+  }, [searchParams]);
+
+  // Update URL when panel opens/closes
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open);
+
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (open) {
+        // Add URL params when opening (use unique param names)
+        if (!params.get("alertPanel")) {
+          params.set("alertPanel", "open");
+        }
+        params.set("alertTab", activeTab);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      } else {
+        // Clear URL params when closing
+        params.delete("alertPanel");
+        params.delete("alertTab");
+        const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+        router.replace(newUrl, { scroll: false });
+      }
+    },
+    [searchParams, pathname, router, activeTab]
+  );
 
   const utils = trpc.useUtils();
   const { data: alerts, isLoading } = trpc.alerts.list.useQuery(
@@ -213,15 +259,26 @@ export function AlertsPanel({ workspaceSlug, projectId }: AlertsPanelProps) {
     setIsCreateOpen(false);
   }, []);
 
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value);
-  }, []);
+  const handleTabChange = useCallback(
+    (value: string) => {
+      setActiveTab(value);
+
+      // Update URL with new tab value if alertPanel param exists
+      const alertPanelParam = searchParams.get("alertPanel");
+      if (alertPanelParam) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("alertTab", value);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
+    },
+    [searchParams, pathname, router]
+  );
 
   const activeAlerts = alerts?.filter((a) => a.enabled).length ?? 0;
 
   return (
     <>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>
           <Button variant="outline" size="sm" className="gap-2">
             <Bell className="h-4 w-4" />

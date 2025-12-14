@@ -19,7 +19,7 @@ import {
   PRESET_LABELS,
   STATE_LABELS,
 } from "../schemas/alerting";
-import { LLMRCAOutputSchema, type LLMRCAOutput } from "../schemas/rca";
+import { LLMRCAOutputSchema } from "../schemas/rca";
 import { generateFixPrompt, type FixPromptContext } from "../lib/rca/prompt-generator";
 import { getMetric } from "../lib/alerting/metrics-service";
 import {
@@ -29,6 +29,8 @@ import {
 } from "../schemas/channels";
 import { AlertingAdapter } from "../lib/alerting";
 import { getAvailableProviders } from "../lib/alerting/init";
+import { subMinutes } from "date-fns";
+import { getTemporalClient, getTaskQueue } from "../lib/temporal";
 
 /**
  * Input schemas
@@ -1122,6 +1124,194 @@ export const alertsRouter = createRouter({
       const prompt = generateFixPrompt(promptContext);
 
       return { prompt };
+    }),
+
+  // ============================================================
+  // Manual RCA Trigger
+  // ============================================================
+
+  /**
+   * Trigger manual RCA for an alert history entry
+   */
+  triggerRCA: protectedProcedure
+    .input(
+      z.object({
+        workspaceSlug: z.string(),
+        alertHistoryId: z.string(),
+      })
+    )
+    .use(workspaceMiddleware)
+    .mutation(async ({ ctx, input }) => {
+      // 1. Fetch alert history with relations
+      const history = await prisma.alertHistory.findUnique({
+        where: { id: input.alertHistoryId },
+        include: {
+          alert: {
+            include: {
+              project: { select: { id: true, name: true, workspaceId: true } },
+            },
+          },
+        },
+      });
+
+      if (!history) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Alert history not found" });
+      }
+
+      // 2. Verify workspace access
+      if (history.alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      // 3. Check if RCA already exists
+      const existingRCA = await prisma.alertRCA.findFirst({
+        where: { alertId: history.alertId, triggeredAt: history.triggeredAt },
+      });
+
+      if (existingRCA) {
+        return {
+          status: "existing" as const,
+          rcaId: existingRCA.id,
+          message: "RCA already exists for this alert",
+        };
+      }
+
+      // 4. Check if workflow already running
+      const workflowId = `rca-manual-${input.alertHistoryId}`;
+      const client = await getTemporalClient();
+
+      try {
+        const handle = client.workflow.getHandle(workflowId);
+        const desc = await handle.describe();
+        if (desc.status.name === "RUNNING") {
+          return {
+            status: "queued" as const,
+            workflowId,
+            message: "RCA analysis is already in progress",
+          };
+        }
+      } catch {
+        // Workflow doesn't exist, proceed to start
+      }
+
+      // 5. Start RCA workflow
+      const windowMins = history.alert.windowMins;
+      await client.workflow.start("rcaAnalysisWorkflow", {
+        taskQueue: getTaskQueue(),
+        workflowId,
+        args: [
+          {
+            alertId: history.alertId,
+            alertHistoryId: input.alertHistoryId,
+            alertName: history.alert.name,
+            alertType: history.alert.type,
+            alertValue: history.value,
+            threshold: history.threshold,
+            severity: history.alert.severity,
+            projectId: history.alert.projectId,
+            projectName: history.alert.project.name,
+            windowStart: subMinutes(history.triggeredAt, windowMins).toISOString(),
+            windowEnd: history.triggeredAt.toISOString(),
+            triggeredBy: "manual",
+            userId: ctx.session.user.id,
+          },
+        ],
+      });
+
+      // 6. Track manual trigger in database
+      await prisma.alertHistory.update({
+        where: { id: input.alertHistoryId },
+        data: {
+          rcaRequestedAt: new Date(),
+          rcaRequestedBy: ctx.session.user.id,
+        },
+      });
+
+      return {
+        status: "started" as const,
+        workflowId,
+        message: "RCA analysis started",
+      };
+    }),
+
+  /**
+   * Get RCA status for an alert history entry (for polling)
+   */
+  getRCAStatus: protectedProcedure
+    .input(
+      z.object({
+        workspaceSlug: z.string(),
+        alertHistoryId: z.string(),
+      })
+    )
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // 1. Fetch alert history
+      const history = await prisma.alertHistory.findUnique({
+        where: { id: input.alertHistoryId },
+        include: {
+          alert: {
+            include: {
+              project: { select: { workspaceId: true } },
+            },
+          },
+        },
+      });
+
+      if (!history) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      if (history.alert.project.workspaceId !== ctx.workspace.id) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
+      // 2. Check for existing RCA
+      const rca = await prisma.alertRCA.findFirst({
+        where: { alertId: history.alertId, triggeredAt: history.triggeredAt },
+        select: { id: true, confidence: true, createdAt: true },
+      });
+
+      if (rca) {
+        return {
+          status: "completed" as const,
+          rcaId: rca.id,
+          confidence: rca.confidence,
+          completedAt: rca.createdAt,
+        };
+      }
+
+      // 3. Check workflow status
+      const workflowId = `rca-manual-${input.alertHistoryId}`;
+      try {
+        const client = await getTemporalClient();
+        const handle = client.workflow.getHandle(workflowId);
+        const desc = await handle.describe();
+
+        const statusMap: Record<string, string> = {
+          RUNNING: "running",
+          COMPLETED: "completed",
+          FAILED: "failed",
+          CANCELED: "failed",
+          TERMINATED: "failed",
+          TIMED_OUT: "failed",
+        };
+
+        return {
+          status: (statusMap[desc.status.name] ?? "not_started") as
+            | "running"
+            | "completed"
+            | "failed"
+            | "not_started",
+          workflowId,
+          startedAt: desc.startTime,
+        };
+      } catch {
+        // No workflow and no RCA
+        return {
+          status: "not_started" as const,
+        };
+      }
     }),
 });
 

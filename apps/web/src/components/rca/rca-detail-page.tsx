@@ -42,7 +42,7 @@ export function RCADetailPage({
         <h2 className="text-lg font-semibold mb-2">Failed to load RCA</h2>
         <p className="text-muted-foreground mb-4">{error.message}</p>
         <Button asChild variant="outline">
-          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}`}>
+          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}?alertPanel=${alertId}&alertTab=history`}>
             Back to Alert
           </Link>
         </Button>
@@ -59,7 +59,7 @@ export function RCADetailPage({
           This root cause analysis doesn&apos;t exist or has been deleted.
         </p>
         <Button asChild variant="outline">
-          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}`}>
+          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}?alertPanel=${alertId}&alertTab=history`}>
             Back to Alert
           </Link>
         </Button>

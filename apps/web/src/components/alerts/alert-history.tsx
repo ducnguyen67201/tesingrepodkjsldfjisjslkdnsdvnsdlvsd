@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { trpc } from "@/lib/trpc/client";
 import { ALERT_TYPE_LABELS, type AlertType } from "@cognobserve/api/schemas";
 import { formatDistanceToNow } from "date-fns";
+import { RCAActionCell } from "./rca-action-cell";
 
 interface AlertHistoryProps {
   workspaceSlug: string;
@@ -50,6 +51,8 @@ export function AlertHistory({ workspaceSlug, projectId, enabled }: AlertHistory
           <HistoryItem
             key={item.id}
             item={item}
+            workspaceSlug={workspaceSlug}
+            projectId={projectId}
             isFirst={index === 0}
             isLast={index === data.items.length - 1}
           />
@@ -76,11 +79,13 @@ interface HistoryItemProps {
       operator: string;
     };
   };
+  workspaceSlug: string;
+  projectId: string;
   isFirst: boolean;
   isLast: boolean;
 }
 
-function HistoryItem({ item, isFirst, isLast }: HistoryItemProps) {
+function HistoryItem({ item, workspaceSlug, projectId, isFirst, isLast }: HistoryItemProps) {
   const alertType = item.alert.type as AlertType;
   const Icon = ALERT_TYPE_ICONS[alertType] ?? AlertTriangle;
   const colorClasses = ALERT_TYPE_COLORS[alertType] ?? "bg-gray-100 text-gray-600 border-gray-200";
@@ -128,6 +133,12 @@ function HistoryItem({ item, isFirst, isLast }: HistoryItemProps) {
             {item.resolved && (
               <CheckCircle className="h-4 w-4 text-green-500" />
             )}
+            <RCAActionCell
+              alertHistoryId={item.id}
+              alertId={item.alert.id}
+              workspaceSlug={workspaceSlug}
+              projectId={projectId}
+            />
           </div>
         </div>
         <p className="text-xs text-muted-foreground mt-1">{triggeredAgo}</p>

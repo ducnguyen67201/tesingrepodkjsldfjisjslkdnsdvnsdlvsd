@@ -2713,7 +2713,9 @@ export const AlertHistoryScalarFieldEnum = {
   state: 'state',
   previousState: 'previousState',
   sampleCount: 'sampleCount',
-  evaluationMs: 'evaluationMs'
+  evaluationMs: 'evaluationMs',
+  rcaRequestedAt: 'rcaRequestedAt',
+  rcaRequestedBy: 'rcaRequestedBy'
 } as const
 
 export type AlertHistoryScalarFieldEnum = (typeof AlertHistoryScalarFieldEnum)[keyof typeof AlertHistoryScalarFieldEnum]

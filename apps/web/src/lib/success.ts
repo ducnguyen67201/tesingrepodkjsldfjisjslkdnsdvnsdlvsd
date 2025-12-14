@@ -217,6 +217,23 @@ export const alertToast = {
         ? `Alert would trigger. Current value: ${currentValue}, Threshold: ${threshold}`
         : `Alert would not trigger. Current value: ${currentValue}, Threshold: ${threshold}`,
     }),
+
+  rcaStarted: () =>
+    toast.success("RCA Analysis Started", {
+      description: "You'll be notified when the analysis is complete.",
+    }),
+
+  rcaCompleted: (confidence?: number) =>
+    toast.success("RCA Analysis Complete", {
+      description: confidence
+        ? `Analysis completed with ${Math.round(confidence * 100)}% confidence.`
+        : "Root cause analysis is now available.",
+    }),
+
+  rcaExists: () =>
+    toast.info("RCA Already Available", {
+      description: "Click 'View RCA' to see the analysis.",
+    }),
 } as const;
 
 // ============================================================

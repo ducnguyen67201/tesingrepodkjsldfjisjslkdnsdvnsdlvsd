@@ -466,4 +466,14 @@ export const alertError = {
     toast.error("Channel Error", {
       description: `Failed to add ${provider} channel. Please check your configuration.`,
     }),
+
+  rcaFailed: (reason?: string) =>
+    toast.error("RCA Analysis Failed", {
+      description: reason ?? "Unable to complete root cause analysis. Please try again.",
+    }),
+
+  rcaTimeout: () =>
+    toast.error("Analysis Timed Out", {
+      description: "The analysis is taking longer than expected. Please try again later.",
+    }),
 } as const;
