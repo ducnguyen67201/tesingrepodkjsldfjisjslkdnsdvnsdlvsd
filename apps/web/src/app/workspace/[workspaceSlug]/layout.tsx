@@ -2,13 +2,9 @@ import { redirect, notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { prisma } from "@cognobserve/db";
 import { authOptions } from "@/lib/auth/config";
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
-import { Separator } from "@/components/ui/separator";
+import { WorkspaceHeader } from "@/components/layout/workspace-header";
 
 interface WorkspaceLayoutProps {
   children: React.ReactNode;
@@ -57,13 +53,7 @@ export default async function WorkspaceLayout({
     <SidebarProvider defaultOpen={false}>
       <AppSidebar workspace={workspace} />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <span className="text-sm text-muted-foreground">
-            {workspace.name}
-          </span>
-        </header>
+        <WorkspaceHeader workspaceName={workspace.name} />
         <main className="flex-1 overflow-auto p-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>

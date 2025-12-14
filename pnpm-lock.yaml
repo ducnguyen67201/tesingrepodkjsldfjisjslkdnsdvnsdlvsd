@@ -176,6 +176,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.18(tsx@4.20.6))
+      vaul:
+        specifier: ^1.1.2
+        version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       zod:
         specifier: ^4.1.13
         version: 4.1.13
@@ -284,7 +287,7 @@ importers:
         version: 1.13.2
       '@temporalio/worker':
         specifier: ^1.13.2
-        version: 1.13.2(esbuild@0.27.0)
+        version: 1.13.2
       '@temporalio/workflow':
         specifier: ^1.13.2
         version: 1.13.2
@@ -5761,6 +5764,12 @@ packages:
       typescript:
         optional: true
 
+  vaul@1.1.2:
+    resolution: {integrity: sha512-ZFkClGpWyI2WUQjdLJ/BaGuV6AVQiJ3uELGk3OYtP+B6yCO7Cmn9vPFXVJkRaGkOJu3m8bQMgtyzNHixULceQA==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0.0 || ^19.0.0-rc
+
   victory-vendor@36.9.2:
     resolution: {integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==}
 
@@ -8426,7 +8435,7 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.4
 
-  '@temporalio/worker@1.13.2(esbuild@0.27.0)':
+  '@temporalio/worker@1.13.2':
     dependencies:
       '@grpc/grpc-js': 1.14.2
       '@swc/core': 1.15.3
@@ -8445,11 +8454,11 @@ snapshots:
       protobufjs: 7.5.4
       rxjs: 7.8.2
       source-map: 0.7.6
-      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3))
       supports-color: 8.1.1
-      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       unionfs: 4.6.0
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     transitivePeerDependencies:
       - '@swc/helpers'
       - esbuild
@@ -11429,11 +11438,11 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   source-map-support@0.5.21:
     dependencies:
@@ -11556,11 +11565,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@swc/core': 1.15.3
       '@swc/counter': 0.1.3
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   symbol-tree@3.2.4: {}
 
@@ -11600,17 +11609,16 @@ snapshots:
 
   tapable@2.3.0: {}
 
-  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       terser: 5.44.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     optionalDependencies:
       '@swc/core': 1.15.3
-      esbuild: 0.27.0
 
   terser@5.44.1:
     dependencies:
@@ -11900,6 +11908,15 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
+  vaul@1.1.2(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+    dependencies:
+      '@radix-ui/react-dialog': 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+
   victory-vendor@36.9.2:
     dependencies:
       '@types/d3-array': 3.2.2
@@ -12159,7 +12176,7 @@ snapshots:
 
   webpack-sources@3.3.3: {}
 
-  webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0):
+  webpack@5.103.0(@swc/core@1.15.3):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -12183,7 +12200,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
