@@ -468,3 +468,52 @@ export const RCAReportSchema = LLMRCAOutputSchema.extend({
 });
 export type RCAReport = z.infer<typeof RCAReportSchema>;
 
+// ============================================================
+// RCA STORAGE SCHEMAS (for #139)
+// ============================================================
+
+/**
+ * Input for internal.storeRCA procedure
+ */
+export const StoreRCAInputSchema = z.object({
+  /** AlertHistory ID that triggered this RCA */
+  alertHistoryId: z.string(),
+
+  /** Complete RCA report from generateRCA activity */
+  rcaReport: RCAReportSchema,
+
+  /** Suspected commit SHAs (extracted for indexing) */
+  suspectedCommitShas: z.array(z.string()).default([]),
+
+  /** Suspected PR numbers as strings (extracted for indexing) */
+  suspectedPRNumbers: z.array(z.string()).default([]),
+
+  /** Alert context for traceability */
+  alertContext: AlertContextSchema.optional(),
+
+  /** Trace analysis summary for debugging */
+  traceAnalysisSummary: z
+    .object({
+      totalTraces: z.number(),
+      totalSpans: z.number(),
+      errorRate: z.number(),
+      errorPatternCount: z.number(),
+      anomalyCount: z.number(),
+    })
+    .optional(),
+});
+export type StoreRCAInput = z.infer<typeof StoreRCAInputSchema>;
+
+/**
+ * Output from internal.storeRCA procedure
+ */
+export const StoreRCAOutputSchema = z.object({
+  /** Created AlertRCA record ID */
+  rcaId: z.string(),
+  /** Parent Alert ID */
+  alertId: z.string(),
+  /** Extracted confidence score */
+  confidence: z.number().nullable(),
+});
+export type StoreRCAOutput = z.infer<typeof StoreRCAOutputSchema>;
+

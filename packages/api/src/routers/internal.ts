@@ -15,8 +15,9 @@ import { createRouter, publicProcedure, middleware } from "../trpc";
 import { calculateSpanCost } from "../lib/cost";
 import { SEVERITY_DEFAULTS, type AlertPayload, type ChannelProvider } from "../schemas/alerting";
 import { StoreGitHubIndexSchema } from "../schemas/github";
+import { StoreRCAInputSchema } from "../schemas/rca";
 import { AdapterRegistry } from "../lib/alerting/registry";
-import { GitHubService } from "../services";
+import { GitHubService, RCAService } from "../services";
 
 type Decimal = Prisma.Decimal;
 const Decimal = Prisma.Decimal;
@@ -814,6 +815,21 @@ export const internalRouter = createRouter({
       console.log(`[Internal:storeChunkEmbeddings] Stored ${embeddings.length} embeddings`);
       return { storedCount: embeddings.length };
     }),
+
+  // ============================================================
+  // RCA STORAGE PROCEDURES
+  // ============================================================
+
+  /**
+   * Store RCA analysis result
+   * Called by: rca.workflow.ts → storeRCA activity
+   *
+   * Links RCA to AlertHistory via shared alertId.
+   * Stores complete analysis JSON with LLM metadata.
+   */
+  storeRCA: internalProcedure
+    .input(StoreRCAInputSchema)
+    .mutation(({ input }) => RCAService.storeRCA(input)),
 });
 
 export type InternalRouter = typeof internalRouter;
