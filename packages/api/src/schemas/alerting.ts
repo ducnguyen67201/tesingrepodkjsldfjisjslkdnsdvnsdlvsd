@@ -105,6 +105,7 @@ export type WebhookConfig = z.infer<typeof WebhookConfigSchema>;
 
 /**
  * Alert notification payload - sent to adapters
+ * Extended with optional RCA enrichment
  */
 export const AlertPayloadSchema = z.object({
   alertId: z.string(),
@@ -117,6 +118,8 @@ export const AlertPayloadSchema = z.object({
   operator: AlertOperatorSchema,
   triggeredAt: z.string().datetime(),
   dashboardUrl: z.string().url().optional(),
+  /** Optional RCA enrichment - populated when RCA is available */
+  rca: z.lazy(() => RCASummarySchema).optional(),
 });
 export type AlertPayload = z.infer<typeof AlertPayloadSchema>;
 
@@ -315,3 +318,96 @@ export const DispatchResultSchema = z.object({
   errors: z.array(z.string()).optional(),
 });
 export type DispatchResult = z.infer<typeof DispatchResultSchema>;
+
+// ============================================================
+// RCA NOTIFICATION PAYLOAD
+// ============================================================
+
+/**
+ * RCA root cause categories for notifications
+ */
+export const RCACategorySchema = z.enum([
+  "CODE_CHANGE",
+  "INFRASTRUCTURE",
+  "EXTERNAL_DEPENDENCY",
+  "DATA_ISSUE",
+  "CONFIGURATION",
+  "UNKNOWN",
+]);
+export type RCACategory = z.infer<typeof RCACategorySchema>;
+
+/**
+ * RCA relevance levels
+ */
+export const RCARelevanceSchema = z.enum(["high", "medium", "low"]);
+export type RCARelevance = z.infer<typeof RCARelevanceSchema>;
+
+/**
+ * Top change (commit/PR) related to the incident
+ */
+export const RCATopChangeSchema = z.object({
+  /** Change identifier (SHA or PR number) */
+  id: z.string(),
+  /** Type of change */
+  type: z.enum(["commit", "pr"]),
+  /** Short description (commit message or PR title, truncated) */
+  summary: z.string().max(100),
+  /** Author name */
+  author: z.string(),
+  /** Relevance level */
+  relevance: RCARelevanceSchema,
+});
+export type RCATopChange = z.infer<typeof RCATopChangeSchema>;
+
+/**
+ * RCA summary for alert notifications
+ */
+export const RCASummarySchema = z.object({
+  /** One-sentence hypothesis */
+  hypothesis: z.string(),
+  /** Confidence score (0-1) */
+  confidence: z.number().min(0).max(1),
+  /** Root cause category */
+  category: RCACategorySchema,
+  /** Top suspected change (optional) */
+  topChange: RCATopChangeSchema.optional(),
+  /** Immediate remediation steps (max 3) */
+  remediation: z.array(z.string()).max(3),
+  /** URL to full RCA detail page */
+  detailUrl: z.string().url(),
+});
+export type RCASummary = z.infer<typeof RCASummarySchema>;
+
+/**
+ * Format confidence as percentage with label
+ */
+export function formatConfidence(confidence: number): string {
+  const pct = Math.round(confidence * 100);
+  if (pct >= 80) return `${pct}% (High)`;
+  if (pct >= 50) return `${pct}% (Medium)`;
+  return `${pct}% (Low)`;
+}
+
+/**
+ * Category labels for display
+ */
+export const RCA_CATEGORY_LABELS: Record<RCACategory, string> = {
+  CODE_CHANGE: "Code Change",
+  INFRASTRUCTURE: "Infrastructure",
+  EXTERNAL_DEPENDENCY: "External Dependency",
+  DATA_ISSUE: "Data Issue",
+  CONFIGURATION: "Configuration",
+  UNKNOWN: "Unknown",
+};
+
+/**
+ * Category icons (emoji) for display
+ */
+export const RCA_CATEGORY_ICONS: Record<RCACategory, string> = {
+  CODE_CHANGE: "💻",
+  INFRASTRUCTURE: "🏗️",
+  EXTERNAL_DEPENDENCY: "🔗",
+  DATA_ISSUE: "📊",
+  CONFIGURATION: "⚙️",
+  UNKNOWN: "❓",
+};
