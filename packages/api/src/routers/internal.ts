@@ -934,6 +934,19 @@ export const internalRouter = createRouter({
   storeRCA: internalProcedure
     .input(StoreRCAInputSchema)
     .mutation(({ input }) => RCAService.storeRCA(input)),
+
+  /**
+   * Track manual RCA request
+   * Called by: alerts.triggerRCA router (for consistency with internal patterns)
+   *
+   * Updates alertHistory with RCA request metadata.
+   */
+  trackRCARequest: internalProcedure
+    .input(z.object({
+      alertHistoryId: z.string(),
+      requestedBy: z.string(),
+    }))
+    .mutation(({ input }) => RCAService.trackRCARequest(input)),
 });
 
 export type InternalRouter = typeof internalRouter;

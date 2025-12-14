@@ -870,6 +870,96 @@ function SearchInput({ onSearch }: Props) {
 }
 ```
 
+### URL State Synchronization (Panels, Modals, Tabs)
+- **Sync UI state to URL query params** - Panels, modals, tabs, and filters should update the URL
+- **Read URL params on mount** - Auto-open panels/modals when URL contains relevant params
+- **Clear URL params on close** - Remove params when closing panels/modals
+- **Enable shareable/bookmarkable state** - Users can share URLs that restore exact UI state
+
+**Why?** This enables:
+- Deep linking to specific UI states (e.g., open alerts panel)
+- Browser back/forward navigation works correctly
+- Sharing URLs that open specific panels or tabs
+- Returning from detail pages to the correct state
+
+```tsx
+// ❌ BAD - State not reflected in URL
+function AlertsPanel() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("alerts");
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      {/* State lost on page refresh or share */}
+    </Sheet>
+  );
+}
+
+// ✅ GOOD - State synced to URL
+function AlertsPanel() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("alerts");
+
+  // Read URL params on mount
+  useEffect(() => {
+    const alertParam = searchParams.get("alert");
+    const tabParam = searchParams.get("tab");
+    if (alertParam) {
+      setIsOpen(true);
+      if (tabParam) setActiveTab(tabParam);
+    }
+  }, [searchParams]);
+
+  // Update URL when state changes
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsOpen(open);
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (open) {
+      params.set("alert", "panel");
+      params.set("tab", activeTab);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    } else {
+      params.delete("alert");
+      params.delete("tab");
+      const newUrl = params.toString() ? `${pathname}?${params}` : pathname;
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [searchParams, pathname, router, activeTab]);
+
+  return (
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      {/* URL: /projects/123?alert=panel&tab=history */}
+    </Sheet>
+  );
+}
+```
+
+**URL patterns by component type:**
+| Component | URL Pattern | Example |
+|-----------|-------------|---------|
+| Side panels | `?alertPanel=open&alertTab=history` | Alerts panel with history tab |
+| Modals | `?modal=create-project` | Create project dialog |
+| Detail views | `?alertPanel={id}&alertTab=history` | Specific alert in history |
+| Filters | `?filter=errors&range=7d` | Trace filters |
+
+**IMPORTANT:** Use unique, namespaced param names to avoid conflicts with page-level params:
+- Page uses `?tab=traces` → Panel should use `?alertTab=history` (NOT `?tab=`)
+- Use prefixes like `alertPanel`, `alertTab`, `modalType`, etc.
+
+**Back navigation pattern:**
+When navigating away from a detail page that should return to a panel state:
+```tsx
+// In detail page - link back with state
+<Link href={`/projects/${projectId}?alertPanel=${alertId}&alertTab=history`}>
+  Back to Alert
+</Link>
+```
+
 ### Prevent Race Conditions
 - **Never use check-then-act patterns** - Separate find/check + action calls create race conditions
 - **Use atomic operations** - Single database call for conditional mutations
@@ -1631,6 +1721,7 @@ When adding new response methods:
 | **UI** | Use shadcn/ui from `@/components/ui/` | Write custom CSS for standard elements |
 | **Env vars** | Use `env` from `@/lib/env` | Use `process.env` directly |
 | **Frontend** | < 150 lines, logic in hooks, domain folders | Fat components, inline business logic |
+| **URL State** | Sync panels/modals/tabs to URL query params | Local state only for shareable UI |
 | **Backend** | Thin routers + service files | Business logic in routers |
 | **Temporal** | Activities use `getInternalCaller()` for mutations | Direct DB writes in activities |
 | **Competitors** | Use "industry standard" or "similar platforms" | Name specific competitors |

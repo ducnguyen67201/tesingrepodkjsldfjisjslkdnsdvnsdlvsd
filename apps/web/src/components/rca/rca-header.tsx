@@ -70,7 +70,7 @@ export function RCAHeader({
       {/* Left side - breadcrumb and back button */}
       <div className="space-y-2">
         <Button variant="ghost" size="sm" asChild className="-ml-2">
-          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}`}>
+          <Link href={`/workspace/${workspaceSlug}/projects/${projectId}?alertPanel=${alertId}&alertTab=history`}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Alert
           </Link>

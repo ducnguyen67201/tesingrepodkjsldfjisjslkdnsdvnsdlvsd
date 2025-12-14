@@ -26,3 +26,6 @@ export { githubIndexWorkflow } from "./github-index.workflow";
 
 // Repository index workflow (UI-triggered full indexing)
 export { repositoryIndexWorkflow } from "./repository-index.workflow";
+
+// RCA analysis workflow (manual/automatic)
+export { rcaAnalysisWorkflow } from "./rca-analysis.workflow";

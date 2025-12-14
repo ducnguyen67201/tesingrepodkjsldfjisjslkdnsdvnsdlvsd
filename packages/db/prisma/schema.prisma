@@ -419,6 +419,10 @@ model AlertHistory {
   sampleCount  Int?
   evaluationMs Int?
 
+  // Manual RCA tracking
+  rcaRequestedAt DateTime?
+  rcaRequestedBy String?
+
   @@index([alertId, triggeredAt])
   @@index([triggeredAt])
   @@map("alert_history")
