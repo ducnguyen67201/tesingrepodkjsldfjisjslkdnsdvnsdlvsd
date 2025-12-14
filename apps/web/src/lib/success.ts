@@ -218,3 +218,15 @@ export const alertToast = {
         : `Alert would not trigger. Current value: ${currentValue}, Threshold: ${threshold}`,
     }),
 } as const;
+
+// ============================================================
+// RCA Toasts
+// ============================================================
+
+export const rcaToast = {
+  feedbackSubmitted: () =>
+    toast.success("Feedback submitted", { description: "Thank you for helping improve our RCA system." }),
+
+  promptCopied: () =>
+    toast.success("Fix prompt copied", { description: "Paste it into your AI coding assistant." }),
+} as const;

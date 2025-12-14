@@ -627,6 +627,12 @@ model AlertRCA {
   confidence       Float?
   createdAt        DateTime @default(now())
 
+  // User feedback
+  helpful        Boolean?
+  feedback       String?
+  feedbackAt     DateTime?
+  feedbackUserId String?
+
   alert Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
 
   @@index([alertId])
