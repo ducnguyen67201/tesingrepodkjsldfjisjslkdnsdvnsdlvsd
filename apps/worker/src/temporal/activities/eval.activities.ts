@@ -309,9 +309,9 @@ export async function runEvalPrompts(
 
 /**
  * Calculate metrics from eval results
- * Pure function - no side effects
+ * Note: Must be async for Temporal proxyActivities compatibility
  */
-export function calculateMetrics(input: CalculateMetricsInput): EvalMetrics {
+export async function calculateMetrics(input: CalculateMetricsInput): Promise<EvalMetrics> {
   console.log(
     `[Activity:calculateMetrics] Processing ${input.results.length} results`
   );
@@ -357,11 +357,11 @@ export function calculateMetrics(input: CalculateMetricsInput): EvalMetrics {
 
 /**
  * Detect regression by comparing metrics to baseline
- * Pure function - no side effects
+ * Note: Must be async for Temporal proxyActivities compatibility
  */
-export function detectRegression(
+export async function detectRegression(
   input: DetectRegressionInput
-): DetectRegressionOutput {
+): Promise<DetectRegressionOutput> {
   console.log(`[Activity:detectRegression] Comparing metrics to baseline`);
 
   const { metrics, baseline, thresholds } = input;

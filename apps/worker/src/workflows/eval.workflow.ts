@@ -144,7 +144,7 @@ export async function evalPipelineWorkflow(
 
     // Step 4: Calculate metrics
     log.info("Step 4: Calculating metrics");
-    const metrics = calculateMetrics({
+    const metrics = await calculateMetrics({
       results,
       totalPrompts,
     });
@@ -158,7 +158,7 @@ export async function evalPipelineWorkflow(
 
     // Step 5: Detect regression vs baseline
     log.info("Step 5: Detecting regression");
-    const { isRegression, details: regressionDetails } = detectRegression({
+    const { isRegression, details: regressionDetails } = await detectRegression({
       metrics,
       baseline: {
         latencyP95: suite.baselineLatencyP95,

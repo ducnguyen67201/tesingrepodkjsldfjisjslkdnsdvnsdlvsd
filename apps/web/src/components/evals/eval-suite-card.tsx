@@ -76,7 +76,7 @@ export function EvalSuiteCard({
   name,
   description,
   enabled,
-  endpoint,
+  // endpoint - reserved for future use (e.g., showing endpoint in card)
   promptCount,
   runCount,
   lastRun,
@@ -210,7 +210,7 @@ export function EvalSuiteCard({
           <AlertDialogHeader>
             <AlertDialogTitle>Delete eval suite?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete "{name}" and all its run history.
+              This will permanently delete &ldquo;{name}&rdquo; and all its run history.
               This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
