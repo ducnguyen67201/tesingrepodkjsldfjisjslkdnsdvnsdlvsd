@@ -31,11 +31,15 @@ pnpm db:seed
 You need 3 terminals:
 
 ```bash
+# Install Doppler 
+dopler login
+doppler setup
+
 # Terminal 1 - Web App
-cd apps/web && pnpm dev
+cd apps/web && doppler run -c dev -- pnpm dev
 
 # Terminal 2 - Worker (Temporal)
-cd apps/worker && pnpm dev
+cd apps/worker && doppler run -c dev -- pnpm dev
 
 # Terminal 3 - Ingest API (Go)
 cd apps/ingest && make dev
