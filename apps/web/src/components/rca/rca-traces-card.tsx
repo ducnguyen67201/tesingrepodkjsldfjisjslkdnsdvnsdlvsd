@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Activity, ExternalLink, Clock, AlertTriangle } from "lucide-react";
 
+// OTLP-first schema - Trace no longer has name/timestamp, Span uses statusCode
 interface Trace {
   id: string;
-  name: string;
-  timestamp: Date;
+  serviceName: string | null;
+  startTime: Date;
   spans: Array<{
     id: string;
     name: string;
-    level: string;
+    statusCode: string | null;
     statusMessage: string | null;
   }>;
 }
@@ -49,7 +50,7 @@ export function RCATracesCard({ traces, workspaceSlug, projectId }: RCATracesCar
       <CardContent>
         <div className="space-y-2">
           {traces.map((trace) => {
-            const errorSpans = trace.spans.filter((s) => s.level === "ERROR");
+            const errorSpans = trace.spans.filter((s) => s.statusCode === "ERROR");
             const hasErrors = errorSpans.length > 0;
 
             // Get first error message for display
@@ -64,12 +65,12 @@ export function RCATracesCard({ traces, workspaceSlug, projectId }: RCATracesCar
                   <div className="flex items-center gap-4 min-w-0">
                     <div className="min-w-0">
                       <p className="font-mono text-sm truncate">
-                        {trace.name ?? trace.id.slice(0, 8)}
+                        {trace.serviceName ?? trace.id.slice(0, 8)}
                       </p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
-                          {formatTime(trace.timestamp)}
+                          {formatTime(trace.startTime)}
                         </span>
                       </div>
                     </div>

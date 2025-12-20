@@ -424,11 +424,6 @@ export type ModelPricingUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ModelPricingNullableScalarRelationFilter = {
-  is?: Prisma.ModelPricingWhereInput | null
-  isNot?: Prisma.ModelPricingWhereInput | null
-}
-
 export type ModelPricingProviderModelEffectiveFromCompoundUniqueInput = {
   provider: string
   model: string
@@ -484,6 +479,19 @@ export type ModelPricingSumOrderByAggregateInput = {
   outputPricePerMillion?: Prisma.SortOrder
 }
 
+export type ModelPricingNullableScalarRelationFilter = {
+  is?: Prisma.ModelPricingWhereInput | null
+  isNot?: Prisma.ModelPricingWhereInput | null
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type ModelPricingCreateNestedOneWithoutSpansInput = {
   create?: Prisma.XOR<Prisma.ModelPricingCreateWithoutSpansInput, Prisma.ModelPricingUncheckedCreateWithoutSpansInput>
   connectOrCreate?: Prisma.ModelPricingCreateOrConnectWithoutSpansInput
@@ -498,14 +506,6 @@ export type ModelPricingUpdateOneWithoutSpansNestedInput = {
   delete?: Prisma.ModelPricingWhereInput | boolean
   connect?: Prisma.ModelPricingWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ModelPricingUpdateToOneWithWhereWithoutSpansInput, Prisma.ModelPricingUpdateWithoutSpansInput>, Prisma.ModelPricingUncheckedUpdateWithoutSpansInput>
-}
-
-export type DecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type ModelPricingCreateWithoutSpansInput = {

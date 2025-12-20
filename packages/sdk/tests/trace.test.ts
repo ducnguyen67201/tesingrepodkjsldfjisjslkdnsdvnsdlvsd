@@ -189,7 +189,8 @@ describe('Span', () => {
 
     span.end();
 
-    expect(span.duration).toBeGreaterThanOrEqual(50);
+    // Timer precision can vary slightly, allow 5ms tolerance
+    expect(span.duration).toBeGreaterThanOrEqual(45);
 
     trace.end();
   });

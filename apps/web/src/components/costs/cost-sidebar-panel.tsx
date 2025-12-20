@@ -6,12 +6,9 @@ import {
   AreaChart,
   Bar,
   BarChart,
-  Pie,
-  PieChart,
   XAxis,
   YAxis,
   CartesianGrid,
-  Cell,
 } from "recharts";
 import { DollarSign, TrendingUp, TrendingDown } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -37,8 +34,6 @@ interface CostSidebarPanelProps {
 // Chart colors
 const CHART_COLORS = {
   cost: "hsl(var(--chart-1))",
-  prompt: "hsl(var(--chart-4))",
-  completion: "hsl(var(--chart-5))",
 };
 
 const MODEL_COLORS = [
@@ -80,7 +75,6 @@ const formatChange = (change: number): string => {
 /**
  * Formatter wrapper for tooltip (handles unknown type from recharts)
  */
-const formatNumberValue = (value: unknown): string => formatNumber(value as number);
 const formatCurrencyValue = (value: unknown): string => formatCurrency(value as number);
 
 /**
@@ -137,14 +131,8 @@ export function CostSidebarPanel({
       { enabled: !!workspaceSlug && !!projectId }
     );
 
-  // Analytics data
-  const { data: analytics, isLoading: isLoadingAnalytics } =
-    trpc.analytics.getProjectAnalytics.useQuery(
-      queryParams,
-      { enabled: !!workspaceSlug && !!projectId }
-    );
-
-  const isLoading = isLoadingCost || isLoadingAnalytics;
+  // NOTE: analytics router removed - token/model usage will be reworked for OTLP-first design
+  const isLoading = isLoadingCost;
 
   if (isLoading) {
     return <PanelSkeleton />;
@@ -209,15 +197,7 @@ export function CostSidebarPanel({
 
         <Separator />
 
-        {/* Token Usage Chart */}
-        <TokenUsageChart data={analytics?.tokenUsage ?? []} timeRange={timeRange} />
-
-        <Separator />
-
-        {/* Model Usage Chart */}
-        <ModelUsageChart data={analytics?.modelUsage ?? []} />
-
-        <Separator />
+        {/* NOTE: Token Usage and Model Usage charts removed - will be reworked for OTLP-first design */}
 
         {/* Cost Trend Chart */}
         <CostTrendChart data={costTimeSeries ?? []} timeRange={timeRange} />
@@ -226,143 +206,6 @@ export function CostSidebarPanel({
 
         {/* Cost by Model Chart */}
         <CostByModelChart data={costByModel ?? []} />
-      </div>
-    </div>
-  );
-}
-
-/**
- * Token Usage mini chart
- */
-function TokenUsageChart({
-  data,
-  timeRange,
-}: {
-  data: Array<{ date: string; prompt: number; completion: number }>;
-  timeRange: TimeRange;
-}) {
-  const chartConfig: ChartConfig = {
-    prompt: { label: "Prompt", color: CHART_COLORS.prompt },
-    completion: { label: "Completion", color: CHART_COLORS.completion },
-  };
-
-  const chartData = useMemo(() => {
-    return data.map((d) => ({
-      ...d,
-      dateLabel: formatDateLabel(d.date, timeRange),
-    }));
-  }, [data, timeRange]);
-
-  if (data.length === 0) {
-    return (
-      <div className="space-y-2">
-        <span className="text-xs font-medium">Token Usage</span>
-        <div className="flex h-[80px] items-center justify-center rounded-md border border-dashed text-xs text-muted-foreground">
-          No token data
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2">
-      <span className="text-xs font-medium">Token Usage</span>
-      <ChartContainer config={chartConfig} className="h-[80px] w-full">
-        <AreaChart data={chartData} accessibilityLayer>
-          <CartesianGrid vertical={false} strokeDasharray="3 3" />
-          <XAxis
-            dataKey="dateLabel"
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 9 }}
-            interval="preserveStartEnd"
-          />
-          <YAxis
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 9 }}
-            width={35}
-            tickFormatter={formatNumber}
-          />
-          <ChartTooltip
-            content={<ChartTooltipContent formatter={formatNumberValue} />}
-          />
-          <Area type="monotone" dataKey="prompt" stackId="1" stroke="var(--color-prompt)" fill="var(--color-prompt)" fillOpacity={0.4} />
-          <Area type="monotone" dataKey="completion" stackId="1" stroke="var(--color-completion)" fill="var(--color-completion)" fillOpacity={0.4} />
-        </AreaChart>
-      </ChartContainer>
-    </div>
-  );
-}
-
-/**
- * Model Usage mini pie chart
- */
-function ModelUsageChart({
-  data,
-}: {
-  data: Array<{ model: string; count: number }>;
-}) {
-  const chartConfig = useMemo(() => {
-    const config: ChartConfig = {};
-    data.forEach((item, idx) => {
-      config[item.model] = {
-        label: item.model,
-        color: MODEL_COLORS[idx % MODEL_COLORS.length],
-      };
-    });
-    return config;
-  }, [data]);
-
-  const renderPieCell = (entry: { model: string; count: number }, idx: number) => (
-    <Cell key={entry.model} fill={MODEL_COLORS[idx % MODEL_COLORS.length]} />
-  );
-
-  const renderLegendItem = (item: { model: string; count: number }, idx: number) => (
-    <div key={item.model} className="flex items-center gap-1">
-      <span
-        className="h-2 w-2 rounded-full"
-        style={{ backgroundColor: MODEL_COLORS[idx % MODEL_COLORS.length] }}
-      />
-      <span className="text-muted-foreground">{item.model}</span>
-      <span className="font-medium">{item.count}</span>
-    </div>
-  );
-
-  if (data.length === 0) {
-    return (
-      <div className="space-y-2">
-        <span className="text-xs font-medium">Model Usage</span>
-        <div className="flex h-[100px] items-center justify-center rounded-md border border-dashed text-xs text-muted-foreground">
-          No model data
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-2">
-      <span className="text-xs font-medium">Model Usage</span>
-      <ChartContainer config={chartConfig} className="h-[100px] w-full">
-        <PieChart accessibilityLayer>
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <Pie
-            data={data}
-            dataKey="count"
-            nameKey="model"
-            cx="50%"
-            cy="50%"
-            innerRadius={25}
-            outerRadius={40}
-            paddingAngle={2}
-          >
-            {data.map(renderPieCell)}
-          </Pie>
-        </PieChart>
-      </ChartContainer>
-      {/* Legend */}
-      <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
-        {data.slice(0, 5).map(renderLegendItem)}
       </div>
     </div>
   );

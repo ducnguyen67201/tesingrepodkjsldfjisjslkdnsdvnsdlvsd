@@ -10,9 +10,8 @@
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma, SpanLevel, setChunkEmbeddings } from "@cognobserve/db";
+import { prisma, Prisma, setChunkEmbeddings } from "@cognobserve/db";
 import { createRouter, publicProcedure, middleware } from "../trpc";
-import { calculateSpanCost } from "../lib/cost";
 import {
   SEVERITY_DEFAULTS,
   type AlertPayload,
@@ -25,9 +24,6 @@ import { StoreGitHubIndexSchema } from "../schemas/github";
 import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
 import { AdapterRegistry } from "../lib/alerting/registry";
 import { GitHubService, RCAService } from "../services";
-
-type Decimal = Prisma.Decimal;
-const Decimal = Prisma.Decimal;
 
 // ============================================================
 // INTERNAL AUTH MIDDLEWARE
@@ -66,42 +62,8 @@ const internalProcedure = publicProcedure.use(internalMiddleware);
 // INPUT SCHEMAS
 // ============================================================
 
-const UserInputSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().optional(),
-}).optional();
-
-const SpanInputSchema = z.object({
-  id: z.string(),
-  parentSpanId: z.string().optional(),
-  name: z.string(),
-  startTime: z.string(),
-  endTime: z.string().optional(),
-  input: z.unknown().optional(),
-  output: z.unknown().optional(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
-  model: z.string().optional(),
-  modelParameters: z.record(z.string(), z.unknown()).optional(),
-  promptTokens: z.number().optional(),
-  completionTokens: z.number().optional(),
-  totalTokens: z.number().optional(),
-  level: z.string().optional(),
-  statusMessage: z.string().optional(),
-});
-
-const TraceIngestSchema = z.object({
-  trace: z.object({
-    id: z.string(),
-    projectId: z.string(),
-    name: z.string(),
-    timestamp: z.string(),
-    sessionId: z.string().optional(),
-    userId: z.string().optional(),
-    user: UserInputSchema,
-    metadata: z.record(z.string(), z.unknown()).optional(),
-  }),
-  spans: z.array(SpanInputSchema),
-});
+// NOTE: Legacy trace ingestion schemas removed - replaced by OTLP-first ingest-node service
+// See: apps/ingest-node/ and docs/specs/ingest/README.md
 
 const ScoreIngestSchema = z.object({
   id: z.string(),
@@ -121,6 +83,8 @@ const ScoreIngestSchema = z.object({
 // HELPER FUNCTIONS
 // ============================================================
 
+// NOTE: Legacy trace ingestion helpers removed - replaced by OTLP-first ingest-node service
+
 function parseDate(dateStr: string | undefined | null): Date {
   if (!dateStr) return new Date();
   const date = new Date(dateStr);
@@ -128,72 +92,6 @@ function parseDate(dateStr: string | undefined | null): Date {
     return new Date();
   }
   return date;
-}
-
-function convertSpanLevel(level?: string): SpanLevel {
-  switch (level) {
-    case "DEBUG": return SpanLevel.DEBUG;
-    case "WARNING": return SpanLevel.WARNING;
-    case "ERROR": return SpanLevel.ERROR;
-    default: return SpanLevel.DEFAULT;
-  }
-}
-
-async function resolveUserId(
-  tx: Prisma.TransactionClient,
-  projectId: string,
-  externalUserId: string | undefined,
-  userMetadata?: { name?: string; email?: string }
-): Promise<string | null> {
-  if (!externalUserId) return null;
-
-  const user = await tx.trackedUser.upsert({
-    where: {
-      projectId_externalId: { projectId, externalId: externalUserId },
-    },
-    create: {
-      projectId,
-      externalId: externalUserId,
-      name: userMetadata?.name ?? null,
-      email: userMetadata?.email ?? null,
-      firstSeenAt: new Date(),
-      lastSeenAt: new Date(),
-    },
-    update: {
-      ...(userMetadata?.name?.trim() && { name: userMetadata.name.trim() }),
-      ...(userMetadata?.email?.trim() && { email: userMetadata.email.trim() }),
-      lastSeenAt: new Date(),
-    },
-  });
-
-  return user.id;
-}
-
-async function resolveSessionId(
-  tx: Prisma.TransactionClient,
-  projectId: string,
-  externalSessionId: string | undefined,
-  userId: string | null
-): Promise<string | null> {
-  if (!externalSessionId) return null;
-
-  const session = await tx.traceSession.upsert({
-    where: {
-      projectId_externalId: { projectId, externalId: externalSessionId },
-    },
-    create: {
-      projectId,
-      externalId: externalSessionId,
-      ...(userId && { userId }),
-    },
-    update: {
-      updatedAt: new Date(),
-      ...(userId && { userId }),
-    },
-    select: { id: true },
-  });
-
-  return session.id;
 }
 
 // ============================================================
@@ -285,234 +183,9 @@ function buildDashboardUrl(workspaceSlug: string, projectId: string): string {
 // ============================================================
 
 export const internalRouter = createRouter({
-  /**
-   * Persist a trace with spans
-   * Called by: trace.activities.ts → persistTrace
-   */
-  ingestTrace: internalProcedure
-    .input(TraceIngestSchema)
-    .mutation(async ({ input }) => {
-      const { trace, spans } = input;
-
-      const result = await prisma.$transaction(async (tx) => {
-        // Resolve user if provided
-        const userId = await resolveUserId(
-          tx,
-          trace.projectId,
-          trace.userId,
-          trace.user
-        );
-
-        // Resolve session if provided
-        const sessionId = await resolveSessionId(
-          tx,
-          trace.projectId,
-          trace.sessionId,
-          userId
-        );
-
-        // Create trace
-        const createdTrace = await tx.trace.create({
-          data: {
-            id: trace.id,
-            name: trace.name,
-            timestamp: parseDate(trace.timestamp),
-            metadata: (trace.metadata as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-            project: { connect: { id: trace.projectId } },
-            ...(sessionId && { session: { connect: { id: sessionId } } }),
-            ...(userId && { user: { connect: { id: userId } } }),
-          },
-        });
-
-        // Create spans
-        if (spans.length > 0) {
-          await tx.span.createMany({
-            data: spans.map((span) => ({
-              id: span.id,
-              traceId: trace.id,
-              parentSpanId: span.parentSpanId ?? null,
-              name: span.name,
-              startTime: parseDate(span.startTime),
-              endTime: span.endTime ? parseDate(span.endTime) : null,
-              input: (span.input as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-              output: (span.output as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-              metadata: (span.metadata as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-              model: span.model ?? null,
-              modelParameters: (span.modelParameters as Prisma.InputJsonValue) ?? Prisma.JsonNull,
-              promptTokens: span.promptTokens ?? null,
-              completionTokens: span.completionTokens ?? null,
-              totalTokens: span.totalTokens ?? null,
-              level: convertSpanLevel(span.level),
-              statusMessage: span.statusMessage ?? null,
-            })),
-          });
-        }
-
-        return createdTrace;
-      });
-
-      console.log(`[Internal:ingestTrace] Trace ${result.id} persisted with ${spans.length} spans`);
-      return { traceId: result.id };
-    }),
-
-  /**
-   * Calculate costs for a trace's spans
-   * Called by: trace.activities.ts → calculateTraceCosts
-   */
-  calculateTraceCosts: internalProcedure
-    .input(z.object({ traceId: z.string() }))
-    .mutation(async ({ input }) => {
-      const { traceId } = input;
-
-      // Find spans with model and tokens but no cost
-      const spans = await prisma.span.findMany({
-        where: {
-          traceId,
-          model: { not: null },
-          OR: [
-            { promptTokens: { gt: 0 } },
-            { completionTokens: { gt: 0 } },
-          ],
-          totalCost: null,
-        },
-        select: {
-          id: true,
-          model: true,
-          promptTokens: true,
-          completionTokens: true,
-        },
-      });
-
-      if (spans.length === 0) {
-        return { updatedCount: 0 };
-      }
-
-      let updatedCount = 0;
-
-      for (const span of spans) {
-        if (!span.model) continue;
-
-        const cost = await calculateSpanCost({
-          model: span.model,
-          promptTokens: span.promptTokens,
-          completionTokens: span.completionTokens,
-        });
-
-        if (cost) {
-          await prisma.span.update({
-            where: { id: span.id },
-            data: {
-              inputCost: cost.inputCost,
-              outputCost: cost.outputCost,
-              totalCost: cost.totalCost,
-              pricingId: cost.pricingId,
-            },
-          });
-          updatedCount++;
-        }
-      }
-
-      console.log(`[Internal:calculateTraceCosts] Updated costs for ${updatedCount} spans`);
-      return { updatedCount };
-    }),
-
-  /**
-   * Update daily cost summaries for a project
-   * Called by: trace.activities.ts → updateCostSummaries
-   */
-  updateCostSummaries: internalProcedure
-    .input(z.object({
-      projectId: z.string(),
-      date: z.string(),
-    }))
-    .mutation(async ({ input }) => {
-      const { projectId, date: dateStr } = input;
-
-      const date = parseDate(dateStr);
-      const dateOnly = date.toISOString().split("T")[0]!;
-      const startOfDay = new Date(dateOnly);
-      const endOfDay = new Date(startOfDay);
-      endOfDay.setDate(endOfDay.getDate() + 1);
-
-      // Get spans with costs for this day
-      const spans = await prisma.span.findMany({
-        where: {
-          trace: { projectId },
-          startTime: { gte: startOfDay, lt: endOfDay },
-          totalCost: { not: null },
-        },
-        select: {
-          model: true,
-          promptTokens: true,
-          completionTokens: true,
-          totalTokens: true,
-          inputCost: true,
-          outputCost: true,
-          totalCost: true,
-        },
-      });
-
-      if (spans.length === 0) {
-        return { success: true };
-      }
-
-      // Aggregate by model
-      const aggregations = new Map<string, {
-        spanCount: number;
-        inputTokens: bigint;
-        outputTokens: bigint;
-        totalTokens: bigint;
-        inputCost: Prisma.Decimal;
-        outputCost: Prisma.Decimal;
-        totalCost: Prisma.Decimal;
-      }>();
-
-      for (const span of spans) {
-        const model = span.model?.toLowerCase() ?? "__unknown__";
-
-        if (!aggregations.has(model)) {
-          aggregations.set(model, {
-            spanCount: 0,
-            inputTokens: BigInt(0),
-            outputTokens: BigInt(0),
-            totalTokens: BigInt(0),
-            inputCost: new Decimal(0),
-            outputCost: new Decimal(0),
-            totalCost: new Decimal(0),
-          });
-        }
-
-        const agg = aggregations.get(model)!;
-        agg.spanCount += 1;
-        agg.inputTokens += BigInt(span.promptTokens ?? 0);
-        agg.outputTokens += BigInt(span.completionTokens ?? 0);
-        agg.totalTokens += BigInt(span.totalTokens ?? 0);
-        agg.inputCost = agg.inputCost.add(span.inputCost ?? new Decimal(0));
-        agg.outputCost = agg.outputCost.add(span.outputCost ?? new Decimal(0));
-        agg.totalCost = agg.totalCost.add(span.totalCost ?? new Decimal(0));
-      }
-
-      // Upsert summaries
-      await prisma.$transaction(async (tx) => {
-        for (const [model, agg] of aggregations) {
-          await tx.costDailySummary.upsert({
-            where: {
-              projectId_date_model: { projectId, date: startOfDay, model },
-            },
-            create: {
-              projectId,
-              date: startOfDay,
-              model,
-              ...agg,
-            },
-            update: agg,
-          });
-        }
-      });
-
-      console.log(`[Internal:updateCostSummaries] Updated ${aggregations.size} model summaries`);
-      return { success: true };
-    }),
+  // NOTE: Legacy trace ingestion procedures removed (ingestTrace, calculateTraceCosts, updateCostSummaries)
+  // These are replaced by the OTLP-first ingest-node service
+  // See: apps/ingest-node/ and docs/specs/ingest/README.md
 
   /**
    * Persist a score

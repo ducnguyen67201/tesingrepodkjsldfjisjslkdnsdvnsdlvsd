@@ -8,11 +8,10 @@
 // Workflows orchestrate activities without side effects.
 // ============================================================
 
-// Trace activities
+// Trace activities (read-only helpers only - ingestion moved to ingest-node)
 export {
-  persistTrace,
-  calculateTraceCosts,
-  updateCostSummaries,
+  getTraceDetails,
+  projectExists,
 } from "./trace.activities";
 
 // Score activities

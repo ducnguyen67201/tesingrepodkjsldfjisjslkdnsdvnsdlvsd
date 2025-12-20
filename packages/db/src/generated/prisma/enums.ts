@@ -9,35 +9,6 @@
 * 🟢 You can import this file directly.
 */
 
-export const WorkspaceRole = {
-  OWNER: 'OWNER',
-  ADMIN: 'ADMIN',
-  MEMBER: 'MEMBER'
-} as const
-
-export type WorkspaceRole = (typeof WorkspaceRole)[keyof typeof WorkspaceRole]
-
-
-export const ProjectRole = {
-  OWNER: 'OWNER',
-  ADMIN: 'ADMIN',
-  MEMBER: 'MEMBER',
-  VIEWER: 'VIEWER'
-} as const
-
-export type ProjectRole = (typeof ProjectRole)[keyof typeof ProjectRole]
-
-
-export const SpanLevel = {
-  DEBUG: 'DEBUG',
-  DEFAULT: 'DEFAULT',
-  WARNING: 'WARNING',
-  ERROR: 'ERROR'
-} as const
-
-export type SpanLevel = (typeof SpanLevel)[keyof typeof SpanLevel]
-
-
 export const AlertType = {
   ERROR_RATE: 'ERROR_RATE',
   LATENCY_P50: 'LATENCY_P50',
@@ -87,6 +58,17 @@ export const AlertState = {
 export type AlertState = (typeof AlertState)[keyof typeof AlertState]
 
 
+export const EvalRunStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  PASSED: 'PASSED',
+  FAILED: 'FAILED',
+  REGRESSION_DETECTED: 'REGRESSION_DETECTED'
+} as const
+
+export type EvalRunStatus = (typeof EvalRunStatus)[keyof typeof EvalRunStatus]
+
+
 export const IndexStatus = {
   PENDING: 'PENDING',
   INDEXING: 'INDEXING',
@@ -98,12 +80,20 @@ export const IndexStatus = {
 export type IndexStatus = (typeof IndexStatus)[keyof typeof IndexStatus]
 
 
-export const EvalRunStatus = {
-  PENDING: 'PENDING',
-  RUNNING: 'RUNNING',
-  PASSED: 'PASSED',
-  FAILED: 'FAILED',
-  REGRESSION_DETECTED: 'REGRESSION_DETECTED'
+export const ProjectRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER',
+  VIEWER: 'VIEWER'
 } as const
 
-export type EvalRunStatus = (typeof EvalRunStatus)[keyof typeof EvalRunStatus]
+export type ProjectRole = (typeof ProjectRole)[keyof typeof ProjectRole]
+
+
+export const WorkspaceRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+} as const
+
+export type WorkspaceRole = (typeof WorkspaceRole)[keyof typeof WorkspaceRole]

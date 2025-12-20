@@ -634,6 +634,18 @@ export type NullableEnumAlertStateFieldUpdateOperationsInput = {
   set?: $Enums.AlertState | null
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type AlertHistoryCreateWithoutAlertInput = {
   id?: string
   triggeredAt?: Date | string

@@ -45,7 +45,7 @@ export function calculateTimeDistribution(
 
     if (existing) {
       existing.total++;
-      if (span.level === "ERROR") existing.errors++;
+      if (span.statusCode === "ERROR") existing.errors++;
       if (span.endTime) {
         existing.latencies.push(
           span.endTime.getTime() - span.startTime.getTime()

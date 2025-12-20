@@ -45,7 +45,7 @@ export async function evaluateAlert(alertId: string): Promise<AlertEvaluationRes
   // Calculate metric based on alert type (READ-ONLY)
   if (alert.type === "ERROR_RATE") {
     const counts = await prisma.span.groupBy({
-      by: ["level"],
+      by: ["statusCode"],
       where: {
         trace: { projectId: alert.projectId },
         startTime: { gte: windowStart },
@@ -53,8 +53,8 @@ export async function evaluateAlert(alertId: string): Promise<AlertEvaluationRes
       _count: true,
     });
 
-    const total = counts.reduce((sum, c) => sum + c._count, 0);
-    const errors = counts.find((c) => c.level === "ERROR")?._count ?? 0;
+    const total = counts.reduce((sum, c) => sum + (c._count ?? 0), 0);
+    const errors = counts.find((c) => c.statusCode === "ERROR")?._count ?? 0;
     currentValue = total > 0 ? (errors / total) * 100 : 0;
     sampleCount = total;
   } else if (alert.type.startsWith("LATENCY_")) {
@@ -63,12 +63,12 @@ export async function evaluateAlert(alertId: string): Promise<AlertEvaluationRes
       alert.type === "LATENCY_P50" ? 0.5 : alert.type === "LATENCY_P95" ? 0.95 : 0.99;
 
     const spans = await prisma.$queryRaw<Array<{ latency: number }>>`
-      SELECT EXTRACT(EPOCH FROM (end_time - start_time)) * 1000 as latency
-      FROM spans s
-      JOIN traces t ON s.trace_id = t.id
-      WHERE t.project_id = ${alert.projectId}
-        AND s.start_time >= ${windowStart}
-        AND s.end_time IS NOT NULL
+      SELECT EXTRACT(EPOCH FROM ("endTime" - "startTime")) * 1000 as latency
+      FROM "Span" s
+      JOIN "Trace" t ON s."traceId" = t.id
+      WHERE t."projectId" = ${alert.projectId}
+        AND s."startTime" >= ${windowStart}
+        AND s."endTime" IS NOT NULL
       ORDER BY latency
     `;
 

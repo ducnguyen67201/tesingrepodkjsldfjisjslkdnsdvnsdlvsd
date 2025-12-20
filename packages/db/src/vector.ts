@@ -114,7 +114,7 @@ export async function setChunkEmbedding(
   const vectorLiteral = formatVector(embedding);
 
   await prisma.$executeRaw`
-    UPDATE code_chunks
+    UPDATE "CodeChunk"
     SET embedding = ${Prisma.raw(`'${vectorLiteral}'::vector`)}
     WHERE id = ${chunkId}
   `;
@@ -131,7 +131,7 @@ export async function getChunkEmbedding(
 ): Promise<number[] | null> {
   const result = await prisma.$queryRaw<Array<{ embedding: string | null }>>`
     SELECT embedding::text
-    FROM code_chunks
+    FROM "CodeChunk"
     WHERE id = ${chunkId}
   `;
 
@@ -182,7 +182,7 @@ export async function setChunkEmbeddings(
     .join("\n      ");
 
   await prisma.$executeRaw`
-    UPDATE code_chunks
+    UPDATE "CodeChunk"
     SET embedding = CASE
       ${Prisma.raw(cases)}
     END
@@ -219,16 +219,16 @@ export async function searchSimilarChunks(
   const results = await prisma.$queryRaw<SimilarChunk[]>`
     SELECT
       id,
-      repo_id as "repoId",
-      file_path as "filePath",
-      start_line as "startLine",
-      end_line as "endLine",
+      "repoId",
+      "filePath",
+      "startLine",
+      "endLine",
       content,
       language,
-      chunk_type as "chunkType",
+      "chunkType",
       1 - (embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) as similarity
-    FROM code_chunks
-    WHERE repo_id = ${repoId}
+    FROM "CodeChunk"
+    WHERE "repoId" = ${repoId}
       AND embedding IS NOT NULL
       AND 1 - (embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) >= ${minSimilarity}
     ORDER BY embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}
@@ -273,22 +273,22 @@ export async function searchSimilarChunksWithPatterns(
   // Build OR conditions for file patterns
   // Note: patterns are escaped above, safe for interpolation
   const patternConditions = likePatterns
-    .map((pattern) => `file_path LIKE '${pattern}'`)
+    .map((pattern) => `"filePath" LIKE '${pattern}'`)
     .join(" OR ");
 
   const results = await prisma.$queryRaw<SimilarChunk[]>`
     SELECT
       id,
-      repo_id as "repoId",
-      file_path as "filePath",
-      start_line as "startLine",
-      end_line as "endLine",
+      "repoId",
+      "filePath",
+      "startLine",
+      "endLine",
       content,
       language,
-      chunk_type as "chunkType",
+      "chunkType",
       1 - (embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) as similarity
-    FROM code_chunks
-    WHERE repo_id = ${repoId}
+    FROM "CodeChunk"
+    WHERE "repoId" = ${repoId}
       AND embedding IS NOT NULL
       AND 1 - (embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) >= ${minSimilarity}
       AND (${Prisma.raw(patternConditions)})
@@ -316,8 +316,8 @@ export async function countChunksWithEmbeddings(
     SELECT
       COUNT(*) as total,
       COUNT(embedding) as with_embedding
-    FROM code_chunks
-    WHERE repo_id = ${repoId}
+    FROM "CodeChunk"
+    WHERE "repoId" = ${repoId}
   `;
 
   return {
@@ -334,9 +334,9 @@ export async function clearRepositoryEmbeddings(
   repoId: string
 ): Promise<number> {
   const result = await prisma.$executeRaw`
-    UPDATE code_chunks
+    UPDATE "CodeChunk"
     SET embedding = NULL
-    WHERE repo_id = ${repoId}
+    WHERE "repoId" = ${repoId}
       AND embedding IS NOT NULL
   `;
 

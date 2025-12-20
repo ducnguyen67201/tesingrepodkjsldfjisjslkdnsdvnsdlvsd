@@ -31,7 +31,7 @@ export function groupByEndpoint(spans: SpanRow[]): AffectedEndpoint[] {
     };
 
     existing.total++;
-    if (span.level === "ERROR") existing.errors++;
+    if (span.statusCode === "ERROR") existing.errors++;
     if (span.endTime) {
       existing.latencies.push(span.endTime.getTime() - span.startTime.getTime());
     }
@@ -82,7 +82,7 @@ export function groupByModel(spans: SpanRow[]): AffectedModel[] {
       costs: [],
     };
 
-    if (span.level === "ERROR") existing.errors++;
+    if (span.statusCode === "ERROR") existing.errors++;
     if (span.endTime) {
       existing.latencies.push(span.endTime.getTime() - span.startTime.getTime());
     }

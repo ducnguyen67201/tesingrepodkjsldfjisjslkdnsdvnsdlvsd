@@ -27,6 +27,7 @@ export type AggregateSpan = {
 }
 
 export type SpanAvgAggregateOutputType = {
+  durationMs: number | null
   promptTokens: number | null
   completionTokens: number | null
   totalTokens: number | null
@@ -36,6 +37,7 @@ export type SpanAvgAggregateOutputType = {
 }
 
 export type SpanSumAggregateOutputType = {
+  durationMs: number | null
   promptTokens: number | null
   completionTokens: number | null
   totalTokens: number | null
@@ -47,67 +49,91 @@ export type SpanSumAggregateOutputType = {
 export type SpanMinAggregateOutputType = {
   id: string | null
   traceId: string | null
+  externalSpanId: string | null
   parentSpanId: string | null
   name: string | null
+  kind: string | null
+  statusCode: string | null
+  statusMessage: string | null
+  traceState: string | null
   startTime: Date | null
   endTime: Date | null
+  durationMs: number | null
+  libraryName: string | null
+  libraryVersion: string | null
   model: string | null
   promptTokens: number | null
   completionTokens: number | null
   totalTokens: number | null
-  level: $Enums.SpanLevel | null
-  statusMessage: string | null
   inputCost: runtime.Decimal | null
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  createdAt: Date | null
 }
 
 export type SpanMaxAggregateOutputType = {
   id: string | null
   traceId: string | null
+  externalSpanId: string | null
   parentSpanId: string | null
   name: string | null
+  kind: string | null
+  statusCode: string | null
+  statusMessage: string | null
+  traceState: string | null
   startTime: Date | null
   endTime: Date | null
+  durationMs: number | null
+  libraryName: string | null
+  libraryVersion: string | null
   model: string | null
   promptTokens: number | null
   completionTokens: number | null
   totalTokens: number | null
-  level: $Enums.SpanLevel | null
-  statusMessage: string | null
   inputCost: runtime.Decimal | null
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  createdAt: Date | null
 }
 
 export type SpanCountAggregateOutputType = {
   id: number
   traceId: number
+  externalSpanId: number
   parentSpanId: number
   name: number
+  kind: number
+  statusCode: number
+  statusMessage: number
+  traceState: number
   startTime: number
   endTime: number
-  input: number
-  output: number
-  metadata: number
+  durationMs: number
+  attributes: number
+  events: number
+  links: number
+  libraryName: number
+  libraryVersion: number
   model: number
   modelParameters: number
+  input: number
+  output: number
   promptTokens: number
   completionTokens: number
   totalTokens: number
-  level: number
-  statusMessage: number
   inputCost: number
   outputCost: number
   totalCost: number
   pricingId: number
+  createdAt: number
   _all: number
 }
 
 
 export type SpanAvgAggregateInputType = {
+  durationMs?: true
   promptTokens?: true
   completionTokens?: true
   totalTokens?: true
@@ -117,6 +143,7 @@ export type SpanAvgAggregateInputType = {
 }
 
 export type SpanSumAggregateInputType = {
+  durationMs?: true
   promptTokens?: true
   completionTokens?: true
   totalTokens?: true
@@ -128,62 +155,85 @@ export type SpanSumAggregateInputType = {
 export type SpanMinAggregateInputType = {
   id?: true
   traceId?: true
+  externalSpanId?: true
   parentSpanId?: true
   name?: true
+  kind?: true
+  statusCode?: true
+  statusMessage?: true
+  traceState?: true
   startTime?: true
   endTime?: true
+  durationMs?: true
+  libraryName?: true
+  libraryVersion?: true
   model?: true
   promptTokens?: true
   completionTokens?: true
   totalTokens?: true
-  level?: true
-  statusMessage?: true
   inputCost?: true
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  createdAt?: true
 }
 
 export type SpanMaxAggregateInputType = {
   id?: true
   traceId?: true
+  externalSpanId?: true
   parentSpanId?: true
   name?: true
+  kind?: true
+  statusCode?: true
+  statusMessage?: true
+  traceState?: true
   startTime?: true
   endTime?: true
+  durationMs?: true
+  libraryName?: true
+  libraryVersion?: true
   model?: true
   promptTokens?: true
   completionTokens?: true
   totalTokens?: true
-  level?: true
-  statusMessage?: true
   inputCost?: true
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  createdAt?: true
 }
 
 export type SpanCountAggregateInputType = {
   id?: true
   traceId?: true
+  externalSpanId?: true
   parentSpanId?: true
   name?: true
+  kind?: true
+  statusCode?: true
+  statusMessage?: true
+  traceState?: true
   startTime?: true
   endTime?: true
-  input?: true
-  output?: true
-  metadata?: true
+  durationMs?: true
+  attributes?: true
+  events?: true
+  links?: true
+  libraryName?: true
+  libraryVersion?: true
   model?: true
   modelParameters?: true
+  input?: true
+  output?: true
   promptTokens?: true
   completionTokens?: true
   totalTokens?: true
-  level?: true
-  statusMessage?: true
   inputCost?: true
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  createdAt?: true
   _all?: true
 }
 
@@ -276,24 +326,33 @@ export type SpanGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type SpanGroupByOutputType = {
   id: string
   traceId: string
+  externalSpanId: string
   parentSpanId: string | null
   name: string
+  kind: string
+  statusCode: string
+  statusMessage: string | null
+  traceState: string | null
   startTime: Date
   endTime: Date | null
-  input: runtime.JsonValue | null
-  output: runtime.JsonValue | null
-  metadata: runtime.JsonValue | null
+  durationMs: number | null
+  attributes: runtime.JsonValue | null
+  events: runtime.JsonValue | null
+  links: runtime.JsonValue | null
+  libraryName: string | null
+  libraryVersion: string | null
   model: string | null
   modelParameters: runtime.JsonValue | null
+  input: runtime.JsonValue | null
+  output: runtime.JsonValue | null
   promptTokens: number | null
   completionTokens: number | null
   totalTokens: number | null
-  level: $Enums.SpanLevel
-  statusMessage: string | null
   inputCost: runtime.Decimal | null
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  createdAt: Date
   _count: SpanCountAggregateOutputType | null
   _avg: SpanAvgAggregateOutputType | null
   _sum: SpanSumAggregateOutputType | null
@@ -322,24 +381,33 @@ export type SpanWhereInput = {
   NOT?: Prisma.SpanWhereInput | Prisma.SpanWhereInput[]
   id?: Prisma.StringFilter<"Span"> | string
   traceId?: Prisma.StringFilter<"Span"> | string
+  externalSpanId?: Prisma.StringFilter<"Span"> | string
   parentSpanId?: Prisma.StringNullableFilter<"Span"> | string | null
   name?: Prisma.StringFilter<"Span"> | string
+  kind?: Prisma.StringFilter<"Span"> | string
+  statusCode?: Prisma.StringFilter<"Span"> | string
+  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  traceState?: Prisma.StringNullableFilter<"Span"> | string | null
   startTime?: Prisma.DateTimeFilter<"Span"> | Date | string
   endTime?: Prisma.DateTimeNullableFilter<"Span"> | Date | string | null
-  input?: Prisma.JsonNullableFilter<"Span">
-  output?: Prisma.JsonNullableFilter<"Span">
-  metadata?: Prisma.JsonNullableFilter<"Span">
+  durationMs?: Prisma.IntNullableFilter<"Span"> | number | null
+  attributes?: Prisma.JsonNullableFilter<"Span">
+  events?: Prisma.JsonNullableFilter<"Span">
+  links?: Prisma.JsonNullableFilter<"Span">
+  libraryName?: Prisma.StringNullableFilter<"Span"> | string | null
+  libraryVersion?: Prisma.StringNullableFilter<"Span"> | string | null
   model?: Prisma.StringNullableFilter<"Span"> | string | null
   modelParameters?: Prisma.JsonNullableFilter<"Span">
+  input?: Prisma.JsonNullableFilter<"Span">
+  output?: Prisma.JsonNullableFilter<"Span">
   promptTokens?: Prisma.IntNullableFilter<"Span"> | number | null
   completionTokens?: Prisma.IntNullableFilter<"Span"> | number | null
   totalTokens?: Prisma.IntNullableFilter<"Span"> | number | null
-  level?: Prisma.EnumSpanLevelFilter<"Span"> | $Enums.SpanLevel
-  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
   inputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
 }
@@ -347,77 +415,105 @@ export type SpanWhereInput = {
 export type SpanOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   traceId?: Prisma.SortOrder
+  externalSpanId?: Prisma.SortOrder
   parentSpanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  statusCode?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  traceState?: Prisma.SortOrderInput | Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  input?: Prisma.SortOrderInput | Prisma.SortOrder
-  output?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  durationMs?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributes?: Prisma.SortOrderInput | Prisma.SortOrder
+  events?: Prisma.SortOrderInput | Prisma.SortOrder
+  links?: Prisma.SortOrderInput | Prisma.SortOrder
+  libraryName?: Prisma.SortOrderInput | Prisma.SortOrder
+  libraryVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   model?: Prisma.SortOrderInput | Prisma.SortOrder
   modelParameters?: Prisma.SortOrderInput | Prisma.SortOrder
+  input?: Prisma.SortOrderInput | Prisma.SortOrder
+  output?: Prisma.SortOrderInput | Prisma.SortOrder
   promptTokens?: Prisma.SortOrderInput | Prisma.SortOrder
   completionTokens?: Prisma.SortOrderInput | Prisma.SortOrder
   totalTokens?: Prisma.SortOrderInput | Prisma.SortOrder
-  level?: Prisma.SortOrder
-  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   inputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   outputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   trace?: Prisma.TraceOrderByWithRelationInput
   pricing?: Prisma.ModelPricingOrderByWithRelationInput
 }
 
 export type SpanWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  traceId_externalSpanId?: Prisma.SpanTraceIdExternalSpanIdCompoundUniqueInput
   AND?: Prisma.SpanWhereInput | Prisma.SpanWhereInput[]
   OR?: Prisma.SpanWhereInput[]
   NOT?: Prisma.SpanWhereInput | Prisma.SpanWhereInput[]
   traceId?: Prisma.StringFilter<"Span"> | string
+  externalSpanId?: Prisma.StringFilter<"Span"> | string
   parentSpanId?: Prisma.StringNullableFilter<"Span"> | string | null
   name?: Prisma.StringFilter<"Span"> | string
+  kind?: Prisma.StringFilter<"Span"> | string
+  statusCode?: Prisma.StringFilter<"Span"> | string
+  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  traceState?: Prisma.StringNullableFilter<"Span"> | string | null
   startTime?: Prisma.DateTimeFilter<"Span"> | Date | string
   endTime?: Prisma.DateTimeNullableFilter<"Span"> | Date | string | null
-  input?: Prisma.JsonNullableFilter<"Span">
-  output?: Prisma.JsonNullableFilter<"Span">
-  metadata?: Prisma.JsonNullableFilter<"Span">
+  durationMs?: Prisma.IntNullableFilter<"Span"> | number | null
+  attributes?: Prisma.JsonNullableFilter<"Span">
+  events?: Prisma.JsonNullableFilter<"Span">
+  links?: Prisma.JsonNullableFilter<"Span">
+  libraryName?: Prisma.StringNullableFilter<"Span"> | string | null
+  libraryVersion?: Prisma.StringNullableFilter<"Span"> | string | null
   model?: Prisma.StringNullableFilter<"Span"> | string | null
   modelParameters?: Prisma.JsonNullableFilter<"Span">
+  input?: Prisma.JsonNullableFilter<"Span">
+  output?: Prisma.JsonNullableFilter<"Span">
   promptTokens?: Prisma.IntNullableFilter<"Span"> | number | null
   completionTokens?: Prisma.IntNullableFilter<"Span"> | number | null
   totalTokens?: Prisma.IntNullableFilter<"Span"> | number | null
-  level?: Prisma.EnumSpanLevelFilter<"Span"> | $Enums.SpanLevel
-  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
   inputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
-}, "id">
+}, "id" | "traceId_externalSpanId">
 
 export type SpanOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   traceId?: Prisma.SortOrder
+  externalSpanId?: Prisma.SortOrder
   parentSpanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  statusCode?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  traceState?: Prisma.SortOrderInput | Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  input?: Prisma.SortOrderInput | Prisma.SortOrder
-  output?: Prisma.SortOrderInput | Prisma.SortOrder
-  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  durationMs?: Prisma.SortOrderInput | Prisma.SortOrder
+  attributes?: Prisma.SortOrderInput | Prisma.SortOrder
+  events?: Prisma.SortOrderInput | Prisma.SortOrder
+  links?: Prisma.SortOrderInput | Prisma.SortOrder
+  libraryName?: Prisma.SortOrderInput | Prisma.SortOrder
+  libraryVersion?: Prisma.SortOrderInput | Prisma.SortOrder
   model?: Prisma.SortOrderInput | Prisma.SortOrder
   modelParameters?: Prisma.SortOrderInput | Prisma.SortOrder
+  input?: Prisma.SortOrderInput | Prisma.SortOrder
+  output?: Prisma.SortOrderInput | Prisma.SortOrder
   promptTokens?: Prisma.SortOrderInput | Prisma.SortOrder
   completionTokens?: Prisma.SortOrderInput | Prisma.SortOrder
   totalTokens?: Prisma.SortOrderInput | Prisma.SortOrder
-  level?: Prisma.SortOrder
-  statusMessage?: Prisma.SortOrderInput | Prisma.SortOrder
   inputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   outputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   _count?: Prisma.SpanCountOrderByAggregateInput
   _avg?: Prisma.SpanAvgOrderByAggregateInput
   _max?: Prisma.SpanMaxOrderByAggregateInput
@@ -431,45 +527,63 @@ export type SpanScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SpanScalarWhereWithAggregatesInput | Prisma.SpanScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Span"> | string
   traceId?: Prisma.StringWithAggregatesFilter<"Span"> | string
+  externalSpanId?: Prisma.StringWithAggregatesFilter<"Span"> | string
   parentSpanId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"Span"> | string
+  kind?: Prisma.StringWithAggregatesFilter<"Span"> | string
+  statusCode?: Prisma.StringWithAggregatesFilter<"Span"> | string
+  statusMessage?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  traceState?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   startTime?: Prisma.DateTimeWithAggregatesFilter<"Span"> | Date | string
   endTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Span"> | Date | string | null
-  input?: Prisma.JsonNullableWithAggregatesFilter<"Span">
-  output?: Prisma.JsonNullableWithAggregatesFilter<"Span">
-  metadata?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  durationMs?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
+  attributes?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  events?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  links?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  libraryName?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  libraryVersion?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   model?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   modelParameters?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  input?: Prisma.JsonNullableWithAggregatesFilter<"Span">
+  output?: Prisma.JsonNullableWithAggregatesFilter<"Span">
   promptTokens?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
   completionTokens?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
   totalTokens?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
-  level?: Prisma.EnumSpanLevelWithAggregatesFilter<"Span"> | $Enums.SpanLevel
-  statusMessage?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   inputCost?: Prisma.DecimalNullableWithAggregatesFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.DecimalNullableWithAggregatesFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableWithAggregatesFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Span"> | Date | string
 }
 
 export type SpanCreateInput = {
   id?: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
   pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
 }
@@ -477,45 +591,63 @@ export type SpanCreateInput = {
 export type SpanUncheckedCreateInput = {
   id?: string
   traceId: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  createdAt?: Date | string
 }
 
 export type SpanUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
   pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
 }
@@ -523,91 +655,127 @@ export type SpanUpdateInput = {
 export type SpanUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traceId?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SpanCreateManyInput = {
   id?: string
   traceId: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  createdAt?: Date | string
 }
 
 export type SpanUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SpanUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traceId?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SpanListRelationFilter = {
@@ -620,30 +788,45 @@ export type SpanOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type SpanTraceIdExternalSpanIdCompoundUniqueInput = {
+  traceId: string
+  externalSpanId: string
+}
+
 export type SpanCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   traceId?: Prisma.SortOrder
+  externalSpanId?: Prisma.SortOrder
   parentSpanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  statusCode?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
+  traceState?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
-  input?: Prisma.SortOrder
-  output?: Prisma.SortOrder
-  metadata?: Prisma.SortOrder
+  durationMs?: Prisma.SortOrder
+  attributes?: Prisma.SortOrder
+  events?: Prisma.SortOrder
+  links?: Prisma.SortOrder
+  libraryName?: Prisma.SortOrder
+  libraryVersion?: Prisma.SortOrder
   model?: Prisma.SortOrder
   modelParameters?: Prisma.SortOrder
+  input?: Prisma.SortOrder
+  output?: Prisma.SortOrder
   promptTokens?: Prisma.SortOrder
   completionTokens?: Prisma.SortOrder
   totalTokens?: Prisma.SortOrder
-  level?: Prisma.SortOrder
-  statusMessage?: Prisma.SortOrder
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type SpanAvgOrderByAggregateInput = {
+  durationMs?: Prisma.SortOrder
   promptTokens?: Prisma.SortOrder
   completionTokens?: Prisma.SortOrder
   totalTokens?: Prisma.SortOrder
@@ -655,102 +838,63 @@ export type SpanAvgOrderByAggregateInput = {
 export type SpanMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   traceId?: Prisma.SortOrder
+  externalSpanId?: Prisma.SortOrder
   parentSpanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  statusCode?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
+  traceState?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
+  durationMs?: Prisma.SortOrder
+  libraryName?: Prisma.SortOrder
+  libraryVersion?: Prisma.SortOrder
   model?: Prisma.SortOrder
   promptTokens?: Prisma.SortOrder
   completionTokens?: Prisma.SortOrder
   totalTokens?: Prisma.SortOrder
-  level?: Prisma.SortOrder
-  statusMessage?: Prisma.SortOrder
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type SpanMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   traceId?: Prisma.SortOrder
+  externalSpanId?: Prisma.SortOrder
   parentSpanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  kind?: Prisma.SortOrder
+  statusCode?: Prisma.SortOrder
+  statusMessage?: Prisma.SortOrder
+  traceState?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
+  durationMs?: Prisma.SortOrder
+  libraryName?: Prisma.SortOrder
+  libraryVersion?: Prisma.SortOrder
   model?: Prisma.SortOrder
   promptTokens?: Prisma.SortOrder
   completionTokens?: Prisma.SortOrder
   totalTokens?: Prisma.SortOrder
-  level?: Prisma.SortOrder
-  statusMessage?: Prisma.SortOrder
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
 }
 
 export type SpanSumOrderByAggregateInput = {
+  durationMs?: Prisma.SortOrder
   promptTokens?: Prisma.SortOrder
   completionTokens?: Prisma.SortOrder
   totalTokens?: Prisma.SortOrder
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
-}
-
-export type SpanCreateNestedManyWithoutTraceInput = {
-  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
-  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
-  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
-  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-}
-
-export type SpanUncheckedCreateNestedManyWithoutTraceInput = {
-  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
-  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
-  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
-  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-}
-
-export type SpanUpdateManyWithoutTraceNestedInput = {
-  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
-  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
-  upsert?: Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput | Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput[]
-  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
-  set?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  disconnect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  delete?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  update?: Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput | Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput[]
-  updateMany?: Prisma.SpanUpdateManyWithWhereWithoutTraceInput | Prisma.SpanUpdateManyWithWhereWithoutTraceInput[]
-  deleteMany?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
-}
-
-export type SpanUncheckedUpdateManyWithoutTraceNestedInput = {
-  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
-  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
-  upsert?: Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput | Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput[]
-  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
-  set?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  disconnect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  delete?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
-  update?: Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput | Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput[]
-  updateMany?: Prisma.SpanUpdateManyWithWhereWithoutTraceInput | Prisma.SpanUpdateManyWithWhereWithoutTraceInput[]
-  deleteMany?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
-}
-
-export type EnumSpanLevelFieldUpdateOperationsInput = {
-  set?: $Enums.SpanLevel
-}
-
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type SpanCreateNestedManyWithoutPricingInput = {
@@ -795,144 +939,116 @@ export type SpanUncheckedUpdateManyWithoutPricingNestedInput = {
   deleteMany?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
 }
 
-export type SpanCreateWithoutTraceInput = {
-  id?: string
-  parentSpanId?: string | null
-  name: string
-  startTime: Date | string
-  endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  model?: string | null
-  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  promptTokens?: number | null
-  completionTokens?: number | null
-  totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
-  inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
+export type SpanCreateNestedManyWithoutTraceInput = {
+  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
+  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
+  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
+  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
 }
 
-export type SpanUncheckedCreateWithoutTraceInput = {
-  id?: string
-  parentSpanId?: string | null
-  name: string
-  startTime: Date | string
-  endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  model?: string | null
-  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  promptTokens?: number | null
-  completionTokens?: number | null
-  totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
-  inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricingId?: string | null
+export type SpanUncheckedCreateNestedManyWithoutTraceInput = {
+  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
+  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
+  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
+  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
 }
 
-export type SpanCreateOrConnectWithoutTraceInput = {
-  where: Prisma.SpanWhereUniqueInput
-  create: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput>
+export type SpanUpdateManyWithoutTraceNestedInput = {
+  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
+  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
+  upsert?: Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput | Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput[]
+  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
+  set?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  disconnect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  delete?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  update?: Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput | Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput[]
+  updateMany?: Prisma.SpanUpdateManyWithWhereWithoutTraceInput | Prisma.SpanUpdateManyWithWhereWithoutTraceInput[]
+  deleteMany?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
 }
 
-export type SpanCreateManyTraceInputEnvelope = {
-  data: Prisma.SpanCreateManyTraceInput | Prisma.SpanCreateManyTraceInput[]
-  skipDuplicates?: boolean
+export type SpanUncheckedUpdateManyWithoutTraceNestedInput = {
+  create?: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput> | Prisma.SpanCreateWithoutTraceInput[] | Prisma.SpanUncheckedCreateWithoutTraceInput[]
+  connectOrCreate?: Prisma.SpanCreateOrConnectWithoutTraceInput | Prisma.SpanCreateOrConnectWithoutTraceInput[]
+  upsert?: Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput | Prisma.SpanUpsertWithWhereUniqueWithoutTraceInput[]
+  createMany?: Prisma.SpanCreateManyTraceInputEnvelope
+  set?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  disconnect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  delete?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  connect?: Prisma.SpanWhereUniqueInput | Prisma.SpanWhereUniqueInput[]
+  update?: Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput | Prisma.SpanUpdateWithWhereUniqueWithoutTraceInput[]
+  updateMany?: Prisma.SpanUpdateManyWithWhereWithoutTraceInput | Prisma.SpanUpdateManyWithWhereWithoutTraceInput[]
+  deleteMany?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
 }
 
-export type SpanUpsertWithWhereUniqueWithoutTraceInput = {
-  where: Prisma.SpanWhereUniqueInput
-  update: Prisma.XOR<Prisma.SpanUpdateWithoutTraceInput, Prisma.SpanUncheckedUpdateWithoutTraceInput>
-  create: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput>
-}
-
-export type SpanUpdateWithWhereUniqueWithoutTraceInput = {
-  where: Prisma.SpanWhereUniqueInput
-  data: Prisma.XOR<Prisma.SpanUpdateWithoutTraceInput, Prisma.SpanUncheckedUpdateWithoutTraceInput>
-}
-
-export type SpanUpdateManyWithWhereWithoutTraceInput = {
-  where: Prisma.SpanScalarWhereInput
-  data: Prisma.XOR<Prisma.SpanUpdateManyMutationInput, Prisma.SpanUncheckedUpdateManyWithoutTraceInput>
-}
-
-export type SpanScalarWhereInput = {
-  AND?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
-  OR?: Prisma.SpanScalarWhereInput[]
-  NOT?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
-  id?: Prisma.StringFilter<"Span"> | string
-  traceId?: Prisma.StringFilter<"Span"> | string
-  parentSpanId?: Prisma.StringNullableFilter<"Span"> | string | null
-  name?: Prisma.StringFilter<"Span"> | string
-  startTime?: Prisma.DateTimeFilter<"Span"> | Date | string
-  endTime?: Prisma.DateTimeNullableFilter<"Span"> | Date | string | null
-  input?: Prisma.JsonNullableFilter<"Span">
-  output?: Prisma.JsonNullableFilter<"Span">
-  metadata?: Prisma.JsonNullableFilter<"Span">
-  model?: Prisma.StringNullableFilter<"Span"> | string | null
-  modelParameters?: Prisma.JsonNullableFilter<"Span">
-  promptTokens?: Prisma.IntNullableFilter<"Span"> | number | null
-  completionTokens?: Prisma.IntNullableFilter<"Span"> | number | null
-  totalTokens?: Prisma.IntNullableFilter<"Span"> | number | null
-  level?: Prisma.EnumSpanLevelFilter<"Span"> | $Enums.SpanLevel
-  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
-  inputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type SpanCreateWithoutPricingInput = {
   id?: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
 }
 
 export type SpanUncheckedCreateWithoutPricingInput = {
   id?: string
   traceId: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
 }
 
 export type SpanCreateOrConnectWithoutPricingInput = {
@@ -961,180 +1077,375 @@ export type SpanUpdateManyWithWhereWithoutPricingInput = {
   data: Prisma.XOR<Prisma.SpanUpdateManyMutationInput, Prisma.SpanUncheckedUpdateManyWithoutPricingInput>
 }
 
-export type SpanCreateManyTraceInput = {
+export type SpanScalarWhereInput = {
+  AND?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
+  OR?: Prisma.SpanScalarWhereInput[]
+  NOT?: Prisma.SpanScalarWhereInput | Prisma.SpanScalarWhereInput[]
+  id?: Prisma.StringFilter<"Span"> | string
+  traceId?: Prisma.StringFilter<"Span"> | string
+  externalSpanId?: Prisma.StringFilter<"Span"> | string
+  parentSpanId?: Prisma.StringNullableFilter<"Span"> | string | null
+  name?: Prisma.StringFilter<"Span"> | string
+  kind?: Prisma.StringFilter<"Span"> | string
+  statusCode?: Prisma.StringFilter<"Span"> | string
+  statusMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  traceState?: Prisma.StringNullableFilter<"Span"> | string | null
+  startTime?: Prisma.DateTimeFilter<"Span"> | Date | string
+  endTime?: Prisma.DateTimeNullableFilter<"Span"> | Date | string | null
+  durationMs?: Prisma.IntNullableFilter<"Span"> | number | null
+  attributes?: Prisma.JsonNullableFilter<"Span">
+  events?: Prisma.JsonNullableFilter<"Span">
+  links?: Prisma.JsonNullableFilter<"Span">
+  libraryName?: Prisma.StringNullableFilter<"Span"> | string | null
+  libraryVersion?: Prisma.StringNullableFilter<"Span"> | string | null
+  model?: Prisma.StringNullableFilter<"Span"> | string | null
+  modelParameters?: Prisma.JsonNullableFilter<"Span">
+  input?: Prisma.JsonNullableFilter<"Span">
+  output?: Prisma.JsonNullableFilter<"Span">
+  promptTokens?: Prisma.IntNullableFilter<"Span"> | number | null
+  completionTokens?: Prisma.IntNullableFilter<"Span"> | number | null
+  totalTokens?: Prisma.IntNullableFilter<"Span"> | number | null
+  inputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
+}
+
+export type SpanCreateWithoutTraceInput = {
   id?: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
+  inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
+}
+
+export type SpanUncheckedCreateWithoutTraceInput = {
+  id?: string
+  externalSpanId: string
+  parentSpanId?: string | null
+  name: string
+  kind?: string
+  statusCode?: string
   statusMessage?: string | null
+  traceState?: string | null
+  startTime: Date | string
+  endTime?: Date | string | null
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
+  model?: string | null
+  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  promptTokens?: number | null
+  completionTokens?: number | null
+  totalTokens?: number | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  createdAt?: Date | string
 }
 
-export type SpanUpdateWithoutTraceInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
+export type SpanCreateOrConnectWithoutTraceInput = {
+  where: Prisma.SpanWhereUniqueInput
+  create: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput>
 }
 
-export type SpanUncheckedUpdateWithoutTraceInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+export type SpanCreateManyTraceInputEnvelope = {
+  data: Prisma.SpanCreateManyTraceInput | Prisma.SpanCreateManyTraceInput[]
+  skipDuplicates?: boolean
 }
 
-export type SpanUncheckedUpdateManyWithoutTraceInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+export type SpanUpsertWithWhereUniqueWithoutTraceInput = {
+  where: Prisma.SpanWhereUniqueInput
+  update: Prisma.XOR<Prisma.SpanUpdateWithoutTraceInput, Prisma.SpanUncheckedUpdateWithoutTraceInput>
+  create: Prisma.XOR<Prisma.SpanCreateWithoutTraceInput, Prisma.SpanUncheckedCreateWithoutTraceInput>
+}
+
+export type SpanUpdateWithWhereUniqueWithoutTraceInput = {
+  where: Prisma.SpanWhereUniqueInput
+  data: Prisma.XOR<Prisma.SpanUpdateWithoutTraceInput, Prisma.SpanUncheckedUpdateWithoutTraceInput>
+}
+
+export type SpanUpdateManyWithWhereWithoutTraceInput = {
+  where: Prisma.SpanScalarWhereInput
+  data: Prisma.XOR<Prisma.SpanUpdateManyMutationInput, Prisma.SpanUncheckedUpdateManyWithoutTraceInput>
 }
 
 export type SpanCreateManyPricingInput = {
   id?: string
   traceId: string
+  externalSpanId: string
   parentSpanId?: string | null
   name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
   startTime: Date | string
   endTime?: Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
   model?: string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: number | null
   completionTokens?: number | null
   totalTokens?: number | null
-  level?: $Enums.SpanLevel
-  statusMessage?: string | null
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
 }
 
 export type SpanUpdateWithoutPricingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
 }
 
 export type SpanUncheckedUpdateWithoutPricingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traceId?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SpanUncheckedUpdateManyWithoutPricingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   traceId?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
   parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  level?: Prisma.EnumSpanLevelFieldUpdateOperationsInput | $Enums.SpanLevel
-  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SpanCreateManyTraceInput = {
+  id?: string
+  externalSpanId: string
+  parentSpanId?: string | null
+  name: string
+  kind?: string
+  statusCode?: string
+  statusMessage?: string | null
+  traceState?: string | null
+  startTime: Date | string
+  endTime?: Date | string | null
+  durationMs?: number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: string | null
+  libraryVersion?: string | null
+  model?: string | null
+  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  promptTokens?: number | null
+  completionTokens?: number | null
+  totalTokens?: number | null
+  inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingId?: string | null
+  createdAt?: Date | string
+}
+
+export type SpanUpdateWithoutTraceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
+}
+
+export type SpanUncheckedUpdateWithoutTraceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SpanUncheckedUpdateManyWithoutTraceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  externalSpanId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  statusCode?: Prisma.StringFieldUpdateOperationsInput | string
+  statusMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  traceState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  attributes?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  events?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  links?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  libraryName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  libraryVersion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  modelParameters?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  promptTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  completionTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalTokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1142,24 +1453,33 @@ export type SpanUncheckedUpdateManyWithoutPricingInput = {
 export type SpanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   traceId?: boolean
+  externalSpanId?: boolean
   parentSpanId?: boolean
   name?: boolean
+  kind?: boolean
+  statusCode?: boolean
+  statusMessage?: boolean
+  traceState?: boolean
   startTime?: boolean
   endTime?: boolean
-  input?: boolean
-  output?: boolean
-  metadata?: boolean
+  durationMs?: boolean
+  attributes?: boolean
+  events?: boolean
+  links?: boolean
+  libraryName?: boolean
+  libraryVersion?: boolean
   model?: boolean
   modelParameters?: boolean
+  input?: boolean
+  output?: boolean
   promptTokens?: boolean
   completionTokens?: boolean
   totalTokens?: boolean
-  level?: boolean
-  statusMessage?: boolean
   inputCost?: boolean
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
 }, ExtArgs["result"]["span"]>
@@ -1167,24 +1487,33 @@ export type SpanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type SpanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   traceId?: boolean
+  externalSpanId?: boolean
   parentSpanId?: boolean
   name?: boolean
+  kind?: boolean
+  statusCode?: boolean
+  statusMessage?: boolean
+  traceState?: boolean
   startTime?: boolean
   endTime?: boolean
-  input?: boolean
-  output?: boolean
-  metadata?: boolean
+  durationMs?: boolean
+  attributes?: boolean
+  events?: boolean
+  links?: boolean
+  libraryName?: boolean
+  libraryVersion?: boolean
   model?: boolean
   modelParameters?: boolean
+  input?: boolean
+  output?: boolean
   promptTokens?: boolean
   completionTokens?: boolean
   totalTokens?: boolean
-  level?: boolean
-  statusMessage?: boolean
   inputCost?: boolean
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
 }, ExtArgs["result"]["span"]>
@@ -1192,24 +1521,33 @@ export type SpanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type SpanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   traceId?: boolean
+  externalSpanId?: boolean
   parentSpanId?: boolean
   name?: boolean
+  kind?: boolean
+  statusCode?: boolean
+  statusMessage?: boolean
+  traceState?: boolean
   startTime?: boolean
   endTime?: boolean
-  input?: boolean
-  output?: boolean
-  metadata?: boolean
+  durationMs?: boolean
+  attributes?: boolean
+  events?: boolean
+  links?: boolean
+  libraryName?: boolean
+  libraryVersion?: boolean
   model?: boolean
   modelParameters?: boolean
+  input?: boolean
+  output?: boolean
   promptTokens?: boolean
   completionTokens?: boolean
   totalTokens?: boolean
-  level?: boolean
-  statusMessage?: boolean
   inputCost?: boolean
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
 }, ExtArgs["result"]["span"]>
@@ -1217,27 +1555,36 @@ export type SpanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type SpanSelectScalar = {
   id?: boolean
   traceId?: boolean
+  externalSpanId?: boolean
   parentSpanId?: boolean
   name?: boolean
+  kind?: boolean
+  statusCode?: boolean
+  statusMessage?: boolean
+  traceState?: boolean
   startTime?: boolean
   endTime?: boolean
-  input?: boolean
-  output?: boolean
-  metadata?: boolean
+  durationMs?: boolean
+  attributes?: boolean
+  events?: boolean
+  links?: boolean
+  libraryName?: boolean
+  libraryVersion?: boolean
   model?: boolean
   modelParameters?: boolean
+  input?: boolean
+  output?: boolean
   promptTokens?: boolean
   completionTokens?: boolean
   totalTokens?: boolean
-  level?: boolean
-  statusMessage?: boolean
   inputCost?: boolean
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  createdAt?: boolean
 }
 
-export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "parentSpanId" | "name" | "startTime" | "endTime" | "input" | "output" | "metadata" | "model" | "modelParameters" | "promptTokens" | "completionTokens" | "totalTokens" | "level" | "statusMessage" | "inputCost" | "outputCost" | "totalCost" | "pricingId", ExtArgs["result"]["span"]>
+export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "externalSpanId" | "parentSpanId" | "name" | "kind" | "statusCode" | "statusMessage" | "traceState" | "startTime" | "endTime" | "durationMs" | "attributes" | "events" | "links" | "libraryName" | "libraryVersion" | "model" | "modelParameters" | "input" | "output" | "promptTokens" | "completionTokens" | "totalTokens" | "inputCost" | "outputCost" | "totalCost" | "pricingId" | "createdAt", ExtArgs["result"]["span"]>
 export type SpanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -1260,24 +1607,33 @@ export type $SpanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     traceId: string
+    externalSpanId: string
     parentSpanId: string | null
     name: string
+    kind: string
+    statusCode: string
+    statusMessage: string | null
+    traceState: string | null
     startTime: Date
     endTime: Date | null
-    input: runtime.JsonValue | null
-    output: runtime.JsonValue | null
-    metadata: runtime.JsonValue | null
+    durationMs: number | null
+    attributes: runtime.JsonValue | null
+    events: runtime.JsonValue | null
+    links: runtime.JsonValue | null
+    libraryName: string | null
+    libraryVersion: string | null
     model: string | null
     modelParameters: runtime.JsonValue | null
+    input: runtime.JsonValue | null
+    output: runtime.JsonValue | null
     promptTokens: number | null
     completionTokens: number | null
     totalTokens: number | null
-    level: $Enums.SpanLevel
-    statusMessage: string | null
     inputCost: runtime.Decimal | null
     outputCost: runtime.Decimal | null
     totalCost: runtime.Decimal | null
     pricingId: string | null
+    createdAt: Date
   }, ExtArgs["result"]["span"]>
   composites: {}
 }
@@ -1705,24 +2061,33 @@ export interface Prisma__SpanClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface SpanFieldRefs {
   readonly id: Prisma.FieldRef<"Span", 'String'>
   readonly traceId: Prisma.FieldRef<"Span", 'String'>
+  readonly externalSpanId: Prisma.FieldRef<"Span", 'String'>
   readonly parentSpanId: Prisma.FieldRef<"Span", 'String'>
   readonly name: Prisma.FieldRef<"Span", 'String'>
+  readonly kind: Prisma.FieldRef<"Span", 'String'>
+  readonly statusCode: Prisma.FieldRef<"Span", 'String'>
+  readonly statusMessage: Prisma.FieldRef<"Span", 'String'>
+  readonly traceState: Prisma.FieldRef<"Span", 'String'>
   readonly startTime: Prisma.FieldRef<"Span", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"Span", 'DateTime'>
-  readonly input: Prisma.FieldRef<"Span", 'Json'>
-  readonly output: Prisma.FieldRef<"Span", 'Json'>
-  readonly metadata: Prisma.FieldRef<"Span", 'Json'>
+  readonly durationMs: Prisma.FieldRef<"Span", 'Int'>
+  readonly attributes: Prisma.FieldRef<"Span", 'Json'>
+  readonly events: Prisma.FieldRef<"Span", 'Json'>
+  readonly links: Prisma.FieldRef<"Span", 'Json'>
+  readonly libraryName: Prisma.FieldRef<"Span", 'String'>
+  readonly libraryVersion: Prisma.FieldRef<"Span", 'String'>
   readonly model: Prisma.FieldRef<"Span", 'String'>
   readonly modelParameters: Prisma.FieldRef<"Span", 'Json'>
+  readonly input: Prisma.FieldRef<"Span", 'Json'>
+  readonly output: Prisma.FieldRef<"Span", 'Json'>
   readonly promptTokens: Prisma.FieldRef<"Span", 'Int'>
   readonly completionTokens: Prisma.FieldRef<"Span", 'Int'>
   readonly totalTokens: Prisma.FieldRef<"Span", 'Int'>
-  readonly level: Prisma.FieldRef<"Span", 'SpanLevel'>
-  readonly statusMessage: Prisma.FieldRef<"Span", 'String'>
   readonly inputCost: Prisma.FieldRef<"Span", 'Decimal'>
   readonly outputCost: Prisma.FieldRef<"Span", 'Decimal'>
   readonly totalCost: Prisma.FieldRef<"Span", 'Decimal'>
   readonly pricingId: Prisma.FieldRef<"Span", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Span", 'DateTime'>
 }
     
 

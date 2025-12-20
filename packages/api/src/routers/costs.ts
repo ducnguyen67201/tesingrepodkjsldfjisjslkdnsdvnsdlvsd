@@ -100,23 +100,20 @@ const buildSpanFilters = (
   const conditions: Prisma.SpanWhereInput = {
     trace: {
       projectId: input.projectId,
-      timestamp: { gte: dateRange.start, lte: dateRange.end },
+      startTime: { gte: dateRange.start, lte: dateRange.end },
     },
     // Only include spans with costs
     totalCost: { not: null },
   };
 
-  // Search filter - match trace name
+  // Search filter - match span name (trace no longer has name field in OTLP-first design)
   if (input.search) {
-    conditions.trace = {
-      ...conditions.trace,
-      name: { contains: input.search, mode: "insensitive" },
-    } as Prisma.TraceWhereInput;
+    conditions.name = { contains: input.search, mode: "insensitive" };
   }
 
-  // Level filter
+  // Status filter (was level, now statusCode in OTLP-first design)
   if (input.levels?.length) {
-    conditions.level = { in: input.levels };
+    conditions.statusCode = { in: input.levels };
   }
 
   // Model filter

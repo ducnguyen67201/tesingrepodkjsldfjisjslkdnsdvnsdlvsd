@@ -423,22 +423,6 @@ export type UserNullableScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput | null
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type UserCreateNestedOneWithoutAccountsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
@@ -465,34 +449,6 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
-}
-
-export type UserCreateNestedOneWithoutWorkspacesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspacesInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutWorkspacesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspacesInput
-  upsert?: Prisma.UserUpsertWithoutWorkspacesInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkspacesInput, Prisma.UserUpdateWithoutWorkspacesInput>, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
-}
-
-export type UserCreateNestedOneWithoutDomainsCreatedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDomainsCreatedInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutDomainsCreatedNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDomainsCreatedInput
-  upsert?: Prisma.UserUpsertWithoutDomainsCreatedInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDomainsCreatedInput, Prisma.UserUpdateWithoutDomainsCreatedInput>, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
 }
 
 export type UserCreateNestedOneWithoutProjectsInput = {
@@ -523,6 +479,34 @@ export type UserUpdateOneWithoutRcaFeedbackNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRcaFeedbackInput, Prisma.UserUpdateWithoutRcaFeedbackInput>, Prisma.UserUncheckedUpdateWithoutRcaFeedbackInput>
+}
+
+export type UserCreateNestedOneWithoutWorkspacesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspacesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWorkspacesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWorkspacesInput
+  upsert?: Prisma.UserUpsertWithoutWorkspacesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWorkspacesInput, Prisma.UserUpdateWithoutWorkspacesInput>, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
+}
+
+export type UserCreateNestedOneWithoutDomainsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDomainsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDomainsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDomainsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutDomainsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDomainsCreatedInput, Prisma.UserUpdateWithoutDomainsCreatedInput>, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -685,166 +669,6 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
-export type UserCreateWithoutWorkspacesInput = {
-  id?: string
-  name?: string | null
-  email: string
-  emailVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
-  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
-  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
-}
-
-export type UserUncheckedCreateWithoutWorkspacesInput = {
-  id?: string
-  name?: string | null
-  email: string
-  emailVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
-  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
-  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
-}
-
-export type UserCreateOrConnectWithoutWorkspacesInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
-}
-
-export type UserUpsertWithoutWorkspacesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkspacesInput, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutWorkspacesInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkspacesInput, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
-}
-
-export type UserUpdateWithoutWorkspacesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
-  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
-  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutWorkspacesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
-  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
-  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
-}
-
-export type UserCreateWithoutDomainsCreatedInput = {
-  id?: string
-  name?: string | null
-  email: string
-  emailVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
-  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
-  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
-}
-
-export type UserUncheckedCreateWithoutDomainsCreatedInput = {
-  id?: string
-  name?: string | null
-  email: string
-  emailVerified?: Date | string | null
-  password?: string | null
-  image?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
-  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
-  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
-}
-
-export type UserCreateOrConnectWithoutDomainsCreatedInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
-}
-
-export type UserUpsertWithoutDomainsCreatedInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutDomainsCreatedInput, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutDomainsCreatedInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutDomainsCreatedInput, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
-}
-
-export type UserUpdateWithoutDomainsCreatedInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
-  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
-  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
-  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
-  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
-}
-
 export type UserCreateWithoutProjectsInput = {
   id?: string
   name?: string | null
@@ -1003,6 +827,166 @@ export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutWorkspacesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+}
+
+export type UserUncheckedCreateWithoutWorkspacesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+}
+
+export type UserCreateOrConnectWithoutWorkspacesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
+}
+
+export type UserUpsertWithoutWorkspacesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWorkspacesInput, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWorkspacesInput, Prisma.UserUncheckedCreateWithoutWorkspacesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWorkspacesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWorkspacesInput, Prisma.UserUncheckedUpdateWithoutWorkspacesInput>
+}
+
+export type UserUpdateWithoutWorkspacesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWorkspacesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+}
+
+export type UserCreateWithoutDomainsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+}
+
+export type UserUncheckedCreateWithoutDomainsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+}
+
+export type UserCreateOrConnectWithoutDomainsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
+}
+
+export type UserUpsertWithoutDomainsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDomainsCreatedInput, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDomainsCreatedInput, Prisma.UserUncheckedCreateWithoutDomainsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDomainsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDomainsCreatedInput, Prisma.UserUncheckedUpdateWithoutDomainsCreatedInput>
+}
+
+export type UserUpdateWithoutDomainsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
 }
 
 

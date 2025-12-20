@@ -344,16 +344,6 @@ export type NotificationChannelUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type NotificationChannelListRelationFilter = {
-  every?: Prisma.NotificationChannelWhereInput
-  some?: Prisma.NotificationChannelWhereInput
-  none?: Prisma.NotificationChannelWhereInput
-}
-
-export type NotificationChannelOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type NotificationChannelWorkspaceIdNameCompoundUniqueInput = {
   workspaceId: string
   name: string
@@ -393,6 +383,30 @@ export type NotificationChannelMinOrderByAggregateInput = {
 export type NotificationChannelScalarRelationFilter = {
   is?: Prisma.NotificationChannelWhereInput
   isNot?: Prisma.NotificationChannelWhereInput
+}
+
+export type NotificationChannelListRelationFilter = {
+  every?: Prisma.NotificationChannelWhereInput
+  some?: Prisma.NotificationChannelWhereInput
+  none?: Prisma.NotificationChannelWhereInput
+}
+
+export type NotificationChannelOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type NotificationChannelCreateNestedOneWithoutAlertLinksInput = {
+  create?: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
+  connectOrCreate?: Prisma.NotificationChannelCreateOrConnectWithoutAlertLinksInput
+  connect?: Prisma.NotificationChannelWhereUniqueInput
+}
+
+export type NotificationChannelUpdateOneRequiredWithoutAlertLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
+  connectOrCreate?: Prisma.NotificationChannelCreateOrConnectWithoutAlertLinksInput
+  upsert?: Prisma.NotificationChannelUpsertWithoutAlertLinksInput
+  connect?: Prisma.NotificationChannelWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.NotificationChannelUpdateToOneWithWhereWithoutAlertLinksInput, Prisma.NotificationChannelUpdateWithoutAlertLinksInput>, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
 }
 
 export type NotificationChannelCreateNestedManyWithoutWorkspaceInput = {
@@ -437,18 +451,64 @@ export type NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput = 
   deleteMany?: Prisma.NotificationChannelScalarWhereInput | Prisma.NotificationChannelScalarWhereInput[]
 }
 
-export type NotificationChannelCreateNestedOneWithoutAlertLinksInput = {
-  create?: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
-  connectOrCreate?: Prisma.NotificationChannelCreateOrConnectWithoutAlertLinksInput
-  connect?: Prisma.NotificationChannelWhereUniqueInput
+export type NotificationChannelCreateWithoutAlertLinksInput = {
+  id?: string
+  name: string
+  provider: $Enums.ChannelProvider
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  verified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutNotificationChannelsInput
 }
 
-export type NotificationChannelUpdateOneRequiredWithoutAlertLinksNestedInput = {
-  create?: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
-  connectOrCreate?: Prisma.NotificationChannelCreateOrConnectWithoutAlertLinksInput
-  upsert?: Prisma.NotificationChannelUpsertWithoutAlertLinksInput
-  connect?: Prisma.NotificationChannelWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.NotificationChannelUpdateToOneWithWhereWithoutAlertLinksInput, Prisma.NotificationChannelUpdateWithoutAlertLinksInput>, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
+export type NotificationChannelUncheckedCreateWithoutAlertLinksInput = {
+  id?: string
+  workspaceId: string
+  name: string
+  provider: $Enums.ChannelProvider
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  verified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NotificationChannelCreateOrConnectWithoutAlertLinksInput = {
+  where: Prisma.NotificationChannelWhereUniqueInput
+  create: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
+}
+
+export type NotificationChannelUpsertWithoutAlertLinksInput = {
+  update: Prisma.XOR<Prisma.NotificationChannelUpdateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
+  create: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
+  where?: Prisma.NotificationChannelWhereInput
+}
+
+export type NotificationChannelUpdateToOneWithWhereWithoutAlertLinksInput = {
+  where?: Prisma.NotificationChannelWhereInput
+  data: Prisma.XOR<Prisma.NotificationChannelUpdateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
+}
+
+export type NotificationChannelUpdateWithoutAlertLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumChannelProviderFieldUpdateOperationsInput | $Enums.ChannelProvider
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutNotificationChannelsNestedInput
+}
+
+export type NotificationChannelUncheckedUpdateWithoutAlertLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.EnumChannelProviderFieldUpdateOperationsInput | $Enums.ChannelProvider
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationChannelCreateWithoutWorkspaceInput = {
@@ -511,66 +571,6 @@ export type NotificationChannelScalarWhereInput = {
   verified?: Prisma.BoolFilter<"NotificationChannel"> | boolean
   createdAt?: Prisma.DateTimeFilter<"NotificationChannel"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"NotificationChannel"> | Date | string
-}
-
-export type NotificationChannelCreateWithoutAlertLinksInput = {
-  id?: string
-  name: string
-  provider: $Enums.ChannelProvider
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  verified?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  workspace: Prisma.WorkspaceCreateNestedOneWithoutNotificationChannelsInput
-}
-
-export type NotificationChannelUncheckedCreateWithoutAlertLinksInput = {
-  id?: string
-  workspaceId: string
-  name: string
-  provider: $Enums.ChannelProvider
-  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  verified?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type NotificationChannelCreateOrConnectWithoutAlertLinksInput = {
-  where: Prisma.NotificationChannelWhereUniqueInput
-  create: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
-}
-
-export type NotificationChannelUpsertWithoutAlertLinksInput = {
-  update: Prisma.XOR<Prisma.NotificationChannelUpdateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
-  create: Prisma.XOR<Prisma.NotificationChannelCreateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedCreateWithoutAlertLinksInput>
-  where?: Prisma.NotificationChannelWhereInput
-}
-
-export type NotificationChannelUpdateToOneWithWhereWithoutAlertLinksInput = {
-  where?: Prisma.NotificationChannelWhereInput
-  data: Prisma.XOR<Prisma.NotificationChannelUpdateWithoutAlertLinksInput, Prisma.NotificationChannelUncheckedUpdateWithoutAlertLinksInput>
-}
-
-export type NotificationChannelUpdateWithoutAlertLinksInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  provider?: Prisma.EnumChannelProviderFieldUpdateOperationsInput | $Enums.ChannelProvider
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutNotificationChannelsNestedInput
-}
-
-export type NotificationChannelUncheckedUpdateWithoutAlertLinksInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  provider?: Prisma.EnumChannelProviderFieldUpdateOperationsInput | $Enums.ChannelProvider
-  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NotificationChannelCreateManyWorkspaceInput = {

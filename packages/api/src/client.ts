@@ -33,13 +33,10 @@ export {
   WORKSPACE_MEMBER_ROLES,
   ALL_WORKSPACE_ROLES,
   isValidWorkspaceRole,
-  // Trace filter schemas
+  // Trace filter schemas (OTLP-first)
   SpanTypeSchema,
   type SpanType,
   ALL_SPAN_TYPES,
-  SpanLevelSchema,
-  type SpanLevel,
-  ALL_SPAN_LEVELS,
   TraceFiltersSchema,
   type TraceFilters,
   FILTER_PARAM_KEYS,
@@ -60,15 +57,7 @@ export type {
   WorkspaceMemberItem,
 } from "./routers/workspaces";
 export type { ProjectListItem, ProjectDetail } from "./routers/projects";
-export type { TraceListItem, TraceDetail, SpanItem, SpanDetail } from "./routers/traces";
-export type {
-  ProjectAnalytics,
-  WorkspaceAnalytics,
-  ProjectSummary,
-  TraceVolumePoint,
-  LatencyPoint,
-  TokenUsagePoint,
-  ModelUsage,
-} from "./routers/analytics";
+// NOTE: TraceListItem, TraceDetail, SpanItem, SpanDetail removed - will be reworked for OTLP-first design
+// NOTE: ProjectAnalytics, WorkspaceAnalytics, etc. removed - will be reworked for OTLP-first design
 export type { SessionWithStats } from "./schemas/sessions";
-export type { TrackedUserWithStats, TrackedUserAnalytics, TrackedUserSummary } from "./schemas/trackedUsers";
+export type { TrackedUserWithStats, TrackedUserSummary } from "./schemas/trackedUsers";

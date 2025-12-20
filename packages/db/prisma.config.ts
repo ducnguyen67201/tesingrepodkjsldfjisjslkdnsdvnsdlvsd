@@ -10,7 +10,7 @@ const databaseUrl = process.env.DATABASE_URL || 'postgresql://placeholder:placeh
 
 export default defineConfig({
   earlyAccess: true,
-  schema: path.join(import.meta.dirname, 'prisma', 'schema.prisma'),
+  schema: path.join(import.meta.dirname, 'prisma', 'schema'),
   datasource: {
     url: databaseUrl,
   },
