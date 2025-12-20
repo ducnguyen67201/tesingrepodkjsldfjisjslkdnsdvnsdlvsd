@@ -1,59 +1,72 @@
+import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
-/**
- * Environment configuration schema with validation
- */
-const EnvSchema = z.object({
-  // Server
-  PORT: z.coerce.number().default(8081),
-  HOST: z.string().default("0.0.0.0"),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+export const env = createEnv({
+  /**
+   * Server-side environment variables schema.
+   */
+  server: {
+    NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
 
-  // Database
-  DATABASE_URL: z.string(),
+    // Server
+    PORT: z.coerce.number().default(8081),
+    HOST: z.string().default("0.0.0.0"),
 
-  // Limits
-  MAX_PAYLOAD_BYTES: z.coerce.number().default(512 * 1024), // 512KB
-  MAX_SPANS_PER_REQUEST: z.coerce.number().default(500),
-  MAX_ATTR_PER_SPAN: z.coerce.number().default(64),
-  MAX_EVENTS_PER_SPAN: z.coerce.number().default(64),
-  MAX_LINKS_PER_SPAN: z.coerce.number().default(32),
-  MAX_ATTR_VALUE_LEN: z.coerce.number().default(2048),
+    // Database
+    DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),
 
-  // Rate limiting
-  RATE_LIMIT_RPS: z.coerce.number().default(200),
-  RATE_LIMIT_BURST: z.coerce.number().default(400),
+    // Limits
+    MAX_PAYLOAD_BYTES: z.coerce.number().default(512 * 1024), // 512KB
+    MAX_SPANS_PER_REQUEST: z.coerce.number().default(500),
+    MAX_ATTR_PER_SPAN: z.coerce.number().default(64),
+    MAX_EVENTS_PER_SPAN: z.coerce.number().default(64),
+    MAX_LINKS_PER_SPAN: z.coerce.number().default(32),
+    MAX_ATTR_VALUE_LEN: z.coerce.number().default(2048),
 
-  // Logging
-  LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace"]).default("info"),
+    // Rate limiting
+    RATE_LIMIT_RPS: z.coerce.number().default(200),
+    RATE_LIMIT_BURST: z.coerce.number().default(400),
+
+    // Logging
+    LOG_LEVEL: z
+      .enum(["fatal", "error", "warn", "info", "debug", "trace"])
+      .default("info"),
+  },
+
+  /**
+   * Runtime environment variables.
+   */
+  runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    HOST: process.env.HOST,
+    DATABASE_URL: process.env.DATABASE_URL,
+    MAX_PAYLOAD_BYTES: process.env.MAX_PAYLOAD_BYTES,
+    MAX_SPANS_PER_REQUEST: process.env.MAX_SPANS_PER_REQUEST,
+    MAX_ATTR_PER_SPAN: process.env.MAX_ATTR_PER_SPAN,
+    MAX_EVENTS_PER_SPAN: process.env.MAX_EVENTS_PER_SPAN,
+    MAX_LINKS_PER_SPAN: process.env.MAX_LINKS_PER_SPAN,
+    MAX_ATTR_VALUE_LEN: process.env.MAX_ATTR_VALUE_LEN,
+    RATE_LIMIT_RPS: process.env.RATE_LIMIT_RPS,
+    RATE_LIMIT_BURST: process.env.RATE_LIMIT_BURST,
+    LOG_LEVEL: process.env.LOG_LEVEL,
+  },
+
+  /**
+   * Skip validation in certain environments.
+   */
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+
+  /**
+   * Treat empty strings as undefined.
+   */
+  emptyStringAsUndefined: true,
 });
 
-export type Env = z.infer<typeof EnvSchema>;
-
 /**
- * Parse and validate environment variables
- */
-function parseEnv(): Env {
-  const result = EnvSchema.safeParse(process.env);
-
-  if (!result.success) {
-    console.error("Invalid environment configuration:");
-    for (const issue of result.error.issues) {
-      console.error(`  ${issue.path.join(".")}: ${issue.message}`);
-    }
-    process.exit(1);
-  }
-
-  return result.data;
-}
-
-/**
- * Validated environment configuration
- */
-export const env = parseEnv();
-
-/**
- * Configuration object derived from environment
+ * Derived configuration object for convenience
  */
 export const config = {
   server: {

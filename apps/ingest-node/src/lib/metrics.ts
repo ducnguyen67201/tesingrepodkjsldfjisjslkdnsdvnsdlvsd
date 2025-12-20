@@ -69,3 +69,50 @@ export const dbLatency = new Histogram({
   buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
   registers: [registry],
 });
+
+/**
+ * Pipeline handler duration histogram
+ */
+export const handlerDuration = new Histogram({
+  name: "ingest_handler_duration_seconds",
+  help: "Pipeline handler execution duration in seconds",
+  labelNames: ["handler", "status"],
+  buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
+  registers: [registry],
+});
+
+/**
+ * Pipeline total duration histogram
+ */
+export const pipelineDuration = new Histogram({
+  name: "ingest_pipeline_duration_seconds",
+  help: "Total pipeline execution duration in seconds",
+  labelNames: ["status"],
+  buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5],
+  registers: [registry],
+});
+
+/**
+ * Request errors counter
+ */
+export const requestErrors = new Counter({
+  name: "ingest_request_errors_total",
+  help: "Total number of request errors",
+  labelNames: ["error_code", "status_code"],
+  registers: [registry],
+});
+
+/**
+ * Export all metrics for easy access
+ */
+export const metrics = {
+  requestCounter,
+  requestLatency,
+  spanCounter,
+  rejectCounter,
+  payloadSize,
+  dbLatency,
+  handlerDuration,
+  pipelineDuration,
+  requestErrors,
+};

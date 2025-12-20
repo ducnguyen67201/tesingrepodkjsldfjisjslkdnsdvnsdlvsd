@@ -12,6 +12,7 @@ import {
   Activity,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import type { TrackedUser } from "@cognobserve/db";
 import {
   Table,
   TableBody,
@@ -27,18 +28,9 @@ import { useTrackedUsers } from "@/hooks/tracked-users/use-tracked-users";
 import { cn } from "@/lib/utils";
 import { TrackedUserDetailPanel } from "./tracked-user-detail-panel";
 
-// NOTE: TrackedUserWithStats → TrackedUserBasic for OTLP-first design
-// Metrics like traceCount, totalCost will be reworked
-interface TrackedUserBasic {
-  id: string;
-  projectId: string;
-  externalId: string;
-  name: string | null;
-  email: string | null;
-  metadata: Record<string, unknown> | null;
-  firstSeenAt: Date;
-  lastSeenAt: Date;
-}
+// Use TrackedUser from @cognobserve/db
+// NOTE: Metrics like traceCount, totalCost will be reworked for OTLP-first design
+type TrackedUserBasic = TrackedUser;
 
 /** Skeleton row indices for loading state */
 const SKELETON_ROWS = [0, 1, 2, 3, 4] as const;
