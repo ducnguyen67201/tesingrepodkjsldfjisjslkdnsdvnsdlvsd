@@ -88,6 +88,9 @@ RUN apk add --no-cache \
     # gcompat needed for Temporal CLI
     gcompat
 
+# Install pnpm for production dependency installation
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
 # Install Prisma CLI globally (avoids pnpm ESM issues)
 RUN npm install -g prisma@7
 
@@ -108,19 +111,38 @@ RUN mkdir -p /data/temporal
 
 # Copy Node.js application
 WORKDIR /app
-# Copy root package files for monorepo resolution
+
+# Copy package files for production dependency installation
 COPY --from=node-builder /app/package.json ./package.json
+COPY --from=node-builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=node-builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-# Copy Next.js standalone output
+COPY --from=node-builder /app/apps/ingest-node/package.json ./apps/ingest-node/package.json
+COPY --from=node-builder /app/packages/db/package.json ./packages/db/package.json
+COPY --from=node-builder /app/packages/shared/package.json ./packages/shared/package.json
+COPY --from=node-builder /app/packages/api/package.json ./packages/api/package.json
+COPY --from=node-builder /app/packages/proto/package.json ./packages/proto/package.json
+
+# Install production dependencies (creates proper node_modules without broken symlinks)
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy Next.js standalone output (includes its own node_modules)
 COPY --from=node-builder /app/apps/web/.next/standalone ./
 COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
 # Copy public directory (contains static assets like favicon, images)
 COPY --from=node-builder /app/apps/web/public ./apps/web/public
+
 # Copy ingest-node dist
 COPY --from=node-builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
-# Copy node_modules and packages for runtime
-COPY --from=node-builder /app/node_modules ./node_modules
-COPY --from=node-builder /app/packages ./packages
+
+# Copy built packages
+COPY --from=node-builder /app/packages/db/dist ./packages/db/dist
+COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
+COPY --from=node-builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=node-builder /app/packages/api/dist ./packages/api/dist
+COPY --from=node-builder /app/packages/proto/dist ./packages/proto/dist
+
+# Copy Prisma client from builder (needed for runtime)
+COPY --from=node-builder /app/node_modules/.prisma ./node_modules/.prisma
 
 # Copy Temporal CLI
 COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
