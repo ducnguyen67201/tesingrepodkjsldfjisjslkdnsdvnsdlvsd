@@ -7,13 +7,13 @@
 ./scripts/setup.sh
 
 # Then start services (2 terminals)
-pnpm dev                      # Terminal 1: Web + Worker
-cd apps/ingest && make dev    # Terminal 2: Go Ingest
+pnpm dev           # Terminal 1: Web + Worker
+make dev-ingest    # Terminal 2: Ingest Service
 ```
 
 Done! 🎉
 - Web: http://localhost:3000
-- API: http://localhost:8080
+- API: http://localhost:8081
 
 ---
 
@@ -23,7 +23,6 @@ Done! 🎉
 |------|---------|---------|
 | Node.js | 24+ | https://nodejs.org/ or `nvm install 24` |
 | pnpm | 9+ | `npm install -g pnpm` |
-| Go | 1.23+ | https://go.dev/dl/ |
 | Docker | Latest | https://www.docker.com/ |
 
 ### Verify Installation
@@ -31,7 +30,6 @@ Done! 🎉
 ```bash
 node -v    # v24.x.x
 pnpm -v    # 9.x.x
-go version # go1.23.x
 docker -v  # Docker version 2x.x.x
 ```
 
@@ -52,7 +50,7 @@ pnpm install
 ### 2. Start Infrastructure
 
 ```bash
-# Start PostgreSQL and Redis
+# Start PostgreSQL, Redis, and Temporal
 docker-compose up -d
 
 # Verify containers are running
@@ -76,24 +74,16 @@ pnpm db:generate
 pnpm db:push
 ```
 
-### 5. Install Go Dependencies
-
-```bash
-cd apps/ingest
-go mod download
-cd ../..
-```
-
-### 6. Start Development
+### 5. Start Development
 
 **Terminal 1 - TypeScript apps:**
 ```bash
 pnpm dev
 ```
 
-**Terminal 2 - Go ingest service:**
+**Terminal 2 - Ingest service:**
 ```bash
-cd apps/ingest && make dev
+make dev-ingest
 ```
 
 ---
@@ -103,9 +93,10 @@ cd apps/ingest && make dev
 | Service | URL | Description |
 |---------|-----|-------------|
 | Web | http://localhost:3000 | Next.js Dashboard |
-| Ingest | http://localhost:8080 | Go Ingestion API |
+| Ingest | http://localhost:8081 | OTLP Ingestion API |
+| Temporal UI | http://localhost:8088 | Workflow Monitoring |
 | PostgreSQL | localhost:5432 | Database |
-| Redis | localhost:6379 | Queue |
+| Redis | localhost:6379 | Cache |
 
 ---
 
@@ -114,42 +105,51 @@ cd apps/ingest && make dev
 ### Check Health
 
 ```bash
-curl http://localhost:8080/health
+curl http://localhost:8081/health
 ```
 
 Expected response:
 ```json
-{"status":"ok","version":"0.1.0"}
+{"status":"ok","timestamp":"2024-01-01T00:00:00.000Z"}
 ```
 
-### Send Test Trace
+### Check Metrics
 
 ```bash
-curl -X POST http://localhost:8080/v1/traces \
+curl http://localhost:8081/metrics
+```
+
+### Send Test OTLP Trace
+
+```bash
+curl -X POST http://localhost:8081/v1/traces \
   -H "Content-Type: application/json" \
+  -H "X-API-Key: your-api-key" \
   -d '{
-    "name": "test-trace",
-    "spans": [
-      {
-        "name": "llm-call",
-        "start_time": "2024-01-01T00:00:00Z",
-        "model": "gpt-4",
-        "usage": {
-          "prompt_tokens": 100,
-          "completion_tokens": 50,
-          "total_tokens": 150
-        }
-      }
-    ]
+    "resourceSpans": [{
+      "resource": {
+        "attributes": [
+          {"key": "service.name", "value": {"stringValue": "test-service"}}
+        ]
+      },
+      "scopeSpans": [{
+        "spans": [{
+          "traceId": "a1b2c3d4e5f6789012345678901234ab",
+          "spanId": "a1b2c3d4e5f67890",
+          "name": "test-span",
+          "startTimeUnixNano": "1704067200000000000"
+        }]
+      }]
+    }]
   }'
 ```
 
 Expected response:
 ```json
 {
-  "trace_id": "abc123...",
-  "span_ids": ["def456..."],
-  "success": true
+  "accepted": true,
+  "traceCount": 1,
+  "spanCount": 1
 }
 ```
 
@@ -161,7 +161,7 @@ Expected response:
 
 ```bash
 pnpm dev              # Start all TypeScript apps
-cd apps/ingest && make dev  # Start Go service with hot reload
+make dev-ingest       # Start ingest service with hot reload
 ```
 
 ### Database
@@ -176,14 +176,14 @@ pnpm db:migrate       # Create migration (production)
 ### Proto/Types
 
 ```bash
-make proto            # Generate Go + TypeScript types
+make proto            # Generate TypeScript types
 make proto-lint       # Lint proto files
 ```
 
 ### Docker
 
 ```bash
-make docker-up        # Start PostgreSQL + Redis
+make docker-up        # Start PostgreSQL + Redis + Temporal
 make docker-down      # Stop containers
 docker-compose logs   # View logs
 ```
@@ -192,7 +192,6 @@ docker-compose logs   # View logs
 
 ```bash
 pnpm build            # Build all TypeScript apps
-cd apps/ingest && make build  # Build Go binary
 ```
 
 ---
@@ -203,10 +202,11 @@ cd apps/ingest && make build  # Build Go binary
 CognObserve/
 ├── apps/
 │   ├── web/          # Next.js dashboard (port 3000)
-│   ├── ingest/       # Go ingestion service (port 8080)
-│   └── worker/       # Background processor
+│   ├── ingest-node/  # OTLP ingestion service (port 8081)
+│   └── worker/       # Temporal background worker
 ├── packages/
 │   ├── proto/        # Generated TypeScript types
+│   ├── api/          # tRPC routers & schemas
 │   ├── db/           # Prisma schema
 │   └── shared/       # Shared utilities
 ├── proto/            # Protobuf definitions
@@ -241,14 +241,6 @@ pnpm db:generate
 pnpm db:push --force-reset
 ```
 
-### Go module errors
-
-```bash
-cd apps/ingest
-go mod tidy
-go mod download
-```
-
 ### Proto generation fails
 
 ```bash
@@ -267,7 +259,7 @@ make proto
 ```bash
 # Kill process on port
 kill $(lsof -t -i:3000)  # Web
-kill $(lsof -t -i:8080)  # Ingest
+kill $(lsof -t -i:8081)  # Ingest
 ```
 
 ---
