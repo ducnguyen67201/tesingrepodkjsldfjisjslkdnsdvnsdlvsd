@@ -21,6 +21,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web/package.json ./apps/web/
 COPY apps/worker/package.json ./apps/worker/
+COPY apps/ingest-node/package.json ./apps/ingest-node/
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma/
 COPY packages/api/package.json ./packages/api/
@@ -38,6 +39,10 @@ COPY . .
 # Generate Prisma client
 RUN pnpm --filter @cognobserve/db db:generate
 
+# Build shared packages first
+RUN pnpm --filter @cognobserve/shared build
+RUN pnpm --filter @cognobserve/api build
+
 # Build Web (Next.js with standalone output)
 # Provide dummy env vars for build time - actual values are set at runtime
 ENV NEXTAUTH_SECRET="build-time-placeholder-secret-min-32-chars"
@@ -51,27 +56,11 @@ RUN pnpm --filter @cognobserve/web build
 # Build Worker
 RUN pnpm --filter @cognobserve/worker build
 
-# ============================================================
-# Stage 2: Build Go Ingest Service
-# ============================================================
-FROM golang:1.23-alpine AS go-builder
-
-WORKDIR /app
-
-# Copy Go module files
-COPY apps/ingest/go.mod apps/ingest/go.sum ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy Go source
-COPY apps/ingest/ ./
-
-# Build static binary
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /ingest ./cmd/ingest
+# Build Ingest Node
+RUN pnpm --filter @cognobserve/ingest-node build
 
 # ============================================================
-# Stage 3: Production Runtime
+# Stage 2: Production Runtime
 # ============================================================
 FROM node:24-alpine AS runtime
 
@@ -93,11 +82,9 @@ COPY --from=node-builder /app/apps/web/.next/standalone ./
 COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=node-builder /app/apps/web/public ./apps/web/public
 COPY --from=node-builder /app/apps/worker/dist ./apps/worker/dist
+COPY --from=node-builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
 COPY --from=node-builder /app/node_modules ./node_modules
 COPY --from=node-builder /app/packages ./packages
-
-# Copy Go binary
-COPY --from=go-builder /ingest ./ingest
 
 # Copy configuration files
 COPY docker/production/supervisord.conf /etc/supervisord.conf
@@ -113,8 +100,8 @@ USER cognobserve
 
 # Expose ports
 # 3000 - Web Dashboard & API
-# 8080 - Ingest API (for SDKs)
-EXPOSE 3000 8080
+# 8081 - Ingest API (for SDKs)
+EXPOSE 3000 8081
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \

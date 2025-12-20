@@ -9,7 +9,7 @@
 #
 # Usage:
 #   docker build -f Dockerfile.quickstart -t cognobserve:latest .
-#   docker run -d -p 3000:3000 -p 8080:8080 -v cognobserve_data:/data cognobserve:latest
+#   docker run -d -p 3000:3000 -p 8081:8081 -v cognobserve_data:/data cognobserve:latest
 
 # ============================================================
 # Stage 1: Build Node.js Applications
@@ -25,6 +25,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web/package.json ./apps/web/
 COPY apps/worker/package.json ./apps/worker/
+COPY apps/ingest-node/package.json ./apps/ingest-node/
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma/
 COPY packages/api/package.json ./packages/api/
@@ -44,6 +45,7 @@ RUN pnpm --filter @cognobserve/db db:generate
 
 # Build shared packages
 RUN pnpm --filter @cognobserve/shared build
+RUN pnpm --filter @cognobserve/api build
 
 # Build Web (Next.js with standalone output)
 # Skip env validation during build - actual values are provided at runtime
@@ -52,32 +54,16 @@ ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholde
 
 RUN pnpm --filter @cognobserve/web build
 
+# Build Ingest Node
+RUN pnpm --filter @cognobserve/ingest-node build
+
 # ============================================================
 # Stage 2: Get Temporal CLI (for dev server)
 # ============================================================
 FROM temporalio/admin-tools:latest AS temporal-tools
 
 # ============================================================
-# Stage 3: Build Go Ingest Service
-# ============================================================
-FROM golang:1.23-alpine AS go-builder
-
-WORKDIR /app
-
-# Copy Go module files
-COPY apps/ingest/go.mod apps/ingest/go.sum ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy Go source
-COPY apps/ingest/ ./
-
-# Build static binary
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /ingest ./cmd/ingest
-
-# ============================================================
-# Stage 4: Production Runtime (All-in-One)
+# Stage 3: Production Runtime (All-in-One)
 # ============================================================
 FROM node:24-alpine AS runtime
 
@@ -130,12 +116,11 @@ COPY --from=node-builder /app/apps/web/.next/standalone ./
 COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
 # Copy public directory (contains static assets like favicon, images)
 COPY --from=node-builder /app/apps/web/public ./apps/web/public
+# Copy ingest-node dist
+COPY --from=node-builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
 # Copy node_modules and packages for runtime
 COPY --from=node-builder /app/node_modules ./node_modules
 COPY --from=node-builder /app/packages ./packages
-
-# Copy Go binary
-COPY --from=go-builder /ingest ./ingest
 
 # Copy Temporal CLI
 COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
@@ -163,12 +148,12 @@ RUN mkdir -p /data/secrets /app/logs \
 
 # Expose ports
 # 3000 - Web Dashboard & API
-# 8080 - Ingest API (for SDKs)
-EXPOSE 3000 8080
+# 8081 - Ingest API (for SDKs)
+EXPOSE 3000 8081
 
 # Health check - use ingest service (no auth required)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD wget -qO- http://localhost:8080/health || exit 1
+    CMD wget -qO- http://localhost:8081/health || exit 1
 
 # Volume for persistent data
 VOLUME ["/data"]

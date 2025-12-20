@@ -234,8 +234,9 @@ describe("ParseHandler", () => {
     it("should handle large gzipped payloads", async () => {
       // Create a request with many spans to test larger payloads
       const request = createBasicOtlpRequest();
+      const spans = request.resourceSpans[0]!.scopeSpans[0]!.spans;
       for (let i = 0; i < 50; i++) {
-        request.resourceSpans[0].scopeSpans[0].spans.push({
+        spans.push({
           traceId: "a".repeat(32),
           spanId: `span${i.toString().padStart(14, "0")}`,
           name: `span-${i}`,
@@ -255,7 +256,7 @@ describe("ParseHandler", () => {
       const result = await handler.handle(ctx);
 
       expect(result.continue).toBe(true);
-      expect(ctx.parsedRequest?.resourceSpans[0].scopeSpans[0].spans.length).toBeGreaterThan(50);
+      expect(ctx.parsedRequest!.resourceSpans[0]!.scopeSpans[0]!.spans.length).toBeGreaterThan(50);
     });
   });
 

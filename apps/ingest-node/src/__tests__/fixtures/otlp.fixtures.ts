@@ -311,7 +311,7 @@ export function createInvalidTimestampOtlpRequest(): OtlpExportRequest {
  * Create an OTLP request with multiple traces
  */
 export function createMultiTraceOtlpRequest(traceCount: number): OtlpExportRequest {
-  const allSpans = [];
+  const allSpans: ReturnType<typeof createOtlpSpan>[] = [];
 
   for (let i = 0; i < traceCount; i++) {
     const traceId = generateTraceId();
@@ -323,10 +323,11 @@ export function createMultiTraceOtlpRequest(traceCount: number): OtlpExportReque
       })
     );
     // Add a child span
+    const parentSpan = allSpans[allSpans.length - 1]!;
     allSpans.push(
       createOtlpSpan({
         traceId,
-        parentSpanId: allSpans[allSpans.length - 1].spanId,
+        parentSpanId: parentSpan.spanId,
         name: `child-span-${i}`,
         statusCode: 1,
       })
