@@ -878,20 +878,20 @@ export const alertsRouter = createRouter({
         ? await prisma.trace.findMany({
             where: {
               projectId: rca.alert.projectId,
-              timestamp: {
+              startTime: {
                 gte: new Date(alertHistory.triggeredAt.getTime() - 5 * 60 * 1000),
                 lte: alertHistory.triggeredAt,
               },
             },
             include: {
               spans: {
-                where: { level: "ERROR" },
+                where: { statusCode: "ERROR" },
                 take: 3,
                 orderBy: { startTime: "desc" },
               },
             },
             take: 5,
-            orderBy: { timestamp: "desc" },
+            orderBy: { startTime: "desc" },
           })
         : [];
 

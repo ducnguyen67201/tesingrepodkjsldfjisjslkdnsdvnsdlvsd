@@ -587,16 +587,6 @@ export type AlertUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type AlertListRelationFilter = {
-  every?: Prisma.AlertWhereInput
-  some?: Prisma.AlertWhereInput
-  none?: Prisma.AlertWhereInput
-}
-
-export type AlertOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type AlertCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
@@ -676,46 +666,18 @@ export type AlertScalarRelationFilter = {
   isNot?: Prisma.AlertWhereInput
 }
 
-export type AlertCreateNestedManyWithoutProjectInput = {
-  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
-  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
-  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
-  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+export type AlertListRelationFilter = {
+  every?: Prisma.AlertWhereInput
+  some?: Prisma.AlertWhereInput
+  none?: Prisma.AlertWhereInput
 }
 
-export type AlertUncheckedCreateNestedManyWithoutProjectInput = {
-  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
-  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
-  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
-  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+export type AlertOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
-export type AlertUpdateManyWithoutProjectNestedInput = {
-  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
-  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
-  upsert?: Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput | Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput[]
-  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
-  set?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  disconnect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  delete?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  update?: Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput | Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput[]
-  updateMany?: Prisma.AlertUpdateManyWithWhereWithoutProjectInput | Prisma.AlertUpdateManyWithWhereWithoutProjectInput[]
-  deleteMany?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
-}
-
-export type AlertUncheckedUpdateManyWithoutProjectNestedInput = {
-  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
-  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
-  upsert?: Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput | Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput[]
-  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
-  set?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  disconnect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  delete?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
-  update?: Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput | Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput[]
-  updateMany?: Prisma.AlertUpdateManyWithWhereWithoutProjectInput | Prisma.AlertUpdateManyWithWhereWithoutProjectInput[]
-  deleteMany?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
+export type StringFieldUpdateOperationsInput = {
+  set?: string
 }
 
 export type EnumAlertTypeFieldUpdateOperationsInput = {
@@ -734,12 +696,32 @@ export type EnumAlertOperatorFieldUpdateOperationsInput = {
   set?: $Enums.AlertOperator
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type EnumAlertSeverityFieldUpdateOperationsInput = {
   set?: $Enums.AlertSeverity
 }
 
 export type EnumAlertStateFieldUpdateOperationsInput = {
   set?: $Enums.AlertState
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type AlertCreateNestedOneWithoutChannelsInput = {
@@ -784,6 +766,48 @@ export type AlertUpdateOneRequiredWithoutChannelLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AlertUpdateToOneWithWhereWithoutChannelLinksInput, Prisma.AlertUpdateWithoutChannelLinksInput>, Prisma.AlertUncheckedUpdateWithoutChannelLinksInput>
 }
 
+export type AlertCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
+  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+}
+
+export type AlertUncheckedCreateNestedManyWithoutProjectInput = {
+  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
+  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
+  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+}
+
+export type AlertUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput | Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
+  set?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  disconnect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  delete?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  update?: Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput | Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.AlertUpdateManyWithWhereWithoutProjectInput | Prisma.AlertUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
+}
+
+export type AlertUncheckedUpdateManyWithoutProjectNestedInput = {
+  create?: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput> | Prisma.AlertCreateWithoutProjectInput[] | Prisma.AlertUncheckedCreateWithoutProjectInput[]
+  connectOrCreate?: Prisma.AlertCreateOrConnectWithoutProjectInput | Prisma.AlertCreateOrConnectWithoutProjectInput[]
+  upsert?: Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput | Prisma.AlertUpsertWithWhereUniqueWithoutProjectInput[]
+  createMany?: Prisma.AlertCreateManyProjectInputEnvelope
+  set?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  disconnect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  delete?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  connect?: Prisma.AlertWhereUniqueInput | Prisma.AlertWhereUniqueInput[]
+  update?: Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput | Prisma.AlertUpdateWithWhereUniqueWithoutProjectInput[]
+  updateMany?: Prisma.AlertUpdateManyWithWhereWithoutProjectInput | Prisma.AlertUpdateManyWithWhereWithoutProjectInput[]
+  deleteMany?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
+}
+
 export type AlertCreateNestedOneWithoutRcaAnalysesInput = {
   create?: Prisma.XOR<Prisma.AlertCreateWithoutRcaAnalysesInput, Prisma.AlertUncheckedCreateWithoutRcaAnalysesInput>
   connectOrCreate?: Prisma.AlertCreateOrConnectWithoutRcaAnalysesInput
@@ -796,101 +820,6 @@ export type AlertUpdateOneRequiredWithoutRcaAnalysesNestedInput = {
   upsert?: Prisma.AlertUpsertWithoutRcaAnalysesInput
   connect?: Prisma.AlertWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AlertUpdateToOneWithWhereWithoutRcaAnalysesInput, Prisma.AlertUpdateWithoutRcaAnalysesInput>, Prisma.AlertUncheckedUpdateWithoutRcaAnalysesInput>
-}
-
-export type AlertCreateWithoutProjectInput = {
-  id?: string
-  name: string
-  type: $Enums.AlertType
-  threshold: number
-  operator?: $Enums.AlertOperator
-  windowMins?: number
-  cooldownMins?: number
-  enabled?: boolean
-  lastTriggeredAt?: Date | string | null
-  severity?: $Enums.AlertSeverity
-  pendingMins?: number
-  state?: $Enums.AlertState
-  stateChangedAt?: Date | string | null
-  lastEvaluatedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  channels?: Prisma.AlertChannelCreateNestedManyWithoutAlertInput
-  channelLinks?: Prisma.AlertChannelLinkCreateNestedManyWithoutAlertInput
-  history?: Prisma.AlertHistoryCreateNestedManyWithoutAlertInput
-  rcaAnalyses?: Prisma.AlertRCACreateNestedManyWithoutAlertInput
-}
-
-export type AlertUncheckedCreateWithoutProjectInput = {
-  id?: string
-  name: string
-  type: $Enums.AlertType
-  threshold: number
-  operator?: $Enums.AlertOperator
-  windowMins?: number
-  cooldownMins?: number
-  enabled?: boolean
-  lastTriggeredAt?: Date | string | null
-  severity?: $Enums.AlertSeverity
-  pendingMins?: number
-  state?: $Enums.AlertState
-  stateChangedAt?: Date | string | null
-  lastEvaluatedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  channels?: Prisma.AlertChannelUncheckedCreateNestedManyWithoutAlertInput
-  channelLinks?: Prisma.AlertChannelLinkUncheckedCreateNestedManyWithoutAlertInput
-  history?: Prisma.AlertHistoryUncheckedCreateNestedManyWithoutAlertInput
-  rcaAnalyses?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutAlertInput
-}
-
-export type AlertCreateOrConnectWithoutProjectInput = {
-  where: Prisma.AlertWhereUniqueInput
-  create: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput>
-}
-
-export type AlertCreateManyProjectInputEnvelope = {
-  data: Prisma.AlertCreateManyProjectInput | Prisma.AlertCreateManyProjectInput[]
-  skipDuplicates?: boolean
-}
-
-export type AlertUpsertWithWhereUniqueWithoutProjectInput = {
-  where: Prisma.AlertWhereUniqueInput
-  update: Prisma.XOR<Prisma.AlertUpdateWithoutProjectInput, Prisma.AlertUncheckedUpdateWithoutProjectInput>
-  create: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput>
-}
-
-export type AlertUpdateWithWhereUniqueWithoutProjectInput = {
-  where: Prisma.AlertWhereUniqueInput
-  data: Prisma.XOR<Prisma.AlertUpdateWithoutProjectInput, Prisma.AlertUncheckedUpdateWithoutProjectInput>
-}
-
-export type AlertUpdateManyWithWhereWithoutProjectInput = {
-  where: Prisma.AlertScalarWhereInput
-  data: Prisma.XOR<Prisma.AlertUpdateManyMutationInput, Prisma.AlertUncheckedUpdateManyWithoutProjectInput>
-}
-
-export type AlertScalarWhereInput = {
-  AND?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
-  OR?: Prisma.AlertScalarWhereInput[]
-  NOT?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
-  id?: Prisma.StringFilter<"Alert"> | string
-  projectId?: Prisma.StringFilter<"Alert"> | string
-  name?: Prisma.StringFilter<"Alert"> | string
-  type?: Prisma.EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
-  threshold?: Prisma.FloatFilter<"Alert"> | number
-  operator?: Prisma.EnumAlertOperatorFilter<"Alert"> | $Enums.AlertOperator
-  windowMins?: Prisma.IntFilter<"Alert"> | number
-  cooldownMins?: Prisma.IntFilter<"Alert"> | number
-  enabled?: Prisma.BoolFilter<"Alert"> | boolean
-  lastTriggeredAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
-  severity?: Prisma.EnumAlertSeverityFilter<"Alert"> | $Enums.AlertSeverity
-  pendingMins?: Prisma.IntFilter<"Alert"> | number
-  state?: Prisma.EnumAlertStateFilter<"Alert"> | $Enums.AlertState
-  stateChangedAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
-  lastEvaluatedAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"Alert"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Alert"> | Date | string
 }
 
 export type AlertCreateWithoutChannelsInput = {
@@ -1215,6 +1144,101 @@ export type AlertUncheckedUpdateWithoutChannelLinksInput = {
   channels?: Prisma.AlertChannelUncheckedUpdateManyWithoutAlertNestedInput
   history?: Prisma.AlertHistoryUncheckedUpdateManyWithoutAlertNestedInput
   rcaAnalyses?: Prisma.AlertRCAUncheckedUpdateManyWithoutAlertNestedInput
+}
+
+export type AlertCreateWithoutProjectInput = {
+  id?: string
+  name: string
+  type: $Enums.AlertType
+  threshold: number
+  operator?: $Enums.AlertOperator
+  windowMins?: number
+  cooldownMins?: number
+  enabled?: boolean
+  lastTriggeredAt?: Date | string | null
+  severity?: $Enums.AlertSeverity
+  pendingMins?: number
+  state?: $Enums.AlertState
+  stateChangedAt?: Date | string | null
+  lastEvaluatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  channels?: Prisma.AlertChannelCreateNestedManyWithoutAlertInput
+  channelLinks?: Prisma.AlertChannelLinkCreateNestedManyWithoutAlertInput
+  history?: Prisma.AlertHistoryCreateNestedManyWithoutAlertInput
+  rcaAnalyses?: Prisma.AlertRCACreateNestedManyWithoutAlertInput
+}
+
+export type AlertUncheckedCreateWithoutProjectInput = {
+  id?: string
+  name: string
+  type: $Enums.AlertType
+  threshold: number
+  operator?: $Enums.AlertOperator
+  windowMins?: number
+  cooldownMins?: number
+  enabled?: boolean
+  lastTriggeredAt?: Date | string | null
+  severity?: $Enums.AlertSeverity
+  pendingMins?: number
+  state?: $Enums.AlertState
+  stateChangedAt?: Date | string | null
+  lastEvaluatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  channels?: Prisma.AlertChannelUncheckedCreateNestedManyWithoutAlertInput
+  channelLinks?: Prisma.AlertChannelLinkUncheckedCreateNestedManyWithoutAlertInput
+  history?: Prisma.AlertHistoryUncheckedCreateNestedManyWithoutAlertInput
+  rcaAnalyses?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutAlertInput
+}
+
+export type AlertCreateOrConnectWithoutProjectInput = {
+  where: Prisma.AlertWhereUniqueInput
+  create: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput>
+}
+
+export type AlertCreateManyProjectInputEnvelope = {
+  data: Prisma.AlertCreateManyProjectInput | Prisma.AlertCreateManyProjectInput[]
+  skipDuplicates?: boolean
+}
+
+export type AlertUpsertWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.AlertWhereUniqueInput
+  update: Prisma.XOR<Prisma.AlertUpdateWithoutProjectInput, Prisma.AlertUncheckedUpdateWithoutProjectInput>
+  create: Prisma.XOR<Prisma.AlertCreateWithoutProjectInput, Prisma.AlertUncheckedCreateWithoutProjectInput>
+}
+
+export type AlertUpdateWithWhereUniqueWithoutProjectInput = {
+  where: Prisma.AlertWhereUniqueInput
+  data: Prisma.XOR<Prisma.AlertUpdateWithoutProjectInput, Prisma.AlertUncheckedUpdateWithoutProjectInput>
+}
+
+export type AlertUpdateManyWithWhereWithoutProjectInput = {
+  where: Prisma.AlertScalarWhereInput
+  data: Prisma.XOR<Prisma.AlertUpdateManyMutationInput, Prisma.AlertUncheckedUpdateManyWithoutProjectInput>
+}
+
+export type AlertScalarWhereInput = {
+  AND?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
+  OR?: Prisma.AlertScalarWhereInput[]
+  NOT?: Prisma.AlertScalarWhereInput | Prisma.AlertScalarWhereInput[]
+  id?: Prisma.StringFilter<"Alert"> | string
+  projectId?: Prisma.StringFilter<"Alert"> | string
+  name?: Prisma.StringFilter<"Alert"> | string
+  type?: Prisma.EnumAlertTypeFilter<"Alert"> | $Enums.AlertType
+  threshold?: Prisma.FloatFilter<"Alert"> | number
+  operator?: Prisma.EnumAlertOperatorFilter<"Alert"> | $Enums.AlertOperator
+  windowMins?: Prisma.IntFilter<"Alert"> | number
+  cooldownMins?: Prisma.IntFilter<"Alert"> | number
+  enabled?: Prisma.BoolFilter<"Alert"> | boolean
+  lastTriggeredAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
+  severity?: Prisma.EnumAlertSeverityFilter<"Alert"> | $Enums.AlertSeverity
+  pendingMins?: Prisma.IntFilter<"Alert"> | number
+  state?: Prisma.EnumAlertStateFilter<"Alert"> | $Enums.AlertState
+  stateChangedAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
+  lastEvaluatedAt?: Prisma.DateTimeNullableFilter<"Alert"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"Alert"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Alert"> | Date | string
 }
 
 export type AlertCreateWithoutRcaAnalysesInput = {

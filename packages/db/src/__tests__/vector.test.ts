@@ -222,7 +222,7 @@ describe("Vector Operations", () => {
     it("should reject invalid chunk IDs (SQL injection prevention)", async () => {
       const maliciousItems: EmbeddingBatchItem[] = [
         {
-          chunkId: "'; DROP TABLE code_chunks; --",
+          chunkId: "'; DROP TABLE \"CodeChunk\"; --",
           embedding: createTestEmbedding(99),
         },
       ];

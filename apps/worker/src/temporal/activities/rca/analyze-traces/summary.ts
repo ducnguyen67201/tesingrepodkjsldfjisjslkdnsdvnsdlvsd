@@ -25,7 +25,7 @@ export function calculateSummary(spans: SpanRow[]): TraceAnalysisSummary {
     .map((s) => s.endTime!.getTime() - s.startTime.getTime())
     .sort((a, b) => a - b);
 
-  const errorSpans = spans.filter((s) => s.level === "ERROR");
+  const errorSpans = spans.filter((s) => s.statusCode === "ERROR");
   const uniqueTraces = new Set(spans.map((s) => s.traceId));
 
   return {

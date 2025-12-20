@@ -335,6 +335,11 @@ export type WorkspaceUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type WorkspaceScalarRelationFilter = {
+  is?: Prisma.WorkspaceWhereInput
+  isNot?: Prisma.WorkspaceWhereInput
+}
+
 export type WorkspaceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -360,57 +365,6 @@ export type WorkspaceMinOrderByAggregateInput = {
   isPersonal?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type WorkspaceScalarRelationFilter = {
-  is?: Prisma.WorkspaceWhereInput
-  isNot?: Prisma.WorkspaceWhereInput
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type WorkspaceCreateNestedOneWithoutMembersInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutMembersInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-}
-
-export type WorkspaceUpdateOneRequiredWithoutMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutMembersInput
-  upsert?: Prisma.WorkspaceUpsertWithoutMembersInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutMembersInput, Prisma.WorkspaceUpdateWithoutMembersInput>, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
-}
-
-export type WorkspaceCreateNestedOneWithoutAllowedDomainsInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutAllowedDomainsInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-}
-
-export type WorkspaceUpdateOneRequiredWithoutAllowedDomainsNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutAllowedDomainsInput
-  upsert?: Prisma.WorkspaceUpsertWithoutAllowedDomainsInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutAllowedDomainsInput, Prisma.WorkspaceUpdateWithoutAllowedDomainsInput>, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
-}
-
-export type WorkspaceCreateNestedOneWithoutProjectsInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutProjectsInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-}
-
-export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
-  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutProjectsInput
-  upsert?: Prisma.WorkspaceUpsertWithoutProjectsInput
-  connect?: Prisma.WorkspaceWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutProjectsInput, Prisma.WorkspaceUpdateWithoutProjectsInput>, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
 }
 
 export type WorkspaceCreateNestedOneWithoutNotificationChannelsInput = {
@@ -441,208 +395,46 @@ export type WorkspaceUpdateOneRequiredWithoutGithubInstallationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutGithubInstallationInput, Prisma.WorkspaceUpdateWithoutGithubInstallationInput>, Prisma.WorkspaceUncheckedUpdateWithoutGithubInstallationInput>
 }
 
-export type WorkspaceCreateWithoutMembersInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
-  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+export type WorkspaceCreateNestedOneWithoutProjectsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutProjectsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
 }
 
-export type WorkspaceUncheckedCreateWithoutMembersInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
-  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutProjectsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutProjectsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutProjectsInput, Prisma.WorkspaceUpdateWithoutProjectsInput>, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
 }
 
-export type WorkspaceCreateOrConnectWithoutMembersInput = {
-  where: Prisma.WorkspaceWhereUniqueInput
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
+export type WorkspaceCreateNestedOneWithoutMembersInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutMembersInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
 }
 
-export type WorkspaceUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutMembersInput, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
-  where?: Prisma.WorkspaceWhereInput
+export type WorkspaceUpdateOneRequiredWithoutMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutMembersInput
+  upsert?: Prisma.WorkspaceUpsertWithoutMembersInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutMembersInput, Prisma.WorkspaceUpdateWithoutMembersInput>, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
 }
 
-export type WorkspaceUpdateToOneWithWhereWithoutMembersInput = {
-  where?: Prisma.WorkspaceWhereInput
-  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutMembersInput, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
+export type WorkspaceCreateNestedOneWithoutAllowedDomainsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutAllowedDomainsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
 }
 
-export type WorkspaceUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
-  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
-}
-
-export type WorkspaceUncheckedUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
-  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
-}
-
-export type WorkspaceCreateWithoutAllowedDomainsInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
-  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
-}
-
-export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
-  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
-}
-
-export type WorkspaceCreateOrConnectWithoutAllowedDomainsInput = {
-  where: Prisma.WorkspaceWhereUniqueInput
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
-}
-
-export type WorkspaceUpsertWithoutAllowedDomainsInput = {
-  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
-  where?: Prisma.WorkspaceWhereInput
-}
-
-export type WorkspaceUpdateToOneWithWhereWithoutAllowedDomainsInput = {
-  where?: Prisma.WorkspaceWhereInput
-  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
-}
-
-export type WorkspaceUpdateWithoutAllowedDomainsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
-  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
-}
-
-export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
-  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
-}
-
-export type WorkspaceCreateWithoutProjectsInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
-  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
-}
-
-export type WorkspaceUncheckedCreateWithoutProjectsInput = {
-  id?: string
-  name: string
-  slug: string
-  isPersonal?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
-  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
-}
-
-export type WorkspaceCreateOrConnectWithoutProjectsInput = {
-  where: Prisma.WorkspaceWhereUniqueInput
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
-}
-
-export type WorkspaceUpsertWithoutProjectsInput = {
-  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutProjectsInput, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
-  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
-  where?: Prisma.WorkspaceWhereInput
-}
-
-export type WorkspaceUpdateToOneWithWhereWithoutProjectsInput = {
-  where?: Prisma.WorkspaceWhereInput
-  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutProjectsInput, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
-}
-
-export type WorkspaceUpdateWithoutProjectsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
-  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
-}
-
-export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
-  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
-  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
-  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+export type WorkspaceUpdateOneRequiredWithoutAllowedDomainsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutAllowedDomainsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutAllowedDomainsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutAllowedDomainsInput, Prisma.WorkspaceUpdateWithoutAllowedDomainsInput>, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
 }
 
 export type WorkspaceCreateWithoutNotificationChannelsInput = {
@@ -779,6 +571,210 @@ export type WorkspaceUncheckedUpdateWithoutGithubInstallationInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutProjectsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutProjectsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutProjectsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
+}
+
+export type WorkspaceUpsertWithoutProjectsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutProjectsInput, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutProjectsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutProjectsInput, Prisma.WorkspaceUncheckedUpdateWithoutProjectsInput>
+}
+
+export type WorkspaceUpdateWithoutProjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutMembersInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutMembersInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutMembersInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
+}
+
+export type WorkspaceUpsertWithoutMembersInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutMembersInput, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutMembersInput, Prisma.WorkspaceUncheckedCreateWithoutMembersInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutMembersInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutMembersInput, Prisma.WorkspaceUncheckedUpdateWithoutMembersInput>
+}
+
+export type WorkspaceUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutAllowedDomainsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutAllowedDomainsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
+}
+
+export type WorkspaceUpsertWithoutAllowedDomainsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedCreateWithoutAllowedDomainsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutAllowedDomainsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutAllowedDomainsInput, Prisma.WorkspaceUncheckedUpdateWithoutAllowedDomainsInput>
+}
+
+export type WorkspaceUpdateWithoutAllowedDomainsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
 }
 
 

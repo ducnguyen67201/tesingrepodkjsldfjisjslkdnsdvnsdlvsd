@@ -66,7 +66,7 @@ export function extractErrorPatterns(spans: SpanRow[]): ErrorPattern[] {
     }
   >();
 
-  const errorSpans = spans.filter((s) => s.level === "ERROR" && s.statusMessage);
+  const errorSpans = spans.filter((s) => s.statusCode === "ERROR" && s.statusMessage);
 
   for (const span of errorSpans) {
     const normalized = normalizeErrorMessage(span.statusMessage!);

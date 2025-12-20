@@ -1,0 +1,99 @@
+// ============================================================
+// OTLP-First Trace Model
+// ============================================================
+
+model Trace {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  externalTraceId String   // Hex trace ID from OTLP (32-char hex)
+
+  // Resource attributes (promoted for filtering)
+  serviceName     String   // resource.service.name (required)
+  serviceVersion  String?  // resource.service.version
+  environment     String?  // resource.deployment.environment
+  resource        Json?    // Full OTLP resource attributes JSON
+
+  // Timing
+  startTime       DateTime // Earliest span startTime
+  endTime         DateTime? // Latest span endTime
+  durationMs      Int?     // Computed: endTime - startTime
+
+  // Aggregates (denormalized for query performance)
+  spanCount       Int      @default(0)
+  errorCount      Int      @default(0)
+
+  // Audit
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  spans Span[]
+
+  @@unique([projectId, externalTraceId])
+  @@index([projectId, startTime(sort: Desc)])
+  @@index([projectId, serviceName])
+  @@index([projectId, environment])
+  @@index([projectId, durationMs])
+  @@index([startTime])
+}
+
+// ============================================================
+// OTLP-First Span Model
+// ============================================================
+
+model Span {
+  id               String   @id @default(cuid())
+  traceId          String
+  trace            Trace    @relation(fields: [traceId], references: [id], onDelete: Cascade)
+  externalSpanId   String   // Hex span ID from OTLP (16-char hex)
+  parentSpanId     String?  // Hex parent span ID (external reference)
+
+  // Core OTLP fields
+  name             String   // Span name/operation
+  kind             String   @default("INTERNAL") // INTERNAL | SERVER | CLIENT | PRODUCER | CONSUMER
+  statusCode       String   @default("UNSET")    // UNSET | OK | ERROR
+  statusMessage    String?  // Status description (for errors)
+  traceState       String?  // W3C trace state
+
+  // Timing
+  startTime        DateTime
+  endTime          DateTime?
+  durationMs       Int?     // Computed: endTime - startTime
+
+  // OTLP data (stored as JSON)
+  attributes       Json?    // Span attributes key-value pairs
+  events           Json?    // Span events array [{timeUnixNano, name, attributes}]
+  links            Json?    // Span links array [{traceId, spanId, attributes}]
+
+  // Instrumentation scope
+  libraryName      String?  // scope.name (e.g., "@opentelemetry/instrumentation-openai")
+  libraryVersion   String?  // scope.version
+
+  // GenAI fields (promoted from gen_ai.* attributes for query performance)
+  model            String?  // gen_ai.request.model
+  modelParameters  Json?    // gen_ai.request.* parameters
+  input            Json?    // gen_ai.prompt or gen_ai.request.messages
+  output           Json?    // gen_ai.completion or gen_ai.response
+  promptTokens     Int?     // gen_ai.usage.prompt_tokens
+  completionTokens Int?     // gen_ai.usage.completion_tokens
+  totalTokens      Int?     // gen_ai.usage.total_tokens
+
+  // Cost tracking (computed server-side)
+  inputCost        Decimal?      @db.Decimal(10, 6)
+  outputCost       Decimal?      @db.Decimal(10, 6)
+  totalCost        Decimal?      @db.Decimal(10, 6)
+  pricingId        String?
+  pricing          ModelPricing? @relation(fields: [pricingId], references: [id])
+
+  // Audit
+  createdAt        DateTime @default(now())
+
+  @@unique([traceId, externalSpanId])
+  @@index([traceId, startTime])
+  @@index([traceId])
+  @@index([parentSpanId])
+  @@index([startTime])
+  @@index([statusCode])
+  @@index([model])
+  @@index([pricingId])
+}

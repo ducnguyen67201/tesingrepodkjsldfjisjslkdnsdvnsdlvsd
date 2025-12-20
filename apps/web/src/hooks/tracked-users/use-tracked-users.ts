@@ -2,9 +2,21 @@
 
 import { useCallback, useMemo } from "react";
 import { trpc } from "@/lib/trpc/client";
-import type { TrackedUserWithStats } from "@cognobserve/api/client";
+// NOTE: TrackedUserWithStats → TrackedUserBasic for OTLP-first design
+// Metrics like traceCount, totalCost will be reworked
 
 const DEFAULT_LIMIT = 50;
+
+interface TrackedUserBasic {
+  id: string;
+  projectId: string;
+  externalId: string;
+  name: string | null;
+  email: string | null;
+  metadata: Record<string, unknown> | null;
+  firstSeenAt: Date;
+  lastSeenAt: Date;
+}
 
 interface UseTrackedUsersOptions {
   workspaceSlug: string;
@@ -14,7 +26,7 @@ interface UseTrackedUsersOptions {
 }
 
 interface UseTrackedUsersReturn {
-  users: TrackedUserWithStats[];
+  users: TrackedUserBasic[];
   isLoading: boolean;
   error: Error | null;
   hasMore: boolean;

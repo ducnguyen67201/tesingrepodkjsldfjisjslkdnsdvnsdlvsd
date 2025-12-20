@@ -51,35 +51,35 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
-  Account: 'Account',
-  Session: 'Session',
-  VerificationToken: 'VerificationToken',
-  Workspace: 'Workspace',
-  WorkspaceMember: 'WorkspaceMember',
-  AllowedDomain: 'AllowedDomain',
-  Project: 'Project',
-  ProjectMember: 'ProjectMember',
-  ApiKey: 'ApiKey',
-  Trace: 'Trace',
-  Span: 'Span',
-  ModelPricing: 'ModelPricing',
-  CostDailySummary: 'CostDailySummary',
   Alert: 'Alert',
   AlertChannel: 'AlertChannel',
   AlertHistory: 'AlertHistory',
   NotificationChannel: 'NotificationChannel',
   AlertChannelLink: 'AlertChannelLink',
-  TrackedUser: 'TrackedUser',
-  TraceSession: 'TraceSession',
+  User: 'User',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken',
+  ModelPricing: 'ModelPricing',
+  CostDailySummary: 'CostDailySummary',
+  EvalSuite: 'EvalSuite',
+  EvalRun: 'EvalRun',
   GitHubInstallation: 'GitHubInstallation',
   GitHubRepository: 'GitHubRepository',
   GitCommit: 'GitCommit',
   GitPullRequest: 'GitPullRequest',
   CodeChunk: 'CodeChunk',
+  Project: 'Project',
+  ProjectMember: 'ProjectMember',
+  ApiKey: 'ApiKey',
   AlertRCA: 'AlertRCA',
-  EvalSuite: 'EvalSuite',
-  EvalRun: 'EvalRun'
+  Trace: 'Trace',
+  Span: 'Span',
+  TrackedUser: 'TrackedUser',
+  TraceSession: 'TraceSession',
+  Workspace: 'Workspace',
+  WorkspaceMember: 'WorkspaceMember',
+  AllowedDomain: 'AllowedDomain'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,205 +96,6 @@ export const TransactionIsolationLevel = {
 } as const
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-export const UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  emailVerified: 'emailVerified',
-  password: 'password',
-  image: 'image',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const AccountScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  type: 'type',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  refresh_token: 'refresh_token',
-  access_token: 'access_token',
-  expires_at: 'expires_at',
-  token_type: 'token_type',
-  scope: 'scope',
-  id_token: 'id_token',
-  session_state: 'session_state'
-} as const
-
-export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
-
-
-export const SessionScalarFieldEnum = {
-  id: 'id',
-  sessionToken: 'sessionToken',
-  userId: 'userId',
-  expires: 'expires'
-} as const
-
-export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
-
-
-export const VerificationTokenScalarFieldEnum = {
-  identifier: 'identifier',
-  token: 'token',
-  expires: 'expires'
-} as const
-
-export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
-
-
-export const WorkspaceScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  isPersonal: 'isPersonal',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
-
-
-export const WorkspaceMemberScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  workspaceId: 'workspaceId',
-  role: 'role',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type WorkspaceMemberScalarFieldEnum = (typeof WorkspaceMemberScalarFieldEnum)[keyof typeof WorkspaceMemberScalarFieldEnum]
-
-
-export const AllowedDomainScalarFieldEnum = {
-  id: 'id',
-  workspaceId: 'workspaceId',
-  domain: 'domain',
-  role: 'role',
-  createdById: 'createdById',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type AllowedDomainScalarFieldEnum = (typeof AllowedDomainScalarFieldEnum)[keyof typeof AllowedDomainScalarFieldEnum]
-
-
-export const ProjectScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  workspaceId: 'workspaceId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
-
-
-export const ProjectMemberScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  projectId: 'projectId',
-  role: 'role',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
-
-
-export const ApiKeyScalarFieldEnum = {
-  id: 'id',
-  projectId: 'projectId',
-  name: 'name',
-  hashedKey: 'hashedKey',
-  displayKey: 'displayKey',
-  createdById: 'createdById',
-  createdAt: 'createdAt',
-  lastUsedAt: 'lastUsedAt',
-  expiresAt: 'expiresAt'
-} as const
-
-export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
-
-
-export const TraceScalarFieldEnum = {
-  id: 'id',
-  projectId: 'projectId',
-  sessionId: 'sessionId',
-  userId: 'userId',
-  name: 'name',
-  timestamp: 'timestamp',
-  metadata: 'metadata'
-} as const
-
-export type TraceScalarFieldEnum = (typeof TraceScalarFieldEnum)[keyof typeof TraceScalarFieldEnum]
-
-
-export const SpanScalarFieldEnum = {
-  id: 'id',
-  traceId: 'traceId',
-  parentSpanId: 'parentSpanId',
-  name: 'name',
-  startTime: 'startTime',
-  endTime: 'endTime',
-  input: 'input',
-  output: 'output',
-  metadata: 'metadata',
-  model: 'model',
-  modelParameters: 'modelParameters',
-  promptTokens: 'promptTokens',
-  completionTokens: 'completionTokens',
-  totalTokens: 'totalTokens',
-  level: 'level',
-  statusMessage: 'statusMessage',
-  inputCost: 'inputCost',
-  outputCost: 'outputCost',
-  totalCost: 'totalCost',
-  pricingId: 'pricingId'
-} as const
-
-export type SpanScalarFieldEnum = (typeof SpanScalarFieldEnum)[keyof typeof SpanScalarFieldEnum]
-
-
-export const ModelPricingScalarFieldEnum = {
-  id: 'id',
-  provider: 'provider',
-  model: 'model',
-  displayName: 'displayName',
-  inputPricePerMillion: 'inputPricePerMillion',
-  outputPricePerMillion: 'outputPricePerMillion',
-  effectiveFrom: 'effectiveFrom',
-  effectiveTo: 'effectiveTo',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ModelPricingScalarFieldEnum = (typeof ModelPricingScalarFieldEnum)[keyof typeof ModelPricingScalarFieldEnum]
-
-
-export const CostDailySummaryScalarFieldEnum = {
-  id: 'id',
-  projectId: 'projectId',
-  date: 'date',
-  model: 'model',
-  spanCount: 'spanCount',
-  inputTokens: 'inputTokens',
-  outputTokens: 'outputTokens',
-  totalTokens: 'totalTokens',
-  inputCost: 'inputCost',
-  outputCost: 'outputCost',
-  totalCost: 'totalCost',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CostDailySummaryScalarFieldEnum = (typeof CostDailySummaryScalarFieldEnum)[keyof typeof CostDailySummaryScalarFieldEnum]
 
 
 export const AlertScalarFieldEnum = {
@@ -376,34 +177,132 @@ export const AlertChannelLinkScalarFieldEnum = {
 export type AlertChannelLinkScalarFieldEnum = (typeof AlertChannelLinkScalarFieldEnum)[keyof typeof AlertChannelLinkScalarFieldEnum]
 
 
-export const TrackedUserScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
-  projectId: 'projectId',
-  externalId: 'externalId',
   name: 'name',
   email: 'email',
-  metadata: 'metadata',
-  firstSeenAt: 'firstSeenAt',
-  lastSeenAt: 'lastSeenAt',
+  emailVerified: 'emailVerified',
+  password: 'password',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type TrackedUserScalarFieldEnum = (typeof TrackedUserScalarFieldEnum)[keyof typeof TrackedUserScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const TraceSessionScalarFieldEnum = {
+export const AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+} as const
+
+export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+} as const
+
+export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+export const ModelPricingScalarFieldEnum = {
+  id: 'id',
+  provider: 'provider',
+  model: 'model',
+  displayName: 'displayName',
+  inputPricePerMillion: 'inputPricePerMillion',
+  outputPricePerMillion: 'outputPricePerMillion',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ModelPricingScalarFieldEnum = (typeof ModelPricingScalarFieldEnum)[keyof typeof ModelPricingScalarFieldEnum]
+
+
+export const CostDailySummaryScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
-  externalId: 'externalId',
-  userId: 'userId',
+  date: 'date',
+  model: 'model',
+  spanCount: 'spanCount',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  totalTokens: 'totalTokens',
+  inputCost: 'inputCost',
+  outputCost: 'outputCost',
+  totalCost: 'totalCost',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CostDailySummaryScalarFieldEnum = (typeof CostDailySummaryScalarFieldEnum)[keyof typeof CostDailySummaryScalarFieldEnum]
+
+
+export const EvalSuiteScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
   name: 'name',
-  metadata: 'metadata',
+  description: 'description',
+  enabled: 'enabled',
+  endpoint: 'endpoint',
+  prompts: 'prompts',
+  expectedBehaviors: 'expectedBehaviors',
+  baselineLatencyP95: 'baselineLatencyP95',
+  baselineErrorRate: 'baselineErrorRate',
+  baselineScores: 'baselineScores',
+  latencyRegressionThreshold: 'latencyRegressionThreshold',
+  errorRegressionThreshold: 'errorRegressionThreshold',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type TraceSessionScalarFieldEnum = (typeof TraceSessionScalarFieldEnum)[keyof typeof TraceSessionScalarFieldEnum]
+export type EvalSuiteScalarFieldEnum = (typeof EvalSuiteScalarFieldEnum)[keyof typeof EvalSuiteScalarFieldEnum]
+
+
+export const EvalRunScalarFieldEnum = {
+  id: 'id',
+  suiteId: 'suiteId',
+  triggeredBy: 'triggeredBy',
+  triggerRef: 'triggerRef',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  totalPrompts: 'totalPrompts',
+  passedPrompts: 'passedPrompts',
+  failedPrompts: 'failedPrompts',
+  latencyP95: 'latencyP95',
+  errorRate: 'errorRate',
+  scores: 'scores',
+  isRegression: 'isRegression',
+  regressionDetails: 'regressionDetails',
+  createdAt: 'createdAt'
+} as const
+
+export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
 
 
 export const GitHubInstallationScalarFieldEnum = {
@@ -489,6 +388,44 @@ export const CodeChunkScalarFieldEnum = {
 export type CodeChunkScalarFieldEnum = (typeof CodeChunkScalarFieldEnum)[keyof typeof CodeChunkScalarFieldEnum]
 
 
+export const ProjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  workspaceId: 'workspaceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+export const ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  projectId: 'projectId',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
+
+
+export const ApiKeyScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  hashedKey: 'hashedKey',
+  displayKey: 'displayKey',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  lastUsedAt: 'lastUsedAt',
+  expiresAt: 'expiresAt'
+} as const
+
+export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
+
+
 export const AlertRCAScalarFieldEnum = {
   id: 'id',
   alertId: 'alertId',
@@ -507,47 +444,126 @@ export const AlertRCAScalarFieldEnum = {
 export type AlertRCAScalarFieldEnum = (typeof AlertRCAScalarFieldEnum)[keyof typeof AlertRCAScalarFieldEnum]
 
 
-export const EvalSuiteScalarFieldEnum = {
+export const TraceScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
-  name: 'name',
-  description: 'description',
-  enabled: 'enabled',
-  endpoint: 'endpoint',
-  prompts: 'prompts',
-  expectedBehaviors: 'expectedBehaviors',
-  baselineLatencyP95: 'baselineLatencyP95',
-  baselineErrorRate: 'baselineErrorRate',
-  baselineScores: 'baselineScores',
-  latencyRegressionThreshold: 'latencyRegressionThreshold',
-  errorRegressionThreshold: 'errorRegressionThreshold',
+  externalTraceId: 'externalTraceId',
+  serviceName: 'serviceName',
+  serviceVersion: 'serviceVersion',
+  environment: 'environment',
+  resource: 'resource',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  durationMs: 'durationMs',
+  spanCount: 'spanCount',
+  errorCount: 'errorCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type EvalSuiteScalarFieldEnum = (typeof EvalSuiteScalarFieldEnum)[keyof typeof EvalSuiteScalarFieldEnum]
+export type TraceScalarFieldEnum = (typeof TraceScalarFieldEnum)[keyof typeof TraceScalarFieldEnum]
 
 
-export const EvalRunScalarFieldEnum = {
+export const SpanScalarFieldEnum = {
   id: 'id',
-  suiteId: 'suiteId',
-  triggeredBy: 'triggeredBy',
-  triggerRef: 'triggerRef',
-  status: 'status',
-  startedAt: 'startedAt',
-  completedAt: 'completedAt',
-  totalPrompts: 'totalPrompts',
-  passedPrompts: 'passedPrompts',
-  failedPrompts: 'failedPrompts',
-  latencyP95: 'latencyP95',
-  errorRate: 'errorRate',
-  scores: 'scores',
-  isRegression: 'isRegression',
-  regressionDetails: 'regressionDetails',
+  traceId: 'traceId',
+  externalSpanId: 'externalSpanId',
+  parentSpanId: 'parentSpanId',
+  name: 'name',
+  kind: 'kind',
+  statusCode: 'statusCode',
+  statusMessage: 'statusMessage',
+  traceState: 'traceState',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  durationMs: 'durationMs',
+  attributes: 'attributes',
+  events: 'events',
+  links: 'links',
+  libraryName: 'libraryName',
+  libraryVersion: 'libraryVersion',
+  model: 'model',
+  modelParameters: 'modelParameters',
+  input: 'input',
+  output: 'output',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  totalTokens: 'totalTokens',
+  inputCost: 'inputCost',
+  outputCost: 'outputCost',
+  totalCost: 'totalCost',
+  pricingId: 'pricingId',
   createdAt: 'createdAt'
 } as const
 
-export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
+export type SpanScalarFieldEnum = (typeof SpanScalarFieldEnum)[keyof typeof SpanScalarFieldEnum]
+
+
+export const TrackedUserScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  externalId: 'externalId',
+  name: 'name',
+  email: 'email',
+  metadata: 'metadata',
+  firstSeenAt: 'firstSeenAt',
+  lastSeenAt: 'lastSeenAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrackedUserScalarFieldEnum = (typeof TrackedUserScalarFieldEnum)[keyof typeof TrackedUserScalarFieldEnum]
+
+
+export const TraceSessionScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  externalId: 'externalId',
+  userId: 'userId',
+  name: 'name',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TraceSessionScalarFieldEnum = (typeof TraceSessionScalarFieldEnum)[keyof typeof TraceSessionScalarFieldEnum]
+
+
+export const WorkspaceScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  isPersonal: 'isPersonal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
+
+
+export const WorkspaceMemberScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkspaceMemberScalarFieldEnum = (typeof WorkspaceMemberScalarFieldEnum)[keyof typeof WorkspaceMemberScalarFieldEnum]
+
+
+export const AllowedDomainScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  domain: 'domain',
+  role: 'role',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AllowedDomainScalarFieldEnum = (typeof AllowedDomainScalarFieldEnum)[keyof typeof AllowedDomainScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -558,19 +574,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullableJsonNullValueInput = {
   DbNull: 'DbNull',
   JsonNull: 'JsonNull'
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

@@ -346,14 +346,14 @@ export type ProjectUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ProjectListRelationFilter = {
-  every?: Prisma.ProjectWhereInput
-  some?: Prisma.ProjectWhereInput
-  none?: Prisma.ProjectWhereInput
+export type ProjectScalarRelationFilter = {
+  is?: Prisma.ProjectWhereInput
+  isNot?: Prisma.ProjectWhereInput
 }
 
-export type ProjectOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type ProjectNullableScalarRelationFilter = {
+  is?: Prisma.ProjectWhereInput | null
+  isNot?: Prisma.ProjectWhereInput | null
 }
 
 export type ProjectCountOrderByAggregateInput = {
@@ -380,56 +380,72 @@ export type ProjectMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ProjectScalarRelationFilter = {
-  is?: Prisma.ProjectWhereInput
-  isNot?: Prisma.ProjectWhereInput
+export type ProjectListRelationFilter = {
+  every?: Prisma.ProjectWhereInput
+  some?: Prisma.ProjectWhereInput
+  none?: Prisma.ProjectWhereInput
 }
 
-export type ProjectNullableScalarRelationFilter = {
-  is?: Prisma.ProjectWhereInput | null
-  isNot?: Prisma.ProjectWhereInput | null
+export type ProjectOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
-export type ProjectCreateNestedManyWithoutWorkspaceInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
-  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
-  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+export type ProjectCreateNestedOneWithoutAlertsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAlertsInput
+  connect?: Prisma.ProjectWhereUniqueInput
 }
 
-export type ProjectUncheckedCreateNestedManyWithoutWorkspaceInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
-  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
-  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+export type ProjectUpdateOneRequiredWithoutAlertsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAlertsInput
+  upsert?: Prisma.ProjectUpsertWithoutAlertsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutAlertsInput, Prisma.ProjectUpdateWithoutAlertsInput>, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
 }
 
-export type ProjectUpdateManyWithoutWorkspaceNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
-  upsert?: Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput[]
-  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
-  set?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  disconnect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  delete?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  update?: Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
-  updateMany?: Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput | Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
-  deleteMany?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
+export type ProjectCreateNestedOneWithoutCostSummaryInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCostSummaryInput
+  connect?: Prisma.ProjectWhereUniqueInput
 }
 
-export type ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
-  upsert?: Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput[]
-  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
-  set?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  disconnect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  delete?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
-  update?: Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
-  updateMany?: Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput | Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
-  deleteMany?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
+export type ProjectUpdateOneRequiredWithoutCostSummaryNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCostSummaryInput
+  upsert?: Prisma.ProjectUpsertWithoutCostSummaryInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutCostSummaryInput, Prisma.ProjectUpdateWithoutCostSummaryInput>, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
+}
+
+export type ProjectCreateNestedOneWithoutEvalSuitesInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutEvalSuitesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
+  upsert?: Prisma.ProjectUpsertWithoutEvalSuitesInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutEvalSuitesInput, Prisma.ProjectUpdateWithoutEvalSuitesInput>, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+}
+
+export type ProjectCreateNestedOneWithoutGithubRepoInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutGithubRepoInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneWithoutGithubRepoNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutGithubRepoInput
+  upsert?: Prisma.ProjectUpsertWithoutGithubRepoInput
+  disconnect?: Prisma.ProjectWhereInput | boolean
+  delete?: Prisma.ProjectWhereInput | boolean
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutGithubRepoInput, Prisma.ProjectUpdateWithoutGithubRepoInput>, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
 }
 
 export type ProjectCreateNestedOneWithoutMembersInput = {
@@ -474,34 +490,6 @@ export type ProjectUpdateOneRequiredWithoutTracesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutTracesInput, Prisma.ProjectUpdateWithoutTracesInput>, Prisma.ProjectUncheckedUpdateWithoutTracesInput>
 }
 
-export type ProjectCreateNestedOneWithoutCostSummaryInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCostSummaryInput
-  connect?: Prisma.ProjectWhereUniqueInput
-}
-
-export type ProjectUpdateOneRequiredWithoutCostSummaryNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutCostSummaryInput
-  upsert?: Prisma.ProjectUpsertWithoutCostSummaryInput
-  connect?: Prisma.ProjectWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutCostSummaryInput, Prisma.ProjectUpdateWithoutCostSummaryInput>, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
-}
-
-export type ProjectCreateNestedOneWithoutAlertsInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAlertsInput
-  connect?: Prisma.ProjectWhereUniqueInput
-}
-
-export type ProjectUpdateOneRequiredWithoutAlertsNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutAlertsInput
-  upsert?: Prisma.ProjectUpsertWithoutAlertsInput
-  connect?: Prisma.ProjectWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutAlertsInput, Prisma.ProjectUpdateWithoutAlertsInput>, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
-}
-
 export type ProjectCreateNestedOneWithoutTrackedUsersInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutTrackedUsersInput, Prisma.ProjectUncheckedCreateWithoutTrackedUsersInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutTrackedUsersInput
@@ -530,41 +518,214 @@ export type ProjectUpdateOneRequiredWithoutTraceSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutTraceSessionsInput, Prisma.ProjectUpdateWithoutTraceSessionsInput>, Prisma.ProjectUncheckedUpdateWithoutTraceSessionsInput>
 }
 
-export type ProjectCreateNestedOneWithoutGithubRepoInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutGithubRepoInput
-  connect?: Prisma.ProjectWhereUniqueInput
+export type ProjectCreateNestedManyWithoutWorkspaceInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
+  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
+  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
 }
 
-export type ProjectUpdateOneWithoutGithubRepoNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutGithubRepoInput
-  upsert?: Prisma.ProjectUpsertWithoutGithubRepoInput
-  disconnect?: Prisma.ProjectWhereInput | boolean
-  delete?: Prisma.ProjectWhereInput | boolean
-  connect?: Prisma.ProjectWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutGithubRepoInput, Prisma.ProjectUpdateWithoutGithubRepoInput>, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
+export type ProjectUncheckedCreateNestedManyWithoutWorkspaceInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
+  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
+  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
 }
 
-export type ProjectCreateNestedOneWithoutEvalSuitesInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
-  connect?: Prisma.ProjectWhereUniqueInput
+export type ProjectUpdateManyWithoutWorkspaceNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
+  upsert?: Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput[]
+  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
+  set?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  disconnect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  delete?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  update?: Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
+  updateMany?: Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput | Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
+  deleteMany?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
 }
 
-export type ProjectUpdateOneRequiredWithoutEvalSuitesNestedInput = {
-  create?: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
-  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutEvalSuitesInput
-  upsert?: Prisma.ProjectUpsertWithoutEvalSuitesInput
-  connect?: Prisma.ProjectWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutEvalSuitesInput, Prisma.ProjectUpdateWithoutEvalSuitesInput>, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+export type ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput> | Prisma.ProjectCreateWithoutWorkspaceInput[] | Prisma.ProjectUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutWorkspaceInput | Prisma.ProjectCreateOrConnectWithoutWorkspaceInput[]
+  upsert?: Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpsertWithWhereUniqueWithoutWorkspaceInput[]
+  createMany?: Prisma.ProjectCreateManyWorkspaceInputEnvelope
+  set?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  disconnect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  delete?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  connect?: Prisma.ProjectWhereUniqueInput | Prisma.ProjectWhereUniqueInput[]
+  update?: Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
+  updateMany?: Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput | Prisma.ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
+  deleteMany?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
 }
 
-export type ProjectCreateWithoutWorkspaceInput = {
+export type ProjectCreateWithoutAlertsInput = {
   id?: string
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutAlertsInput = {
+  id?: string
+  name: string
+  workspaceId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutAlertsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
+}
+
+export type ProjectUpsertWithoutAlertsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutAlertsInput, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutAlertsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutAlertsInput, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
+}
+
+export type ProjectUpdateWithoutAlertsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutAlertsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutCostSummaryInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutCostSummaryInput = {
+  id?: string
+  name: string
+  workspaceId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutCostSummaryInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
+}
+
+export type ProjectUpsertWithoutCostSummaryInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutCostSummaryInput, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutCostSummaryInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutCostSummaryInput, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
+}
+
+export type ProjectUpdateWithoutCostSummaryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutCostSummaryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutEvalSuitesInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
   traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
   traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
@@ -573,12 +734,12 @@ export type ProjectCreateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
-export type ProjectUncheckedCreateWithoutWorkspaceInput = {
+export type ProjectUncheckedCreateWithoutEvalSuitesInput = {
   id?: string
   name: string
+  workspaceId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
@@ -589,44 +750,134 @@ export type ProjectUncheckedCreateWithoutWorkspaceInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutEvalSuitesInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+}
+
+export type ProjectUpsertWithoutEvalSuitesInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutEvalSuitesInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+}
+
+export type ProjectUpdateWithoutEvalSuitesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutEvalSuitesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutGithubRepoInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutGithubRepoInput = {
+  id?: string
+  name: string
+  workspaceId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
-export type ProjectCreateOrConnectWithoutWorkspaceInput = {
+export type ProjectCreateOrConnectWithoutGithubRepoInput = {
   where: Prisma.ProjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
 }
 
-export type ProjectCreateManyWorkspaceInputEnvelope = {
-  data: Prisma.ProjectCreateManyWorkspaceInput | Prisma.ProjectCreateManyWorkspaceInput[]
-  skipDuplicates?: boolean
+export type ProjectUpsertWithoutGithubRepoInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutGithubRepoInput, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
+  where?: Prisma.ProjectWhereInput
 }
 
-export type ProjectUpsertWithWhereUniqueWithoutWorkspaceInput = {
-  where: Prisma.ProjectWhereUniqueInput
-  update: Prisma.XOR<Prisma.ProjectUpdateWithoutWorkspaceInput, Prisma.ProjectUncheckedUpdateWithoutWorkspaceInput>
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput>
+export type ProjectUpdateToOneWithWhereWithoutGithubRepoInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutGithubRepoInput, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
 }
 
-export type ProjectUpdateWithWhereUniqueWithoutWorkspaceInput = {
-  where: Prisma.ProjectWhereUniqueInput
-  data: Prisma.XOR<Prisma.ProjectUpdateWithoutWorkspaceInput, Prisma.ProjectUncheckedUpdateWithoutWorkspaceInput>
+export type ProjectUpdateWithoutGithubRepoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
 }
 
-export type ProjectUpdateManyWithWhereWithoutWorkspaceInput = {
-  where: Prisma.ProjectScalarWhereInput
-  data: Prisma.XOR<Prisma.ProjectUpdateManyMutationInput, Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceInput>
-}
-
-export type ProjectScalarWhereInput = {
-  AND?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
-  OR?: Prisma.ProjectScalarWhereInput[]
-  NOT?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
-  id?: Prisma.StringFilter<"Project"> | string
-  name?: Prisma.StringFilter<"Project"> | string
-  workspaceId?: Prisma.StringFilter<"Project"> | string
-  createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+export type ProjectUncheckedUpdateWithoutGithubRepoInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutMembersInput = {
@@ -869,166 +1120,6 @@ export type ProjectUncheckedUpdateWithoutTracesInput = {
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
-export type ProjectCreateWithoutCostSummaryInput = {
-  id?: string
-  name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
-  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
-  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
-  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectUncheckedCreateWithoutCostSummaryInput = {
-  id?: string
-  name: string
-  workspaceId: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
-  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
-  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectCreateOrConnectWithoutCostSummaryInput = {
-  where: Prisma.ProjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
-}
-
-export type ProjectUpsertWithoutCostSummaryInput = {
-  update: Prisma.XOR<Prisma.ProjectUpdateWithoutCostSummaryInput, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutCostSummaryInput, Prisma.ProjectUncheckedCreateWithoutCostSummaryInput>
-  where?: Prisma.ProjectWhereInput
-}
-
-export type ProjectUpdateToOneWithWhereWithoutCostSummaryInput = {
-  where?: Prisma.ProjectWhereInput
-  data: Prisma.XOR<Prisma.ProjectUpdateWithoutCostSummaryInput, Prisma.ProjectUncheckedUpdateWithoutCostSummaryInput>
-}
-
-export type ProjectUpdateWithoutCostSummaryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
-}
-
-export type ProjectUncheckedUpdateWithoutCostSummaryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
-}
-
-export type ProjectCreateWithoutAlertsInput = {
-  id?: string
-  name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
-  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
-  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
-  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectUncheckedCreateWithoutAlertsInput = {
-  id?: string
-  name: string
-  workspaceId: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
-  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
-  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectCreateOrConnectWithoutAlertsInput = {
-  where: Prisma.ProjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
-}
-
-export type ProjectUpsertWithoutAlertsInput = {
-  update: Prisma.XOR<Prisma.ProjectUpdateWithoutAlertsInput, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutAlertsInput, Prisma.ProjectUncheckedCreateWithoutAlertsInput>
-  where?: Prisma.ProjectWhereInput
-}
-
-export type ProjectUpdateToOneWithWhereWithoutAlertsInput = {
-  where?: Prisma.ProjectWhereInput
-  data: Prisma.XOR<Prisma.ProjectUpdateWithoutAlertsInput, Prisma.ProjectUncheckedUpdateWithoutAlertsInput>
-}
-
-export type ProjectUpdateWithoutAlertsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
-}
-
-export type ProjectUncheckedUpdateWithoutAlertsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
-}
-
 export type ProjectCreateWithoutTrackedUsersInput = {
   id?: string
   name: string
@@ -1189,92 +1280,11 @@ export type ProjectUncheckedUpdateWithoutTraceSessionsInput = {
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
 }
 
-export type ProjectCreateWithoutGithubRepoInput = {
+export type ProjectCreateWithoutWorkspaceInput = {
   id?: string
   name: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
-  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
-  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
-  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectUncheckedCreateWithoutGithubRepoInput = {
-  id?: string
-  name: string
-  workspaceId: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
-  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
-  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
-  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
-  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
-  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
-  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
-  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
-}
-
-export type ProjectCreateOrConnectWithoutGithubRepoInput = {
-  where: Prisma.ProjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
-}
-
-export type ProjectUpsertWithoutGithubRepoInput = {
-  update: Prisma.XOR<Prisma.ProjectUpdateWithoutGithubRepoInput, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutGithubRepoInput, Prisma.ProjectUncheckedCreateWithoutGithubRepoInput>
-  where?: Prisma.ProjectWhereInput
-}
-
-export type ProjectUpdateToOneWithWhereWithoutGithubRepoInput = {
-  where?: Prisma.ProjectWhereInput
-  data: Prisma.XOR<Prisma.ProjectUpdateWithoutGithubRepoInput, Prisma.ProjectUncheckedUpdateWithoutGithubRepoInput>
-}
-
-export type ProjectUpdateWithoutGithubRepoInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
-}
-
-export type ProjectUncheckedUpdateWithoutGithubRepoInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
-  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
-}
-
-export type ProjectCreateWithoutEvalSuitesInput = {
-  id?: string
-  name: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
   traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
   traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
@@ -1283,12 +1293,12 @@ export type ProjectCreateWithoutEvalSuitesInput = {
   costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
 }
 
-export type ProjectUncheckedCreateWithoutEvalSuitesInput = {
+export type ProjectUncheckedCreateWithoutWorkspaceInput = {
   id?: string
   name: string
-  workspaceId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
@@ -1299,54 +1309,44 @@ export type ProjectUncheckedCreateWithoutEvalSuitesInput = {
   costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
 }
 
-export type ProjectCreateOrConnectWithoutEvalSuitesInput = {
+export type ProjectCreateOrConnectWithoutWorkspaceInput = {
   where: Prisma.ProjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput>
 }
 
-export type ProjectUpsertWithoutEvalSuitesInput = {
-  update: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
-  create: Prisma.XOR<Prisma.ProjectCreateWithoutEvalSuitesInput, Prisma.ProjectUncheckedCreateWithoutEvalSuitesInput>
-  where?: Prisma.ProjectWhereInput
+export type ProjectCreateManyWorkspaceInputEnvelope = {
+  data: Prisma.ProjectCreateManyWorkspaceInput | Prisma.ProjectCreateManyWorkspaceInput[]
+  skipDuplicates?: boolean
 }
 
-export type ProjectUpdateToOneWithWhereWithoutEvalSuitesInput = {
-  where?: Prisma.ProjectWhereInput
-  data: Prisma.XOR<Prisma.ProjectUpdateWithoutEvalSuitesInput, Prisma.ProjectUncheckedUpdateWithoutEvalSuitesInput>
+export type ProjectUpsertWithWhereUniqueWithoutWorkspaceInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutWorkspaceInput, Prisma.ProjectUncheckedUpdateWithoutWorkspaceInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutWorkspaceInput, Prisma.ProjectUncheckedCreateWithoutWorkspaceInput>
 }
 
-export type ProjectUpdateWithoutEvalSuitesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
-  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+export type ProjectUpdateWithWhereUniqueWithoutWorkspaceInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutWorkspaceInput, Prisma.ProjectUncheckedUpdateWithoutWorkspaceInput>
 }
 
-export type ProjectUncheckedUpdateWithoutEvalSuitesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
-  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
-  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
-  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
-  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
-  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
-  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
-  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+export type ProjectUpdateManyWithWhereWithoutWorkspaceInput = {
+  where: Prisma.ProjectScalarWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateManyMutationInput, Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceInput>
+}
+
+export type ProjectScalarWhereInput = {
+  AND?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
+  OR?: Prisma.ProjectScalarWhereInput[]
+  NOT?: Prisma.ProjectScalarWhereInput | Prisma.ProjectScalarWhereInput[]
+  id?: Prisma.StringFilter<"Project"> | string
+  name?: Prisma.StringFilter<"Project"> | string
+  workspaceId?: Prisma.StringFilter<"Project"> | string
+  createdAt?: Prisma.DateTimeFilter<"Project"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Project"> | Date | string
 }
 
 export type ProjectCreateManyWorkspaceInput = {

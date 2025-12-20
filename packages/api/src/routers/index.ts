@@ -19,9 +19,7 @@ import { createRouter } from "../trpc";
 import { apiKeysRouter } from "./apiKeys";
 import { workspacesRouter } from "./workspaces";
 import { projectsRouter } from "./projects";
-import { tracesRouter } from "./traces";
-import { sessionsRouter } from "./sessions";
-import { analyticsRouter } from "./analytics";
+// NOTE: traces, sessions, analytics routers removed - will be rebuilt for OTLP-first design
 import { domainsRouter } from "./domains";
 import { costsRouter } from "./costs";
 import { alertsRouter } from "./alerts";
@@ -76,36 +74,8 @@ export const appRouter = createRouter({
    */
   projects: projectsRouter,
 
-  /**
-   * Traces management
-   * @see ./traces.ts
-   *
-   * - traces.list - List traces for a project
-   * - traces.get  - Get a single trace with spans
-   */
-  traces: tracesRouter,
-
-  /**
-   * Sessions management (multi-turn conversations)
-   * @see ./sessions.ts
-   *
-   * - sessions.list     - List sessions with stats
-   * - sessions.get      - Get session with traces
-   * - sessions.create   - Create session manually
-   * - sessions.update   - Update session name/metadata
-   * - sessions.delete   - Delete session
-   * - sessions.timeline - Get ordered traces
-   */
-  sessions: sessionsRouter,
-
-  /**
-   * Analytics
-   * @see ./analytics.ts
-   *
-   * - analytics.getProjectAnalytics   - Get project dashboard data
-   * - analytics.getWorkspaceAnalytics - Get workspace-wide dashboard data
-   */
-  analytics: analyticsRouter,
+  // NOTE: traces, sessions, analytics routers removed - will be rebuilt for OTLP-first design
+  // See: apps/ingest-node/ and docs/specs/ingest/README.md
 
   /**
    * Allowed Domains (Domain Matcher)
@@ -166,14 +136,14 @@ export const appRouter = createRouter({
    * Tracked Users (end-users of AI applications)
    * @see ./trackedUsers.ts
    *
-   * - trackedUsers.list          - List tracked users with stats
+   * - trackedUsers.list          - List tracked users
    * - trackedUsers.get           - Get user with sessions
    * - trackedUsers.getByExternalId - Get user by external ID
-   * - trackedUsers.traces        - Get user's traces
-   * - trackedUsers.analytics     - Get user analytics (daily breakdown)
    * - trackedUsers.summary       - Get project user summary
    * - trackedUsers.update        - Update user metadata
    * - trackedUsers.delete        - Delete tracked user
+   *
+   * NOTE: traces and analytics endpoints removed - will be reworked for OTLP-first design
    */
   trackedUsers: trackedUsersRouter,
 
@@ -184,9 +154,8 @@ export const appRouter = createRouter({
    * Used by Temporal activities for database mutations.
    * Requires INTERNAL_API_SECRET authentication.
    *
-   * - internal.ingestTrace         - Persist trace + spans
-   * - internal.calculateTraceCosts - Calculate span costs
-   * - internal.updateCostSummaries - Update daily summaries
+   * NOTE: Legacy trace ingestion removed - replaced by OTLP-first ingest-node service
+   *
    * - internal.ingestScore         - Persist score (TODO: Issue #104)
    * - internal.validateScoreConfig - Validate score config (TODO: Issue #104)
    * - internal.transitionAlertState - Transition alert state
@@ -250,9 +219,7 @@ export {
   apiKeysRouter,
   workspacesRouter,
   projectsRouter,
-  tracesRouter,
-  sessionsRouter,
-  analyticsRouter,
+  // traces, sessions, analytics routers removed
   domainsRouter,
   costsRouter,
   alertsRouter,

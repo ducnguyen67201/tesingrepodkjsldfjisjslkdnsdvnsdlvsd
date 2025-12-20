@@ -477,16 +477,6 @@ export type CostDailySummaryUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type CostDailySummaryListRelationFilter = {
-  every?: Prisma.CostDailySummaryWhereInput
-  some?: Prisma.CostDailySummaryWhereInput
-  none?: Prisma.CostDailySummaryWhereInput
-}
-
-export type CostDailySummaryOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type CostDailySummaryProjectIdDateModelCompoundUniqueInput = {
   projectId: string
   date: Date | string
@@ -558,6 +548,24 @@ export type CostDailySummarySumOrderByAggregateInput = {
   totalCost?: Prisma.SortOrder
 }
 
+export type CostDailySummaryListRelationFilter = {
+  every?: Prisma.CostDailySummaryWhereInput
+  some?: Prisma.CostDailySummaryWhereInput
+  none?: Prisma.CostDailySummaryWhereInput
+}
+
+export type CostDailySummaryOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 export type CostDailySummaryCreateNestedManyWithoutProjectInput = {
   create?: Prisma.XOR<Prisma.CostDailySummaryCreateWithoutProjectInput, Prisma.CostDailySummaryUncheckedCreateWithoutProjectInput> | Prisma.CostDailySummaryCreateWithoutProjectInput[] | Prisma.CostDailySummaryUncheckedCreateWithoutProjectInput[]
   connectOrCreate?: Prisma.CostDailySummaryCreateOrConnectWithoutProjectInput | Prisma.CostDailySummaryCreateOrConnectWithoutProjectInput[]
@@ -598,22 +606,6 @@ export type CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput = {
   update?: Prisma.CostDailySummaryUpdateWithWhereUniqueWithoutProjectInput | Prisma.CostDailySummaryUpdateWithWhereUniqueWithoutProjectInput[]
   updateMany?: Prisma.CostDailySummaryUpdateManyWithWhereWithoutProjectInput | Prisma.CostDailySummaryUpdateManyWithWhereWithoutProjectInput[]
   deleteMany?: Prisma.CostDailySummaryScalarWhereInput | Prisma.CostDailySummaryScalarWhereInput[]
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
 }
 
 export type CostDailySummaryCreateWithoutProjectInput = {

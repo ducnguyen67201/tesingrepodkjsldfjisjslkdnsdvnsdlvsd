@@ -29,8 +29,8 @@ export * from "./enums"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Alerts
+ * const alerts = await prisma.alert.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -39,76 +39,6 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
-/**
- * Model User
- * 
- */
-export type User = Prisma.UserModel
-/**
- * Model Account
- * 
- */
-export type Account = Prisma.AccountModel
-/**
- * Model Session
- * 
- */
-export type Session = Prisma.SessionModel
-/**
- * Model VerificationToken
- * 
- */
-export type VerificationToken = Prisma.VerificationTokenModel
-/**
- * Model Workspace
- * 
- */
-export type Workspace = Prisma.WorkspaceModel
-/**
- * Model WorkspaceMember
- * 
- */
-export type WorkspaceMember = Prisma.WorkspaceMemberModel
-/**
- * Model AllowedDomain
- * 
- */
-export type AllowedDomain = Prisma.AllowedDomainModel
-/**
- * Model Project
- * 
- */
-export type Project = Prisma.ProjectModel
-/**
- * Model ProjectMember
- * 
- */
-export type ProjectMember = Prisma.ProjectMemberModel
-/**
- * Model ApiKey
- * 
- */
-export type ApiKey = Prisma.ApiKeyModel
-/**
- * Model Trace
- * 
- */
-export type Trace = Prisma.TraceModel
-/**
- * Model Span
- * 
- */
-export type Span = Prisma.SpanModel
-/**
- * Model ModelPricing
- * 
- */
-export type ModelPricing = Prisma.ModelPricingModel
-/**
- * Model CostDailySummary
- * 
- */
-export type CostDailySummary = Prisma.CostDailySummaryModel
 /**
  * Model Alert
  * 
@@ -135,15 +65,45 @@ export type NotificationChannel = Prisma.NotificationChannelModel
  */
 export type AlertChannelLink = Prisma.AlertChannelLinkModel
 /**
- * Model TrackedUser
+ * Model User
  * 
  */
-export type TrackedUser = Prisma.TrackedUserModel
+export type User = Prisma.UserModel
 /**
- * Model TraceSession
+ * Model Account
  * 
  */
-export type TraceSession = Prisma.TraceSessionModel
+export type Account = Prisma.AccountModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model VerificationToken
+ * 
+ */
+export type VerificationToken = Prisma.VerificationTokenModel
+/**
+ * Model ModelPricing
+ * 
+ */
+export type ModelPricing = Prisma.ModelPricingModel
+/**
+ * Model CostDailySummary
+ * 
+ */
+export type CostDailySummary = Prisma.CostDailySummaryModel
+/**
+ * Model EvalSuite
+ * 
+ */
+export type EvalSuite = Prisma.EvalSuiteModel
+/**
+ * Model EvalRun
+ * 
+ */
+export type EvalRun = Prisma.EvalRunModel
 /**
  * Model GitHubInstallation
  * 
@@ -170,17 +130,57 @@ export type GitPullRequest = Prisma.GitPullRequestModel
  */
 export type CodeChunk = Prisma.CodeChunkModel
 /**
+ * Model Project
+ * 
+ */
+export type Project = Prisma.ProjectModel
+/**
+ * Model ProjectMember
+ * 
+ */
+export type ProjectMember = Prisma.ProjectMemberModel
+/**
+ * Model ApiKey
+ * 
+ */
+export type ApiKey = Prisma.ApiKeyModel
+/**
  * Model AlertRCA
  * 
  */
 export type AlertRCA = Prisma.AlertRCAModel
 /**
- * Model EvalSuite
+ * Model Trace
  * 
  */
-export type EvalSuite = Prisma.EvalSuiteModel
+export type Trace = Prisma.TraceModel
 /**
- * Model EvalRun
+ * Model Span
  * 
  */
-export type EvalRun = Prisma.EvalRunModel
+export type Span = Prisma.SpanModel
+/**
+ * Model TrackedUser
+ * 
+ */
+export type TrackedUser = Prisma.TrackedUserModel
+/**
+ * Model TraceSession
+ * 
+ */
+export type TraceSession = Prisma.TraceSessionModel
+/**
+ * Model Workspace
+ * 
+ */
+export type Workspace = Prisma.WorkspaceModel
+/**
+ * Model WorkspaceMember
+ * 
+ */
+export type WorkspaceMember = Prisma.WorkspaceMemberModel
+/**
+ * Model AllowedDomain
+ * 
+ */
+export type AllowedDomain = Prisma.AllowedDomainModel

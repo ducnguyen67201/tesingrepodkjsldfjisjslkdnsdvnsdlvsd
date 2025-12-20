@@ -118,12 +118,10 @@ export function TrackedUserDetailPanel({
                 <StatItem label="Sessions">
                   <div className="flex items-center gap-1.5">
                     <MessagesSquare className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="font-medium">{user.sessions?.length ?? 0}</span>
+                    <span className="font-medium">{user._count?.sessions ?? 0}</span>
                   </div>
                 </StatItem>
-                <StatItem label="Total Traces">
-                  <span className="font-medium">{user._count?.traces ?? 0}</span>
-                </StatItem>
+                {/* NOTE: Total Traces removed - will be reworked for OTLP-first design */}
                 <StatItem label="Status">
                   <Badge
                     variant="default"

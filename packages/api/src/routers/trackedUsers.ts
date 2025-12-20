@@ -7,10 +7,12 @@ import { TrackedUserService } from "../services/trackedUser.service";
  *
  * TrackedUser = Your customers using your AI app
  * User = Dashboard/Auth users (developers)
+ *
+ * NOTE: Trace-based metrics removed - will be reworked for OTLP-first design
  */
 export const trackedUsersRouter = createRouter({
   /**
-   * List tracked users for a project with aggregated stats
+   * List tracked users for a project (basic info only)
    */
   list: protectedProcedure
     .input(
@@ -21,7 +23,7 @@ export const trackedUsersRouter = createRouter({
         from: z.date().optional(),
         to: z.date().optional(),
         sortBy: z
-          .enum(["lastSeenAt", "firstSeenAt", "traceCount", "totalCost"])
+          .enum(["lastSeenAt", "firstSeenAt"])
           .default("lastSeenAt"),
         sortOrder: z.enum(["asc", "desc"]).default("desc"),
         limit: z.number().int().min(1).max(100).default(50),
@@ -78,47 +80,7 @@ export const trackedUsersRouter = createRouter({
       );
     }),
 
-  /**
-   * Get user's traces (paginated)
-   */
-  traces: protectedProcedure
-    .input(
-      z.object({
-        workspaceSlug: z.string().min(1),
-        userId: z.string(),
-        limit: z.number().int().min(1).max(100).default(50),
-        cursor: z.string().optional(),
-      })
-    )
-    .use(workspaceMiddleware)
-    .query(async ({ ctx, input }) => {
-      return TrackedUserService.getTraces(
-        input.userId,
-        ctx.workspace.id,
-        input.limit,
-        input.cursor
-      );
-    }),
-
-  /**
-   * Get user analytics over time (daily breakdown)
-   */
-  analytics: protectedProcedure
-    .input(
-      z.object({
-        workspaceSlug: z.string().min(1),
-        userId: z.string(),
-        days: z.number().int().min(1).max(90).default(30),
-      })
-    )
-    .use(workspaceMiddleware)
-    .query(async ({ ctx, input }) => {
-      return TrackedUserService.getAnalytics(
-        input.userId,
-        ctx.workspace.id,
-        input.days
-      );
-    }),
+  // NOTE: traces and analytics endpoints removed - will be reworked for OTLP-first design
 
   /**
    * Project-level user summary stats

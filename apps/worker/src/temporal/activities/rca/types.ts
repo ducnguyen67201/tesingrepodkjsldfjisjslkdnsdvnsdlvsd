@@ -8,13 +8,14 @@ import type { Prisma } from "@cognobserve/db";
 
 /**
  * Row returned from span query with trace info
+ * Note: OTLP-first schema - traceName replaced with serviceName
  */
 export interface SpanRow {
   id: string;
   traceId: string;
-  traceName: string;
+  serviceName: string | null;
   name: string;
-  level: string;
+  statusCode: string | null;
   statusMessage: string | null;
   model: string | null;
   startTime: Date;

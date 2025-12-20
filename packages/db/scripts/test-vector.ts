@@ -123,7 +123,7 @@ async function main() {
   // 7. Clear test embedding (cleanup)
   console.log("7. Cleaning up test embedding...");
   await prisma.$executeRaw`
-    UPDATE code_chunks
+    UPDATE "CodeChunk"
     SET embedding = NULL
     WHERE id = ${chunk.id}
   `;

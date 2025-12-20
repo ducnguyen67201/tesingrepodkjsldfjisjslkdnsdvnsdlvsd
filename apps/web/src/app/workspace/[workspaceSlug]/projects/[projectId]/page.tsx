@@ -9,8 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-import { TracesTable } from "@/components/traces/traces-table";
-import { SessionsTable } from "@/components/sessions/sessions-table";
+// NOTE: TracesTable and SessionsTable removed - will be reworked for OTLP-first design
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
@@ -136,17 +135,21 @@ export default function ProjectDetailPage() {
         </TabsList>
 
         <TabsContent value="traces" className="mt-4">
-          <TracesTable
-            workspaceSlug={workspaceSlug ?? ""}
-            projectId={projectId}
-          />
+          {/* NOTE: TracesTable removed - will be reworked for OTLP-first design */}
+          <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+            <Activity className="mx-auto mb-2 h-8 w-8" />
+            <p className="text-lg font-medium">Traces</p>
+            <p className="text-sm">Coming soon with OTLP-first telemetry</p>
+          </div>
         </TabsContent>
 
         <TabsContent value="sessions" className="mt-4">
-          <SessionsTable
-            workspaceSlug={workspaceSlug ?? ""}
-            projectId={projectId}
-          />
+          {/* NOTE: SessionsTable removed - will be reworked for OTLP-first design */}
+          <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+            <MessagesSquare className="mx-auto mb-2 h-8 w-8" />
+            <p className="text-lg font-medium">Sessions</p>
+            <p className="text-sm">Coming soon with OTLP-first telemetry</p>
+          </div>
         </TabsContent>
 
         <TabsContent value="users" className="mt-4">

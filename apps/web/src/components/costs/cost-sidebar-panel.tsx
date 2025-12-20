@@ -137,14 +137,8 @@ export function CostSidebarPanel({
       { enabled: !!workspaceSlug && !!projectId }
     );
 
-  // Analytics data
-  const { data: analytics, isLoading: isLoadingAnalytics } =
-    trpc.analytics.getProjectAnalytics.useQuery(
-      queryParams,
-      { enabled: !!workspaceSlug && !!projectId }
-    );
-
-  const isLoading = isLoadingCost || isLoadingAnalytics;
+  // NOTE: analytics router removed - token/model usage will be reworked for OTLP-first design
+  const isLoading = isLoadingCost;
 
   if (isLoading) {
     return <PanelSkeleton />;
@@ -209,15 +203,7 @@ export function CostSidebarPanel({
 
         <Separator />
 
-        {/* Token Usage Chart */}
-        <TokenUsageChart data={analytics?.tokenUsage ?? []} timeRange={timeRange} />
-
-        <Separator />
-
-        {/* Model Usage Chart */}
-        <ModelUsageChart data={analytics?.modelUsage ?? []} />
-
-        <Separator />
+        {/* NOTE: Token Usage and Model Usage charts removed - will be reworked for OTLP-first design */}
 
         {/* Cost Trend Chart */}
         <CostTrendChart data={costTimeSeries ?? []} timeRange={timeRange} />

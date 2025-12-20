@@ -16,11 +16,16 @@ export const SpanTypeSchema = z.enum([
 export type SpanType = z.infer<typeof SpanTypeSchema>;
 export const ALL_SPAN_TYPES: readonly SpanType[] = SpanTypeSchema.options;
 
+// NOTE: SpanStatusCode is now defined in otlp.ts and re-exported from index.ts
+// Legacy SpanLevel aliases remain here for backwards compatibility
+
 /**
- * Span severity levels from the database.
+ * @deprecated Use SpanStatusCodeSchema from otlp.ts instead
  */
-export const SpanLevelSchema = z.enum(["DEBUG", "DEFAULT", "WARNING", "ERROR"]);
+export const SpanLevelSchema = z.enum(["UNSET", "OK", "ERROR"]);
+/** @deprecated Use SpanStatusCode from otlp.ts instead */
 export type SpanLevel = z.infer<typeof SpanLevelSchema>;
+/** @deprecated Use ALL_SPAN_STATUS_CODES from otlp.ts instead */
 export const ALL_SPAN_LEVELS: readonly SpanLevel[] = SpanLevelSchema.options;
 
 /**

@@ -8,6 +8,8 @@ import {
   Users,
   Search,
   Mail,
+  Calendar,
+  Activity,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import {
@@ -19,14 +21,24 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { useTrackedUsers } from "@/hooks/tracked-users/use-tracked-users";
-import { formatDuration, formatTokens, formatCost } from "@/lib/format";
-import type { TrackedUserWithStats } from "@cognobserve/api/client";
 import { cn } from "@/lib/utils";
 import { TrackedUserDetailPanel } from "./tracked-user-detail-panel";
+
+// NOTE: TrackedUserWithStats → TrackedUserBasic for OTLP-first design
+// Metrics like traceCount, totalCost will be reworked
+interface TrackedUserBasic {
+  id: string;
+  projectId: string;
+  externalId: string;
+  name: string | null;
+  email: string | null;
+  metadata: Record<string, unknown> | null;
+  firstSeenAt: Date;
+  lastSeenAt: Date;
+}
 
 /** Skeleton row indices for loading state */
 const SKELETON_ROWS = [0, 1, 2, 3, 4] as const;
@@ -101,14 +113,11 @@ export function TrackedUsersTable({ workspaceSlug, projectId }: TrackedUsersTabl
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[200px]">User</TableHead>
-              <TableHead className="w-[100px] text-right">Traces</TableHead>
-              <TableHead className="w-[100px] text-right">Sessions</TableHead>
-              <TableHead className="w-[100px] text-right">Tokens</TableHead>
-              <TableHead className="w-[100px] text-right">Cost</TableHead>
-              <TableHead className="w-[80px] text-right">Errors</TableHead>
-              <TableHead className="w-[100px] text-right">Avg Latency</TableHead>
+              <TableHead className="w-[250px]">User</TableHead>
+              <TableHead className="w-[180px]">External ID</TableHead>
+              <TableHead className="w-[150px]">First Seen</TableHead>
               <TableHead className="w-[150px]">Last Seen</TableHead>
+              {/* NOTE: Metrics columns removed - will be reworked for OTLP-first design */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -163,7 +172,7 @@ function SearchBar({ value, onChange }: SearchBarProps) {
 }
 
 interface TrackedUserRowProps {
-  user: TrackedUserWithStats;
+  user: TrackedUserBasic;
   isSelected: boolean;
   onSelect: (userId: string) => void;
 }
@@ -192,41 +201,24 @@ function TrackedUserRow({ user, isSelected, onSelect }: TrackedUserRowProps) {
               {user.email}
             </span>
           )}
-          {!user.email && user.name && (
-            <span className="text-xs text-muted-foreground">{user.externalId}</span>
-          )}
         </div>
       </TableCell>
-      <TableCell className="py-3 text-right">
-        <Badge variant="outline" className="font-mono">
-          {user.traceCount}
-        </Badge>
+      <TableCell className="py-3">
+        <span className="font-mono text-sm text-muted-foreground">
+          {user.externalId}
+        </span>
       </TableCell>
-      <TableCell className="py-3 text-right">
-        <Badge variant="secondary" className="font-mono">
-          {user.sessionCount}
-        </Badge>
+      <TableCell className="py-3">
+        <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <Calendar className="h-3.5 w-3.5" />
+          {formatDistanceToNow(new Date(user.firstSeenAt), { addSuffix: true })}
+        </span>
       </TableCell>
-      <TableCell className="py-3 text-right font-mono">
-        {formatTokens(user.totalTokens)}
-      </TableCell>
-      <TableCell className="py-3 text-right font-mono">
-        {formatCost(user.totalCost)}
-      </TableCell>
-      <TableCell className="py-3 text-right">
-        {user.errorCount > 0 ? (
-          <Badge variant="destructive" className="font-mono">
-            {user.errorCount}
-          </Badge>
-        ) : (
-          <span className="text-muted-foreground">0</span>
-        )}
-      </TableCell>
-      <TableCell className="py-3 text-right font-mono">
-        {formatDuration(user.avgLatencyMs)}
-      </TableCell>
-      <TableCell className="py-3 text-muted-foreground">
-        {formatDistanceToNow(new Date(user.lastSeenAt), { addSuffix: true })}
+      <TableCell className="py-3">
+        <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <Activity className="h-3.5 w-3.5" />
+          {formatDistanceToNow(new Date(user.lastSeenAt), { addSuffix: true })}
+        </span>
       </TableCell>
     </TableRow>
   );
@@ -236,25 +228,16 @@ function TrackedUsersTableSkeleton() {
   const renderSkeletonRow = (index: number) => (
     <TableRow key={index}>
       <TableCell className="py-3">
-        <Skeleton className="h-5 w-32" />
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-40" />
+        </div>
       </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-12" />
+      <TableCell className="py-3">
+        <Skeleton className="h-5 w-24" />
       </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-12" />
-      </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-16" />
-      </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-14" />
-      </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-10" />
-      </TableCell>
-      <TableCell className="py-3 text-right">
-        <Skeleton className="ml-auto h-5 w-14" />
+      <TableCell className="py-3">
+        <Skeleton className="h-5 w-20" />
       </TableCell>
       <TableCell className="py-3">
         <Skeleton className="h-5 w-20" />
@@ -266,13 +249,9 @@ function TrackedUsersTableSkeleton() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[200px]">User</TableHead>
-          <TableHead className="w-[100px] text-right">Traces</TableHead>
-          <TableHead className="w-[100px] text-right">Sessions</TableHead>
-          <TableHead className="w-[100px] text-right">Tokens</TableHead>
-          <TableHead className="w-[100px] text-right">Cost</TableHead>
-          <TableHead className="w-[80px] text-right">Errors</TableHead>
-          <TableHead className="w-[100px] text-right">Avg Latency</TableHead>
+          <TableHead className="w-[250px]">User</TableHead>
+          <TableHead className="w-[180px]">External ID</TableHead>
+          <TableHead className="w-[150px]">First Seen</TableHead>
           <TableHead className="w-[150px]">Last Seen</TableHead>
         </TableRow>
       </TableHeader>
