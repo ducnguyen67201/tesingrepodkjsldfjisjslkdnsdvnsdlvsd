@@ -84,9 +84,9 @@ services:
   #   container_name: cognobserve-ingest
   #   restart: unless-stopped
   #   ports:
-  #     - "8081:8081"
+  #     - "8080:8080"
   #   environment:
-  #     PORT: "8081"
+  #     PORT: "8080"
   #     DATABASE_URL: "postgresql://cognobserve:cognobserve@postgres:5432/cognobserve"
   #     LOG_LEVEL: "info"
   #   depends_on:

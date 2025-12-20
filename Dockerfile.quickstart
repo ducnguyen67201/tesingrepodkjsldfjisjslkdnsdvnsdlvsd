@@ -8,8 +8,8 @@
 # See docs/self-hosting for full setup.
 #
 # Usage:
-#   docker build -f Dockerfile.quickstart -t cognobserve:latest .
-#   docker run -d -p 3000:3000 -p 8081:8081 -v cognobserve_data:/data cognobserve:latest
+#   docker build -f Dockerfile.quickstart -t cognobserve:quickstart .
+#   docker run -d -p 3000:3000 -p 8080:8080 -v cognobserve_data:/data cognobserve:quickstart
 
 # ============================================================
 # Stage 1: Build Node.js Applications
@@ -148,12 +148,12 @@ RUN mkdir -p /data/secrets /app/logs \
 
 # Expose ports
 # 3000 - Web Dashboard & API
-# 8081 - Ingest API (for SDKs)
-EXPOSE 3000 8081
+# 8080 - Ingest API (for SDKs)
+EXPOSE 3000 8080
 
 # Health check - use ingest service (no auth required)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD wget -qO- http://localhost:8081/health || exit 1
+    CMD wget -qO- http://localhost:8080/health || exit 1
 
 # Volume for persistent data
 VOLUME ["/data"]

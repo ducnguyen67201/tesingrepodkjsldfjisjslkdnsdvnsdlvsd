@@ -126,7 +126,7 @@ Note: Ingest service writes traces directly. Worker activities are READ-ONLY.
 | Service | Port | Purpose |
 |---------|------|---------|
 | Web | 3000 | Dashboard, API (authoritative for mutations) |
-| Ingest | 8081 | OTLP trace ingestion (JSON + protobuf) |
+| Ingest | 8080 | OTLP trace ingestion (JSON + protobuf) |
 | Worker | - | Temporal worker (READ-ONLY activities) |
 | Temporal | 7233 | Workflow orchestration |
 | Temporal UI | 8088 | Workflow monitoring dashboard |

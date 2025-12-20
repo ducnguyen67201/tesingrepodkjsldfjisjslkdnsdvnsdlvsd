@@ -100,8 +100,8 @@ USER cognobserve
 
 # Expose ports
 # 3000 - Web Dashboard & API
-# 8081 - Ingest API (for SDKs)
-EXPOSE 3000 8081
+# 8080 - Ingest API (for SDKs)
+EXPOSE 3000 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \

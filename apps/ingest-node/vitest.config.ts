@@ -10,7 +10,7 @@ export default defineConfig({
     env: {
       DATABASE_URL: "postgresql://test:test@localhost:5432/test_db",
       NODE_ENV: "test",
-      PORT: "8081",
+      PORT: "8080",
       HOST: "0.0.0.0",
       LOG_LEVEL: "error",
       RATE_LIMIT_RPS: "10",

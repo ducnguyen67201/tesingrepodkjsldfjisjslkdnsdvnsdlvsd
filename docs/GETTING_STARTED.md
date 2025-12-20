@@ -13,7 +13,7 @@ make dev-ingest    # Terminal 2: Ingest Service
 
 Done! 🎉
 - Web: http://localhost:3000
-- API: http://localhost:8081
+- API: http://localhost:8080
 
 ---
 
@@ -93,7 +93,7 @@ make dev-ingest
 | Service | URL | Description |
 |---------|-----|-------------|
 | Web | http://localhost:3000 | Next.js Dashboard |
-| Ingest | http://localhost:8081 | OTLP Ingestion API |
+| Ingest | http://localhost:8080 | OTLP Ingestion API |
 | Temporal UI | http://localhost:8088 | Workflow Monitoring |
 | PostgreSQL | localhost:5432 | Database |
 | Redis | localhost:6379 | Cache |
@@ -105,7 +105,7 @@ make dev-ingest
 ### Check Health
 
 ```bash
-curl http://localhost:8081/health
+curl http://localhost:8080/health
 ```
 
 Expected response:
@@ -116,13 +116,13 @@ Expected response:
 ### Check Metrics
 
 ```bash
-curl http://localhost:8081/metrics
+curl http://localhost:8080/metrics
 ```
 
 ### Send Test OTLP Trace
 
 ```bash
-curl -X POST http://localhost:8081/v1/traces \
+curl -X POST http://localhost:8080/v1/traces \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your-api-key" \
   -d '{
@@ -202,7 +202,7 @@ pnpm build            # Build all TypeScript apps
 CognObserve/
 ├── apps/
 │   ├── web/          # Next.js dashboard (port 3000)
-│   ├── ingest-node/  # OTLP ingestion service (port 8081)
+│   ├── ingest-node/  # OTLP ingestion service (port 8080)
 │   └── worker/       # Temporal background worker
 ├── packages/
 │   ├── proto/        # Generated TypeScript types
@@ -259,7 +259,7 @@ make proto
 ```bash
 # Kill process on port
 kill $(lsof -t -i:3000)  # Web
-kill $(lsof -t -i:8081)  # Ingest
+kill $(lsof -t -i:8080)  # Ingest
 ```
 
 ---
