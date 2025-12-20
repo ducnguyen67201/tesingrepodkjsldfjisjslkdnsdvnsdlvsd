@@ -27,7 +27,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma client
-        run: pnpm db:generate
+        run: pnpm db:generate:ci
 
       - name: Lint ingest-node
         run: pnpm --filter @cognobserve/ingest-node lint
