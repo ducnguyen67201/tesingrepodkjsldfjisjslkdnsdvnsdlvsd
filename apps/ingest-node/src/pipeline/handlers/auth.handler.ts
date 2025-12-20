@@ -16,7 +16,7 @@
  */
 import { logger } from "../../lib/logger.js";
 import { metrics } from "../../lib/metrics.js";
-import { prisma, type ApiKey } from "../../lib/db.js";
+import { prisma } from "../../lib/db.js";
 import { hashApiKey } from "@cognobserve/shared";
 import type {
   PipelineContext,

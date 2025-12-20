@@ -3,7 +3,7 @@
  *
  * Tests for the Chain of Responsibility pipeline execution.
  */
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createPipeline } from "../../pipeline/runner.js";
 import type {
   PipelineContext,
