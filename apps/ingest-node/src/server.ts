@@ -31,26 +31,18 @@ export function createServer(): Express {
   // Compression for responses
   app.use(compression());
 
-  // Body parsing - raw for protobuf, json for JSON
-  // Note: We parse raw body for OTLP protobuf support
-  app.use(
-    express.raw({
-      type: ["application/x-protobuf", "application/octet-stream"],
-      limit: config.limits.maxPayloadBytes,
-    })
-  );
+  // Routes - traces route handles its own body parsing for gzip support
+  app.use("/", healthRouter);
+  app.use("/", metricsRouter);
+  app.use("/v1/traces", tracesRouter);
 
+  // Body parsing for other routes (not traces)
   app.use(
     express.json({
       type: ["application/json"],
       limit: config.limits.maxPayloadBytes,
     })
   );
-
-  // Routes
-  app.use("/", healthRouter);
-  app.use("/", metricsRouter);
-  app.use("/v1/traces", tracesRouter);
 
   // 404 handler
   app.use((_req: Request, res: Response) => {

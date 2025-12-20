@@ -7,9 +7,10 @@
  * 1. ParseHandler - Parse protobuf/JSON payload
  * 2. NormalizeHandler - Convert OTLP to internal format
  * 3. ValidateHandler - Validate limits and constraints
- * 4. AuthHandler - Authenticate and bind to project
- * 5. PersistHandler - Save to database
- * 6. ResponseHandler - Send success response
+ * 4. ScrubHandler - Remove/redact PII from spans
+ * 5. AuthHandler - Authenticate and bind to project
+ * 6. PersistHandler - Save to database
+ * 7. ResponseHandler - Send success response
  *
  * Each handler can:
  * - Continue to next handler (return { continue: true })
@@ -26,6 +27,7 @@ import {
   ParseHandler,
   NormalizeHandler,
   ValidateHandler,
+  ScrubHandler,
   AuthHandler,
   PersistHandler,
   ResponseHandler,
@@ -39,6 +41,7 @@ export function createIngestionPipeline() {
     .addHandler(new ParseHandler())
     .addHandler(new NormalizeHandler())
     .addHandler(new ValidateHandler())
+    .addHandler(new ScrubHandler())
     .addHandler(new AuthHandler())
     .addHandler(new PersistHandler())
     .addHandler(new ResponseHandler());

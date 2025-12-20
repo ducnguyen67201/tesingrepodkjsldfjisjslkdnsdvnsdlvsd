@@ -1,11 +1,26 @@
 import { Router, type Router as RouterType } from "express";
+import express from "express";
+import { config } from "../config/env.js";
 import { logger } from "../lib/logger.js";
 import { createIngestionPipeline, type PipelineContext } from "../pipeline/index.js";
+import { rateLimitMiddleware } from "../middleware/rate-limit.js";
 
 export const tracesRouter: RouterType = Router();
 
 // Create the ingestion pipeline (singleton)
 const pipeline = createIngestionPipeline();
+
+// Apply rate limiting to all trace routes
+tracesRouter.use(rateLimitMiddleware);
+
+// Use raw body parser for all content types on this route
+// This allows us to handle gzip decompression manually
+tracesRouter.use(
+  express.raw({
+    type: () => true, // Accept all content types
+    limit: config.limits.maxPayloadBytes,
+  })
+);
 
 /**
  * OTLP Trace ingestion endpoint
@@ -34,12 +49,8 @@ tracesRouter.post("/", async (req, res) => {
       "Received trace ingestion request"
     );
 
-    // Collect raw body
-    const chunks: Buffer[] = [];
-    for await (const chunk of req) {
-      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    }
-    const rawBody = Buffer.concat(chunks);
+    // Get raw body from express.raw() middleware
+    const rawBody = Buffer.isBuffer(req.body) ? req.body : Buffer.from([]);
 
     // Build pipeline context
     const ctx: PipelineContext = {

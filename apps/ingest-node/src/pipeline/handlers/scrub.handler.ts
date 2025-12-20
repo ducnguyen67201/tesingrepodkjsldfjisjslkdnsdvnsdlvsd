@@ -58,8 +58,8 @@ const PII_VALUE_PATTERNS: Array<{ pattern: RegExp; type: string }> = [
   { pattern: /\b\d{3}-\d{2}-\d{4}\b/g, type: "ssn" },
   // Credit card numbers (basic pattern)
   { pattern: /\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, type: "credit_card" },
-  // Phone numbers (various formats)
-  { pattern: /\b\+?1?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, type: "phone" },
+  // Phone numbers (various formats) - uses lookahead/lookbehind for proper boundary matching
+  { pattern: /(?<![0-9])(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}(?![0-9])/g, type: "phone" },
   // IP addresses (when they appear in values)
   { pattern: /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, type: "ip_address" },
 ];
