@@ -32,7 +32,6 @@ check_command() {
 
 check_command "node" "https://nodejs.org/"
 check_command "pnpm" "npm install -g pnpm"
-check_command "go" "https://go.dev/dl/"
 check_command "docker" "https://www.docker.com/"
 
 # Check Node version
@@ -43,16 +42,12 @@ if [ "$NODE_VERSION" -lt 20 ]; then
 fi
 echo -e "${GREEN}✓ Node.js version is $NODE_VERSION${NC}"
 
-# Check Go version
-GO_VERSION=$(go version | grep -oP '\d+\.\d+' | head -1)
-echo -e "${GREEN}✓ Go version is $GO_VERSION${NC}"
-
 echo ""
-echo -e "${YELLOW}Step 1/6: Installing dependencies...${NC}"
+echo -e "${YELLOW}Step 1/5: Installing dependencies...${NC}"
 pnpm install
 
 echo ""
-echo -e "${YELLOW}Step 2/6: Starting Docker containers (PostgreSQL, Redis)...${NC}"
+echo -e "${YELLOW}Step 2/5: Starting Docker containers (PostgreSQL, Redis)...${NC}"
 docker-compose up -d
 
 # Wait for PostgreSQL to be ready
@@ -70,7 +65,7 @@ done
 echo -e "${GREEN}✓ Redis is ready${NC}"
 
 echo ""
-echo -e "${YELLOW}Step 3/6: Setting up environment...${NC}"
+echo -e "${YELLOW}Step 3/5: Setting up environment...${NC}"
 if [ ! -f .env ]; then
     cp .env.example .env
     echo -e "${GREEN}✓ Created .env file${NC}"
@@ -79,16 +74,12 @@ else
 fi
 
 echo ""
-echo -e "${YELLOW}Step 4/6: Generating Prisma client...${NC}"
+echo -e "${YELLOW}Step 4/5: Generating Prisma client...${NC}"
 pnpm db:generate
 
 echo ""
-echo -e "${YELLOW}Step 5/6: Pushing database schema...${NC}"
+echo -e "${YELLOW}Step 5/5: Pushing database schema...${NC}"
 pnpm db:push
-
-echo ""
-echo -e "${YELLOW}Step 6/6: Installing Go dependencies...${NC}"
-cd apps/ingest && go mod download && cd ../..
 
 echo ""
 echo -e "${GREEN}"
@@ -105,13 +96,14 @@ echo ""
 echo "  Terminal 1 (TypeScript apps):"
 echo -e "    ${GREEN}pnpm dev${NC}"
 echo ""
-echo "  Terminal 2 (Go ingest service):"
-echo -e "    ${GREEN}cd apps/ingest && make dev${NC}"
+echo "  Terminal 2 (Ingest service):"
+echo -e "    ${GREEN}make dev-ingest${NC}"
 echo ""
 echo -e "${BLUE}Services will be available at:${NC}"
 echo "  • Web Dashboard:  http://localhost:3000"
-echo "  • Ingest API:     http://localhost:8080"
-echo "  • Health Check:   http://localhost:8080/health"
+echo "  • Ingest API:     http://localhost:8081"
+echo "  • Health Check:   http://localhost:8081/health"
+echo "  • Metrics:        http://localhost:8081/metrics"
 echo ""
 echo -e "${BLUE}Useful commands:${NC}"
 echo "  • make proto       - Generate proto types"

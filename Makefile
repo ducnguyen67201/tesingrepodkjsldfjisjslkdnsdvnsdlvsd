@@ -44,19 +44,17 @@ install-hooks:
 dev: doppler-check
 	pnpm dev
 
-# Development - run Go ingest service (run in separate terminal)
+# Development - run ingest service (run in separate terminal)
 dev-ingest:
-	cd apps/ingest && make dev
+	pnpm --filter @cognobserve/ingest-node dev
 
 # Install all dependencies
 install:
 	pnpm install
-	cd apps/ingest && go mod download
 
 # Format all code
 format:
 	pnpm format
-	cd apps/ingest && go fmt ./...
 
 # ============================================================================
 # PROTO / TYPES
@@ -108,12 +106,10 @@ db-studio:
 # Build all services
 build:
 	pnpm build
-	cd apps/ingest && make build
 
 # Clean all build artifacts
 clean:
 	pnpm clean
-	cd apps/ingest && make clean
 
 # ============================================================================
 # DOCKER
@@ -156,7 +152,7 @@ help:
 	@echo ""
 	@echo "Development:"
 	@echo "  make dev            - Run TypeScript apps (web, worker)"
-	@echo "  make dev-ingest     - Run Go ingest service"
+	@echo "  make dev-ingest     - Run ingest-node service"
 	@echo "  make install        - Install all dependencies"
 	@echo "  make format         - Format all code"
 	@echo ""

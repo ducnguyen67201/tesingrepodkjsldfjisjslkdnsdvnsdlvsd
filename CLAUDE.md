@@ -6,7 +6,7 @@ CognObserve is an AI Platform Monitoring & Observability system. It provides tra
 ## Tech Stack
 - **Monorepo**: pnpm 9.15 workspaces + Turborepo 2.5
 - **Web**: Next.js 16, React 19, TypeScript 5.7, Tailwind CSS 3.4, shadcn/ui (yellow theme)
-- **Ingest**: Go 1.23 (high-performance ingestion service)
+- **Ingest**: Node.js 24+ with TypeScript 5.7 (OTLP trace ingestion)
 - **Worker**: Node.js 24+ with TypeScript 5.7 + Temporal SDK
 - **Orchestration**: Temporal (durable workflow engine)
 - **Database**: PostgreSQL with Prisma 7 (Rust-free, ESM)
@@ -26,14 +26,13 @@ CognObserve/
 ├── apps/
 │   ├── web/                     # Next.js dashboard & API
 │   │   └── src/app/
-│   ├── ingest/                  # Go ingestion service
-│   │   ├── cmd/ingest/          # Entry point
-│   │   └── internal/
+│   ├── ingest-node/             # Node.js OTLP ingestion service
+│   │   └── src/
 │   │       ├── config/          # Configuration
-│   │       ├── handler/         # HTTP handlers
-│   │       ├── temporal/        # Temporal client for starting workflows
-│   │       ├── server/          # HTTP server setup
-│   │       └── proto/cognobservev1/  # Generated Go types
+│   │       ├── middleware/      # Auth, rate limiting
+│   │       ├── pipeline/        # Chain of Responsibility handlers
+│   │       ├── routes/          # HTTP routes
+│   │       └── lib/             # Utilities (db, logger, metrics)
 │   └── worker/                  # Temporal worker (TypeScript)
 │       └── src/
 │           ├── temporal/        # Temporal config (client, worker, types)
@@ -91,8 +90,8 @@ pnpm db:generate
 # Terminal 1: Run TypeScript apps (web + worker)
 pnpm dev
 
-# Terminal 2: Run Go ingest service
-cd apps/ingest && make dev
+# Terminal 2: Run ingest service
+make dev-ingest
 ```
 
 ### Temporal UI
@@ -106,18 +105,20 @@ cd apps/ingest && make dev
 make build
 
 # Build ingest Docker image
-cd apps/ingest && make docker-build
+docker build -f apps/ingest-node/Dockerfile -t cognobserve-ingest .
 ```
 
 ## Architecture
 
 ### Data Flow
 ```
-SDK → [Ingest (Go)] → [Temporal] → [Worker (TS)] → [Web API] → PostgreSQL
-                                                       ↑
-                                                 [Web (Next.js)]
+SDK → [Ingest (Node.js)] → PostgreSQL
+              ↓
+         [Temporal] → [Worker (TS)] → [Web API] → PostgreSQL
+                                          ↑
+                                    [Web (Next.js)]
 
-Note: Worker activities are READ-ONLY. All mutations go through Web API.
+Note: Ingest service writes traces directly. Worker activities are READ-ONLY.
 ```
 
 ## Services
@@ -125,7 +126,7 @@ Note: Worker activities are READ-ONLY. All mutations go through Web API.
 | Service | Port | Purpose |
 |---------|------|---------|
 | Web | 3000 | Dashboard, API (authoritative for mutations) |
-| Ingest | 8080 | High-throughput trace ingestion |
+| Ingest | 8081 | OTLP trace ingestion (JSON + protobuf) |
 | Worker | - | Temporal worker (READ-ONLY activities) |
 | Temporal | 7233 | Workflow orchestration |
 | Temporal UI | 8088 | Workflow monitoring dashboard |
@@ -330,7 +331,6 @@ For detailed information on:
 - Key Temporal files reference
 - ESM compatibility notes
 - Step-by-step workflow creation guide
-- Go ingest service integration
 
 **See `docs/WORKFLOWS.md`**
 
@@ -1563,9 +1563,10 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 ## API Endpoints
 
-### Ingest Service (Go)
+### Ingest Service (Node.js)
 - `GET /health` - Health check
-- `POST /v1/traces` - Ingest a trace with spans
+- `GET /metrics` - Prometheus metrics
+- `POST /v1/traces` - Ingest OTLP traces (JSON or protobuf, gzip supported)
 
 ## Toast & Error Handling (CRITICAL)
 
@@ -1784,7 +1785,7 @@ When adding new response methods:
 ### Key Locations
 - **Proto definitions**: `proto/cognobserve/v1/` → run `make proto` after edits
 - **Database schema**: `packages/db/prisma/schema.prisma`
-- **Go ingest service**: `apps/ingest/` (chi router, module: `github.com/cognobserve/ingest`)
+- **Ingest service**: `apps/ingest-node/` (Express, OTLP ingestion)
 - **Full documentation**: `/docs` folder
 
 ### Critical Rules (MUST Follow)
@@ -1829,9 +1830,4 @@ When adding new response methods:
 ### Adding Components
 ```bash
 pnpm dlx shadcn@latest add <component>  # Run from apps/web/
-```
-
-### Go Imports
-```go
-import pb "github.com/cognobserve/ingest/internal/proto/cognobservev1"
 ```
