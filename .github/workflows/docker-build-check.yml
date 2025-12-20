@@ -66,23 +66,43 @@ jobs:
 
           # Wait for services to start (max 120 seconds)
           echo "Waiting for services to start..."
+          SERVICES_STARTED=false
           for i in {1..60}; do
             if docker exec cognobserve-test supervisorctl status 2>/dev/null | grep -q "RUNNING"; then
               echo "Services are starting..."
+              SERVICES_STARTED=true
               break
             fi
             sleep 2
           done
 
-          # Wait for ingest health check
+          if [ "$SERVICES_STARTED" = false ]; then
+            echo "ERROR: Services failed to start within timeout"
+            docker logs cognobserve-test 2>&1 | tail -50
+            exit 1
+          fi
+
+          # Wait for ingest health check (max 60 seconds)
           echo "Waiting for ingest service..."
+          INGEST_HEALTHY=false
           for i in {1..30}; do
-            if curl -s http://localhost:8080/health | grep -q '"status":"ok"'; then
+            if curl -sf http://localhost:8080/health | grep -q '"status":"ok"'; then
               echo "Ingest service is healthy!"
+              INGEST_HEALTHY=true
               break
             fi
+            echo "  Attempt $i/30 - waiting..."
             sleep 2
           done
+
+          if [ "$INGEST_HEALTHY" = false ]; then
+            echo "ERROR: Ingest service failed to become healthy"
+            echo "=== Container logs ==="
+            docker logs cognobserve-test 2>&1 | tail -100
+            echo "=== Supervisor status ==="
+            docker exec cognobserve-test supervisorctl status 2>/dev/null || true
+            exit 1
+          fi
 
           # Verify health
           curl -s http://localhost:8080/health
