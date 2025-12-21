@@ -45,8 +45,12 @@ dev: doppler-check
 	pnpm dev
 
 # Development - run ingest service (run in separate terminal)
-dev-ingest:
-	pnpm --filter @cognobserve/ingest-node dev
+dev-ingest: doppler-check
+	cd apps/ingest-node && doppler run -- pnpm dev
+
+# Development - run ingest demo app (run in separate terminal)
+dev-demo: doppler-check
+	cd apps/ingest-demo && doppler run -- pnpm dev
 
 # Install all dependencies
 install:
@@ -152,7 +156,8 @@ help:
 	@echo ""
 	@echo "Development:"
 	@echo "  make dev            - Run TypeScript apps (web, worker)"
-	@echo "  make dev-ingest     - Run ingest-node service"
+	@echo "  make dev-ingest     - Run ingest-node service (with Doppler)"
+	@echo "  make dev-demo       - Run ingest demo app (with Doppler)"
 	@echo "  make install        - Install all dependencies"
 	@echo "  make format         - Format all code"
 	@echo ""

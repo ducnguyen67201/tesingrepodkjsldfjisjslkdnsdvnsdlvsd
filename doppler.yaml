@@ -23,10 +23,15 @@ setup:
     config: dev_personal
     path: apps/web
 
-  # Ingest service (Go)
+  # Ingest service (Node.js)
   - project: web
     config: dev_personal
-    path: apps/ingest
+    path: apps/ingest-node
+
+  # Ingest demo app
+  - project: web
+    config: dev_personal
+    path: apps/ingest-demo
 
   # Worker service (Temporal)
   - project: web

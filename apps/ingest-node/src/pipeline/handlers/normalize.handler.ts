@@ -223,7 +223,11 @@ export class NormalizeHandler implements PipelineHandler {
   private extractValue(anyValue: OtlpAnyValue): unknown {
     if (anyValue.stringValue !== undefined) return anyValue.stringValue;
     if (anyValue.boolValue !== undefined) return anyValue.boolValue;
-    if (anyValue.intValue !== undefined) return parseInt(anyValue.intValue, 10);
+    if (anyValue.intValue !== undefined) {
+      return typeof anyValue.intValue === "number"
+        ? anyValue.intValue
+        : parseInt(anyValue.intValue, 10);
+    }
     if (anyValue.doubleValue !== undefined) return anyValue.doubleValue;
     if (anyValue.bytesValue !== undefined) return anyValue.bytesValue;
     if (anyValue.arrayValue?.values) {

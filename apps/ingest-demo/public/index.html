@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CognObserve Ingest Demo</title>
+  <style>
+    :root {
+      --primary: #eab308;
+      --primary-dark: #ca8a04;
+      --bg: #0a0a0a;
+      --card: #171717;
+      --border: #262626;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 span {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    button {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 0.875rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.975rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button .icon {
+      font-size: 1.25rem;
+    }
+
+    .result-section {
+      margin-top: 1.5rem;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .trace-id {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--primary);
+      background: rgba(234, 179, 8, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .result-box {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .result-box.loading {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .result-box.error {
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .result-box.success {
+      color: #22c55e;
+    }
+
+    .status-bar {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(234, 179, 8, 0.05);
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .status-dot.warning {
+      background: var(--primary);
+    }
+
+    .status-dot.error {
+      background: #ef4444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><span>CognObserve</span> Ingest Demo</h1>
+      <p class="subtitle">Generate traces with OpenTelemetry and send them to your ingest service</p>
+    </header>
+
+    <div class="card">
+      <h2 class="card-title">Demo Actions</h2>
+      <div class="button-grid">
+        <button onclick="callAPI('/api/demo/weather', {city: 'London'})">
+          <span class="icon">🌤️</span> Weather
+        </button>
+        <button onclick="callAPI('/api/demo/quotes')">
+          <span class="icon">💬</span> Quote
+        </button>
+        <button onclick="callAPI('/api/demo/jokes')">
+          <span class="icon">😄</span> Joke
+        </button>
+        <button onclick="callAPI('/api/demo/llm', {prompt: 'Tell me about observability', model: 'gpt-4-mock'})">
+          <span class="icon">🤖</span> Mock LLM
+        </button>
+      </div>
+
+      <div class="result-section">
+        <div class="result-header">
+          <span class="result-label">Response</span>
+          <span id="trace-id" class="trace-id" style="display: none;"></span>
+        </div>
+        <div id="result" class="result-box">
+          Click a button above to generate a trace...
+        </div>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-item">
+        <span id="api-status" class="status-dot"></span>
+        <span>API Status</span>
+      </div>
+      <div class="status-item">
+        <span id="trace-status" class="status-dot warning"></span>
+        <span>Last Trace</span>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Traces are exported to <code id="endpoint-display">http://localhost:8080</code></p>
+      <p style="margin-top: 0.5rem;">
+        <a href="/health" target="_blank">Health Check</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Check health on load
+    checkHealth();
+
+    async function checkHealth() {
+      const statusDot = document.getElementById('api-status');
+      try {
+        const res = await fetch('/health');
+        if (res.ok) {
+          statusDot.className = 'status-dot';
+        } else {
+          statusDot.className = 'status-dot error';
+        }
+      } catch {
+        statusDot.className = 'status-dot error';
+      }
+    }
+
+    async function callAPI(endpoint, body = {}) {
+      const resultBox = document.getElementById('result');
+      const traceIdSpan = document.getElementById('trace-id');
+      const traceStatus = document.getElementById('trace-status');
+
+      // Show loading state
+      resultBox.className = 'result-box loading';
+      resultBox.textContent = 'Loading...';
+      traceIdSpan.style.display = 'none';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          resultBox.className = 'result-box';
+          traceStatus.className = 'status-dot';
+        } else {
+          resultBox.className = 'result-box error';
+          traceStatus.className = 'status-dot error';
+        }
+
+        resultBox.textContent = JSON.stringify(data, null, 2);
+
+        if (data.traceId) {
+          traceIdSpan.textContent = `Trace: ${data.traceId}`;
+          traceIdSpan.style.display = 'inline-block';
+        }
+      } catch (error) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = `Error: ${error.message}`;
+        traceStatus.className = 'status-dot error';
+      }
+    }
+  </script>
+</body>
+</html>
