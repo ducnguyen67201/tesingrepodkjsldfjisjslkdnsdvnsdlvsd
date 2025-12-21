@@ -63,11 +63,12 @@ export default function RCALookupPage() {
   });
 
   // Auto-trigger RCA if not started
+  // Note: Only include triggerRCA.mutate (stable ref) to avoid infinite re-renders
   useEffect(() => {
     if (status?.status === "not_started" && historyId && !triggerRCA.isPending) {
       triggerRCA.mutate({ workspaceSlug, alertHistoryId: historyId });
     }
-  }, [status?.status, historyId, workspaceSlug, triggerRCA]);
+  }, [status?.status, historyId, workspaceSlug, triggerRCA.mutate, triggerRCA.isPending]);
 
   // Redirect to RCA page when completed
   useEffect(() => {
