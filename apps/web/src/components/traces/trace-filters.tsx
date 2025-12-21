@@ -19,7 +19,6 @@ import {
   QUICK_TOGGLES,
 } from "@cognobserve/api/schemas";
 import { type TimeRange, ALL_PRESET_TIME_RANGES } from "@cognobserve/api/schemas";
-import { cn } from "@/lib/utils";
 import { FilterPopover } from "./filter-popover";
 
 // ------------------------------------------------------------
@@ -117,10 +116,7 @@ export function TraceFilters({
             variant={isActive ? "default" : "outline"}
             size="sm"
             onClick={() => onQuickToggle(toggle.id)}
-            className={cn(
-              "h-9",
-              isActive && "bg-primary text-primary-foreground"
-            )}
+            className="h-9"
           >
             {toggle.label}
           </Button>

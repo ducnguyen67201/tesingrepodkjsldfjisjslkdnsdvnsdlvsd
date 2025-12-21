@@ -12,12 +12,15 @@ import {
   type TraceFilters,
   type SpanType,
   type SpanLevel,
+  SpanTypeSchema,
+  SpanLevelSchema,
   FILTER_PARAM_KEYS,
   hasActiveFilters,
   countActiveFilters,
   QUICK_TOGGLES,
+  TimeRangeSchema,
+  type TimeRange,
 } from "@cognobserve/api/schemas";
-import { type TimeRange } from "@cognobserve/api/schemas";
 
 // ------------------------------------------------------------
 // Constants
@@ -103,18 +106,34 @@ export function useTraceFilters(
     const customFromParam = searchParams.get(FILTER_PARAM_KEYS.customFrom);
     const customToParam = searchParams.get(FILTER_PARAM_KEYS.customTo);
 
+    // Validate types from URL param using Zod
+    const validatedTypes = typesParam
+      ? (typesParam
+          .split(",")
+          .filter((t) => SpanTypeSchema.safeParse(t).success) as SpanType[])
+      : undefined;
+
+    // Validate levels from URL param using Zod
+    const validatedLevels = levelsParam
+      ? (levelsParam
+          .split(",")
+          .filter((l) => SpanLevelSchema.safeParse(l).success) as SpanLevel[])
+      : undefined;
+
+    // Validate timeRange from URL param using Zod
+    const timeRangeParsed = TimeRangeSchema.safeParse(timeRangeParam);
+    const validatedTimeRange = timeRangeParsed.success
+      ? timeRangeParsed.data
+      : defaultTimeRange;
+
     return {
       search: debouncedSearch || undefined,
-      types: typesParam
-        ? (typesParam.split(",") as SpanType[])
-        : undefined,
-      levels: levelsParam
-        ? (levelsParam.split(",") as SpanLevel[])
-        : undefined,
+      types: validatedTypes?.length ? validatedTypes : undefined,
+      levels: validatedLevels?.length ? validatedLevels : undefined,
       models: modelsParam ? modelsParam.split(",") : undefined,
       minDuration: minDurationParam ? parseInt(minDurationParam, 10) : undefined,
       maxDuration: maxDurationParam ? parseInt(maxDurationParam, 10) : undefined,
-      timeRange: (timeRangeParam as TimeRange) || defaultTimeRange,
+      timeRange: validatedTimeRange,
       customRange:
         customFromParam && customToParam
           ? { from: customFromParam, to: customToParam }

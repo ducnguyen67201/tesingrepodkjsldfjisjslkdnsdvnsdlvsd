@@ -11,7 +11,6 @@ import { prisma, Prisma } from "@cognobserve/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import {
   TraceFiltersSchema,
-  SpanTypeSchema,
   type SpanType,
 } from "../schemas/traces";
 import { TimeRangeSchema, type TimeRange } from "../schemas/cost";
@@ -343,6 +342,7 @@ export const tracesRouter = createRouter({
               name: true,
               libraryName: true,
             },
+            take: 10, // Limit spans per trace for type inference - only need representative sample
           },
         },
       });

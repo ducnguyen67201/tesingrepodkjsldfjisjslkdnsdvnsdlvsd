@@ -310,9 +310,10 @@ function SpanNodeWrapper({ node, onToggle }: SpanNodeWrapperProps) {
 export function SpanTree({ spans }: SpanTreeProps) {
   const tree = useMemo(() => buildSpanTree(spans), [spans]);
 
-  const handleToggle = useCallback(() => {
-    // Top-level toggle handler (could be used for expand/collapse all)
-  }, []);
+  // No-op: individual nodes manage their own expanded state via SpanNodeWrapper.
+  // This callback exists to satisfy the prop type; future: could track globally.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleToggle = useCallback((_id: string) => {}, []);
 
   if (spans.length === 0) {
     return (

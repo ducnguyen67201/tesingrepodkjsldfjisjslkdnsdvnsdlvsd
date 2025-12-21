@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import {
   Table,
@@ -125,39 +125,16 @@ export function TracesTable({ workspaceSlug, projectId }: TracesTableProps) {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  // Local search input state (only applies on Enter)
-  const [localSearch, setLocalSearch] = useState(searchValue);
-
-  // Sync local state when URL search value changes
-  useEffect(() => {
-    setLocalSearch(searchValue);
-  }, [searchValue]);
-
-  // Handle search input change (local only)
+  // Handle search input change - directly updates URL, hook handles debouncing
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalSearch(e.target.value);
+      setSearch(e.target.value);
     },
-    []
+    [setSearch]
   );
 
-  // Handle Enter key to apply search
-  const handleSearchKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        setSearch(localSearch);
-      }
-    },
-    [localSearch, setSearch]
-  );
-
-  // Handle search button click
-  const handleSearchSubmit = useCallback(() => {
-    setSearch(localSearch);
-  }, [localSearch, setSearch]);
-
+  // Handle clear search
   const handleClearSearch = useCallback(() => {
-    setLocalSearch("");
     setSearch("");
   }, [setSearch]);
 
@@ -182,13 +159,12 @@ export function TracesTable({ workspaceSlug, projectId }: TracesTableProps) {
         <div className="relative flex-1">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search traces... (press Enter to search)"
-            value={localSearch}
+            placeholder="Search traces..."
+            value={searchValue}
             onChange={handleSearchChange}
-            onKeyDown={handleSearchKeyDown}
             className="pl-8 pr-7 h-7 text-xs bg-muted/30 border-muted"
           />
-          {localSearch && (
+          {searchValue && (
             <button
               onClick={handleClearSearch}
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
@@ -197,13 +173,6 @@ export function TracesTable({ workspaceSlug, projectId }: TracesTableProps) {
             </button>
           )}
         </div>
-        <Button
-          onClick={handleSearchSubmit}
-          size="sm"
-          className="h-7 px-3 text-xs"
-        >
-          Run Query
-        </Button>
       </div>
     </div>
   );

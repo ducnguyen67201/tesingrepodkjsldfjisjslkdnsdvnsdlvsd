@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc/client";
+import { clipboardToast } from "@/lib/success";
 import { formatDuration } from "@/lib/format";
 import { SpanTree } from "./span-tree";
 
@@ -43,9 +44,13 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      clipboardToast.copyFailed();
+    }
   }, [text]);
 
   return (
@@ -131,6 +136,7 @@ export function TraceDetailPanel({
           <>
             <SheetHeader className="sr-only">
               <SheetTitle>Loading trace details</SheetTitle>
+              <SheetDescription>Please wait while trace data is being loaded</SheetDescription>
             </SheetHeader>
             <TraceDetailSkeleton />
           </>
@@ -140,6 +146,7 @@ export function TraceDetailPanel({
           <>
             <SheetHeader className="sr-only">
               <SheetTitle>Error loading trace</SheetTitle>
+              <SheetDescription>An error occurred while loading the trace details</SheetDescription>
             </SheetHeader>
             <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
               <div className="rounded-full bg-destructive/10 p-3">
