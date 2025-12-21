@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, FolderKanban, Activity, Settings } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Activity, FileCode, Settings } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -22,6 +22,7 @@ const NAV_ITEMS: NavItem[] = [
   { title: "Dashboard", path: "", icon: LayoutDashboard },
   { title: "Projects", path: "/projects", icon: FolderKanban },
   { title: "Traces", path: "/traces", icon: Activity },
+  { title: "Prompts", path: "/prompts", icon: FileCode },
   { title: "Settings", path: "/settings", icon: Settings },
 ];
 

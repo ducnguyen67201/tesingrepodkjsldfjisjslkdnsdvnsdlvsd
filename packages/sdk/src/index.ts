@@ -4,6 +4,7 @@ export { CognObserve } from './cognobserve';
 // Classes (for advanced usage)
 export { Trace } from './trace';
 export { Span } from './span';
+export { PromptClient } from './prompts';
 
 // Types
 export type {
@@ -18,6 +19,27 @@ export type {
 
 // Observe types
 export type { ObserveOptions } from './observe';
+
+// Prompt types
+export type {
+  Prompt,
+  PromptResponse,
+  PromptTemplate,
+  PromptType,
+  PromptLabelName,
+  PromptVariable,
+  PromptConfig,
+  ChatMessage,
+  TextContent,
+  ChatContent,
+  CompiledPrompt,
+  CompiledTextPrompt,
+  CompiledChatPrompt,
+  GetPromptOptions,
+} from './prompts';
+
+// Prompt utilities
+export { compilePrompt, extractVariables } from './prompts';
 
 // Context utilities
 export { getActiveTrace, getActiveSpan, runWithContext } from './context';

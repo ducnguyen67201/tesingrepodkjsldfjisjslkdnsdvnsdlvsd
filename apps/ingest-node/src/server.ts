@@ -6,6 +6,7 @@ import { logger } from "./lib/logger.js";
 import { healthRouter } from "./routes/health.js";
 import { tracesRouter } from "./routes/traces.js";
 import { metricsRouter } from "./routes/metrics.js";
+import { promptsRouter } from "./routes/prompts.js";
 
 /**
  * Create and configure the Express application
@@ -36,13 +37,16 @@ export function createServer(): Express {
   app.use("/", metricsRouter);
   app.use("/v1/traces", tracesRouter);
 
-  // Body parsing for other routes (not traces)
+  // Body parsing for JSON routes (prompts, etc.)
   app.use(
     express.json({
       type: ["application/json"],
       limit: config.limits.maxPayloadBytes,
     })
   );
+
+  // Prompts API - SDK retrieval endpoint
+  app.use("/v1/prompts", promptsRouter);
 
   // 404 handler
   app.use((_req: Request, res: Response) => {

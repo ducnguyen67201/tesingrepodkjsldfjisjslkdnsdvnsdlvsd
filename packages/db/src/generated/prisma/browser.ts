@@ -123,6 +123,21 @@ export type ProjectMember = Prisma.ProjectMemberModel
  */
 export type ApiKey = Prisma.ApiKeyModel
 /**
+ * Model Prompt
+ * 
+ */
+export type Prompt = Prisma.PromptModel
+/**
+ * Model PromptVersion
+ * 
+ */
+export type PromptVersion = Prisma.PromptVersionModel
+/**
+ * Model PromptLabel
+ * 
+ */
+export type PromptLabel = Prisma.PromptLabelModel
+/**
  * Model AlertRCA
  * 
  */

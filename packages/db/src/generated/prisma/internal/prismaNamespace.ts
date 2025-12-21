@@ -405,6 +405,9 @@ export const ModelName = {
   Project: 'Project',
   ProjectMember: 'ProjectMember',
   ApiKey: 'ApiKey',
+  Prompt: 'Prompt',
+  PromptVersion: 'PromptVersion',
+  PromptLabel: 'PromptLabel',
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
@@ -428,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalRun" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "project" | "projectMember" | "apiKey" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
+    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalRun" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1986,6 +1989,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Prompt: {
+      payload: Prisma.$PromptPayload<ExtArgs>
+      fields: Prisma.PromptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        findFirst: {
+          args: Prisma.PromptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        findMany: {
+          args: Prisma.PromptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>[]
+        }
+        create: {
+          args: Prisma.PromptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        createMany: {
+          args: Prisma.PromptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>[]
+        }
+        delete: {
+          args: Prisma.PromptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        update: {
+          args: Prisma.PromptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptPayload>
+        }
+        aggregate: {
+          args: Prisma.PromptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePrompt>
+        }
+        groupBy: {
+          args: Prisma.PromptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptCountAggregateOutputType> | number
+        }
+      }
+    }
+    PromptVersion: {
+      payload: Prisma.$PromptVersionPayload<ExtArgs>
+      fields: Prisma.PromptVersionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromptVersionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromptVersionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        findFirst: {
+          args: Prisma.PromptVersionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromptVersionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        findMany: {
+          args: Prisma.PromptVersionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>[]
+        }
+        create: {
+          args: Prisma.PromptVersionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        createMany: {
+          args: Prisma.PromptVersionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromptVersionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>[]
+        }
+        delete: {
+          args: Prisma.PromptVersionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        update: {
+          args: Prisma.PromptVersionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromptVersionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromptVersionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromptVersionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromptVersionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptVersionPayload>
+        }
+        aggregate: {
+          args: Prisma.PromptVersionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromptVersion>
+        }
+        groupBy: {
+          args: Prisma.PromptVersionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptVersionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromptVersionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptVersionCountAggregateOutputType> | number
+        }
+      }
+    }
+    PromptLabel: {
+      payload: Prisma.$PromptLabelPayload<ExtArgs>
+      fields: Prisma.PromptLabelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromptLabelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromptLabelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        findFirst: {
+          args: Prisma.PromptLabelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromptLabelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        findMany: {
+          args: Prisma.PromptLabelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>[]
+        }
+        create: {
+          args: Prisma.PromptLabelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        createMany: {
+          args: Prisma.PromptLabelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromptLabelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>[]
+        }
+        delete: {
+          args: Prisma.PromptLabelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        update: {
+          args: Prisma.PromptLabelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromptLabelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromptLabelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromptLabelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromptLabelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptLabelPayload>
+        }
+        aggregate: {
+          args: Prisma.PromptLabelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromptLabel>
+        }
+        groupBy: {
+          args: Prisma.PromptLabelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptLabelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromptLabelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptLabelCountAggregateOutputType> | number
+        }
+      }
+    }
     AlertRCA: {
       payload: Prisma.$AlertRCAPayload<ExtArgs>
       fields: Prisma.AlertRCAFieldRefs
@@ -2945,6 +3170,52 @@ export const ApiKeyScalarFieldEnum = {
 export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
 
 
+export const PromptScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  tags: 'tags',
+  isArchived: 'isArchived',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdById: 'createdById'
+} as const
+
+export type PromptScalarFieldEnum = (typeof PromptScalarFieldEnum)[keyof typeof PromptScalarFieldEnum]
+
+
+export const PromptVersionScalarFieldEnum = {
+  id: 'id',
+  promptId: 'promptId',
+  version: 'version',
+  type: 'type',
+  content: 'content',
+  variables: 'variables',
+  config: 'config',
+  metadata: 'metadata',
+  searchText: 'searchText',
+  checksum: 'checksum',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type PromptVersionScalarFieldEnum = (typeof PromptVersionScalarFieldEnum)[keyof typeof PromptVersionScalarFieldEnum]
+
+
+export const PromptLabelScalarFieldEnum = {
+  id: 'id',
+  promptId: 'promptId',
+  versionId: 'versionId',
+  name: 'name',
+  updatedAt: 'updatedAt',
+  updatedById: 'updatedById'
+} as const
+
+export type PromptLabelScalarFieldEnum = (typeof PromptLabelScalarFieldEnum)[keyof typeof PromptLabelScalarFieldEnum]
+
+
 export const AlertRCAScalarFieldEnum = {
   id: 'id',
   alertId: 'alertId',
@@ -3497,6 +3768,9 @@ export type GlobalOmitConfig = {
   project?: Prisma.ProjectOmit
   projectMember?: Prisma.ProjectMemberOmit
   apiKey?: Prisma.ApiKeyOmit
+  prompt?: Prisma.PromptOmit
+  promptVersion?: Prisma.PromptVersionOmit
+  promptLabel?: Prisma.PromptLabelOmit
   alertRCA?: Prisma.AlertRCAOmit
   trace?: Prisma.TraceOmit
   span?: Prisma.SpanOmit

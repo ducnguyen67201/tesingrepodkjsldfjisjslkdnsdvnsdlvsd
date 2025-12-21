@@ -1,5 +1,6 @@
 import { Trace } from './trace';
 import { Transport } from './transport';
+import { PromptClient } from './prompts';
 import { resolveConfig, validateConfig } from './config';
 import {
   runWithContext,
@@ -23,6 +24,7 @@ import type {
 class CognObserveClient {
   private config: ResolvedConfig | null = null;
   private transport: Transport | null = null;
+  private _prompts: PromptClient | null = null;
   private initialized = false;
   private shutdownRegistered = false;
   private _observe: ReturnType<typeof createObserve> | null = null;
@@ -55,6 +57,7 @@ class CognObserveClient {
     }
 
     this.transport = new Transport(this.config);
+    this._prompts = new PromptClient(this.config);
     this.initialized = true;
 
     // Create observe function with transport callback
@@ -259,6 +262,7 @@ class CognObserveClient {
 
     await this.transport.shutdown();
     this.transport = null;
+    this._prompts = null;
     this.config = null;
     this.initialized = false;
     this.globalUser = null;
@@ -354,6 +358,27 @@ class CognObserveClient {
    */
   get isDisabled(): boolean {
     return this.config?.disabled ?? false;
+  }
+
+  /**
+   * Prompt client for fetching and compiling prompts
+   *
+   * @example
+   * ```typescript
+   * const prompt = await CognObserve.prompts.get("movie-critic", {
+   *   label: "production",
+   * });
+   *
+   * const compiled = prompt.compile({ movie: "Dune 2" });
+   * ```
+   */
+  get prompts(): PromptClient {
+    if (!this._prompts) {
+      throw new Error(
+        '[CognObserve] SDK not initialized. Call CognObserve.init() first.'
+      );
+    }
+    return this._prompts;
   }
 }
 
