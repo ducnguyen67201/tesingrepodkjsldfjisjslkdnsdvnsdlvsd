@@ -30,12 +30,14 @@ export type TraceAvgAggregateOutputType = {
   durationMs: number | null
   spanCount: number | null
   errorCount: number | null
+  rootSpanDurationMs: number | null
 }
 
 export type TraceSumAggregateOutputType = {
   durationMs: number | null
   spanCount: number | null
   errorCount: number | null
+  rootSpanDurationMs: number | null
 }
 
 export type TraceMinAggregateOutputType = {
@@ -50,6 +52,14 @@ export type TraceMinAggregateOutputType = {
   durationMs: number | null
   spanCount: number | null
   errorCount: number | null
+  rootSpanId: string | null
+  rootSpanName: string | null
+  rootSpanKind: string | null
+  rootSpanStatusCode: string | null
+  rootSpanDurationMs: number | null
+  hasError: boolean | null
+  hasException: boolean | null
+  searchText: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +76,14 @@ export type TraceMaxAggregateOutputType = {
   durationMs: number | null
   spanCount: number | null
   errorCount: number | null
+  rootSpanId: string | null
+  rootSpanName: string | null
+  rootSpanKind: string | null
+  rootSpanStatusCode: string | null
+  rootSpanDurationMs: number | null
+  hasError: boolean | null
+  hasException: boolean | null
+  searchText: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -83,6 +101,15 @@ export type TraceCountAggregateOutputType = {
   durationMs: number
   spanCount: number
   errorCount: number
+  rootSpanId: number
+  rootSpanName: number
+  rootSpanKind: number
+  rootSpanStatusCode: number
+  rootSpanDurationMs: number
+  hasError: number
+  hasException: number
+  spanTypes: number
+  searchText: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -93,12 +120,14 @@ export type TraceAvgAggregateInputType = {
   durationMs?: true
   spanCount?: true
   errorCount?: true
+  rootSpanDurationMs?: true
 }
 
 export type TraceSumAggregateInputType = {
   durationMs?: true
   spanCount?: true
   errorCount?: true
+  rootSpanDurationMs?: true
 }
 
 export type TraceMinAggregateInputType = {
@@ -113,6 +142,14 @@ export type TraceMinAggregateInputType = {
   durationMs?: true
   spanCount?: true
   errorCount?: true
+  rootSpanId?: true
+  rootSpanName?: true
+  rootSpanKind?: true
+  rootSpanStatusCode?: true
+  rootSpanDurationMs?: true
+  hasError?: true
+  hasException?: true
+  searchText?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -129,6 +166,14 @@ export type TraceMaxAggregateInputType = {
   durationMs?: true
   spanCount?: true
   errorCount?: true
+  rootSpanId?: true
+  rootSpanName?: true
+  rootSpanKind?: true
+  rootSpanStatusCode?: true
+  rootSpanDurationMs?: true
+  hasError?: true
+  hasException?: true
+  searchText?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -146,6 +191,15 @@ export type TraceCountAggregateInputType = {
   durationMs?: true
   spanCount?: true
   errorCount?: true
+  rootSpanId?: true
+  rootSpanName?: true
+  rootSpanKind?: true
+  rootSpanStatusCode?: true
+  rootSpanDurationMs?: true
+  hasError?: true
+  hasException?: true
+  spanTypes?: true
+  searchText?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -250,6 +304,15 @@ export type TraceGroupByOutputType = {
   durationMs: number | null
   spanCount: number
   errorCount: number
+  rootSpanId: string | null
+  rootSpanName: string | null
+  rootSpanKind: string | null
+  rootSpanStatusCode: string | null
+  rootSpanDurationMs: number | null
+  hasError: boolean
+  hasException: boolean
+  spanTypes: string[]
+  searchText: string | null
   createdAt: Date
   updatedAt: Date
   _count: TraceCountAggregateOutputType | null
@@ -290,6 +353,15 @@ export type TraceWhereInput = {
   durationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
   spanCount?: Prisma.IntFilter<"Trace"> | number
   errorCount?: Prisma.IntFilter<"Trace"> | number
+  rootSpanId?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanName?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanKind?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanStatusCode?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanDurationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
+  hasError?: Prisma.BoolFilter<"Trace"> | boolean
+  hasException?: Prisma.BoolFilter<"Trace"> | boolean
+  spanTypes?: Prisma.StringNullableListFilter<"Trace">
+  searchText?: Prisma.StringNullableFilter<"Trace"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
@@ -309,6 +381,15 @@ export type TraceOrderByWithRelationInput = {
   durationMs?: Prisma.SortOrderInput | Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanName?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanKind?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasError?: Prisma.SortOrder
+  hasException?: Prisma.SortOrder
+  spanTypes?: Prisma.SortOrder
+  searchText?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   project?: Prisma.ProjectOrderByWithRelationInput
@@ -332,6 +413,15 @@ export type TraceWhereUniqueInput = Prisma.AtLeast<{
   durationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
   spanCount?: Prisma.IntFilter<"Trace"> | number
   errorCount?: Prisma.IntFilter<"Trace"> | number
+  rootSpanId?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanName?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanKind?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanStatusCode?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanDurationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
+  hasError?: Prisma.BoolFilter<"Trace"> | boolean
+  hasException?: Prisma.BoolFilter<"Trace"> | boolean
+  spanTypes?: Prisma.StringNullableListFilter<"Trace">
+  searchText?: Prisma.StringNullableFilter<"Trace"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
   project?: Prisma.XOR<Prisma.ProjectScalarRelationFilter, Prisma.ProjectWhereInput>
@@ -351,6 +441,15 @@ export type TraceOrderByWithAggregationInput = {
   durationMs?: Prisma.SortOrderInput | Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanName?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanKind?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrderInput | Prisma.SortOrder
+  hasError?: Prisma.SortOrder
+  hasException?: Prisma.SortOrder
+  spanTypes?: Prisma.SortOrder
+  searchText?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TraceCountOrderByAggregateInput
@@ -376,6 +475,15 @@ export type TraceScalarWhereWithAggregatesInput = {
   durationMs?: Prisma.IntNullableWithAggregatesFilter<"Trace"> | number | null
   spanCount?: Prisma.IntWithAggregatesFilter<"Trace"> | number
   errorCount?: Prisma.IntWithAggregatesFilter<"Trace"> | number
+  rootSpanId?: Prisma.StringNullableWithAggregatesFilter<"Trace"> | string | null
+  rootSpanName?: Prisma.StringNullableWithAggregatesFilter<"Trace"> | string | null
+  rootSpanKind?: Prisma.StringNullableWithAggregatesFilter<"Trace"> | string | null
+  rootSpanStatusCode?: Prisma.StringNullableWithAggregatesFilter<"Trace"> | string | null
+  rootSpanDurationMs?: Prisma.IntNullableWithAggregatesFilter<"Trace"> | number | null
+  hasError?: Prisma.BoolWithAggregatesFilter<"Trace"> | boolean
+  hasException?: Prisma.BoolWithAggregatesFilter<"Trace"> | boolean
+  spanTypes?: Prisma.StringNullableListFilter<"Trace">
+  searchText?: Prisma.StringNullableWithAggregatesFilter<"Trace"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Trace"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Trace"> | Date | string
 }
@@ -392,6 +500,15 @@ export type TraceCreateInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project: Prisma.ProjectCreateNestedOneWithoutTracesInput
@@ -411,6 +528,15 @@ export type TraceUncheckedCreateInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   spans?: Prisma.SpanUncheckedCreateNestedManyWithoutTraceInput
@@ -428,6 +554,15 @@ export type TraceUpdateInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutTracesNestedInput
@@ -447,6 +582,15 @@ export type TraceUncheckedUpdateInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spans?: Prisma.SpanUncheckedUpdateManyWithoutTraceNestedInput
@@ -465,6 +609,15 @@ export type TraceCreateManyInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -481,6 +634,15 @@ export type TraceUpdateManyMutationInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -498,6 +660,15 @@ export type TraceUncheckedUpdateManyInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -530,6 +701,15 @@ export type TraceCountOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanId?: Prisma.SortOrder
+  rootSpanName?: Prisma.SortOrder
+  rootSpanKind?: Prisma.SortOrder
+  rootSpanStatusCode?: Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrder
+  hasError?: Prisma.SortOrder
+  hasException?: Prisma.SortOrder
+  spanTypes?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -538,6 +718,7 @@ export type TraceAvgOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrder
 }
 
 export type TraceMaxOrderByAggregateInput = {
@@ -552,6 +733,14 @@ export type TraceMaxOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanId?: Prisma.SortOrder
+  rootSpanName?: Prisma.SortOrder
+  rootSpanKind?: Prisma.SortOrder
+  rootSpanStatusCode?: Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrder
+  hasError?: Prisma.SortOrder
+  hasException?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -568,6 +757,14 @@ export type TraceMinOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanId?: Prisma.SortOrder
+  rootSpanName?: Prisma.SortOrder
+  rootSpanKind?: Prisma.SortOrder
+  rootSpanStatusCode?: Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrder
+  hasError?: Prisma.SortOrder
+  hasException?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -576,6 +773,7 @@ export type TraceSumOrderByAggregateInput = {
   durationMs?: Prisma.SortOrder
   spanCount?: Prisma.SortOrder
   errorCount?: Prisma.SortOrder
+  rootSpanDurationMs?: Prisma.SortOrder
 }
 
 export type TraceScalarRelationFilter = {
@@ -625,6 +823,15 @@ export type TraceUncheckedUpdateManyWithoutProjectNestedInput = {
   deleteMany?: Prisma.TraceScalarWhereInput | Prisma.TraceScalarWhereInput[]
 }
 
+export type TraceCreatespanTypesInput = {
+  set: string[]
+}
+
+export type TraceUpdatespanTypesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type TraceCreateNestedOneWithoutSpansInput = {
   create?: Prisma.XOR<Prisma.TraceCreateWithoutSpansInput, Prisma.TraceUncheckedCreateWithoutSpansInput>
   connectOrCreate?: Prisma.TraceCreateOrConnectWithoutSpansInput
@@ -651,6 +858,15 @@ export type TraceCreateWithoutProjectInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   spans?: Prisma.SpanCreateNestedManyWithoutTraceInput
@@ -668,6 +884,15 @@ export type TraceUncheckedCreateWithoutProjectInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   spans?: Prisma.SpanUncheckedCreateNestedManyWithoutTraceInput
@@ -715,6 +940,15 @@ export type TraceScalarWhereInput = {
   durationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
   spanCount?: Prisma.IntFilter<"Trace"> | number
   errorCount?: Prisma.IntFilter<"Trace"> | number
+  rootSpanId?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanName?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanKind?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanStatusCode?: Prisma.StringNullableFilter<"Trace"> | string | null
+  rootSpanDurationMs?: Prisma.IntNullableFilter<"Trace"> | number | null
+  hasError?: Prisma.BoolFilter<"Trace"> | boolean
+  hasException?: Prisma.BoolFilter<"Trace"> | boolean
+  spanTypes?: Prisma.StringNullableListFilter<"Trace">
+  searchText?: Prisma.StringNullableFilter<"Trace"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Trace"> | Date | string
 }
@@ -731,6 +965,15 @@ export type TraceCreateWithoutSpansInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   project: Prisma.ProjectCreateNestedOneWithoutTracesInput
@@ -749,6 +992,15 @@ export type TraceUncheckedCreateWithoutSpansInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -781,6 +1033,15 @@ export type TraceUpdateWithoutSpansInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   project?: Prisma.ProjectUpdateOneRequiredWithoutTracesNestedInput
@@ -799,6 +1060,15 @@ export type TraceUncheckedUpdateWithoutSpansInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -815,6 +1085,15 @@ export type TraceCreateManyProjectInput = {
   durationMs?: number | null
   spanCount?: number
   errorCount?: number
+  rootSpanId?: string | null
+  rootSpanName?: string | null
+  rootSpanKind?: string | null
+  rootSpanStatusCode?: string | null
+  rootSpanDurationMs?: number | null
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: Prisma.TraceCreatespanTypesInput | string[]
+  searchText?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -831,6 +1110,15 @@ export type TraceUpdateWithoutProjectInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spans?: Prisma.SpanUpdateManyWithoutTraceNestedInput
@@ -848,6 +1136,15 @@ export type TraceUncheckedUpdateWithoutProjectInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   spans?: Prisma.SpanUncheckedUpdateManyWithoutTraceNestedInput
@@ -865,6 +1162,15 @@ export type TraceUncheckedUpdateManyWithoutProjectInput = {
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   spanCount?: Prisma.IntFieldUpdateOperationsInput | number
   errorCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rootSpanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanKind?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanStatusCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rootSpanDurationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hasError?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  hasException?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  spanTypes?: Prisma.TraceUpdatespanTypesInput | string[]
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -913,6 +1219,15 @@ export type TraceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   durationMs?: boolean
   spanCount?: boolean
   errorCount?: boolean
+  rootSpanId?: boolean
+  rootSpanName?: boolean
+  rootSpanKind?: boolean
+  rootSpanStatusCode?: boolean
+  rootSpanDurationMs?: boolean
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: boolean
+  searchText?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -933,6 +1248,15 @@ export type TraceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   durationMs?: boolean
   spanCount?: boolean
   errorCount?: boolean
+  rootSpanId?: boolean
+  rootSpanName?: boolean
+  rootSpanKind?: boolean
+  rootSpanStatusCode?: boolean
+  rootSpanDurationMs?: boolean
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: boolean
+  searchText?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -951,6 +1275,15 @@ export type TraceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   durationMs?: boolean
   spanCount?: boolean
   errorCount?: boolean
+  rootSpanId?: boolean
+  rootSpanName?: boolean
+  rootSpanKind?: boolean
+  rootSpanStatusCode?: boolean
+  rootSpanDurationMs?: boolean
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: boolean
+  searchText?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
@@ -969,11 +1302,20 @@ export type TraceSelectScalar = {
   durationMs?: boolean
   spanCount?: boolean
   errorCount?: boolean
+  rootSpanId?: boolean
+  rootSpanName?: boolean
+  rootSpanKind?: boolean
+  rootSpanStatusCode?: boolean
+  rootSpanDurationMs?: boolean
+  hasError?: boolean
+  hasException?: boolean
+  spanTypes?: boolean
+  searchText?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TraceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "externalTraceId" | "serviceName" | "serviceVersion" | "environment" | "resource" | "startTime" | "endTime" | "durationMs" | "spanCount" | "errorCount" | "createdAt" | "updatedAt", ExtArgs["result"]["trace"]>
+export type TraceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "projectId" | "externalTraceId" | "serviceName" | "serviceVersion" | "environment" | "resource" | "startTime" | "endTime" | "durationMs" | "spanCount" | "errorCount" | "rootSpanId" | "rootSpanName" | "rootSpanKind" | "rootSpanStatusCode" | "rootSpanDurationMs" | "hasError" | "hasException" | "spanTypes" | "searchText" | "createdAt" | "updatedAt", ExtArgs["result"]["trace"]>
 export type TraceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   project?: boolean | Prisma.ProjectDefaultArgs<ExtArgs>
   spans?: boolean | Prisma.Trace$spansArgs<ExtArgs>
@@ -1005,6 +1347,15 @@ export type $TracePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     durationMs: number | null
     spanCount: number
     errorCount: number
+    rootSpanId: string | null
+    rootSpanName: string | null
+    rootSpanKind: string | null
+    rootSpanStatusCode: string | null
+    rootSpanDurationMs: number | null
+    hasError: boolean
+    hasException: boolean
+    spanTypes: string[]
+    searchText: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["trace"]>
@@ -1444,6 +1795,15 @@ export interface TraceFieldRefs {
   readonly durationMs: Prisma.FieldRef<"Trace", 'Int'>
   readonly spanCount: Prisma.FieldRef<"Trace", 'Int'>
   readonly errorCount: Prisma.FieldRef<"Trace", 'Int'>
+  readonly rootSpanId: Prisma.FieldRef<"Trace", 'String'>
+  readonly rootSpanName: Prisma.FieldRef<"Trace", 'String'>
+  readonly rootSpanKind: Prisma.FieldRef<"Trace", 'String'>
+  readonly rootSpanStatusCode: Prisma.FieldRef<"Trace", 'String'>
+  readonly rootSpanDurationMs: Prisma.FieldRef<"Trace", 'Int'>
+  readonly hasError: Prisma.FieldRef<"Trace", 'Boolean'>
+  readonly hasException: Prisma.FieldRef<"Trace", 'Boolean'>
+  readonly spanTypes: Prisma.FieldRef<"Trace", 'String[]'>
+  readonly searchText: Prisma.FieldRef<"Trace", 'String'>
   readonly createdAt: Prisma.FieldRef<"Trace", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Trace", 'DateTime'>
 }

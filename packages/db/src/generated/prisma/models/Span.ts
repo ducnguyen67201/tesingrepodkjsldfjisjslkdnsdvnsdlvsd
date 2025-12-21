@@ -34,6 +34,8 @@ export type SpanAvgAggregateOutputType = {
   inputCost: runtime.Decimal | null
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
+  httpStatusCode: number | null
+  rpcStatusCode: number | null
 }
 
 export type SpanSumAggregateOutputType = {
@@ -44,6 +46,8 @@ export type SpanSumAggregateOutputType = {
   inputCost: runtime.Decimal | null
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
+  httpStatusCode: number | null
+  rpcStatusCode: number | null
 }
 
 export type SpanMinAggregateOutputType = {
@@ -69,6 +73,25 @@ export type SpanMinAggregateOutputType = {
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  httpMethod: string | null
+  httpRoute: string | null
+  httpStatusCode: number | null
+  httpUrl: string | null
+  dbSystem: string | null
+  dbName: string | null
+  dbOperation: string | null
+  dbStatement: string | null
+  dbCollection: string | null
+  rpcSystem: string | null
+  rpcService: string | null
+  rpcMethod: string | null
+  rpcStatusCode: number | null
+  exceptionType: string | null
+  exceptionMessage: string | null
+  genAiOperation: string | null
+  genAiProvider: string | null
+  spanType: string | null
+  searchText: string | null
   createdAt: Date | null
 }
 
@@ -95,6 +118,25 @@ export type SpanMaxAggregateOutputType = {
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  httpMethod: string | null
+  httpRoute: string | null
+  httpStatusCode: number | null
+  httpUrl: string | null
+  dbSystem: string | null
+  dbName: string | null
+  dbOperation: string | null
+  dbStatement: string | null
+  dbCollection: string | null
+  rpcSystem: string | null
+  rpcService: string | null
+  rpcMethod: string | null
+  rpcStatusCode: number | null
+  exceptionType: string | null
+  exceptionMessage: string | null
+  genAiOperation: string | null
+  genAiProvider: string | null
+  spanType: string | null
+  searchText: string | null
   createdAt: Date | null
 }
 
@@ -127,6 +169,25 @@ export type SpanCountAggregateOutputType = {
   outputCost: number
   totalCost: number
   pricingId: number
+  httpMethod: number
+  httpRoute: number
+  httpStatusCode: number
+  httpUrl: number
+  dbSystem: number
+  dbName: number
+  dbOperation: number
+  dbStatement: number
+  dbCollection: number
+  rpcSystem: number
+  rpcService: number
+  rpcMethod: number
+  rpcStatusCode: number
+  exceptionType: number
+  exceptionMessage: number
+  genAiOperation: number
+  genAiProvider: number
+  spanType: number
+  searchText: number
   createdAt: number
   _all: number
 }
@@ -140,6 +201,8 @@ export type SpanAvgAggregateInputType = {
   inputCost?: true
   outputCost?: true
   totalCost?: true
+  httpStatusCode?: true
+  rpcStatusCode?: true
 }
 
 export type SpanSumAggregateInputType = {
@@ -150,6 +213,8 @@ export type SpanSumAggregateInputType = {
   inputCost?: true
   outputCost?: true
   totalCost?: true
+  httpStatusCode?: true
+  rpcStatusCode?: true
 }
 
 export type SpanMinAggregateInputType = {
@@ -175,6 +240,25 @@ export type SpanMinAggregateInputType = {
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  httpMethod?: true
+  httpRoute?: true
+  httpStatusCode?: true
+  httpUrl?: true
+  dbSystem?: true
+  dbName?: true
+  dbOperation?: true
+  dbStatement?: true
+  dbCollection?: true
+  rpcSystem?: true
+  rpcService?: true
+  rpcMethod?: true
+  rpcStatusCode?: true
+  exceptionType?: true
+  exceptionMessage?: true
+  genAiOperation?: true
+  genAiProvider?: true
+  spanType?: true
+  searchText?: true
   createdAt?: true
 }
 
@@ -201,6 +285,25 @@ export type SpanMaxAggregateInputType = {
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  httpMethod?: true
+  httpRoute?: true
+  httpStatusCode?: true
+  httpUrl?: true
+  dbSystem?: true
+  dbName?: true
+  dbOperation?: true
+  dbStatement?: true
+  dbCollection?: true
+  rpcSystem?: true
+  rpcService?: true
+  rpcMethod?: true
+  rpcStatusCode?: true
+  exceptionType?: true
+  exceptionMessage?: true
+  genAiOperation?: true
+  genAiProvider?: true
+  spanType?: true
+  searchText?: true
   createdAt?: true
 }
 
@@ -233,6 +336,25 @@ export type SpanCountAggregateInputType = {
   outputCost?: true
   totalCost?: true
   pricingId?: true
+  httpMethod?: true
+  httpRoute?: true
+  httpStatusCode?: true
+  httpUrl?: true
+  dbSystem?: true
+  dbName?: true
+  dbOperation?: true
+  dbStatement?: true
+  dbCollection?: true
+  rpcSystem?: true
+  rpcService?: true
+  rpcMethod?: true
+  rpcStatusCode?: true
+  exceptionType?: true
+  exceptionMessage?: true
+  genAiOperation?: true
+  genAiProvider?: true
+  spanType?: true
+  searchText?: true
   createdAt?: true
   _all?: true
 }
@@ -352,6 +474,25 @@ export type SpanGroupByOutputType = {
   outputCost: runtime.Decimal | null
   totalCost: runtime.Decimal | null
   pricingId: string | null
+  httpMethod: string | null
+  httpRoute: string | null
+  httpStatusCode: number | null
+  httpUrl: string | null
+  dbSystem: string | null
+  dbName: string | null
+  dbOperation: string | null
+  dbStatement: string | null
+  dbCollection: string | null
+  rpcSystem: string | null
+  rpcService: string | null
+  rpcMethod: string | null
+  rpcStatusCode: number | null
+  exceptionType: string | null
+  exceptionMessage: string | null
+  genAiOperation: string | null
+  genAiProvider: string | null
+  spanType: string | null
+  searchText: string | null
   createdAt: Date
   _count: SpanCountAggregateOutputType | null
   _avg: SpanAvgAggregateOutputType | null
@@ -407,6 +548,25 @@ export type SpanWhereInput = {
   outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpRoute?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  httpUrl?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbName?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbStatement?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbCollection?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcService?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  exceptionType?: Prisma.StringNullableFilter<"Span"> | string | null
+  exceptionMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
+  spanType?: Prisma.StringNullableFilter<"Span"> | string | null
+  searchText?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
@@ -441,6 +601,25 @@ export type SpanOrderByWithRelationInput = {
   outputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpRoute?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbName?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbOperation?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbStatement?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbCollection?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcService?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  exceptionType?: Prisma.SortOrderInput | Prisma.SortOrder
+  exceptionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  genAiOperation?: Prisma.SortOrderInput | Prisma.SortOrder
+  genAiProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  spanType?: Prisma.SortOrderInput | Prisma.SortOrder
+  searchText?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   trace?: Prisma.TraceOrderByWithRelationInput
   pricing?: Prisma.ModelPricingOrderByWithRelationInput
@@ -479,6 +658,25 @@ export type SpanWhereUniqueInput = Prisma.AtLeast<{
   outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpRoute?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  httpUrl?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbName?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbStatement?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbCollection?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcService?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  exceptionType?: Prisma.StringNullableFilter<"Span"> | string | null
+  exceptionMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
+  spanType?: Prisma.StringNullableFilter<"Span"> | string | null
+  searchText?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
@@ -513,6 +711,25 @@ export type SpanOrderByWithAggregationInput = {
   outputCost?: Prisma.SortOrderInput | Prisma.SortOrder
   totalCost?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpRoute?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  httpUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbName?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbOperation?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbStatement?: Prisma.SortOrderInput | Prisma.SortOrder
+  dbCollection?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcSystem?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcService?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcMethod?: Prisma.SortOrderInput | Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  exceptionType?: Prisma.SortOrderInput | Prisma.SortOrder
+  exceptionMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  genAiOperation?: Prisma.SortOrderInput | Prisma.SortOrder
+  genAiProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  spanType?: Prisma.SortOrderInput | Prisma.SortOrder
+  searchText?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SpanCountOrderByAggregateInput
   _avg?: Prisma.SpanAvgOrderByAggregateInput
@@ -553,6 +770,25 @@ export type SpanScalarWhereWithAggregatesInput = {
   outputCost?: Prisma.DecimalNullableWithAggregatesFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableWithAggregatesFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  httpMethod?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  httpRoute?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  httpStatusCode?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
+  httpUrl?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  dbSystem?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  dbName?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  dbOperation?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  dbStatement?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  dbCollection?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  rpcSystem?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  rpcService?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  rpcMethod?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  rpcStatusCode?: Prisma.IntNullableWithAggregatesFilter<"Span"> | number | null
+  exceptionType?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  exceptionMessage?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  genAiOperation?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  genAiProvider?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  spanType?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  searchText?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Span"> | Date | string
 }
 
@@ -583,6 +819,25 @@ export type SpanCreateInput = {
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
   pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
@@ -617,6 +872,25 @@ export type SpanUncheckedCreateInput = {
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -647,6 +921,25 @@ export type SpanUpdateInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
   pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
@@ -681,6 +974,25 @@ export type SpanUncheckedUpdateInput = {
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -713,6 +1025,25 @@ export type SpanCreateManyInput = {
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -743,6 +1074,25 @@ export type SpanUpdateManyMutationInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -775,6 +1125,25 @@ export type SpanUncheckedUpdateManyInput = {
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -822,6 +1191,25 @@ export type SpanCountOrderByAggregateInput = {
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  httpMethod?: Prisma.SortOrder
+  httpRoute?: Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrder
+  httpUrl?: Prisma.SortOrder
+  dbSystem?: Prisma.SortOrder
+  dbName?: Prisma.SortOrder
+  dbOperation?: Prisma.SortOrder
+  dbStatement?: Prisma.SortOrder
+  dbCollection?: Prisma.SortOrder
+  rpcSystem?: Prisma.SortOrder
+  rpcService?: Prisma.SortOrder
+  rpcMethod?: Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrder
+  exceptionType?: Prisma.SortOrder
+  exceptionMessage?: Prisma.SortOrder
+  genAiOperation?: Prisma.SortOrder
+  genAiProvider?: Prisma.SortOrder
+  spanType?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -833,6 +1221,8 @@ export type SpanAvgOrderByAggregateInput = {
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrder
 }
 
 export type SpanMaxOrderByAggregateInput = {
@@ -858,6 +1248,25 @@ export type SpanMaxOrderByAggregateInput = {
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  httpMethod?: Prisma.SortOrder
+  httpRoute?: Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrder
+  httpUrl?: Prisma.SortOrder
+  dbSystem?: Prisma.SortOrder
+  dbName?: Prisma.SortOrder
+  dbOperation?: Prisma.SortOrder
+  dbStatement?: Prisma.SortOrder
+  dbCollection?: Prisma.SortOrder
+  rpcSystem?: Prisma.SortOrder
+  rpcService?: Prisma.SortOrder
+  rpcMethod?: Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrder
+  exceptionType?: Prisma.SortOrder
+  exceptionMessage?: Prisma.SortOrder
+  genAiOperation?: Prisma.SortOrder
+  genAiProvider?: Prisma.SortOrder
+  spanType?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -884,6 +1293,25 @@ export type SpanMinOrderByAggregateInput = {
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
   pricingId?: Prisma.SortOrder
+  httpMethod?: Prisma.SortOrder
+  httpRoute?: Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrder
+  httpUrl?: Prisma.SortOrder
+  dbSystem?: Prisma.SortOrder
+  dbName?: Prisma.SortOrder
+  dbOperation?: Prisma.SortOrder
+  dbStatement?: Prisma.SortOrder
+  dbCollection?: Prisma.SortOrder
+  rpcSystem?: Prisma.SortOrder
+  rpcService?: Prisma.SortOrder
+  rpcMethod?: Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrder
+  exceptionType?: Prisma.SortOrder
+  exceptionMessage?: Prisma.SortOrder
+  genAiOperation?: Prisma.SortOrder
+  genAiProvider?: Prisma.SortOrder
+  spanType?: Prisma.SortOrder
+  searchText?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -895,6 +1323,8 @@ export type SpanSumOrderByAggregateInput = {
   inputCost?: Prisma.SortOrder
   outputCost?: Prisma.SortOrder
   totalCost?: Prisma.SortOrder
+  httpStatusCode?: Prisma.SortOrder
+  rpcStatusCode?: Prisma.SortOrder
 }
 
 export type SpanCreateNestedManyWithoutPricingInput = {
@@ -1016,6 +1446,25 @@ export type SpanCreateWithoutPricingInput = {
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
 }
@@ -1048,6 +1497,25 @@ export type SpanUncheckedCreateWithoutPricingInput = {
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -1109,6 +1577,25 @@ export type SpanScalarWhereInput = {
   outputCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.DecimalNullableFilter<"Span"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpRoute?: Prisma.StringNullableFilter<"Span"> | string | null
+  httpStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  httpUrl?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbName?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbStatement?: Prisma.StringNullableFilter<"Span"> | string | null
+  dbCollection?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcSystem?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcService?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcMethod?: Prisma.StringNullableFilter<"Span"> | string | null
+  rpcStatusCode?: Prisma.IntNullableFilter<"Span"> | number | null
+  exceptionType?: Prisma.StringNullableFilter<"Span"> | string | null
+  exceptionMessage?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiOperation?: Prisma.StringNullableFilter<"Span"> | string | null
+  genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
+  spanType?: Prisma.StringNullableFilter<"Span"> | string | null
+  searchText?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
 }
 
@@ -1139,6 +1626,25 @@ export type SpanCreateWithoutTraceInput = {
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
   pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
 }
@@ -1171,6 +1677,25 @@ export type SpanUncheckedCreateWithoutTraceInput = {
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -1228,6 +1753,25 @@ export type SpanCreateManyPricingInput = {
   inputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -1258,6 +1802,25 @@ export type SpanUpdateWithoutPricingInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
 }
@@ -1290,6 +1853,25 @@ export type SpanUncheckedUpdateWithoutPricingInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1321,6 +1903,25 @@ export type SpanUncheckedUpdateManyWithoutPricingInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1352,6 +1953,25 @@ export type SpanCreateManyTraceInput = {
   outputCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: string | null
+  httpMethod?: string | null
+  httpRoute?: string | null
+  httpStatusCode?: number | null
+  httpUrl?: string | null
+  dbSystem?: string | null
+  dbName?: string | null
+  dbOperation?: string | null
+  dbStatement?: string | null
+  dbCollection?: string | null
+  rpcSystem?: string | null
+  rpcService?: string | null
+  rpcMethod?: string | null
+  rpcStatusCode?: number | null
+  exceptionType?: string | null
+  exceptionMessage?: string | null
+  genAiOperation?: string | null
+  genAiProvider?: string | null
+  spanType?: string | null
+  searchText?: string | null
   createdAt?: Date | string
 }
 
@@ -1382,6 +2002,25 @@ export type SpanUpdateWithoutTraceInput = {
   inputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
 }
@@ -1414,6 +2053,25 @@ export type SpanUncheckedUpdateWithoutTraceInput = {
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1445,6 +2103,25 @@ export type SpanUncheckedUpdateManyWithoutTraceInput = {
   outputCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   totalCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpRoute?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  httpStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  httpUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbStatement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dbCollection?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcSystem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcService?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rpcStatusCode?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  exceptionType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exceptionMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiOperation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1479,6 +2156,25 @@ export type SpanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  httpMethod?: boolean
+  httpRoute?: boolean
+  httpStatusCode?: boolean
+  httpUrl?: boolean
+  dbSystem?: boolean
+  dbName?: boolean
+  dbOperation?: boolean
+  dbStatement?: boolean
+  dbCollection?: boolean
+  rpcSystem?: boolean
+  rpcService?: boolean
+  rpcMethod?: boolean
+  rpcStatusCode?: boolean
+  exceptionType?: boolean
+  exceptionMessage?: boolean
+  genAiOperation?: boolean
+  genAiProvider?: boolean
+  spanType?: boolean
+  searchText?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -1513,6 +2209,25 @@ export type SpanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  httpMethod?: boolean
+  httpRoute?: boolean
+  httpStatusCode?: boolean
+  httpUrl?: boolean
+  dbSystem?: boolean
+  dbName?: boolean
+  dbOperation?: boolean
+  dbStatement?: boolean
+  dbCollection?: boolean
+  rpcSystem?: boolean
+  rpcService?: boolean
+  rpcMethod?: boolean
+  rpcStatusCode?: boolean
+  exceptionType?: boolean
+  exceptionMessage?: boolean
+  genAiOperation?: boolean
+  genAiProvider?: boolean
+  spanType?: boolean
+  searchText?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -1547,6 +2262,25 @@ export type SpanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  httpMethod?: boolean
+  httpRoute?: boolean
+  httpStatusCode?: boolean
+  httpUrl?: boolean
+  dbSystem?: boolean
+  dbName?: boolean
+  dbOperation?: boolean
+  dbStatement?: boolean
+  dbCollection?: boolean
+  rpcSystem?: boolean
+  rpcService?: boolean
+  rpcMethod?: boolean
+  rpcStatusCode?: boolean
+  exceptionType?: boolean
+  exceptionMessage?: boolean
+  genAiOperation?: boolean
+  genAiProvider?: boolean
+  spanType?: boolean
+  searchText?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -1581,10 +2315,29 @@ export type SpanSelectScalar = {
   outputCost?: boolean
   totalCost?: boolean
   pricingId?: boolean
+  httpMethod?: boolean
+  httpRoute?: boolean
+  httpStatusCode?: boolean
+  httpUrl?: boolean
+  dbSystem?: boolean
+  dbName?: boolean
+  dbOperation?: boolean
+  dbStatement?: boolean
+  dbCollection?: boolean
+  rpcSystem?: boolean
+  rpcService?: boolean
+  rpcMethod?: boolean
+  rpcStatusCode?: boolean
+  exceptionType?: boolean
+  exceptionMessage?: boolean
+  genAiOperation?: boolean
+  genAiProvider?: boolean
+  spanType?: boolean
+  searchText?: boolean
   createdAt?: boolean
 }
 
-export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "externalSpanId" | "parentSpanId" | "name" | "kind" | "statusCode" | "statusMessage" | "traceState" | "startTime" | "endTime" | "durationMs" | "attributes" | "events" | "links" | "libraryName" | "libraryVersion" | "model" | "modelParameters" | "input" | "output" | "promptTokens" | "completionTokens" | "totalTokens" | "inputCost" | "outputCost" | "totalCost" | "pricingId" | "createdAt", ExtArgs["result"]["span"]>
+export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "externalSpanId" | "parentSpanId" | "name" | "kind" | "statusCode" | "statusMessage" | "traceState" | "startTime" | "endTime" | "durationMs" | "attributes" | "events" | "links" | "libraryName" | "libraryVersion" | "model" | "modelParameters" | "input" | "output" | "promptTokens" | "completionTokens" | "totalTokens" | "inputCost" | "outputCost" | "totalCost" | "pricingId" | "httpMethod" | "httpRoute" | "httpStatusCode" | "httpUrl" | "dbSystem" | "dbName" | "dbOperation" | "dbStatement" | "dbCollection" | "rpcSystem" | "rpcService" | "rpcMethod" | "rpcStatusCode" | "exceptionType" | "exceptionMessage" | "genAiOperation" | "genAiProvider" | "spanType" | "searchText" | "createdAt", ExtArgs["result"]["span"]>
 export type SpanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -1633,6 +2386,25 @@ export type $SpanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     outputCost: runtime.Decimal | null
     totalCost: runtime.Decimal | null
     pricingId: string | null
+    httpMethod: string | null
+    httpRoute: string | null
+    httpStatusCode: number | null
+    httpUrl: string | null
+    dbSystem: string | null
+    dbName: string | null
+    dbOperation: string | null
+    dbStatement: string | null
+    dbCollection: string | null
+    rpcSystem: string | null
+    rpcService: string | null
+    rpcMethod: string | null
+    rpcStatusCode: number | null
+    exceptionType: string | null
+    exceptionMessage: string | null
+    genAiOperation: string | null
+    genAiProvider: string | null
+    spanType: string | null
+    searchText: string | null
     createdAt: Date
   }, ExtArgs["result"]["span"]>
   composites: {}
@@ -2087,6 +2859,25 @@ export interface SpanFieldRefs {
   readonly outputCost: Prisma.FieldRef<"Span", 'Decimal'>
   readonly totalCost: Prisma.FieldRef<"Span", 'Decimal'>
   readonly pricingId: Prisma.FieldRef<"Span", 'String'>
+  readonly httpMethod: Prisma.FieldRef<"Span", 'String'>
+  readonly httpRoute: Prisma.FieldRef<"Span", 'String'>
+  readonly httpStatusCode: Prisma.FieldRef<"Span", 'Int'>
+  readonly httpUrl: Prisma.FieldRef<"Span", 'String'>
+  readonly dbSystem: Prisma.FieldRef<"Span", 'String'>
+  readonly dbName: Prisma.FieldRef<"Span", 'String'>
+  readonly dbOperation: Prisma.FieldRef<"Span", 'String'>
+  readonly dbStatement: Prisma.FieldRef<"Span", 'String'>
+  readonly dbCollection: Prisma.FieldRef<"Span", 'String'>
+  readonly rpcSystem: Prisma.FieldRef<"Span", 'String'>
+  readonly rpcService: Prisma.FieldRef<"Span", 'String'>
+  readonly rpcMethod: Prisma.FieldRef<"Span", 'String'>
+  readonly rpcStatusCode: Prisma.FieldRef<"Span", 'Int'>
+  readonly exceptionType: Prisma.FieldRef<"Span", 'String'>
+  readonly exceptionMessage: Prisma.FieldRef<"Span", 'String'>
+  readonly genAiOperation: Prisma.FieldRef<"Span", 'String'>
+  readonly genAiProvider: Prisma.FieldRef<"Span", 'String'>
+  readonly spanType: Prisma.FieldRef<"Span", 'String'>
+  readonly searchText: Prisma.FieldRef<"Span", 'String'>
   readonly createdAt: Prisma.FieldRef<"Span", 'DateTime'>
 }
     

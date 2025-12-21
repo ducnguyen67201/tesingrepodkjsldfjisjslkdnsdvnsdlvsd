@@ -7,6 +7,7 @@
  * @see https://opentelemetry.io/docs/specs/otlp/
  */
 import { z } from "zod";
+import { SpanTypeSchema } from "./traces";
 
 // ============================================================================
 // OTLP Enums
@@ -262,6 +263,53 @@ export const NormalizedSpanSchema = z.object({
   completionTokens: z.number().optional(),
   input: z.unknown().optional(),
   output: z.unknown().optional(),
+
+  // ============================================================
+  // V2: HTTP fields (extracted from attributes)
+  // ============================================================
+  httpMethod: z.string().optional(),
+  httpRoute: z.string().optional(),
+  httpStatusCode: z.number().optional(),
+  httpUrl: z.string().optional(),
+
+  // ============================================================
+  // V2: Database fields (extracted from attributes)
+  // ============================================================
+  dbSystem: z.string().optional(),
+  dbName: z.string().optional(),
+  dbOperation: z.string().optional(),
+  dbStatement: z.string().optional(),
+  dbCollection: z.string().optional(),
+
+  // ============================================================
+  // V2: RPC fields (extracted from attributes)
+  // ============================================================
+  rpcSystem: z.string().optional(),
+  rpcService: z.string().optional(),
+  rpcMethod: z.string().optional(),
+  rpcStatusCode: z.number().optional(),
+
+  // ============================================================
+  // V2: Exception fields (extracted from events)
+  // ============================================================
+  exceptionType: z.string().optional(),
+  exceptionMessage: z.string().optional(),
+
+  // ============================================================
+  // V2: GenAI extended fields
+  // ============================================================
+  genAiOperation: z.string().optional(),
+  genAiProvider: z.string().optional(),
+
+  // ============================================================
+  // V2: Inferred span type
+  // ============================================================
+  spanType: SpanTypeSchema.optional(),
+
+  // ============================================================
+  // V2: Full-text search
+  // ============================================================
+  searchText: z.string().optional(),
 });
 export type NormalizedSpan = z.infer<typeof NormalizedSpanSchema>;
 
@@ -289,6 +337,31 @@ export const NormalizedTraceSchema = z.object({
   durationMs: z.number().optional(),
   spanCount: z.number().optional(),
   errorCount: z.number().optional(),
+
+  // ============================================================
+  // V2: Root span metadata
+  // ============================================================
+  rootSpanId: z.string().optional(),
+  rootSpanName: z.string().optional(),
+  rootSpanKind: z.string().optional(),
+  rootSpanStatusCode: z.string().optional(),
+  rootSpanDurationMs: z.number().optional(),
+
+  // ============================================================
+  // V2: Error/exception flags
+  // ============================================================
+  hasError: z.boolean().default(false),
+  hasException: z.boolean().default(false),
+
+  // ============================================================
+  // V2: Span type aggregation
+  // ============================================================
+  spanTypes: z.array(z.string()).default([]),
+
+  // ============================================================
+  // V2: Full-text search
+  // ============================================================
+  searchText: z.string().optional(),
 });
 export type NormalizedTrace = z.infer<typeof NormalizedTraceSchema>;
 
@@ -353,3 +426,94 @@ export const GENAI_ATTRIBUTE_ALIASES = {
   ],
   [GENAI_ATTRIBUTE_KEYS.MODEL]: ["llm.model", "model"],
 } as const;
+
+// ============================================================================
+// V2: HTTP Semantic Convention Attribute Keys
+// ============================================================================
+
+/**
+ * HTTP semantic convention attribute keys
+ * @see https://opentelemetry.io/docs/specs/semconv/http/
+ */
+export const HTTP_ATTRIBUTE_KEYS = {
+  // New conventions (preferred)
+  REQUEST_METHOD: "http.request.method",
+  RESPONSE_STATUS_CODE: "http.response.status_code",
+  ROUTE: "http.route",
+  URL_FULL: "url.full",
+  URL_PATH: "url.path",
+
+  // Legacy conventions (fallback)
+  METHOD: "http.method",
+  STATUS_CODE: "http.status_code",
+  URL: "http.url",
+  TARGET: "http.target",
+} as const;
+
+// ============================================================================
+// V2: Database Semantic Convention Attribute Keys
+// ============================================================================
+
+/**
+ * Database semantic convention attribute keys
+ * @see https://opentelemetry.io/docs/specs/semconv/database/
+ */
+export const DB_ATTRIBUTE_KEYS = {
+  SYSTEM: "db.system",
+  NAME: "db.name",
+  OPERATION: "db.operation",
+  STATEMENT: "db.statement",
+  QUERY_TEXT: "db.query.text",
+  COLLECTION_NAME: "db.collection.name",
+} as const;
+
+// ============================================================================
+// V2: RPC Semantic Convention Attribute Keys
+// ============================================================================
+
+/**
+ * RPC semantic convention attribute keys
+ * @see https://opentelemetry.io/docs/specs/semconv/rpc/
+ */
+export const RPC_ATTRIBUTE_KEYS = {
+  SYSTEM: "rpc.system",
+  SERVICE: "rpc.service",
+  METHOD: "rpc.method",
+  GRPC_STATUS_CODE: "rpc.grpc.status_code",
+  RESPONSE_STATUS_CODE: "rpc.response.status_code",
+} as const;
+
+// ============================================================================
+// V2: Exception Semantic Convention Attribute Keys
+// ============================================================================
+
+/**
+ * Exception semantic convention attribute keys
+ * @see https://opentelemetry.io/docs/specs/semconv/exceptions/
+ */
+export const EXCEPTION_ATTRIBUTE_KEYS = {
+  TYPE: "exception.type",
+  MESSAGE: "exception.message",
+  STACKTRACE: "exception.stacktrace",
+} as const;
+
+// ============================================================================
+// V2: GenAI Extended Attribute Keys
+// ============================================================================
+
+/**
+ * Extended GenAI semantic convention attribute keys
+ * @see https://opentelemetry.io/docs/specs/semconv/gen-ai/
+ */
+export const GENAI_EXTENDED_KEYS = {
+  OPERATION_NAME: "gen_ai.operation.name",
+  PROVIDER_NAME: "gen_ai.provider.name",
+  REQUEST_MODEL: "gen_ai.request.model",
+  RESPONSE_MODEL: "gen_ai.response.model",
+} as const;
+
+// ============================================================================
+// V2: Re-export SpanType from traces.ts (single source of truth)
+// ============================================================================
+// SpanTypeSchema and SpanType are exported from ./traces.ts to avoid duplication
+// Import them there: import { SpanTypeSchema, SpanType } from "./traces"

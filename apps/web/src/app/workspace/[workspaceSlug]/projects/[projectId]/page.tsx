@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-import { TracesTable } from "@/components/traces";
+import { TracesTableV2 } from "@/components/traces";
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
@@ -135,7 +135,7 @@ export default function ProjectDetailPage() {
         </TabsList>
 
         <TabsContent value="traces" className="mt-2">
-          <TracesTable
+          <TracesTableV2
             workspaceSlug={workspaceSlug ?? ""}
             projectId={projectId}
           />

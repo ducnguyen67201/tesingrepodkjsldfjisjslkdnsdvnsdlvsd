@@ -12,7 +12,7 @@ import { type SpanType } from "@cognobserve/api/schemas";
 // Types
 // ------------------------------------------------------------
 
-interface TraceListItem {
+export interface TraceListItem {
   id: string;
   externalTraceId: string;
   serviceName: string;
@@ -23,7 +23,8 @@ interface TraceListItem {
   durationMs: number | null;
   spanCount: number;
   errorCount: number;
-  spanTypes: SpanType[];
+  /** Span types - can be string[] from API or SpanType[] */
+  spanTypes: string[];
 }
 
 interface TraceRowProps {
@@ -40,8 +41,8 @@ const SPAN_TYPE_COLORS: Record<SpanType, string> = {
   LLM: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
   HTTP: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
   DB: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  RPC: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200",
   FUNCTION: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
-  LOG: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200",
   CUSTOM: "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200",
 };
 
@@ -104,7 +105,10 @@ export function TraceRow({ trace, isSelected, onSelect }: TraceRowProps) {
             <Badge
               key={type}
               variant="secondary"
-              className={cn("h-4 px-1.5 text-[10px] font-normal", SPAN_TYPE_COLORS[type])}
+              className={cn(
+                "h-4 px-1.5 text-[10px] font-normal",
+                SPAN_TYPE_COLORS[type as SpanType] ?? SPAN_TYPE_COLORS.CUSTOM
+              )}
             >
               {type}
             </Badge>

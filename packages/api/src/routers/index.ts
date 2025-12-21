@@ -28,6 +28,7 @@ import { trackedUsersRouter } from "./trackedUsers";
 import { internalRouter } from "./internal";
 import { githubRouter } from "./github";
 import { evalsRouter } from "./evals";
+import { filtersRouter } from "./filters";
 
 /**
  * Main application router.
@@ -207,6 +208,18 @@ export const appRouter = createRouter({
   evals: evalsRouter,
 
   /**
+   * Filters (v2 Autocomplete & Facets)
+   * @see ./filters.ts
+   *
+   * Used for filter autocomplete and statistics.
+   *
+   * - filters.keys   - Get attribute keys for autocomplete
+   * - filters.values - Get attribute values for autocomplete
+   * - filters.stats  - Get filter statistics (facets)
+   */
+  filters: filtersRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -235,4 +248,5 @@ export {
   internalRouter,
   githubRouter,
   evalsRouter,
+  filtersRouter,
 };

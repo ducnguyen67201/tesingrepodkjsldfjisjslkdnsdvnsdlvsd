@@ -3,14 +3,14 @@ import { TimeRangeSchema, CustomDateRangeSchema } from "./cost";
 
 /**
  * Span types for visual differentiation - defined as Zod schema (source of truth).
- * Inferred from span data since DB doesn't have a type column.
+ * Inferred from span data. V2 adds RPC type for gRPC/API calls.
  */
 export const SpanTypeSchema = z.enum([
   "LLM",
-  "LOG",
-  "FUNCTION",
   "HTTP",
   "DB",
+  "RPC",
+  "FUNCTION",
   "CUSTOM",
 ]);
 export type SpanType = z.infer<typeof SpanTypeSchema>;
