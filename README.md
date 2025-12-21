@@ -1,132 +1,94 @@
-# CognObserve
+<div align="center">
 
-AI Platform Monitoring & Observability system for tracing, monitoring, and analytics of AI/LLM applications.
+<img src="docs/images/banner.png" alt="CognObserve Banner" width="100%"/>
 
-## Quick Start
+<h3>Open Source LLM Observability Platform</h3>
 
-### Prerequisites
+<p>
+<a href="#traces">Traces</a>, <a href="#alerts">alerts</a>, <a href="#prompt-management">prompt management</a>, <a href="#cost-analytics">cost analytics</a>, and <a href="#rca">root cause analysis</a><br/>
+to debug and improve your LLM application.
+</p>
 
-- Node.js 24+
-- pnpm 9.15+
-- Go 1.23+
-- Docker & Docker Compose
-- [Doppler CLI](https://docs.doppler.com/docs/install-cli) (for secret management)
+<br/>
 
-### 1. Install Doppler CLI
+**[Cloud](https://cognobserve.com)** · **[Self Host](#-self-hosting)** · **[Demo](https://demo.cognobserve.com)**
 
-```bash
-# macOS
-brew install dopplerhq/cli/doppler
+[Docs](https://docs.cognobserve.com) · [Report Bug](https://github.com/cognobserve/cognobserve/issues) · [Feature Request](https://github.com/cognobserve/cognobserve/issues) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
-# Linux
-curl -sLf https://cli.doppler.com/install.sh | sh
-```
+<br/>
 
-### 2. Setup Doppler
+[![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org/)
+[![Discord](https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/cognobserve)
+[![Twitter Follow](https://img.shields.io/twitter/follow/cognobserve?style=social)](https://twitter.com/cognobserve)
 
-```bash
-# Login to Doppler
-doppler login
+</div>
 
-# Configure project (uses doppler.yaml)
-doppler setup --no-interactive
+---
 
-# Verify secrets are accessible
-make doppler-check
-```
+CognObserve is an **open source LLM observability** platform. It helps teams collaboratively **develop, monitor, evaluate, and debug** AI applications. CognObserve can be **self-hosted in minutes** and is designed for production workloads.
 
-### 3. Start Development
+<div align="center">
+<img src="docs/images/demo.gif" alt="CognObserve Demo" width="90%"/>
+</div>
 
-```bash
-# Install dependencies
-make install
+---
 
-# Start infrastructure (PostgreSQL, Temporal)
-make docker-up
+## ✨ Features
 
-# Generate Prisma client
-make db-generate
+- **[LLM Observability](#traces)**: Instrument your app and start ingesting traces, tracking LLM calls, embeddings, retrievals, and agent actions. Inspect and debug complex logs and user sessions with our interactive trace viewer.
 
-# Run all services
-make dev
+- **[Prompt Management](#prompt-management)**: Centrally manage, version control, and collaboratively iterate on your prompts. With strong caching on server and client side, you can iterate on prompts without adding latency to your application.
 
-# In separate terminal: run Go ingest service
-make dev-ingest
-```
+- **[Cost Analytics](#cost-analytics)**: Track token usage and costs across models, features, and users. Set budgets and get alerts before costs spiral out of control.
 
-## Project Structure
+- **[Smart Alerting](#alerts)**: Get notified when error rates spike, latency increases, or costs exceed thresholds. Supports Discord, Slack, Email, and webhooks.
 
-```
-CognObserve/
-├── apps/
-│   ├── web/           # Next.js dashboard & API
-│   ├── ingest/        # Go ingestion service
-│   └── worker/        # Temporal worker (TypeScript)
-├── packages/
-│   ├── api/           # tRPC routers + schemas
-│   ├── db/            # Prisma schema & client
-│   ├── proto/         # Generated TypeScript types
-│   └── shared/        # Shared utilities
-├── proto/             # Protobuf definitions
-├── doppler.yaml       # Doppler secret management config
-└── turbo.json         # Turborepo config
-```
+- **[Root Cause Analysis](#rca)**: When incidents occur, AI-powered RCA automatically correlates traces, code changes, and system metrics to identify the root cause.
 
-## Services
+- **[GitHub Integration](#github)**: Link production issues to code changes. Know exactly which commit or PR caused a regression.
 
-| Service | Port | Purpose |
-|---------|------|---------|
-| Web | 3000 | Dashboard, API |
-| Ingest | 8080 | High-throughput trace ingestion |
-| Worker | - | Temporal worker (background jobs) |
-| Temporal | 7233 | Workflow orchestration |
-| Temporal UI | 8088 | Workflow monitoring |
-| PostgreSQL | 5432 | Primary database |
+---
 
-## Secret Management (Doppler)
+## 📦 Self Hosting
 
-This project uses [Doppler](https://doppler.com) for centralized secret management.
-
-### Commands
+CognObserve can be self-hosted using Docker Compose:
 
 ```bash
-# Check Doppler is installed
-make check-doppler
-
-# Setup Doppler config
-make doppler-setup
-
-# Verify secrets are accessible
-make doppler-check
-
-# Run with secrets
-pnpm dev                    # Uses Doppler automatically
-doppler run -- <command>    # Run any command with secrets
+git clone https://github.com/cognobserve/cognobserve.git
+cd cognobserve
+docker compose up -d
 ```
 
-### Fallback (without Doppler)
+For detailed deployment options, see the [Self Hosting Guide](https://docs.cognobserve.com/self-hosting).
 
-If Doppler is not configured, you can use a local `.env` file:
+---
 
-```bash
-cp .env.example .env
-# Edit .env with your secrets
-pnpm dev:no-doppler
-```
+## 🔌 Integrations
 
-## Make Commands
+| Integration | Supports | Description |
+|-------------|----------|-------------|
+| [SDK](https://docs.cognobserve.com/sdk) | JS/TS | Manual instrumentation using the SDK for full flexibility |
+| [OpenAI](https://docs.cognobserve.com/integrations/openai) | JS/TS | Automated instrumentation using drop-in replacement |
+| [Anthropic](https://docs.cognobserve.com/integrations/anthropic) | JS/TS | Automated instrumentation for Claude models |
+| [LangChain](https://docs.cognobserve.com/integrations/langchain) | JS/TS | Callback handler for LangChain applications |
+| [Vercel AI SDK](https://docs.cognobserve.com/integrations/vercel-ai) | JS/TS | Integration for Vercel AI SDK applications |
+| [OpenTelemetry](https://docs.cognobserve.com/integrations/otel) | Any | Native OTLP support for any language |
+| [API](https://docs.cognobserve.com/api) | Any | Directly call the public API. OpenAPI spec available |
 
-```bash
-make help              # Show all available commands
-make dev               # Run TypeScript apps (web, worker)
-make dev-ingest        # Run Go ingest service
-make docker-up         # Start PostgreSQL + Temporal
-make db-studio         # Open Prisma Studio
-make build             # Build all services
-```
+---
 
-## Documentation
+## 📚 Resources
 
-- [Doppler Setup](docs/specs/issue-104-doppler-secret-management.md)
-- [API Keys Spec](docs/specs/01_API_KEYS_SPEC.md)
-- [Alert System](docs/specs/issue-99-alert-system-v2.md)
+- [Documentation](https://docs.cognobserve.com)
+- [API Reference](https://docs.cognobserve.com/api)
+- [Blog](https://cognobserve.com/blog)
+- [Discord Community](https://discord.gg/cognobserve)
+
+---
+
+<div align="center">
+
+**Built with ❤️ for the AI community**
+
+</div>
