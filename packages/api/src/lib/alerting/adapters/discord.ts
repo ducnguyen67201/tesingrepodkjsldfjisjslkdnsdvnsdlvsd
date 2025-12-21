@@ -133,13 +133,10 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       fields.push(...this.buildRegressionFields(payload.regressionInfo));
     }
 
-    // Dashboard link (if available and no RCA or regression)
-    if (payload.dashboardUrl && !payload.rca && !payload.regressionInfo) {
-      fields.push({
-        name: "📈 Dashboard",
-        value: `[View Dashboard](${payload.dashboardUrl})`,
-        inline: false,
-      });
+    // Action links - show Dashboard and RCA buttons
+    const actionLinks = this.buildActionLinks(payload);
+    if (actionLinks) {
+      fields.push(actionLinks);
     }
 
     return {
@@ -254,6 +251,34 @@ export class DiscordAdapter extends BaseAlertingAdapter {
     }
 
     return fields;
+  }
+
+  /**
+   * Build action links field (Dashboard + RCA buttons)
+   * Shows both links when available
+   */
+  private buildActionLinks(payload: AlertPayload): DiscordEmbed["fields"][0] | null {
+    const links: string[] = [];
+
+    // Dashboard link
+    if (payload.dashboardUrl) {
+      links.push(`[📈 Dashboard](${payload.dashboardUrl})`);
+    }
+
+    // RCA link - show for FIRING alerts (RCA will be generated)
+    if (payload.rcaUrl) {
+      links.push(`[🔍 View RCA](${payload.rcaUrl})`);
+    }
+
+    if (links.length === 0) {
+      return null;
+    }
+
+    return {
+      name: "🔗 Quick Actions",
+      value: links.join("  •  "),
+      inline: false,
+    };
   }
 
   /**

@@ -125,17 +125,31 @@ export async function transitionAlertState(
 }
 
 /**
+ * Result from dispatch notification including info needed for RCA
+ */
+export interface DispatchNotificationResult {
+  success: boolean;
+  alertHistoryId?: string;
+  alertName?: string;
+  alertType?: string;
+  projectId?: string;
+  projectName?: string;
+  windowMins?: number;
+  severity?: string;
+}
+
+/**
  * Dispatch notification via internal tRPC.
  * Temporal activities are read-only - mutations go through tRPC.
  *
- * @returns True if notification was sent successfully
+ * @returns Dispatch result with alertHistoryId for RCA trigger
  */
 export async function dispatchNotification(
   alertId: string,
   state: string,
   value: number,
   threshold: number
-): Promise<boolean> {
+): Promise<DispatchNotificationResult> {
   console.log(`[Activity:dispatchNotification] Dispatching for: ${alertId}`);
 
   try {
@@ -148,12 +162,21 @@ export async function dispatchNotification(
     });
 
     console.log(
-      `[Activity:dispatchNotification] Sent to ${result.channelCount} channels`
+      `[Activity:dispatchNotification] Sent to ${result.channelCount} channels, historyId: ${result.alertHistoryId}`
     );
-    return true;
+    return {
+      success: true,
+      alertHistoryId: result.alertHistoryId,
+      alertName: result.alertName,
+      alertType: result.alertType,
+      projectId: result.projectId,
+      projectName: result.projectName,
+      windowMins: result.windowMins,
+      severity: result.severity,
+    };
   } catch (error) {
     console.error(`[Activity:dispatchNotification] Failed:`, error);
-    return false;
+    return { success: false };
   }
 }
 

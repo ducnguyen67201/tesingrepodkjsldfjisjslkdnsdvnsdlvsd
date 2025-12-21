@@ -33,7 +33,7 @@ export async function getMetric(
 }
 
 /**
- * Calculate error rate as percentage of spans with ERROR level.
+ * Calculate error rate as percentage of spans with ERROR status.
  */
 async function getErrorRate(
   projectId: string,
@@ -45,7 +45,7 @@ async function getErrorRate(
   >`
     SELECT
       COUNT(*) as total,
-      COUNT(*) FILTER (WHERE s."level" = 'ERROR') as errors
+      COUNT(*) FILTER (WHERE s."statusCode" = 'ERROR') as errors
     FROM "Span" s
     INNER JOIN "Trace" t ON s."traceId" = t."id"
     WHERE t."projectId" = ${projectId}

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Activity, ExternalLink, Clock, AlertTriangle } from "lucide-react";
+import { Activity, Eye, Clock, AlertTriangle } from "lucide-react";
 
 // OTLP-first schema - Trace no longer has name/timestamp, Span uses statusCode
 interface Trace {
@@ -21,8 +21,8 @@ interface Trace {
 
 interface RCATracesCardProps {
   traces: Trace[];
-  workspaceSlug: string;
-  projectId: string;
+  /** Callback when user clicks to view a trace */
+  onTraceSelect: (traceId: string) => void;
 }
 
 function formatTime(date: Date): string {
@@ -34,7 +34,14 @@ function formatTime(date: Date): string {
   }).format(new Date(date));
 }
 
-export function RCATracesCard({ traces, workspaceSlug, projectId }: RCATracesCardProps) {
+export function RCATracesCard({ traces, onTraceSelect }: RCATracesCardProps) {
+  const handleViewClick = useCallback(
+    (traceId: string) => () => {
+      onTraceSelect(traceId);
+    },
+    [onTraceSelect]
+  );
+
   if (traces.length === 0) {
     return null;
   }
@@ -83,11 +90,9 @@ export function RCATracesCard({ traces, workspaceSlug, projectId }: RCATracesCar
                         {errorSpans.length} error{errorSpans.length !== 1 ? "s" : ""}
                       </Badge>
                     )}
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link href={`/workspace/${workspaceSlug}/projects/${projectId}/traces/${trace.id}`}>
-                        View
-                        <ExternalLink className="h-3 w-3 ml-1" />
-                      </Link>
+                    <Button variant="ghost" size="sm" onClick={handleViewClick(trace.id)}>
+                      <Eye className="h-3 w-3 mr-1" />
+                      View
                     </Button>
                   </div>
                 </div>

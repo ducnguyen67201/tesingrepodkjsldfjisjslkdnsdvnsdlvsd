@@ -1,5 +1,7 @@
 "use client";
 
+import { useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useRCADetail } from "@/hooks/use-rca-detail";
 import { RCAHeader } from "./rca-header";
 import { RCAHypothesisCard } from "./rca-hypothesis-card";
@@ -9,6 +11,7 @@ import { RCARemediationCard } from "./rca-remediation-card";
 import { RCATracesCard } from "./rca-traces-card";
 import { RCAFeedbackCard } from "./rca-feedback-card";
 import { RCADetailSkeleton } from "./rca-detail-skeleton";
+import { TraceDetailPanel } from "@/components/traces/trace-detail-panel";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -26,10 +29,35 @@ export function RCADetailPage({
   alertId,
   rcaId,
 }: RCADetailPageProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const { data, isLoading, error } = useRCADetail({
     workspaceSlug,
     rcaId,
   });
+
+  // Get selected trace from URL params
+  const selectedTraceId = searchParams.get("trace");
+
+  // Handle trace selection - updates URL
+  const handleTraceSelect = useCallback(
+    (traceId: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("trace", traceId);
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, pathname, router]
+  );
+
+  // Handle closing trace panel - removes trace param
+  const handleCloseTracePanel = useCallback(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("trace");
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+    router.push(newUrl, { scroll: false });
+  }, [searchParams, pathname, router]);
 
   if (isLoading) {
     return <RCADetailSkeleton />;
@@ -103,8 +131,7 @@ export function RCADetailPage({
         {traces.length > 0 && (
           <RCATracesCard
             traces={traces}
-            workspaceSlug={workspaceSlug}
-            projectId={projectId}
+            onTraceSelect={handleTraceSelect}
           />
         )}
 
@@ -116,6 +143,14 @@ export function RCADetailPage({
           currentFeedback={rca.feedback}
         />
       </div>
+
+      {/* Trace Detail Panel */}
+      <TraceDetailPanel
+        workspaceSlug={workspaceSlug}
+        projectId={projectId}
+        traceId={selectedTraceId}
+        onClose={handleCloseTracePanel}
+      />
     </div>
   );
 }

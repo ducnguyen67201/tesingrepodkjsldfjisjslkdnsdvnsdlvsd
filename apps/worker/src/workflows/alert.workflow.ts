@@ -18,10 +18,12 @@ import {
   log,
   continueAsNew,
   workflowInfo,
+  startChild,
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { AlertWorkflowInput, AlertWorkflowState } from "../temporal/types";
 import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { rcaAnalysisWorkflow, type RCAAnalysisWorkflowInput } from "./rca-analysis.workflow";
 
 // ============================================================
 // Activity Proxies
@@ -117,7 +119,7 @@ function shouldContinueAsNew(state: AlertWorkflowState): {
 // ============================================================
 
 /**
- * Single evaluation cycle: evaluate → transition → notify if needed
+ * Single evaluation cycle: evaluate → transition → notify → RCA if needed
  */
 async function evaluateAlertCycle(input: AlertWorkflowInput): Promise<void> {
   log.info("Running evaluation cycle", { alertId: input.alertId });
@@ -156,7 +158,7 @@ async function evaluateAlertCycle(input: AlertWorkflowInput): Promise<void> {
 
   // Step 3: Dispatch notification if needed
   if (transition.shouldNotify) {
-    const notified = await dispatchNotification(
+    const dispatchResult = await dispatchNotification(
       input.alertId,
       transition.newState,
       result.currentValue,
@@ -165,9 +167,54 @@ async function evaluateAlertCycle(input: AlertWorkflowInput): Promise<void> {
 
     log.info("Notification dispatched", {
       alertId: input.alertId,
-      success: notified,
+      success: dispatchResult.success,
       state: transition.newState,
+      alertHistoryId: dispatchResult.alertHistoryId,
     });
+
+    // Step 4: Trigger RCA workflow for FIRING state (non-blocking)
+    if (
+      dispatchResult.success &&
+      transition.newState === "FIRING" &&
+      dispatchResult.alertHistoryId &&
+      dispatchResult.projectId
+    ) {
+      const now = new Date();
+      const windowMins = dispatchResult.windowMins ?? 5;
+      const windowEnd = now.toISOString();
+      const windowStart = new Date(now.getTime() - windowMins * 60 * 1000).toISOString();
+
+      const rcaInput: RCAAnalysisWorkflowInput = {
+        alertId: input.alertId,
+        alertHistoryId: dispatchResult.alertHistoryId,
+        alertName: dispatchResult.alertName ?? input.alertName,
+        alertType: (dispatchResult.alertType ?? "ERROR_RATE") as RCAAnalysisWorkflowInput["alertType"],
+        alertValue: result.currentValue,
+        threshold: result.threshold,
+        severity: (dispatchResult.severity ?? input.severity) as RCAAnalysisWorkflowInput["severity"],
+        projectId: dispatchResult.projectId,
+        projectName: dispatchResult.projectName ?? "Unknown",
+        windowStart,
+        windowEnd,
+        triggeredBy: "automatic",
+      };
+
+      log.info("Starting RCA analysis workflow", {
+        alertId: input.alertId,
+        alertHistoryId: dispatchResult.alertHistoryId,
+      });
+
+      // Start RCA as child workflow (fire-and-forget, don't wait)
+      await startChild(rcaAnalysisWorkflow, {
+        workflowId: `rca-${dispatchResult.alertHistoryId}`,
+        args: [rcaInput],
+        parentClosePolicy: "ABANDON", // Let RCA complete even if parent restarts
+      });
+
+      log.info("RCA workflow started", {
+        workflowId: `rca-${dispatchResult.alertHistoryId}`,
+      });
+    }
   }
 }
 
