@@ -278,7 +278,7 @@ export type SearchPromptsInput = z.infer<typeof SearchPromptsInputSchema>;
 /**
  * Import format
  */
-export const ImportFormatSchema = z.enum(["json", "yaml", "langfuse"]);
+export const ImportFormatSchema = z.enum(["json", "yaml", "external"]);
 export type ImportFormat = z.infer<typeof ImportFormatSchema>;
 
 /**

@@ -5,7 +5,8 @@
 import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
-import { showSuccess, showDeleted } from "@/lib/success";
+import { promptToast } from "@/lib/success";
+import { type PromptLabelName } from "@cognobserve/api/schemas";
 
 interface UsePromptsOptions {
   workspaceSlug: string;
@@ -31,7 +32,7 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
   // Create prompt mutation
   const createPrompt = trpc.prompts.create.useMutation({
     onSuccess: (newPrompt) => {
-      showSuccess("Prompt created", `"${newPrompt.name}" is ready.`);
+      promptToast.created(newPrompt.name);
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
     },
     onError: showError,
@@ -40,7 +41,7 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
   // Update prompt mutation
   const updatePrompt = trpc.prompts.update.useMutation({
     onSuccess: (updatedPrompt) => {
-      showSuccess("Prompt updated", `"${updatedPrompt.name}" has been updated.`);
+      promptToast.updated(updatedPrompt.name);
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
       utils.prompts.get.invalidate({ workspaceSlug, promptId: updatedPrompt.id });
     },
@@ -49,9 +50,12 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
 
   // Archive prompt mutation
   const archivePrompt = trpc.prompts.archive.useMutation({
-    onSuccess: (result, variables) => {
-      const action = variables.archive ? "archived" : "restored";
-      showSuccess("Prompt updated", `Prompt has been ${action}.`);
+    onSuccess: (_result, variables) => {
+      if (variables.archive) {
+        promptToast.archived();
+      } else {
+        promptToast.restored();
+      }
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
     },
     onError: showError,
@@ -60,7 +64,7 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
   // Delete prompt mutation
   const deletePrompt = trpc.prompts.delete.useMutation({
     onSuccess: () => {
-      showDeleted("Prompt");
+      promptToast.deleted();
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
     },
     onError: showError,
@@ -69,7 +73,7 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
   // Create version mutation
   const createVersion = trpc.prompts.createVersion.useMutation({
     onSuccess: (newVersion) => {
-      showSuccess("Version created", `Version ${newVersion.version} is ready.`);
+      promptToast.versionCreated(newVersion.version);
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
       utils.prompts.get.invalidate({ workspaceSlug, promptId: newVersion.promptId });
     },
@@ -78,8 +82,8 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
 
   // Set label mutation
   const setLabel = trpc.prompts.setLabel.useMutation({
-    onSuccess: (result, variables) => {
-      showSuccess("Label set", `Version is now "${variables.label}".`);
+    onSuccess: (_result, variables) => {
+      promptToast.labelSet(variables.label);
       utils.prompts.list.invalidate({ workspaceSlug, projectId });
       utils.prompts.get.invalidate({ workspaceSlug, promptId: variables.promptId });
     },
@@ -123,7 +127,7 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
   );
 
   const handleSetLabel = useCallback(
-    async (promptId: string, versionId: string, label: "production" | "staging" | "latest") => {
+    async (promptId: string, versionId: string, label: PromptLabelName) => {
       return setLabel.mutateAsync({ workspaceSlug, promptId, versionId, label });
     },
     [setLabel, workspaceSlug]
@@ -172,7 +176,7 @@ export function usePromptDetail({
   // Create version mutation
   const createVersion = trpc.prompts.createVersion.useMutation({
     onSuccess: (newVersion) => {
-      showSuccess("Version created", `Version ${newVersion.version} is ready.`);
+      promptToast.versionCreated(newVersion.version);
       utils.prompts.get.invalidate({ workspaceSlug, promptId });
     },
     onError: showError,
@@ -181,19 +185,14 @@ export function usePromptDetail({
   // Set label mutation
   const setLabel = trpc.prompts.setLabel.useMutation({
     onSuccess: (result) => {
-      showSuccess("Label updated", `Version is now "${result.label}".`);
+      promptToast.labelSet(result.label);
       utils.prompts.get.invalidate({ workspaceSlug, promptId });
     },
     onError: showError,
   });
 
   const handleCreateVersion = useCallback(
-    async (data: {
-      template: { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: "system" | "user" | "assistant"; content: string }> };
-      variables?: Array<{ name: string; required?: boolean; default?: string; description?: string }>;
-      config?: Record<string, unknown>;
-      metadata?: Record<string, unknown>;
-    }) => {
+    async (data: Parameters<typeof createVersion.mutateAsync>[0]) => {
       return createVersion.mutateAsync({
         workspaceSlug,
         promptId,
@@ -204,7 +203,7 @@ export function usePromptDetail({
   );
 
   const handleSetLabel = useCallback(
-    async (versionId: string, label: "production" | "staging" | "latest") => {
+    async (versionId: string, label: PromptLabelName) => {
       return setLabel.mutateAsync({ workspaceSlug, promptId, versionId, label });
     },
     [setLabel, workspaceSlug, promptId]

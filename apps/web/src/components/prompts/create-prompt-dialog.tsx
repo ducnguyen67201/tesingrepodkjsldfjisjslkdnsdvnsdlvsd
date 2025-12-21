@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Loader2, Plus, Trash2, MessageSquare, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,11 +100,22 @@ export function CreatePromptDialog({
     setMessages((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const handleMessageChange = useCallback(
-    (index: number, field: keyof ChatMessage, value: string) => {
+  const handleMessageRoleChange = useCallback(
+    (index: number, value: string) => {
       setMessages((prev) =>
         prev.map((msg, i) =>
-          i === index ? { ...msg, [field]: value } : msg
+          i === index ? { ...msg, role: value as ChatMessage["role"] } : msg
+        )
+      );
+    },
+    []
+  );
+
+  const handleMessageContentChange = useCallback(
+    (index: number, value: string) => {
+      setMessages((prev) =>
+        prev.map((msg, i) =>
+          i === index ? { ...msg, content: value } : msg
         )
       );
     },
@@ -155,6 +166,36 @@ export function CreatePromptDialog({
     onOpenChange(false);
   }, [onOpenChange]);
 
+  const handleSlugChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSlug(e.target.value);
+  }, []);
+
+  const handleDescriptionChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(e.target.value);
+  }, []);
+
+  const handleTagsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTags(e.target.value);
+  }, []);
+
+  const handleTextContentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextContent(e.target.value);
+  }, []);
+
+  const handleSelectTextType = useCallback(() => {
+    setPromptType("text");
+  }, []);
+
+  const handleSelectChatType = useCallback(() => {
+    setPromptType("chat");
+  }, []);
+
+  // Memoize messages content for VariablePreview
+  const messagesContent = useMemo(
+    () => messages.map((m) => m.content).join(" "),
+    [messages]
+  );
+
   const isValid = name.trim() && slug.trim() &&
     (promptType === "text" ? textContent.trim() : messages.some((m) => m.content.trim()));
 
@@ -188,7 +229,7 @@ export function CreatePromptDialog({
                   id="slug"
                   placeholder="movie-critic-prompt"
                   value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
+                  onChange={handleSlugChange}
                   className="font-mono"
                 />
                 <p className="text-xs text-muted-foreground">
@@ -202,7 +243,7 @@ export function CreatePromptDialog({
                   id="description"
                   placeholder="A prompt for generating movie reviews..."
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={handleDescriptionChange}
                   rows={2}
                 />
               </div>
@@ -213,7 +254,7 @@ export function CreatePromptDialog({
                   id="tags"
                   placeholder="movie, review, critic"
                   value={tags}
-                  onChange={(e) => setTags(e.target.value)}
+                  onChange={handleTagsChange}
                 />
                 <p className="text-xs text-muted-foreground">
                   Comma-separated tags for organization
@@ -230,7 +271,7 @@ export function CreatePromptDialog({
                     type="button"
                     variant={promptType === "text" ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setPromptType("text")}
+                    onClick={handleSelectTextType}
                     className="gap-2"
                   >
                     <FileText className="h-4 w-4" />
@@ -240,7 +281,7 @@ export function CreatePromptDialog({
                     type="button"
                     variant={promptType === "chat" ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setPromptType("chat")}
+                    onClick={handleSelectChatType}
                     className="gap-2"
                   >
                     <MessageSquare className="h-4 w-4" />
@@ -257,7 +298,7 @@ export function CreatePromptDialog({
                     id="text-content"
                     placeholder="You are a movie critic. Write a review for {{movie}}..."
                     value={textContent}
-                    onChange={(e) => setTextContent(e.target.value)}
+                    onChange={handleTextContentChange}
                     rows={6}
                     className="font-mono text-sm"
                   />
@@ -282,49 +323,15 @@ export function CreatePromptDialog({
 
                   <div className="space-y-3">
                     {messages.map((msg, index) => (
-                      <div key={index} className="flex gap-2">
-                        <Select
-                          value={msg.role}
-                          onValueChange={(value) =>
-                            handleMessageChange(index, "role", value)
-                          }
-                        >
-                          <SelectTrigger className="w-28 shrink-0">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="system">System</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                            <SelectItem value="assistant">Assistant</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <Textarea
-                          placeholder={
-                            msg.role === "system"
-                              ? "You are a helpful assistant..."
-                              : msg.role === "user"
-                              ? "{{user_input}}"
-                              : "Assistant response..."
-                          }
-                          value={msg.content}
-                          onChange={(e) =>
-                            handleMessageChange(index, "content", e.target.value)
-                          }
-                          rows={2}
-                          className="font-mono text-sm flex-1"
-                        />
-                        {messages.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleRemoveMessage(index)}
-                            className="shrink-0"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
+                      <ChatMessageRow
+                        key={index}
+                        message={msg}
+                        index={index}
+                        canDelete={messages.length > 1}
+                        onRoleChange={handleMessageRoleChange}
+                        onContentChange={handleMessageContentChange}
+                        onRemove={handleRemoveMessage}
+                      />
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -336,11 +343,7 @@ export function CreatePromptDialog({
 
             {/* Variable Preview */}
             <VariablePreview
-              content={
-                promptType === "text"
-                  ? textContent
-                  : messages.map((m) => m.content).join(" ")
-              }
+              content={promptType === "text" ? textContent : messagesContent}
             />
           </div>
         </ScrollArea>
@@ -369,6 +372,85 @@ export function CreatePromptDialog({
 }
 
 /**
+ * Single chat message row component
+ */
+interface ChatMessageRowProps {
+  message: ChatMessage;
+  index: number;
+  canDelete: boolean;
+  onRoleChange: (index: number, value: string) => void;
+  onContentChange: (index: number, value: string) => void;
+  onRemove: (index: number) => void;
+}
+
+function ChatMessageRow({
+  message,
+  index,
+  canDelete,
+  onRoleChange,
+  onContentChange,
+  onRemove,
+}: ChatMessageRowProps) {
+  const handleRoleChange = useCallback(
+    (value: string) => {
+      onRoleChange(index, value);
+    },
+    [index, onRoleChange]
+  );
+
+  const handleContentChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onContentChange(index, e.target.value);
+    },
+    [index, onContentChange]
+  );
+
+  const handleRemove = useCallback(() => {
+    onRemove(index);
+  }, [index, onRemove]);
+
+  const placeholder =
+    message.role === "system"
+      ? "You are a helpful assistant..."
+      : message.role === "user"
+        ? "{{user_input}}"
+        : "Assistant response...";
+
+  return (
+    <div className="flex gap-2">
+      <Select value={message.role} onValueChange={handleRoleChange}>
+        <SelectTrigger className="w-28 shrink-0">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="system">System</SelectItem>
+          <SelectItem value="user">User</SelectItem>
+          <SelectItem value="assistant">Assistant</SelectItem>
+        </SelectContent>
+      </Select>
+      <Textarea
+        placeholder={placeholder}
+        value={message.content}
+        onChange={handleContentChange}
+        rows={2}
+        className="font-mono text-sm flex-1"
+      />
+      {canDelete && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={handleRemove}
+          className="shrink-0"
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+}
+
+/**
  * Preview detected variables from template
  */
 function VariablePreview({ content }: { content: string }) {
@@ -376,17 +458,19 @@ function VariablePreview({ content }: { content: string }) {
 
   if (variables.length === 0) return null;
 
+  const renderVariableBadge = (variable: string) => (
+    <Badge key={variable} variant="secondary" className="font-mono text-xs">
+      {`{{${variable}}}`}
+    </Badge>
+  );
+
   return (
     <div className="rounded-lg border border-dashed p-3 bg-muted/30">
       <p className="text-xs font-medium text-muted-foreground mb-2">
         Detected Variables
       </p>
       <div className="flex flex-wrap gap-1.5">
-        {variables.map((v) => (
-          <Badge key={v} variant="secondary" className="font-mono text-xs">
-            {`{{${v}}}`}
-          </Badge>
-        ))}
+        {variables.map(renderVariableBadge)}
       </div>
     </div>
   );

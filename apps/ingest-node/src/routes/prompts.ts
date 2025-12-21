@@ -494,8 +494,17 @@ promptsRouter.post("/compile", async (req: Request, res: Response) => {
       return;
     }
 
-    // Compile template
-    const compiled = compileTemplate(prompt.content as unknown as PromptContent, variables);
+    // Validate and compile template
+    const contentParsed = PromptContentSchema.safeParse(prompt.content);
+    if (!contentParsed.success) {
+      res.status(500).json({
+        error: "INVALID_PROMPT_CONTENT",
+        message: "Prompt content has invalid structure",
+      });
+      return;
+    }
+
+    const compiled = compileTemplate(contentParsed.data, variables);
 
     // Return compiled prompt
     res.json({
@@ -520,25 +529,30 @@ promptsRouter.post("/compile", async (req: Request, res: Response) => {
 });
 
 /**
- * Template content types
+ * Template content schemas (using Zod for runtime validation)
  */
-interface TextContent {
-  type: "text";
-  text: string;
-}
+const ChatMessageSchema = z.object({
+  role: z.string(),
+  content: z.string(),
+  name: z.string().optional(),
+});
 
-interface ChatMessage {
-  role: string;
-  content: string;
-  name?: string;
-}
+const TextContentSchema = z.object({
+  type: z.literal("text"),
+  text: z.string(),
+});
 
-interface ChatContent {
-  type: "chat";
-  messages: ChatMessage[];
-}
+const ChatContentSchema = z.object({
+  type: z.literal("chat"),
+  messages: z.array(ChatMessageSchema),
+});
 
-type PromptContent = TextContent | ChatContent;
+const PromptContentSchema = z.discriminatedUnion("type", [
+  TextContentSchema,
+  ChatContentSchema,
+]);
+
+type PromptContent = z.infer<typeof PromptContentSchema>;
 
 /**
  * Compile template by replacing {{variable}} placeholders

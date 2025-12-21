@@ -350,8 +350,20 @@ export class PromptClient {
       let errorMessage: string;
 
       try {
-        const errorJson = JSON.parse(errorText) as { error?: string; message?: string };
-        errorMessage = errorJson.message || errorJson.error || errorText;
+        const parsed: unknown = JSON.parse(errorText);
+        // Safely extract error message from parsed JSON
+        if (typeof parsed === "object" && parsed !== null) {
+          const obj = parsed as Record<string, unknown>;
+          if (typeof obj.message === "string") {
+            errorMessage = obj.message;
+          } else if (typeof obj.error === "string") {
+            errorMessage = obj.error;
+          } else {
+            errorMessage = errorText;
+          }
+        } else {
+          errorMessage = errorText;
+        }
       } catch {
         errorMessage = errorText;
       }
@@ -543,10 +555,11 @@ export function compilePrompt(
  * ```
  */
 export function extractVariables(template: PromptTemplate): string[] {
-  const regex = /\{\{(\w+)\}\}/g;
   const variables = new Set<string>();
 
   const extractFromText = (text: string): void => {
+    // Create new regex instance per call to avoid lastIndex issues with global flag
+    const regex = /\{\{(\w+)\}\}/g;
     let match: RegExpExecArray | null;
     while ((match = regex.exec(text)) !== null) {
       if (match[1]) {

@@ -92,24 +92,23 @@ export function PromptAnalytics({
       </div>
 
       {/* Version Breakdown */}
-      {data.byVersion.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm">Usage by Version</CardTitle>
-            <CardDescription>
-              Breakdown of usage across prompt versions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {data.byVersion.length === 0 || data.totalUsage === 0 ? (
-              <div className="text-center py-6 text-muted-foreground text-sm">
-                <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                <p>No usage data yet</p>
-                <p className="text-xs mt-1">
-                  Usage will appear here when prompts are fetched via SDK
-                </p>
-              </div>
-            ) : (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm">Usage by Version</CardTitle>
+          <CardDescription>
+            Breakdown of usage across prompt versions
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {data.byVersion.length === 0 || data.totalUsage === 0 ? (
+            <div className="text-center py-6 text-muted-foreground text-sm">
+              <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-50" />
+              <p>No usage data yet</p>
+              <p className="text-xs mt-1">
+                Usage will appear here when prompts are fetched via SDK
+              </p>
+            </div>
+          ) : (
               <div className="space-y-3">
                 {data.byVersion.map((v) => (
                   <div
@@ -136,7 +135,6 @@ export function PromptAnalytics({
             )}
           </CardContent>
         </Card>
-      )}
     </div>
   );
 }

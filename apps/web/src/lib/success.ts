@@ -113,6 +113,41 @@ export const projectToast = {
 } as const;
 
 // ============================================================
+// Prompt Toasts
+// ============================================================
+
+export const promptToast = {
+  created: (name: string) =>
+    toast.success("Prompt created", { description: `"${name}" is ready.` }),
+
+  updated: (name: string) =>
+    toast.success("Prompt updated", { description: `"${name}" has been updated.` }),
+
+  deleted: (name?: string) =>
+    toast.success("Prompt deleted", { description: name ? `"${name}" has been removed.` : undefined }),
+
+  archived: (name?: string) =>
+    toast.success("Prompt archived", { description: name ? `"${name}" has been archived.` : undefined }),
+
+  restored: (name?: string) =>
+    toast.success("Prompt restored", { description: name ? `"${name}" has been restored.` : undefined }),
+
+  versionCreated: (version: number) =>
+    toast.success("Version created", { description: `Version ${version} is ready.` }),
+
+  labelSet: (label: string) =>
+    toast.success("Label set", { description: `Version is now "${label}".` }),
+
+  imported: (created: number, updated: number, skipped: number) =>
+    toast.success("Import complete", {
+      description: `${created} created, ${updated} updated, ${skipped} skipped`,
+    }),
+
+  exported: () =>
+    toast.success("Export complete", { description: "Prompts downloaded successfully." }),
+} as const;
+
+// ============================================================
 // API Key Toasts
 // ============================================================
 

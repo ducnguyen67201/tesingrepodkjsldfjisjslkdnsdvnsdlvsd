@@ -74,14 +74,18 @@ export function PromptCard({
 }: PromptCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const handleCopySlug = useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(slug);
-      clipboardToast.copied("Slug");
-    } catch {
-      clipboardToast.copyFailed();
-    }
-  }, [slug]);
+  const handleCopySlug = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(slug);
+        clipboardToast.copied("Slug");
+      } catch {
+        clipboardToast.copyFailed();
+      }
+    },
+    [slug]
+  );
 
   const handleEdit = useCallback(() => {
     onEdit(id);
@@ -199,7 +203,12 @@ export function PromptCard({
           {/* Actions */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 shrink-0"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
