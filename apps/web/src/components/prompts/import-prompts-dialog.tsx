@@ -339,9 +339,7 @@ function parseImportFile(content: string): ParseResult {
     : fileResult.data.prompts;
 
   // Validate each prompt individually for better error messages
-  for (let i = 0; i < promptsArray.length; i++) {
-    const item = promptsArray[i];
-
+  promptsArray.forEach((item, i) => {
     // Handle string template shorthand - convert to text template
     if (typeof item.template === "string") {
       const converted: ImportPrompt = {
@@ -354,7 +352,7 @@ function parseImportFile(content: string): ParseResult {
         config: item.config,
       };
       prompts.push(converted);
-      continue;
+      return;
     }
 
     // Validate as standard ImportPrompt
@@ -365,11 +363,11 @@ function parseImportFile(content: string): ParseResult {
         .map(([field, msgs]) => `${field}: ${msgs?.join(", ")}`)
         .join("; ");
       errors.push(`Prompt ${i + 1} (${item.name}): ${errorMessages}`);
-      continue;
+      return;
     }
 
     prompts.push(promptResult.data);
-  }
+  });
 
   return { prompts, errors };
 }

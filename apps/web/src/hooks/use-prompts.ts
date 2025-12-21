@@ -192,7 +192,13 @@ export function usePromptDetail({
   });
 
   const handleCreateVersion = useCallback(
-    async (data: Parameters<typeof createVersion.mutateAsync>[0]) => {
+    async (data: {
+      template: Parameters<typeof createVersion.mutateAsync>[0]["template"];
+      variables?: Parameters<typeof createVersion.mutateAsync>[0]["variables"];
+      config?: Parameters<typeof createVersion.mutateAsync>[0]["config"];
+      metadata?: Parameters<typeof createVersion.mutateAsync>[0]["metadata"];
+      label?: Parameters<typeof createVersion.mutateAsync>[0]["label"];
+    }) => {
       return createVersion.mutateAsync({
         workspaceSlug,
         promptId,
