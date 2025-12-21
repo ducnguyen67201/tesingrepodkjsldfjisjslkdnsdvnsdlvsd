@@ -24,6 +24,9 @@ describe("ResponseHandler", () => {
             startTime: new Date(),
             spanCount: 2,
             errorCount: 0,
+            hasError: false,
+            hasException: false,
+            spanTypes: [],
           },
         ],
         normalizedSpans: [
@@ -63,6 +66,9 @@ describe("ResponseHandler", () => {
             startTime: new Date(),
             spanCount: 3,
             errorCount: 0,
+            hasError: false,
+            hasException: false,
+            spanTypes: [],
           },
         ],
         normalizedSpans: [
@@ -150,9 +156,9 @@ describe("ResponseHandler", () => {
     it("should correctly count multiple traces", async () => {
       const ctx = createAuthenticatedContext({
         normalizedTraces: [
-          { externalTraceId: "t1", projectId: "p1", startTime: new Date(), spanCount: 1, errorCount: 0 },
-          { externalTraceId: "t2", projectId: "p1", startTime: new Date(), spanCount: 2, errorCount: 1 },
-          { externalTraceId: "t3", projectId: "p1", startTime: new Date(), spanCount: 1, errorCount: 0 },
+          { externalTraceId: "t1", projectId: "p1", startTime: new Date(), spanCount: 1, errorCount: 0, hasError: false, hasException: false, spanTypes: [] },
+          { externalTraceId: "t2", projectId: "p1", startTime: new Date(), spanCount: 2, errorCount: 1, hasError: true, hasException: false, spanTypes: [] },
+          { externalTraceId: "t3", projectId: "p1", startTime: new Date(), spanCount: 1, errorCount: 0, hasError: false, hasException: false, spanTypes: [] },
         ],
         normalizedSpans: [
           { externalSpanId: "s1", externalTraceId: "t1", name: "s1", startTime: new Date() },

@@ -76,10 +76,10 @@ const SPAN_TYPE_STYLES: Record<
     text: "text-orange-700 dark:text-orange-300",
     border: "border-orange-200 dark:border-orange-800",
   },
-  LOG: {
-    bg: "bg-gray-50 dark:bg-gray-950/30",
-    text: "text-gray-700 dark:text-gray-300",
-    border: "border-gray-200 dark:border-gray-800",
+  RPC: {
+    bg: "bg-cyan-50 dark:bg-cyan-950/30",
+    text: "text-cyan-700 dark:text-cyan-300",
+    border: "border-cyan-200 dark:border-cyan-800",
   },
   CUSTOM: {
     bg: "bg-slate-50 dark:bg-slate-950/30",

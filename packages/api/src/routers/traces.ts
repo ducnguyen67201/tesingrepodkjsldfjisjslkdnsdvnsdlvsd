@@ -14,6 +14,11 @@ import {
   type SpanType,
 } from "../schemas/traces";
 import { TimeRangeSchema, type TimeRange } from "../schemas/cost";
+import {
+  TracesListV2InputSchema,
+  SpansListV2InputSchema,
+} from "../schemas/filtering";
+import { getQueryBuilder } from "../lib/filtering";
 
 // ------------------------------------------------------------
 // Constants
@@ -531,6 +536,67 @@ export const tracesRouter = createRouter({
         total: stats._count,
         errorCount: stats._sum.errorCount ?? 0,
         avgDurationMs: stats._avg.durationMs ?? 0,
+      };
+    }),
+
+  // ============================================================================
+  // V2 Endpoints (FilterExpression DSL)
+  // ============================================================================
+
+  /**
+   * List traces with v2 filtering (FilterExpression DSL).
+   * Supports AND/OR/NOT expressions, field predicates, attribute predicates,
+   * event predicates, and full-text search.
+   */
+  listV2: protectedProcedure
+    .input(TracesListV2InputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // Verify project access
+      const project = await prisma.project.findFirst({
+        where: { id: input.projectId, workspaceId: ctx.workspace.id },
+        select: { id: true },
+      });
+
+      if (!project) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
+      }
+
+      const builder = getQueryBuilder();
+      const result = await builder.listTraces(input);
+
+      return {
+        traces: result.items,
+        nextCursor: result.nextCursor,
+        hasMore: result.hasMore,
+      };
+    }),
+
+  /**
+   * List spans with v2 filtering (FilterExpression DSL).
+   * Can filter by trace or across all spans in a project.
+   */
+  listSpansV2: protectedProcedure
+    .input(SpansListV2InputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      // Verify project access
+      const project = await prisma.project.findFirst({
+        where: { id: input.projectId, workspaceId: ctx.workspace.id },
+        select: { id: true },
+      });
+
+      if (!project) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
+      }
+
+      const builder = getQueryBuilder();
+      const result = await builder.listSpans(input);
+
+      return {
+        spans: result.items,
+        nextCursor: result.nextCursor,
+        hasMore: result.hasMore,
       };
     }),
 });

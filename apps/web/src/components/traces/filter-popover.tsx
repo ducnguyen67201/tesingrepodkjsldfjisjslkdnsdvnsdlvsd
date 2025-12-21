@@ -40,8 +40,8 @@ const SPAN_TYPE_LABELS: Record<SpanType, string> = {
   LLM: "LLM Calls",
   HTTP: "HTTP Requests",
   DB: "Database",
+  RPC: "RPC Calls",
   FUNCTION: "Functions",
-  LOG: "Logs",
   CUSTOM: "Custom",
 };
 

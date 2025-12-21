@@ -127,6 +127,10 @@ export function createNormalizedContext(overrides: Partial<PipelineContext> = {}
         startTime: new Date(),
         spanCount: 1,
         errorCount: 0,
+        // V2 required fields
+        hasError: false,
+        hasException: false,
+        spanTypes: [],
       },
     ],
     normalizedSpans: overrides.normalizedSpans ?? [

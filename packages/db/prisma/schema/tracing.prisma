@@ -23,6 +23,31 @@ model Trace {
   spanCount       Int      @default(0)
   errorCount      Int      @default(0)
 
+  // ============================================================
+  // V2: Root Span Metadata (promoted for filtering)
+  // ============================================================
+  rootSpanId          String?   // externalSpanId of root span
+  rootSpanName        String?   // name of root span (e.g., "POST /api/users")
+  rootSpanKind        String?   // kind of root span (SERVER, CLIENT, etc.)
+  rootSpanStatusCode  String?   // statusCode of root span (UNSET, OK, ERROR)
+  rootSpanDurationMs  Int?      // durationMs of root span
+
+  // ============================================================
+  // V2: Error/Exception Flags
+  // ============================================================
+  hasError            Boolean   @default(false)  // Any span with statusCode=ERROR
+  hasException        Boolean   @default(false)  // Any span with exception event
+
+  // ============================================================
+  // V2: Span Type Aggregation
+  // ============================================================
+  spanTypes           String[]  @default([])     // ["LLM", "HTTP", "DB", etc.]
+
+  // ============================================================
+  // V2: Full-Text Search
+  // ============================================================
+  searchText          String?                    // Denormalized text for FTS
+
   // Audit
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -35,6 +60,12 @@ model Trace {
   @@index([projectId, environment])
   @@index([projectId, durationMs])
   @@index([startTime])
+
+  // V2: New Indexes for filtering
+  @@index([projectId, hasError])
+  @@index([projectId, hasException])
+  @@index([projectId, rootSpanName])
+  @@index([projectId, rootSpanStatusCode])
 }
 
 // ============================================================
@@ -85,6 +116,53 @@ model Span {
   pricingId        String?
   pricing          ModelPricing? @relation(fields: [pricingId], references: [id])
 
+  // ============================================================
+  // V2: HTTP Semantic Conventions
+  // ============================================================
+  httpMethod          String?   // http.request.method OR http.method
+  httpRoute           String?   // http.route
+  httpStatusCode      Int?      // http.response.status_code
+  httpUrl             String?   // url.full OR http.url (truncated to 2048)
+
+  // ============================================================
+  // V2: Database Semantic Conventions
+  // ============================================================
+  dbSystem            String?   // db.system (e.g., "postgresql", "mysql", "redis")
+  dbName              String?   // db.name
+  dbOperation         String?   // db.operation (e.g., "SELECT", "INSERT")
+  dbStatement         String?   // db.statement (truncated to 4096)
+  dbCollection        String?   // db.collection.name (for NoSQL)
+
+  // ============================================================
+  // V2: RPC Semantic Conventions
+  // ============================================================
+  rpcSystem           String?   // rpc.system (e.g., "grpc", "aws-api")
+  rpcService          String?   // rpc.service
+  rpcMethod           String?   // rpc.method
+  rpcStatusCode       Int?      // rpc.grpc.status_code
+
+  // ============================================================
+  // V2: Exception Semantic Conventions
+  // ============================================================
+  exceptionType       String?   // exception.type (extracted from events)
+  exceptionMessage    String?   // exception.message (truncated to 1024)
+
+  // ============================================================
+  // V2: GenAI Additional Fields
+  // ============================================================
+  genAiOperation      String?   // gen_ai.operation.name (e.g., "chat", "embeddings")
+  genAiProvider       String?   // gen_ai.provider.name (e.g., "openai", "anthropic")
+
+  // ============================================================
+  // V2: Inferred Span Type
+  // ============================================================
+  spanType            String?   // Inferred type: LLM, HTTP, DB, RPC, FUNCTION, CUSTOM
+
+  // ============================================================
+  // V2: Full-Text Search
+  // ============================================================
+  searchText          String?   // Denormalized text for FTS
+
   // Audit
   createdAt        DateTime @default(now())
 
@@ -96,4 +174,14 @@ model Span {
   @@index([statusCode])
   @@index([model])
   @@index([pricingId])
+
+  // V2: New Indexes for filtering
+  @@index([traceId, spanType])
+  @@index([httpStatusCode])
+  @@index([httpRoute])
+  @@index([dbSystem])
+  @@index([rpcSystem])
+  @@index([exceptionType])
+  @@index([genAiOperation])
+  @@index([genAiProvider])
 }

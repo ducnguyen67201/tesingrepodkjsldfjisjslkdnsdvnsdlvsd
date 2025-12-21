@@ -175,6 +175,19 @@ export class PersistHandler implements PipelineHandler {
             durationMs,
             spanCount,
             errorCount,
+            // V2: Root span metadata
+            rootSpanId: trace.rootSpanId,
+            rootSpanName: trace.rootSpanName,
+            rootSpanKind: trace.rootSpanKind,
+            rootSpanStatusCode: trace.rootSpanStatusCode,
+            rootSpanDurationMs: trace.rootSpanDurationMs,
+            // V2: Error/exception flags
+            hasError: trace.hasError ?? false,
+            hasException: trace.hasException ?? false,
+            // V2: Span type aggregation
+            spanTypes: trace.spanTypes ?? [],
+            // V2: Full-text search
+            searchText: trace.searchText,
           },
           update: {
             // Update aggregates and timing on re-ingestion
@@ -182,6 +195,19 @@ export class PersistHandler implements PipelineHandler {
             errorCount: { increment: errorCount },
             durationMs,
             endTime,
+            // V2: Update root span metadata on re-ingestion
+            rootSpanId: trace.rootSpanId,
+            rootSpanName: trace.rootSpanName,
+            rootSpanKind: trace.rootSpanKind,
+            rootSpanStatusCode: trace.rootSpanStatusCode,
+            rootSpanDurationMs: trace.rootSpanDurationMs,
+            // V2: Update flags
+            hasError: trace.hasError ?? false,
+            hasException: trace.hasException ?? false,
+            // V2: Update span types (merge with existing)
+            spanTypes: trace.spanTypes ?? [],
+            // V2: Update search text
+            searchText: trace.searchText,
           },
         });
 
@@ -257,6 +283,32 @@ export class PersistHandler implements PipelineHandler {
             : undefined,
         input: (span.input as Prisma.InputJsonValue) ?? undefined,
         output: (span.output as Prisma.InputJsonValue) ?? undefined,
+        // V2: HTTP semantic conventions
+        httpMethod: span.httpMethod,
+        httpRoute: span.httpRoute,
+        httpStatusCode: span.httpStatusCode,
+        httpUrl: span.httpUrl,
+        // V2: Database semantic conventions
+        dbSystem: span.dbSystem,
+        dbName: span.dbName,
+        dbOperation: span.dbOperation,
+        dbStatement: span.dbStatement,
+        dbCollection: span.dbCollection,
+        // V2: RPC semantic conventions
+        rpcSystem: span.rpcSystem,
+        rpcService: span.rpcService,
+        rpcMethod: span.rpcMethod,
+        rpcStatusCode: span.rpcStatusCode,
+        // V2: Exception semantic conventions
+        exceptionType: span.exceptionType,
+        exceptionMessage: span.exceptionMessage,
+        // V2: GenAI extended fields
+        genAiOperation: span.genAiOperation,
+        genAiProvider: span.genAiProvider,
+        // V2: Inferred span type
+        spanType: span.spanType,
+        // V2: Full-text search
+        searchText: span.searchText,
       },
       update: {
         // On re-ingestion, update fields that may have changed
@@ -268,6 +320,26 @@ export class PersistHandler implements PipelineHandler {
         events: (span.events as Prisma.InputJsonValue) ?? undefined,
         links: (span.links as Prisma.InputJsonValue) ?? undefined,
         output: (span.output as Prisma.InputJsonValue) ?? undefined,
+        // V2: Update semantic convention fields
+        httpMethod: span.httpMethod,
+        httpRoute: span.httpRoute,
+        httpStatusCode: span.httpStatusCode,
+        httpUrl: span.httpUrl,
+        dbSystem: span.dbSystem,
+        dbName: span.dbName,
+        dbOperation: span.dbOperation,
+        dbStatement: span.dbStatement,
+        dbCollection: span.dbCollection,
+        rpcSystem: span.rpcSystem,
+        rpcService: span.rpcService,
+        rpcMethod: span.rpcMethod,
+        rpcStatusCode: span.rpcStatusCode,
+        exceptionType: span.exceptionType,
+        exceptionMessage: span.exceptionMessage,
+        genAiOperation: span.genAiOperation,
+        genAiProvider: span.genAiProvider,
+        spanType: span.spanType,
+        searchText: span.searchText,
       },
     });
 

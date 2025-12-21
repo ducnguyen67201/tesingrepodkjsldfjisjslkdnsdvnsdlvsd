@@ -15,3 +15,4 @@ export * from "./github";
 export * from "./rca";
 export * from "./eval";
 export * from "./otlp";
+export * from "./filtering";
