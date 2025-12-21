@@ -18,12 +18,37 @@ interface NavItem {
   icon: typeof LayoutDashboard;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { title: "Dashboard", path: "", icon: LayoutDashboard },
-  { title: "Projects", path: "/projects", icon: FolderKanban },
-  { title: "Traces", path: "/traces", icon: Activity },
-  { title: "Prompts", path: "/prompts", icon: FileCode },
-  { title: "Settings", path: "/settings", icon: Settings },
+interface NavGroup {
+  label: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Overview",
+    items: [
+      { title: "Dashboard", path: "", icon: LayoutDashboard },
+      { title: "Projects", path: "/projects", icon: FolderKanban },
+    ],
+  },
+  {
+    label: "Observability",
+    items: [
+      { title: "Traces", path: "/traces", icon: Activity },
+    ],
+  },
+  {
+    label: "Developer Tools",
+    items: [
+      { title: "Prompts", path: "/prompts", icon: FileCode },
+    ],
+  },
+  {
+    label: "Configuration",
+    items: [
+      { title: "Settings", path: "/settings", icon: Settings },
+    ],
+  },
 ];
 
 export function NavMain() {
@@ -46,12 +71,14 @@ export function NavMain() {
     );
   };
 
-  return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+  const renderGroup = (group: NavGroup) => (
+    <SidebarGroup key={group.label}>
+      <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
       <SidebarGroupContent>
-        <SidebarMenu>{NAV_ITEMS.map(renderNavItem)}</SidebarMenu>
+        <SidebarMenu>{group.items.map(renderNavItem)}</SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
   );
+
+  return <>{NAV_GROUPS.map(renderGroup)}</>;
 }
