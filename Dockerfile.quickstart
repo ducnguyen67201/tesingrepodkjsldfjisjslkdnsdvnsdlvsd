@@ -112,18 +112,19 @@ RUN mkdir -p /data/temporal
 # Copy Node.js application
 WORKDIR /app
 
-# Copy package files for production dependency installation
+# Copy package files for dependency installation
 COPY --from=node-builder /app/package.json ./package.json
 COPY --from=node-builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=node-builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=node-builder /app/apps/ingest-node/package.json ./apps/ingest-node/package.json
 COPY --from=node-builder /app/packages/db/package.json ./packages/db/package.json
+COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
 COPY --from=node-builder /app/packages/shared/package.json ./packages/shared/package.json
 COPY --from=node-builder /app/packages/api/package.json ./packages/api/package.json
 COPY --from=node-builder /app/packages/proto/package.json ./packages/proto/package.json
 
-# Install production dependencies (creates proper node_modules without broken symlinks)
-RUN pnpm install --frozen-lockfile --prod
+# Install ALL dependencies (not --prod, need tsx for TypeScript runtime)
+RUN pnpm install --frozen-lockfile
 
 # Copy Next.js standalone output (includes its own node_modules)
 COPY --from=node-builder /app/apps/web/.next/standalone ./
@@ -131,25 +132,19 @@ COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
 # Copy public directory (contains static assets like favicon, images)
 COPY --from=node-builder /app/apps/web/public ./apps/web/public
 
-# Copy ingest-node dist
-COPY --from=node-builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
+# Copy ingest-node source (TypeScript, will be run with tsx)
+COPY --from=node-builder /app/apps/ingest-node/src ./apps/ingest-node/src
+COPY --from=node-builder /app/apps/ingest-node/tsconfig.json ./apps/ingest-node/tsconfig.json
 
-# Copy built packages
-COPY --from=node-builder /app/packages/db/dist ./packages/db/dist
-COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
+# Copy workspace packages (TypeScript source)
+COPY --from=node-builder /app/packages/db/src ./packages/db/src
+COPY --from=node-builder /app/packages/shared/src ./packages/shared/src
 COPY --from=node-builder /app/packages/shared/dist ./packages/shared/dist
-COPY --from=node-builder /app/packages/api/dist ./packages/api/dist
-COPY --from=node-builder /app/packages/proto/dist ./packages/proto/dist
-
-# Copy Prisma client from builder (needed for runtime)
-COPY --from=node-builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=node-builder /app/packages/api/src ./packages/api/src
+COPY --from=node-builder /app/packages/proto/src ./packages/proto/src
 
 # Copy Temporal CLI
 COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
-
-# Fix workspace package resolution for production runtime
-# Update shared package.json to point to dist instead of src
-RUN sed -i 's|"./src/index.ts"|"./dist/index.js"|g' /app/packages/shared/package.json
 
 # Create symlinks in node_modules for workspace packages
 RUN mkdir -p /app/node_modules/@cognobserve \
