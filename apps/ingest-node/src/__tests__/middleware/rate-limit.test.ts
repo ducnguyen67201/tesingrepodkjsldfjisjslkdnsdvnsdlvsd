@@ -4,7 +4,7 @@
  * Tests for token bucket rate limiting algorithm.
  */
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 
 // We need to mock the config before importing the middleware
 vi.mock("../../config/env.js", () => ({
@@ -28,13 +28,13 @@ const { rateLimitMiddleware, getRateLimitStatus } = await import(
 );
 
 describe("Rate Limit Middleware", () => {
-  let mockReq: Partial<Request>;
+  let mockReq: Partial<Request> & { ip?: string };
   let mockRes: Partial<Response> & {
     _statusCode: number;
     _headers: Record<string, string>;
     _body: unknown;
   };
-  let mockNext: NextFunction;
+  let mockNext: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     vi.useFakeTimers();
@@ -78,7 +78,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
 
       expect(mockNext).toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
 
       expect(mockNext).toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
 
       expect(mockNext).toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
 
       expect(mockNext).toHaveBeenCalled();
@@ -139,7 +139,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
         expect(mockNext).toHaveBeenCalled();
       }
@@ -154,7 +154,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -163,7 +163,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
 
       expect(mockNext).not.toHaveBeenCalled();
@@ -179,7 +179,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -193,7 +193,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
         if (mockNext.mock.calls.length > 0) {
           successCount++;
@@ -212,7 +212,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -235,7 +235,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -251,12 +251,12 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
       expect(mockRes._headers["Retry-After"]).toBeDefined();
-      expect(parseInt(mockRes._headers["Retry-After"])).toBeGreaterThan(0);
+      expect(parseInt(mockRes._headers["Retry-After"]!)).toBeGreaterThan(0);
     });
 
     it("should include rate limit headers", () => {
@@ -268,7 +268,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -286,7 +286,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -313,7 +313,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
 
@@ -335,7 +335,7 @@ describe("Rate Limit Middleware", () => {
         rateLimitMiddleware(
           mockReq as Request,
           mockRes as unknown as Response,
-          mockNext
+          mockNext as () => void
         );
       }
       expect(mockRes._statusCode).toBe(429);
@@ -347,7 +347,7 @@ describe("Rate Limit Middleware", () => {
       rateLimitMiddleware(
         mockReq as Request,
         mockRes as unknown as Response,
-        mockNext
+        mockNext as () => void
       );
       expect(mockNext).toHaveBeenCalled();
     });

@@ -52,7 +52,8 @@ export function createServer(): Express {
     });
   });
 
-  // Error handler
+  // Error handler (Express requires all 4 params for error middleware)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
     logger.error({ err }, "Unhandled error");
 

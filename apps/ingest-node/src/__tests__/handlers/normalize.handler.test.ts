@@ -54,7 +54,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const trace = ctx.normalizedTraces![0];
+      const trace = ctx.normalizedTraces![0]!;
       expect(trace.serviceName).toBe("my-api");
       expect(trace.serviceVersion).toBe("2.5.0");
       expect(trace.environment).toBe("staging");
@@ -100,7 +100,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.externalSpanId).toBe(spanId);
       expect(span.externalTraceId).toBe(traceId);
       expect(span.externalParentId).toBe(parentSpanId);
@@ -120,7 +120,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.startTime).toBeInstanceOf(Date);
       expect(span.endTime).toBeInstanceOf(Date);
       // Allow 1ms tolerance due to precision
@@ -139,7 +139,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.durationMs).toBe(500);
     });
 
@@ -169,7 +169,7 @@ describe("NormalizeHandler", () => {
       const ctx = createParsedContext({ parsedRequest: request });
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.endTime).toBeUndefined();
       expect(span.durationMs).toBeUndefined();
     });
@@ -192,7 +192,7 @@ describe("NormalizeHandler", () => {
         });
 
         await handler.handle(ctx);
-        expect(ctx.normalizedSpans![0].kind).toBe(expected);
+        expect(ctx.normalizedSpans![0]!.kind).toBe(expected);
       }
     });
 
@@ -211,7 +211,7 @@ describe("NormalizeHandler", () => {
         });
 
         await handler.handle(ctx);
-        expect(ctx.normalizedSpans![0].statusCode).toBe(expected);
+        expect(ctx.normalizedSpans![0]!.statusCode).toBe(expected);
       }
     });
 
@@ -222,7 +222,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.statusCode).toBe("ERROR");
       expect(span.statusMessage).toBe("Something went wrong");
     });
@@ -244,7 +244,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["http.method"]).toBe("POST");
     });
 
@@ -263,7 +263,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["http.status_code"]).toBe(200);
     });
 
@@ -282,7 +282,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["custom.flag"]).toBe(true);
     });
 
@@ -301,7 +301,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["custom.latency"]).toBe(1.5);
     });
   });
@@ -331,7 +331,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.model).toBeUndefined();
       expect(span.promptTokens).toBeUndefined();
       expect(span.completionTokens).toBeUndefined();
@@ -348,7 +348,7 @@ describe("NormalizeHandler", () => {
 
       expect(ctx.normalizedTraces).toHaveLength(1);
       expect(ctx.normalizedSpans).toHaveLength(2);
-      expect(ctx.normalizedTraces![0].spanCount).toBe(2);
+      expect(ctx.normalizedTraces![0]!.spanCount).toBe(2);
     });
 
     it("should count error spans correctly", async () => {
@@ -358,7 +358,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      expect(ctx.normalizedTraces![0].errorCount).toBe(1);
+      expect(ctx.normalizedTraces![0]!.errorCount).toBe(1);
     });
 
     it("should handle multiple traces", async () => {
@@ -388,7 +388,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const trace = ctx.normalizedTraces![0];
+      const trace = ctx.normalizedTraces![0]!;
       expect(trace.startTime.getTime()).toBe(earlier.getTime());
     });
   });
@@ -401,7 +401,7 @@ describe("NormalizeHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.libraryName).toBe("@opentelemetry/instrumentation-test");
       expect(span.libraryVersion).toBe("1.0.0");
     });

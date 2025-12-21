@@ -45,7 +45,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["user.password"]).toBeUndefined();
       expect(span.attributes?.["http.method"]).toBe("POST");
     });
@@ -63,7 +63,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["db.secret"]).toBeUndefined();
       expect(span.attributes?.["app.secret_key"]).toBeUndefined();
       expect(span.attributes?.["http.url"]).toBe("https://example.com");
@@ -82,7 +82,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["auth.token"]).toBeUndefined();
       expect(span.attributes?.["access_token"]).toBeUndefined();
       expect(span.attributes?.["refresh_token"]).toBeUndefined();
@@ -101,7 +101,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["service.api_key"]).toBeUndefined();
       expect(span.attributes?.["external_apikey"]).toBeUndefined();
       expect(span.attributes?.["api-key"]).toBeUndefined();
@@ -119,7 +119,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["user.auth_code"]).toBeUndefined();
       expect(span.attributes?.["authorization"]).toBeUndefined();
     });
@@ -136,7 +136,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["db.credentials"]).toBeUndefined();
       expect(span.attributes?.["user_credential"]).toBeUndefined();
     });
@@ -154,7 +154,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["PASSWORD"]).toBeUndefined();
       expect(span.attributes?.["User.PASSWORD"]).toBeUndefined();
       expect(span.attributes?.["API_KEY"]).toBeUndefined();
@@ -174,7 +174,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["token_count"]).toBe(150);
       expect(span.attributes?.["token_usage"]).toBe(200);
     });
@@ -190,7 +190,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["access_token_expires_at"]).toBe("2024-12-31T00:00:00Z");
     });
 
@@ -205,7 +205,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["auth_method"]).toBe("oauth");
     });
   });
@@ -223,7 +223,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["user.info"]).toBe("Contact [REDACTED] for help");
       expect(span.attributes?.["log.message"]).toBe("Email sent to [REDACTED]");
     });
@@ -240,7 +240,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["user.ssn"]).toBe("[REDACTED]");
       expect(span.attributes?.["log.message"]).toBe("SSN: [REDACTED]");
     });
@@ -257,7 +257,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["payment.card"]).toBe("[REDACTED]");
       expect(span.attributes?.["card_number"]).toBe("[REDACTED]");
     });
@@ -275,7 +275,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["user.phone"]).toBe("[REDACTED]");
       expect(span.attributes?.["contact"]).toBe("Call [REDACTED]");
       expect(span.attributes?.["international"]).toBe("[REDACTED]");
@@ -293,7 +293,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["client.ip"]).toBe("[REDACTED]");
       expect(span.attributes?.["log.message"]).toBe("Request from [REDACTED] to server");
     });
@@ -309,7 +309,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.attributes?.["message"]).toBe(
         "User [REDACTED] from [REDACTED] called [REDACTED]"
       );
@@ -331,7 +331,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.input).toBe("My email is [REDACTED] and phone is [REDACTED]");
     });
 
@@ -349,7 +349,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       expect(span.output).toBe("Contact support at [REDACTED]");
     });
 
@@ -369,8 +369,8 @@ describe("ScrubHandler", () => {
       await handler.handle(ctx);
 
       // Should handle nested objects and arrays
-      expect(ctx.normalizedSpans![0].input).toBeDefined();
-      expect(ctx.normalizedSpans![0].output).toBeDefined();
+      expect(ctx.normalizedSpans![0]!.input).toBeDefined();
+      expect(ctx.normalizedSpans![0]!.output).toBeDefined();
     });
   });
 
@@ -399,7 +399,7 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      const span = ctx.normalizedSpans![0];
+      const span = ctx.normalizedSpans![0]!;
       const eventAttrs = (span.events?.[0] as { attributes: Record<string, unknown> })?.attributes;
       expect(eventAttrs?.["exception.type"]).toBe("Error");
       expect(eventAttrs?.["user.password"]).toBeUndefined();
@@ -454,10 +454,10 @@ describe("ScrubHandler", () => {
 
       await handler.handle(ctx);
 
-      expect(ctx.normalizedSpans![0].attributes?.["password"]).toBeUndefined();
-      expect(ctx.normalizedSpans![0].attributes?.["http.url"]).toBe("https://api.com");
-      expect(ctx.normalizedSpans![1].attributes?.["api_key"]).toBeUndefined();
-      expect(ctx.normalizedSpans![1].attributes?.["http.method"]).toBe("GET");
+      expect(ctx.normalizedSpans![0]!.attributes?.["password"]).toBeUndefined();
+      expect(ctx.normalizedSpans![0]!.attributes?.["http.url"]).toBe("https://api.com");
+      expect(ctx.normalizedSpans![1]!.attributes?.["api_key"]).toBeUndefined();
+      expect(ctx.normalizedSpans![1]!.attributes?.["http.method"]).toBe("GET");
     });
 
     it("should fail if normalizedSpans is missing", async () => {

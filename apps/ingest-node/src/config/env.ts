@@ -11,7 +11,7 @@ export const env = createEnv({
       .default("development"),
 
     // Server
-    PORT: z.coerce.number().default(8081),
+    PORT: z.coerce.number().default(8080),
     HOST: z.string().default("0.0.0.0"),
 
     // Database

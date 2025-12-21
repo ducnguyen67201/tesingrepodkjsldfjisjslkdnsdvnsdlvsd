@@ -79,17 +79,18 @@ services:
   # Uncomment to run ingest in Docker instead of locally
   # ingest:
   #   build:
-  #     context: ./apps/ingest
-  #     dockerfile: Dockerfile
+  #     context: .
+  #     dockerfile: apps/ingest-node/Dockerfile
   #   container_name: cognobserve-ingest
   #   restart: unless-stopped
   #   ports:
   #     - "8080:8080"
   #   environment:
   #     PORT: "8080"
-  #     REDIS_URL: "redis://redis:6379"
+  #     DATABASE_URL: "postgresql://cognobserve:cognobserve@postgres:5432/cognobserve"
+  #     LOG_LEVEL: "info"
   #   depends_on:
-  #     redis:
+  #     postgres:
   #       condition: service_healthy
 
 volumes:

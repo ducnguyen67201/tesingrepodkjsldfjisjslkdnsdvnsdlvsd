@@ -8,8 +8,8 @@
 # See docs/self-hosting for full setup.
 #
 # Usage:
-#   docker build -f Dockerfile.quickstart -t cognobserve:latest .
-#   docker run -d -p 3000:3000 -p 8080:8080 -v cognobserve_data:/data cognobserve:latest
+#   docker build -f Dockerfile.quickstart -t cognobserve:quickstart .
+#   docker run -d -p 3000:3000 -p 8080:8080 -v cognobserve_data:/data cognobserve:quickstart
 
 # ============================================================
 # Stage 1: Build Node.js Applications
@@ -25,6 +25,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web/package.json ./apps/web/
 COPY apps/worker/package.json ./apps/worker/
+COPY apps/ingest-node/package.json ./apps/ingest-node/
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma/
 COPY packages/api/package.json ./packages/api/
@@ -44,6 +45,7 @@ RUN pnpm --filter @cognobserve/db db:generate
 
 # Build shared packages
 RUN pnpm --filter @cognobserve/shared build
+RUN pnpm --filter @cognobserve/api build
 
 # Build Web (Next.js with standalone output)
 # Skip env validation during build - actual values are provided at runtime
@@ -52,32 +54,16 @@ ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholde
 
 RUN pnpm --filter @cognobserve/web build
 
+# Build Ingest Node
+RUN pnpm --filter @cognobserve/ingest-node build
+
 # ============================================================
 # Stage 2: Get Temporal CLI (for dev server)
 # ============================================================
 FROM temporalio/admin-tools:latest AS temporal-tools
 
 # ============================================================
-# Stage 3: Build Go Ingest Service
-# ============================================================
-FROM golang:1.23-alpine AS go-builder
-
-WORKDIR /app
-
-# Copy Go module files
-COPY apps/ingest/go.mod apps/ingest/go.sum ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy Go source
-COPY apps/ingest/ ./
-
-# Build static binary
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /ingest ./cmd/ingest
-
-# ============================================================
-# Stage 4: Production Runtime (All-in-One)
+# Stage 3: Production Runtime (All-in-One)
 # ============================================================
 FROM node:24-alpine AS runtime
 
@@ -102,6 +88,9 @@ RUN apk add --no-cache \
     # gcompat needed for Temporal CLI
     gcompat
 
+# Install pnpm for production dependency installation
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
 # Install Prisma CLI globally (avoids pnpm ESM issues)
 RUN npm install -g prisma@7
 
@@ -122,27 +111,40 @@ RUN mkdir -p /data/temporal
 
 # Copy Node.js application
 WORKDIR /app
-# Copy root package files for monorepo resolution
+
+# Copy package files for dependency installation
 COPY --from=node-builder /app/package.json ./package.json
+COPY --from=node-builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=node-builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-# Copy Next.js standalone output
+COPY --from=node-builder /app/apps/ingest-node/package.json ./apps/ingest-node/package.json
+COPY --from=node-builder /app/packages/db/package.json ./packages/db/package.json
+COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
+COPY --from=node-builder /app/packages/shared/package.json ./packages/shared/package.json
+COPY --from=node-builder /app/packages/api/package.json ./packages/api/package.json
+COPY --from=node-builder /app/packages/proto/package.json ./packages/proto/package.json
+
+# Install ALL dependencies (not --prod, need tsx for TypeScript runtime)
+RUN pnpm install --frozen-lockfile
+
+# Copy Next.js standalone output (includes its own node_modules)
 COPY --from=node-builder /app/apps/web/.next/standalone ./
 COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
 # Copy public directory (contains static assets like favicon, images)
 COPY --from=node-builder /app/apps/web/public ./apps/web/public
-# Copy node_modules and packages for runtime
-COPY --from=node-builder /app/node_modules ./node_modules
-COPY --from=node-builder /app/packages ./packages
 
-# Copy Go binary
-COPY --from=go-builder /ingest ./ingest
+# Copy ingest-node source (TypeScript, will be run with tsx)
+COPY --from=node-builder /app/apps/ingest-node/src ./apps/ingest-node/src
+COPY --from=node-builder /app/apps/ingest-node/tsconfig.json ./apps/ingest-node/tsconfig.json
+
+# Copy workspace packages (TypeScript source)
+COPY --from=node-builder /app/packages/db/src ./packages/db/src
+COPY --from=node-builder /app/packages/shared/src ./packages/shared/src
+COPY --from=node-builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=node-builder /app/packages/api/src ./packages/api/src
+COPY --from=node-builder /app/packages/proto/src ./packages/proto/src
 
 # Copy Temporal CLI
 COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
-
-# Fix workspace package resolution for production runtime
-# Update shared package.json to point to dist instead of src
-RUN sed -i 's|"./src/index.ts"|"./dist/index.js"|g' /app/packages/shared/package.json
 
 # Create symlinks in node_modules for workspace packages
 RUN mkdir -p /app/node_modules/@cognobserve \
