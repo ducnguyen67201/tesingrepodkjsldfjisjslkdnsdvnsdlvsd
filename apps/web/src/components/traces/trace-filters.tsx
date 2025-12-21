@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { Search, X, SlidersHorizontal } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +63,7 @@ export function TraceFilters({
   onSearchChange,
   timeRange,
   onTimeRangeChange,
-  onCustomRangeChange,
+  onCustomRangeChange: _onCustomRangeChange,
   onToggleType,
   onToggleLevel,
   onDurationChange,
@@ -74,6 +74,8 @@ export function TraceFilters({
   filterCount,
   filters,
 }: TraceFiltersProps) {
+  // Note: _onCustomRangeChange will be used when custom date picker is implemented
+  void _onCustomRangeChange;
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onSearchChange(e.target.value);

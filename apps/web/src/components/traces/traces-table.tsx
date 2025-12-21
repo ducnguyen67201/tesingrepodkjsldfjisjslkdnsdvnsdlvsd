@@ -51,7 +51,6 @@ export function TracesTable({ workspaceSlug, projectId }: TracesTableProps) {
     setDuration,
     clearFilters,
     hasFilters,
-    filterCount,
   } = useTraceFilters();
 
   // Selected trace from URL
