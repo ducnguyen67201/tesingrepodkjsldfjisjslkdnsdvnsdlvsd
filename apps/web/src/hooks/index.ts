@@ -7,7 +7,7 @@ export { useWorkspace } from "./use-workspace";
 export { useApiKeys } from "./use-api-keys";
 export { useGitHubOAuth, useGitHubDisconnect } from "./use-github-oauth";
 export { useDebounce } from "./use-debounce";
-export { useTraceFilters } from "./use-trace-filters";
+export { useTraceFiltersV2 } from "./use-trace-filters-v2";
 export { useTriggerRCA } from "./use-trigger-rca";
 
 // Eval Pipeline
