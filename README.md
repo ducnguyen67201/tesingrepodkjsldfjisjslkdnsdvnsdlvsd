@@ -87,6 +87,28 @@ For detailed deployment options, see the [Self Hosting Guide](https://docs.cogno
 
 ---
 
+## 👨‍💻 Contributors
+
+<table>
+<tr>
+<td align="center">
+<a href="https://github.com/ducnguyen67201">
+<img src="https://github.com/ducnguyen67201.png" width="100px;" alt="Duc Nguyen"/>
+<br />
+<sub><b>Duc Nguyen</b></sub>
+</a>
+<br />
+<sub>Creator & Maintainer</sub>
+</td>
+</tr>
+</table>
+
+**Duc Nguyen** — Just a guy who loves building software and shipping things that actually work. Was addicted to coffee, had to downgrade to tea (the betrayal 🍵). When not shipping code, I'm climbing rocks 🧗 — as hardcore as I ship. Built CognObserve because debugging LLMs shouldn't feel like bouldering with no pads.
+
+[GitHub](https://github.com/ducnguyen67201) · [LinkedIn](https://www.linkedin.com/in/ducnguyen6721/)
+
+---
+
 <div align="center">
 
 **Built with ❤️ for the AI community**
