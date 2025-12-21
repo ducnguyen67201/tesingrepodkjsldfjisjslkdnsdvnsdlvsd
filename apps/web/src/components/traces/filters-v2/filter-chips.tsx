@@ -14,7 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { OPERATOR_SYMBOLS, getFieldMeta } from "@/lib/trace-filter";
 import type { FilterPredicate } from "@/hooks/use-trace-filters-v2";
-import type { FilterField } from "@cognobserve/api/schemas";
 
 // ============================================================================
 // Types
@@ -62,7 +61,7 @@ function FilterChip({ predicate, onRemove, index }: FilterChipProps) {
     }
 
     if (predicate.field) {
-      const meta = getFieldMeta(predicate.field as FilterField);
+      const meta = getFieldMeta(predicate.field);
       if (meta) {
         switch (meta.category) {
           case "database":
@@ -98,7 +97,7 @@ function FilterChip({ predicate, onRemove, index }: FilterChipProps) {
       return "search";
     }
     if (predicate.field) {
-      const meta = getFieldMeta(predicate.field as FilterField);
+      const meta = getFieldMeta(predicate.field);
       if (meta) return meta.label;
       // For dynamic attributes, just show the field name
       return predicate.field.replace(/^(trace|span)\./, "");
@@ -182,11 +181,21 @@ export function FilterChips({
     return null;
   }
 
+  // Generate a unique key for each predicate
+  const getPredicateKey = (predicate: FilterPredicate, index: number): string => {
+    const parts = [predicate.type, index.toString()];
+    if (predicate.field) parts.push(predicate.field);
+    if (predicate.op) parts.push(predicate.op);
+    if (predicate.query) parts.push(predicate.query);
+    if (predicate.value !== undefined) parts.push(String(predicate.value));
+    return parts.join("-");
+  };
+
   return (
     <div className={cn("flex flex-wrap items-center gap-1.5", className)}>
       {predicates.map((predicate, index) => (
         <FilterChip
-          key={`${predicate.type}-${predicate.field ?? predicate.query}-${index}`}
+          key={getPredicateKey(predicate, index)}
           predicate={predicate}
           onRemove={handleRemove(index)}
           index={index}

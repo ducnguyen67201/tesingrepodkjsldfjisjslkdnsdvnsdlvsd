@@ -9,13 +9,45 @@
 
 import { TRPCError } from "@trpc/server";
 import { prisma } from "@cognobserve/db";
-import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
+import { createRouter, protectedProcedure } from "../trpc";
 import {
   FilterKeysInputSchema,
   FilterValuesInputSchema,
   FilterStatsInputSchema,
 } from "../schemas/filtering";
 import { getQueryBuilder } from "../lib/filtering";
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+/**
+ * Verify that the user has access to the project.
+ * Throws NOT_FOUND if project doesn't exist or user lacks access.
+ */
+async function verifyProjectAccess(
+  projectId: string,
+  userId: string
+): Promise<void> {
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectId,
+      workspace: {
+        members: {
+          some: { userId },
+        },
+      },
+    },
+    select: { id: true },
+  });
+
+  if (!project) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Project not found",
+    });
+  }
+}
 
 // ============================================================================
 // Router
@@ -31,25 +63,7 @@ export const filtersRouter = createRouter({
     .query(async ({ ctx, input }) => {
       const { projectId, scope, prefix, limit } = input;
 
-      // Verify project access
-      const project = await prisma.project.findFirst({
-        where: {
-          id: projectId,
-          workspace: {
-            members: {
-              some: { userId: ctx.session.user.id },
-            },
-          },
-        },
-        select: { id: true },
-      });
-
-      if (!project) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Project not found",
-        });
-      }
+      await verifyProjectAccess(projectId, ctx.session.user.id);
 
       const builder = getQueryBuilder();
       const keys = await builder.getAttributeKeys(projectId, scope, prefix, limit);
@@ -66,25 +80,7 @@ export const filtersRouter = createRouter({
     .query(async ({ ctx, input }) => {
       const { projectId, scope, key, prefix, limit } = input;
 
-      // Verify project access
-      const project = await prisma.project.findFirst({
-        where: {
-          id: projectId,
-          workspace: {
-            members: {
-              some: { userId: ctx.session.user.id },
-            },
-          },
-        },
-        select: { id: true },
-      });
-
-      if (!project) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Project not found",
-        });
-      }
+      await verifyProjectAccess(projectId, ctx.session.user.id);
 
       const builder = getQueryBuilder();
       const values = await builder.getAttributeValues(
@@ -107,25 +103,7 @@ export const filtersRouter = createRouter({
     .query(async ({ ctx, input }) => {
       const { projectId, timeRange, filter } = input;
 
-      // Verify project access
-      const project = await prisma.project.findFirst({
-        where: {
-          id: projectId,
-          workspace: {
-            members: {
-              some: { userId: ctx.session.user.id },
-            },
-          },
-        },
-        select: { id: true },
-      });
-
-      if (!project) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Project not found",
-        });
-      }
+      await verifyProjectAccess(projectId, ctx.session.user.id);
 
       const builder = getQueryBuilder();
       const stats = await builder.getFilterStats(projectId, timeRange, filter);
