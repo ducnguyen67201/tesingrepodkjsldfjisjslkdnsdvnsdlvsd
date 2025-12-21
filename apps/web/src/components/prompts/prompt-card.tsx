@@ -87,22 +87,39 @@ export function PromptCard({
     [slug]
   );
 
-  const handleEdit = useCallback(() => {
-    onEdit(id);
-  }, [id, onEdit]);
+  const handleEdit = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onEdit(id);
+    },
+    [id, onEdit]
+  );
 
-  const handleViewVersions = useCallback(() => {
-    onViewVersions(id);
-  }, [id, onViewVersions]);
+  const handleViewVersions = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onViewVersions(id);
+    },
+    [id, onViewVersions]
+  );
 
-  const handleArchive = useCallback(async () => {
-    await onArchive(id, !isArchived);
-  }, [id, isArchived, onArchive]);
+  const handleArchive = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation();
+      await onArchive(id, !isArchived);
+    },
+    [id, isArchived, onArchive]
+  );
 
   const handleDelete = useCallback(async () => {
     await onDelete(id);
     setShowDeleteDialog(false);
   }, [id, onDelete]);
+
+  const handleShowDeleteDialog = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowDeleteDialog(true);
+  }, []);
 
   const TypeIcon = latestVersionType === "chat" ? MessageSquare : FileText;
 
@@ -240,7 +257,7 @@ export function PromptCard({
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setShowDeleteDialog(true)}
+                onClick={handleShowDeleteDialog}
                 className="text-destructive focus:text-destructive"
               >
                 <Trash2 className="mr-2 h-4 w-4" />

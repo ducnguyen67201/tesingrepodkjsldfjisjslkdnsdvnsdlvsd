@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { z } from "zod";
 import { Loader2, Upload, FileJson, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +21,72 @@ import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { showSuccess } from "@/lib/success";
 
+// ============================================================
+// Zod Schemas for Import Validation
+// ============================================================
+
+const ChatRoleSchema = z.enum(["system", "user", "assistant", "tool"]);
+
+const ChatMessageSchema = z.object({
+  role: ChatRoleSchema,
+  content: z.string(),
+  name: z.string().optional(),
+});
+
+const TextTemplateSchema = z.object({
+  type: z.literal("text"),
+  text: z.string().min(1),
+});
+
+const ChatTemplateSchema = z.object({
+  type: z.literal("chat"),
+  messages: z.array(ChatMessageSchema).min(1),
+});
+
+const PromptTemplateSchema = z.discriminatedUnion("type", [
+  TextTemplateSchema,
+  ChatTemplateSchema,
+]);
+
+const PromptVariableSchema = z.object({
+  name: z.string().min(1),
+  required: z.boolean().optional(),
+  default: z.string().optional(),
+  description: z.string().optional(),
+});
+
+const ImportPromptSchema = z.object({
+  name: z.string().min(1),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  template: PromptTemplateSchema,
+  variables: z.array(PromptVariableSchema).optional(),
+  config: z.record(z.string(), z.unknown()).optional(),
+});
+
+// Also support string template shorthand
+const ImportPromptWithStringTemplateSchema = z.object({
+  name: z.string().min(1),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  template: z.string().min(1),
+  variables: z.array(PromptVariableSchema).optional(),
+  config: z.record(z.string(), z.unknown()).optional(),
+});
+
+const ImportFileSchema = z.union([
+  z.array(z.union([ImportPromptSchema, ImportPromptWithStringTemplateSchema])),
+  z.object({
+    prompts: z.array(z.union([ImportPromptSchema, ImportPromptWithStringTemplateSchema])),
+  }),
+]);
+
+// ============================================================
+// Types
+// ============================================================
+
 interface ImportPromptsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -27,17 +94,7 @@ interface ImportPromptsDialogProps {
   projectId: string;
 }
 
-type ChatRole = "system" | "user" | "assistant" | "tool";
-
-interface ImportPrompt {
-  name: string;
-  slug?: string;
-  description?: string;
-  tags?: string[];
-  template: { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: ChatRole; content: string; name?: string }> };
-  variables?: Array<{ name: string; required?: boolean; default?: string; description?: string }>;
-  config?: Record<string, unknown>;
-}
+type ImportPrompt = z.infer<typeof ImportPromptSchema>;
 
 interface ParseResult {
   prompts: ImportPrompt[];
@@ -250,82 +307,68 @@ export function ImportPromptsDialog({
 }
 
 /**
- * Parse import file (JSON format)
+ * Parse import file (JSON format) using Zod validation
  */
 function parseImportFile(content: string): ParseResult {
   const errors: string[] = [];
   const prompts: ImportPrompt[] = [];
 
+  // Parse JSON
+  let json: unknown;
   try {
-    const data = JSON.parse(content);
-
-    // Handle array format
-    const promptsArray = Array.isArray(data) ? data : data.prompts;
-
-    if (!Array.isArray(promptsArray)) {
-      return {
-        prompts: [],
-        errors: ["Invalid format: expected array of prompts or { prompts: [...] }"],
-      };
-    }
-
-    for (let i = 0; i < promptsArray.length; i++) {
-      const item = promptsArray[i];
-
-      // Validate required fields
-      if (!item.name || typeof item.name !== "string") {
-        errors.push(`Prompt ${i + 1}: missing or invalid 'name'`);
-        continue;
-      }
-
-      if (!item.template) {
-        errors.push(`Prompt ${i + 1} (${item.name}): missing 'template'`);
-        continue;
-      }
-
-      // Handle different template formats
-      let template: ImportPrompt["template"];
-      const validRoles: ChatRole[] = ["system", "user", "assistant", "tool"];
-
-      if (item.template.type === "text" && typeof item.template.text === "string") {
-        template = { type: "text", text: item.template.text };
-      } else if (item.template.type === "chat" && Array.isArray(item.template.messages)) {
-        // Validate and filter messages with valid roles
-        const validMessages = item.template.messages
-          .filter((m: { role: string; content: string }) => validRoles.includes(m.role as ChatRole))
-          .map((m: { role: string; content: string; name?: string }) => ({
-            role: m.role as ChatRole,
-            content: m.content,
-            name: m.name,
-          }));
-        if (validMessages.length === 0) {
-          errors.push(`Prompt ${i + 1} (${item.name}): no valid messages found`);
-          continue;
-        }
-        template = { type: "chat", messages: validMessages };
-      } else if (typeof item.template === "string") {
-        // Simple string format - convert to text template
-        template = { type: "text", text: item.template };
-      } else {
-        errors.push(`Prompt ${i + 1} (${item.name}): invalid template format`);
-        continue;
-      }
-
-      prompts.push({
-        name: item.name,
-        slug: item.slug,
-        description: item.description,
-        tags: Array.isArray(item.tags) ? item.tags : [],
-        template,
-        variables: Array.isArray(item.variables) ? item.variables : undefined,
-        config: typeof item.config === "object" ? item.config : undefined,
-      });
-    }
+    json = JSON.parse(content);
   } catch (e) {
     return {
       prompts: [],
       errors: [`Failed to parse JSON: ${e instanceof Error ? e.message : "Unknown error"}`],
     };
+  }
+
+  // Validate overall structure
+  const fileResult = ImportFileSchema.safeParse(json);
+  if (!fileResult.success) {
+    return {
+      prompts: [],
+      errors: ["Invalid format: expected array of prompts or { prompts: [...] }"],
+    };
+  }
+
+  // Extract prompts array
+  const promptsArray = Array.isArray(fileResult.data)
+    ? fileResult.data
+    : fileResult.data.prompts;
+
+  // Validate each prompt individually for better error messages
+  for (let i = 0; i < promptsArray.length; i++) {
+    const item = promptsArray[i];
+
+    // Handle string template shorthand - convert to text template
+    if (typeof item.template === "string") {
+      const converted: ImportPrompt = {
+        name: item.name,
+        slug: item.slug,
+        description: item.description,
+        tags: item.tags,
+        template: { type: "text", text: item.template },
+        variables: item.variables,
+        config: item.config,
+      };
+      prompts.push(converted);
+      continue;
+    }
+
+    // Validate as standard ImportPrompt
+    const promptResult = ImportPromptSchema.safeParse(item);
+    if (!promptResult.success) {
+      const fieldErrors = promptResult.error.flatten().fieldErrors;
+      const errorMessages = Object.entries(fieldErrors)
+        .map(([field, msgs]) => `${field}: ${msgs?.join(", ")}`)
+        .join("; ");
+      errors.push(`Prompt ${i + 1} (${item.name}): ${errorMessages}`);
+      continue;
+    }
+
+    prompts.push(promptResult.data);
   }
 
   return { prompts, errors };
