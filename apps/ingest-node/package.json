@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "doppler run -- tsx watch src/index.ts",
+    "dev:local": "DATABASE_URL=postgresql://cognobserve:cognobserve@localhost:5432/cognobserve tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",

@@ -59,7 +59,7 @@ export const SPAN_KIND_MAP: Record<number, SpanKind> = {
 export const OtlpAnyValueSchema = z.object({
   stringValue: z.string().optional(),
   boolValue: z.boolean().optional(),
-  intValue: z.string().optional(), // OTLP encodes int64 as string
+  intValue: z.union([z.string(), z.number()]).optional(), // OTLP int64: string or number in JSON
   doubleValue: z.number().optional(),
   arrayValue: z
     .object({
