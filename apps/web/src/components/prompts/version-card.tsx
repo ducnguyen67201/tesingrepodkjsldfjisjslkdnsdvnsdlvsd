@@ -29,12 +29,6 @@ import {
 } from "@/components/ui/collapsible";
 import { useState, useCallback } from "react";
 
-interface ChatMessage {
-  role: "system" | "user" | "assistant" | "tool";
-  content: string;
-  name?: string;
-}
-
 interface VersionCardProps {
   id: string;
   version: number;

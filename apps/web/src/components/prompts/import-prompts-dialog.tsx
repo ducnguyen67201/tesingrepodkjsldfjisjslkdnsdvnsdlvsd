@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Loader2, Upload, FileJson, AlertCircle, Check, X } from "lucide-react";
+import { Loader2, Upload, FileJson, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -59,7 +59,6 @@ export function ImportPromptsDialog({
 
   const importMutation = trpc.prompts.import.useMutation({
     onSuccess: (result) => {
-      const total = result.created.length + result.updated.length;
       showSuccess(
         "Import complete",
         `${result.created.length} created, ${result.updated.length} updated, ${result.skipped.length} skipped`
@@ -80,7 +79,7 @@ export function ImportPromptsDialog({
 
       try {
         const text = await selectedFile.text();
-        const parsed = parseImportFile(text, selectedFile.name);
+        const parsed = parseImportFile(text);
         setParseResult(parsed);
       } catch (err) {
         setParseResult({
@@ -253,7 +252,7 @@ export function ImportPromptsDialog({
 /**
  * Parse import file (JSON format)
  */
-function parseImportFile(content: string, filename: string): ParseResult {
+function parseImportFile(content: string): ParseResult {
   const errors: string[] = [];
   const prompts: ImportPrompt[] = [];
 

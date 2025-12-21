@@ -19,7 +19,6 @@ import { logger } from "../lib/logger.js";
 import { rateLimitMiddleware } from "../middleware/rate-limit.js";
 import { hashApiKey } from "@cognobserve/shared";
 import {
-  FetchPromptOptionsSchema,
   type PromptLabelName,
   DEFAULT_FETCH_LABEL,
 } from "@cognobserve/api/schemas";
