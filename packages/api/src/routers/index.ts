@@ -19,7 +19,7 @@ import { createRouter } from "../trpc";
 import { apiKeysRouter } from "./apiKeys";
 import { workspacesRouter } from "./workspaces";
 import { projectsRouter } from "./projects";
-// NOTE: traces, sessions, analytics routers removed - will be rebuilt for OTLP-first design
+import { tracesRouter } from "./traces";
 import { domainsRouter } from "./domains";
 import { costsRouter } from "./costs";
 import { alertsRouter } from "./alerts";
@@ -74,8 +74,15 @@ export const appRouter = createRouter({
    */
   projects: projectsRouter,
 
-  // NOTE: traces, sessions, analytics routers removed - will be rebuilt for OTLP-first design
-  // See: apps/ingest-node/ and docs/specs/ingest/README.md
+  /**
+   * Traces (OTLP-first design)
+   * @see ./traces.ts
+   *
+   * - traces.list     - List traces with filters & pagination
+   * - traces.get      - Get trace with spans
+   * - traces.getStats - Get trace statistics
+   */
+  traces: tracesRouter,
 
   /**
    * Allowed Domains (Domain Matcher)
@@ -219,7 +226,7 @@ export {
   apiKeysRouter,
   workspacesRouter,
   projectsRouter,
-  // traces, sessions, analytics routers removed
+  tracesRouter,
   domainsRouter,
   costsRouter,
   alertsRouter,

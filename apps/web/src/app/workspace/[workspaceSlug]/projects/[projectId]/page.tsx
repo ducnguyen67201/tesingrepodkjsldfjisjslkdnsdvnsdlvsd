@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-// NOTE: TracesTable and SessionsTable removed - will be reworked for OTLP-first design
+import { TracesTable } from "@/components/traces";
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
@@ -85,33 +85,33 @@ export default function ProjectDetailPage() {
   }
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-3 p-3">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" asChild>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
             <Link href={workspaceUrl("/projects")}>
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold">{project.name}</h1>
               {isLoadingUsers ? (
-                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-5 w-16" />
               ) : (
-                <Badge variant="secondary" className="gap-1">
-                  <Users className="h-3 w-3" />
+                <Badge variant="secondary" className="h-5 gap-1 text-[10px] px-1.5">
+                  <Users className="h-2.5 w-2.5" />
                   {userCount} users
                 </Badge>
               )}
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Created {new Date(project.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <EvalsPanel workspaceSlug={workspaceSlug ?? ""} projectId={projectId} />
           <AlertsPanel workspaceSlug={workspaceSlug ?? ""} projectId={projectId} />
         </div>
@@ -119,40 +119,38 @@ export default function ProjectDetailPage() {
 
       {/* Tabs */}
       <Tabs value={currentTab} onValueChange={handleTabChange}>
-        <TabsList>
-          <TabsTrigger value="traces" className="gap-2">
-            <Activity className="h-4 w-4" />
+        <TabsList className="h-8">
+          <TabsTrigger value="traces" className="h-7 gap-1.5 text-xs px-3">
+            <Activity className="h-3 w-3" />
             Traces
           </TabsTrigger>
-          <TabsTrigger value="sessions" className="gap-2">
-            <MessagesSquare className="h-4 w-4" />
+          <TabsTrigger value="sessions" className="h-7 gap-1.5 text-xs px-3">
+            <MessagesSquare className="h-3 w-3" />
             Sessions
           </TabsTrigger>
-          <TabsTrigger value="users" className="gap-2">
-            <Users className="h-4 w-4" />
+          <TabsTrigger value="users" className="h-7 gap-1.5 text-xs px-3">
+            <Users className="h-3 w-3" />
             Users
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="traces" className="mt-4">
-          {/* NOTE: TracesTable removed - will be reworked for OTLP-first design */}
-          <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-            <Activity className="mx-auto mb-2 h-8 w-8" />
-            <p className="text-lg font-medium">Traces</p>
-            <p className="text-sm">Coming soon with OTLP-first telemetry</p>
-          </div>
+        <TabsContent value="traces" className="mt-2">
+          <TracesTable
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={projectId}
+          />
         </TabsContent>
 
-        <TabsContent value="sessions" className="mt-4">
+        <TabsContent value="sessions" className="mt-2">
           {/* NOTE: SessionsTable removed - will be reworked for OTLP-first design */}
-          <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-            <MessagesSquare className="mx-auto mb-2 h-8 w-8" />
-            <p className="text-lg font-medium">Sessions</p>
-            <p className="text-sm">Coming soon with OTLP-first telemetry</p>
+          <div className="rounded-lg border border-dashed p-6 text-center text-muted-foreground">
+            <MessagesSquare className="mx-auto mb-2 h-6 w-6" />
+            <p className="text-sm font-medium">Sessions</p>
+            <p className="text-xs">Coming soon with OTLP-first telemetry</p>
           </div>
         </TabsContent>
 
-        <TabsContent value="users" className="mt-4">
+        <TabsContent value="users" className="mt-2">
           <TrackedUsersTable
             workspaceSlug={workspaceSlug ?? ""}
             projectId={projectId}

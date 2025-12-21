@@ -106,11 +106,11 @@ export function EvalsPanel({ workspaceSlug, projectId }: EvalsPanelProps) {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <FlaskConical className="h-4 w-4" />
+        <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs px-2.5">
+          <FlaskConical className="h-3 w-3" />
           Evals
           {suites.length > 0 && (
-            <span className="ml-1 rounded-full bg-muted px-2 py-0.5 text-xs">
+            <span className="ml-0.5 rounded-full bg-muted px-1.5 py-0.5 text-[10px]">
               {suites.length}
             </span>
           )}
