@@ -280,11 +280,11 @@ export function AlertsPanel({ workspaceSlug, projectId }: AlertsPanelProps) {
     <>
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>
-          <Button variant="outline" size="sm" className="gap-2">
-            <Bell className="h-4 w-4" />
+          <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs px-2.5">
+            <Bell className="h-3 w-3" />
             Alerts
             {activeAlerts > 0 && (
-              <Badge variant="secondary" className="ml-1 h-5 px-1.5">
+              <Badge variant="secondary" className="ml-0.5 h-4 px-1 text-[10px]">
                 {activeAlerts}
               </Badge>
             )}

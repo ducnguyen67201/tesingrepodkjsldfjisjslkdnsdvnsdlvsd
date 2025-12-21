@@ -232,6 +232,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.8
         version: 1.2.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@radix-ui/react-visually-hidden':
+        specifier: ^1.2.4
+        version: 1.2.4(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@t3-oss/env-core':
         specifier: ^0.13.8
         version: 0.13.8(typescript@5.9.3)(valibot@1.1.0(typescript@5.9.3))(zod@4.1.13)
@@ -424,7 +427,7 @@ importers:
         version: 1.13.2
       '@temporalio/worker':
         specifier: ^1.13.2
-        version: 1.13.2(esbuild@0.27.0)
+        version: 1.13.2
       '@temporalio/workflow':
         specifier: ^1.13.2
         version: 1.13.2
@@ -3074,6 +3077,19 @@ packages:
 
   '@radix-ui/react-visually-hidden@1.2.3':
     resolution: {integrity: sha512-pzJq12tEaaIhqjbzpCuv/OypJY/BPavOofm+dbab+MHLajy277+1lLm6JFcGgF5eskJ6mquGirhXY2GD/8u8Ug==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
+  '@radix-ui/react-visually-hidden@1.2.4':
+    resolution: {integrity: sha512-kaeiyGCe844dkb9AVF+rb4yTyb1LiLN/e3es3nLiRyN4dC8AduBYPMnnNlDjX2VDOcvDEiPnRNMJeWCfsX0txg==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -9931,6 +9947,15 @@ snapshots:
       '@types/react': 19.2.7
       '@types/react-dom': 19.2.3(@types/react@19.2.7)
 
+  '@radix-ui/react-visually-hidden@1.2.4(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+    dependencies:
+      '@radix-ui/react-primitive': 2.1.4(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+    optionalDependencies:
+      '@types/react': 19.2.7
+      '@types/react-dom': 19.2.3(@types/react@19.2.7)
+
   '@radix-ui/rect@1.1.1': {}
 
   '@rolldown/pluginutils@1.0.0-beta.47': {}
@@ -10416,7 +10441,7 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.4
 
-  '@temporalio/worker@1.13.2(esbuild@0.27.0)':
+  '@temporalio/worker@1.13.2':
     dependencies:
       '@grpc/grpc-js': 1.14.2
       '@swc/core': 1.15.3
@@ -10435,11 +10460,11 @@ snapshots:
       protobufjs: 7.5.4
       rxjs: 7.8.2
       source-map: 0.7.6
-      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3))
       supports-color: 8.1.1
-      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       unionfs: 4.6.0
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     transitivePeerDependencies:
       - '@swc/helpers'
       - esbuild
@@ -13886,11 +13911,11 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   source-map-support@0.5.21:
     dependencies:
@@ -14038,11 +14063,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@swc/core': 1.15.3
       '@swc/counter': 0.1.3
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   symbol-tree@3.2.4: {}
 
@@ -14086,17 +14111,16 @@ snapshots:
     dependencies:
       bintrees: 1.0.2
 
-  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       terser: 5.44.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     optionalDependencies:
       '@swc/core': 1.15.3
-      esbuild: 0.27.0
 
   terser@5.44.1:
     dependencies:
@@ -14676,7 +14700,7 @@ snapshots:
 
   webpack-sources@3.3.3: {}
 
-  webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0):
+  webpack@5.103.0(@swc/core@1.15.3):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -14700,7 +14724,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
