@@ -16,7 +16,7 @@ import {
 // Read environment variables directly (before env.ts is loaded)
 const COGNOBSERVE_ENDPOINT =
   process.env.COGNOBSERVE_ENDPOINT || "http://localhost:8080";
-const COGNOBSERVE_API_KEY = process.env.COGNOBSERVE_API_KEY ;
+const COGNOBSERVE_API_KEY = process.env.COGNOBSERVE_API_KEY || "co_sk_0qvKcjqFuYNOEB0FgGyquQPZQ4S4ZXI4zWB5qsshjTO";
 const OTEL_SERVICE_NAME = process.env.OTEL_SERVICE_NAME || "ingest-demo";
 
 // Configure OTLP HTTP exporter to send traces to CognObserve ingest service

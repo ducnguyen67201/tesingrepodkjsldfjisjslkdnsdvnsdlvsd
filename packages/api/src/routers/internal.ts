@@ -163,7 +163,7 @@ async function lookupRecentRCA(
       category: analysis.rootCause.category,
       topChange,
       remediation: analysis.remediation.immediate.slice(0, 3),
-      detailUrl: `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${projectId}/alerts/${alertId}/rca/${alertRCA.id}`,
+      detailUrl: `${getAppBaseUrl()}/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}/rca/${alertRCA.id}`,
     };
   } catch (error) {
     console.error(`[Internal:lookupRecentRCA] Error fetching RCA:`, error);
@@ -172,10 +172,34 @@ async function lookupRecentRCA(
 }
 
 /**
+ * Get the app base URL with fallback
+ */
+function getAppBaseUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.APP_URL ||
+    "http://localhost:3000"
+  );
+}
+
+/**
  * Build dashboard URL for alert
  */
 function buildDashboardUrl(workspaceSlug: string, projectId: string): string {
-  return `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${projectId}/dashboard`;
+  return `${getAppBaseUrl()}/workspace/${workspaceSlug}/projects/${projectId}`;
+}
+
+/**
+ * Build RCA URL for an alert history entry
+ * Points to the RCA page which will show analysis once complete
+ */
+function buildRcaUrl(
+  workspaceSlug: string,
+  projectId: string,
+  alertId: string,
+  alertHistoryId: string
+): string {
+  return `${getAppBaseUrl()}/workspace/${workspaceSlug}/projects/${projectId}/alerts/${alertId}/rca?historyId=${alertHistoryId}`;
 }
 
 // ============================================================
@@ -337,6 +361,21 @@ export const internalRouter = createRouter({
 
       const workspaceSlug = alert.project.workspace.slug;
 
+      // Create alert history FIRST to get the ID for RCA URL
+      const alertHistory = await prisma.alertHistory.create({
+        data: {
+          alertId,
+          value,
+          threshold,
+          state: state as "INACTIVE" | "PENDING" | "FIRING" | "RESOLVED",
+          previousState: alert.state,
+          notifiedVia: [], // Will be updated after sending
+        },
+      });
+
+      // Build RCA URL for this specific alert event
+      const rcaUrl = buildRcaUrl(workspaceSlug, alert.projectId, alertId, alertHistory.id);
+
       // Lookup most recent RCA for this alert (if available)
       const rcaData = await lookupRecentRCA(alertId, workspaceSlug, alert.projectId);
       if (rcaData) {
@@ -355,6 +394,7 @@ export const internalRouter = createRouter({
         operator: alert.operator as AlertPayload["operator"],
         triggeredAt: new Date().toISOString(),
         dashboardUrl: buildDashboardUrl(workspaceSlug, alert.projectId),
+        rcaUrl,
         rca: rcaData,
       };
 
@@ -392,20 +432,26 @@ export const internalRouter = createRouter({
         }
       }
 
-      // Record in alert history
-      await prisma.alertHistory.create({
-        data: {
-          alertId,
-          value,
-          threshold,
-          state: state as "INACTIVE" | "PENDING" | "FIRING" | "RESOLVED",
-          previousState: alert.state,
-          notifiedVia: notifiedProviders,
-        },
+      // Update alert history with notified providers
+      await prisma.alertHistory.update({
+        where: { id: alertHistory.id },
+        data: { notifiedVia: notifiedProviders },
       });
 
       console.log(`[Internal:dispatchNotification] Sent to ${sentCount}/${alert.channelLinks.length} channels`);
-      return { channelCount: alert.channelLinks.length, sentCount, failedCount };
+      return {
+        channelCount: alert.channelLinks.length,
+        sentCount,
+        failedCount,
+        alertHistoryId: alertHistory.id,
+        // Include info needed for RCA trigger
+        alertName: alert.name,
+        alertType: alert.type,
+        projectId: alert.projectId,
+        projectName: alert.project.name,
+        windowMins: alert.windowMins,
+        severity: alert.severity,
+      };
     }),
 
   /**
@@ -751,7 +797,8 @@ export const internalRouter = createRouter({
       }
 
       const workspaceSlug = suite.project.workspace.slug;
-      const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${workspaceSlug}/${suite.projectId}/evals/${suiteId}/runs/${runId}`;
+      // TODO: Update to evals page when route exists
+      const dashboardUrl = `${getAppBaseUrl()}/workspace/${workspaceSlug}/projects/${suite.projectId}`;
 
       // Build regression alert payload
       const payload: AlertPayload = {

@@ -118,6 +118,8 @@ export const AlertPayloadSchema = z.object({
   operator: AlertOperatorSchema,
   triggeredAt: z.string().datetime(),
   dashboardUrl: z.string().url().optional(),
+  /** URL to RCA page - populated when RCA is triggered */
+  rcaUrl: z.string().url().optional(),
   /** Optional RCA enrichment - populated when RCA is available */
   rca: z.lazy(() => RCASummarySchema).optional(),
   /** Optional regression info - populated when eval regression detected */
