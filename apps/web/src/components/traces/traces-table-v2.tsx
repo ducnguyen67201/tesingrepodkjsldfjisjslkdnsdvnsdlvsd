@@ -19,7 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
 import { useTraceFiltersV2 } from "@/hooks/use-trace-filters-v2";
-import { getFieldMeta } from "@/lib/trace-filter";
 import { TraceRow } from "./trace-row";
 import { TracesEmpty } from "./traces-empty";
 import { TracesSkeleton } from "./traces-skeleton";
