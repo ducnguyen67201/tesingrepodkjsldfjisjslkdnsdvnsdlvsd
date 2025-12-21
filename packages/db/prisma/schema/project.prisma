@@ -26,6 +26,7 @@ model Project {
   alerts        Alert[]
   githubRepo    GitHubRepository?
   evalSuites    EvalSuite[]
+  prompts       Prompt[]
 
   @@index([workspaceId])
 }

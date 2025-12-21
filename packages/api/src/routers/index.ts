@@ -29,6 +29,7 @@ import { internalRouter } from "./internal";
 import { githubRouter } from "./github";
 import { evalsRouter } from "./evals";
 import { filtersRouter } from "./filters";
+import { promptsRouter } from "./prompts";
 
 /**
  * Main application router.
@@ -220,6 +221,28 @@ export const appRouter = createRouter({
   filters: filtersRouter,
 
   /**
+   * Prompt Management (Prompt Registry)
+   * @see ./prompts.ts
+   *
+   * Central prompt registry with versioning, labels, and SDK retrieval.
+   *
+   * - prompts.list         - List prompts for a project
+   * - prompts.get          - Get prompt with versions
+   * - prompts.create       - Create new prompt with initial version
+   * - prompts.createVersion - Create new version for existing prompt
+   * - prompts.update       - Update prompt metadata
+   * - prompts.setLabel     - Set label (production/staging/latest) for version
+   * - prompts.archive      - Archive/unarchive prompt
+   * - prompts.delete       - Permanently delete prompt
+   * - prompts.search       - Search across prompts and versions
+   * - prompts.import       - Bulk import prompts
+   * - prompts.export       - Export prompts
+   * - prompts.getPresets   - Get labels and defaults
+   * - prompts.getTags      - Get all tags for a project
+   */
+  prompts: promptsRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -249,4 +272,5 @@ export {
   githubRouter,
   evalsRouter,
   filtersRouter,
+  promptsRouter,
 };

@@ -1,0 +1,60 @@
+// ============================================================
+// Prompt Management Models
+// ============================================================
+
+model Prompt {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String
+  description String?
+  tags        String[] @default([])
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdById String?
+
+  versions PromptVersion[]
+  labels   PromptLabel[]
+
+  @@unique([projectId, slug])
+  @@index([projectId, isArchived])
+  @@index([projectId, name])
+}
+
+model PromptVersion {
+  id          String   @id @default(cuid())
+  promptId    String
+  prompt      Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  version     Int
+  type        String   // "text" | "chat"
+  content     Json     // PromptTemplate (text or messages array)
+  variables   Json?    // PromptVariable[] schema
+  config      Json?    // Model config (temperature, maxTokens, etc.)
+  metadata    Json?    // Arbitrary user metadata
+  searchText  String?  // Denormalized text for grep
+  checksum    String   // SHA-256 of content+config for ETag
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  labels PromptLabel[]
+
+  @@unique([promptId, version])
+  @@index([promptId, createdAt(sort: Desc)])
+  @@index([checksum])
+}
+
+model PromptLabel {
+  id          String        @id @default(cuid())
+  promptId    String
+  prompt      Prompt        @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  versionId   String
+  version     PromptVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  name        String        // "production", "staging", "latest"
+  updatedAt   DateTime      @updatedAt
+  updatedById String?
+
+  @@unique([promptId, name])
+  @@index([versionId])
+}

@@ -72,6 +72,9 @@ export const ModelName = {
   Project: 'Project',
   ProjectMember: 'ProjectMember',
   ApiKey: 'ApiKey',
+  Prompt: 'Prompt',
+  PromptVersion: 'PromptVersion',
+  PromptLabel: 'PromptLabel',
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
@@ -424,6 +427,52 @@ export const ApiKeyScalarFieldEnum = {
 } as const
 
 export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
+
+
+export const PromptScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  tags: 'tags',
+  isArchived: 'isArchived',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdById: 'createdById'
+} as const
+
+export type PromptScalarFieldEnum = (typeof PromptScalarFieldEnum)[keyof typeof PromptScalarFieldEnum]
+
+
+export const PromptVersionScalarFieldEnum = {
+  id: 'id',
+  promptId: 'promptId',
+  version: 'version',
+  type: 'type',
+  content: 'content',
+  variables: 'variables',
+  config: 'config',
+  metadata: 'metadata',
+  searchText: 'searchText',
+  checksum: 'checksum',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type PromptVersionScalarFieldEnum = (typeof PromptVersionScalarFieldEnum)[keyof typeof PromptVersionScalarFieldEnum]
+
+
+export const PromptLabelScalarFieldEnum = {
+  id: 'id',
+  promptId: 'promptId',
+  versionId: 'versionId',
+  name: 'name',
+  updatedAt: 'updatedAt',
+  updatedById: 'updatedById'
+} as const
+
+export type PromptLabelScalarFieldEnum = (typeof PromptLabelScalarFieldEnum)[keyof typeof PromptLabelScalarFieldEnum]
 
 
 export const AlertRCAScalarFieldEnum = {
