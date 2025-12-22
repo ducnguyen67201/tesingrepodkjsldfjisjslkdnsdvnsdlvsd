@@ -80,6 +80,51 @@ export const IndexStatus = {
 export type IndexStatus = (typeof IndexStatus)[keyof typeof IndexStatus]
 
 
+export const ArticleStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type ArticleStatus = (typeof ArticleStatus)[keyof typeof ArticleStatus]
+
+
+export const KnowledgeEntityType = {
+  PROJECT: 'PROJECT',
+  TRACE: 'TRACE',
+  SPAN: 'SPAN',
+  ALERT: 'ALERT',
+  ALERT_HISTORY: 'ALERT_HISTORY'
+} as const
+
+export type KnowledgeEntityType = (typeof KnowledgeEntityType)[keyof typeof KnowledgeEntityType]
+
+
+export const KnowledgeRuleScope = {
+  WORKSPACE: 'WORKSPACE',
+  PROJECT: 'PROJECT'
+} as const
+
+export type KnowledgeRuleScope = (typeof KnowledgeRuleScope)[keyof typeof KnowledgeRuleScope]
+
+
+export const RuleMatchType = {
+  DIRECT_LINK: 'DIRECT_LINK',
+  RULE: 'RULE',
+  SEMANTIC: 'SEMANTIC'
+} as const
+
+export type RuleMatchType = (typeof RuleMatchType)[keyof typeof RuleMatchType]
+
+
+export const ChunkSourceType = {
+  ARTICLE: 'ARTICLE',
+  ATTACHMENT: 'ATTACHMENT'
+} as const
+
+export type ChunkSourceType = (typeof ChunkSourceType)[keyof typeof ChunkSourceType]
+
+
 export const ProjectRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',

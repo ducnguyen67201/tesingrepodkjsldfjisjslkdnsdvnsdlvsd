@@ -41,7 +41,7 @@ type WorkflowStarter = (
 ) => Promise<{ started: number; skipped: number }>;
 
 /** Supported workflow types */
-type WorkflowType = "alerts" | "github" | "traces" | "scores" | "evals";
+type WorkflowType = "alerts" | "github" | "traces" | "scores" | "evals" | "knowledge";
 
 /** Workflow configuration */
 interface WorkflowConfig {
@@ -92,6 +92,12 @@ const WORKFLOW_REGISTRY: Record<WorkflowType, WorkflowConfig> = {
     startOnBoot: false,
     // No starter - triggered by GitHub webhook (PR merge) or manual API
   },
+  knowledge: {
+    name: "Knowledge Base",
+    description: "Event-driven workflows for article indexing and attachment extraction",
+    startOnBoot: false,
+    // No starter - triggered by knowledge.publishArticle and knowledge.uploadAttachment
+  },
 };
 
 // ============================================
@@ -124,6 +130,7 @@ export async function startAllWorkflows(): Promise<StartupResult> {
       traces: { started: 0, skipped: 0, errors: [] },
       scores: { started: 0, skipped: 0, errors: [] },
       evals: { started: 0, skipped: 0, errors: [] },
+      knowledge: { started: 0, skipped: 0, errors: [] },
     },
   };
 

@@ -10,7 +10,7 @@
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma, setChunkEmbeddings } from "@cognobserve/db";
+import { prisma, Prisma, setChunkEmbeddings, setKnowledgeChunkEmbeddings } from "@cognobserve/db";
 import { createRouter, publicProcedure, middleware } from "../trpc";
 import {
   SEVERITY_DEFAULTS,
@@ -22,6 +22,12 @@ import {
 } from "../schemas/alerting";
 import { StoreGitHubIndexSchema } from "../schemas/github";
 import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
+import {
+  StoreKnowledgeChunksInputSchema,
+  StoreKnowledgeEmbeddingsInputSchema,
+  FindMatchingKnowledgeInputSchema,
+  StoreRCAKnowledgeMatchesInputSchema,
+} from "../schemas/knowledge";
 import { AdapterRegistry } from "../lib/alerting/registry";
 import { GitHubService, RCAService } from "../services";
 
@@ -449,6 +455,7 @@ export const internalRouter = createRouter({
         alertType: alert.type,
         projectId: alert.projectId,
         projectName: alert.project.name,
+        workspaceId: alert.project.workspaceId,
         windowMins: alert.windowMins,
         severity: alert.severity,
       };
@@ -848,6 +855,224 @@ export const internalRouter = createRouter({
 
       console.log(`[Internal:dispatchRegressionAlert] Sent to ${sentCount}/${channels.length} channels`);
       return { channelCount: channels.length, sentCount, failedCount };
+    }),
+
+  // ============================================================
+  // KNOWLEDGE BASE PROCEDURES
+  // ============================================================
+
+  /**
+   * Store knowledge article chunks for semantic search
+   * Called by: knowledge.activities.ts → storeChunks
+   */
+  storeKnowledgeChunks: internalProcedure
+    .input(StoreKnowledgeChunksInputSchema)
+    .mutation(async ({ input }) => {
+      const { articleId, workspaceId, chunks } = input;
+
+      if (chunks.length === 0) {
+        return { chunksCreated: 0, chunkIds: [] };
+      }
+
+      console.log(`[Internal:storeKnowledgeChunks] Processing ${chunks.length} chunks for article ${articleId}`);
+
+      // Check for existing chunks by contentHash
+      const contentHashes = chunks.map((c) => c.contentHash);
+      const existingChunks = await prisma.knowledgeChunk.findMany({
+        where: {
+          articleId,
+          contentHash: { in: contentHashes },
+        },
+        select: { id: true, contentHash: true },
+      });
+
+      const existingMap = new Map(existingChunks.map((c) => [c.contentHash, c.id]));
+
+      // Filter to only new chunks
+      const newChunks = chunks.filter((c) => !existingMap.has(c.contentHash));
+      console.log(`[Internal:storeKnowledgeChunks] Creating ${newChunks.length} new chunks`);
+
+      // Batch insert new chunks
+      await prisma.knowledgeChunk.createMany({
+        data: newChunks.map((chunk) => ({
+          articleId,
+          workspaceId,
+          content: chunk.content,
+          contentHash: chunk.contentHash,
+          startOffset: chunk.startOffset,
+          endOffset: chunk.endOffset,
+          sectionTitle: chunk.sectionTitle,
+          sourceType: chunk.sourceType,
+          sourceId: chunk.sourceId,
+        })),
+        skipDuplicates: true,
+      });
+
+      // Fetch all chunk IDs for this article
+      const allChunks = await prisma.knowledgeChunk.findMany({
+        where: { articleId },
+        select: { id: true },
+      });
+
+      console.log(`[Internal:storeKnowledgeChunks] Total: ${allChunks.length} chunks`);
+      return { chunksCreated: allChunks.length, chunkIds: allChunks.map((c) => c.id) };
+    }),
+
+  /**
+   * Store embeddings for knowledge chunks
+   * Called by: knowledge.activities.ts → storeKnowledgeEmbeddings
+   */
+  storeKnowledgeEmbeddings: internalProcedure
+    .input(StoreKnowledgeEmbeddingsInputSchema)
+    .mutation(async ({ input }) => {
+      const { embeddings } = input;
+
+      if (embeddings.length === 0) {
+        return { storedCount: 0 };
+      }
+
+      // Use batch operation from vector utilities
+      await setKnowledgeChunkEmbeddings(
+        embeddings.map((e) => ({
+          chunkId: e.chunkId,
+          embedding: e.embedding,
+        }))
+      );
+
+      console.log(`[Internal:storeKnowledgeEmbeddings] Stored ${embeddings.length} embeddings`);
+      return { storedCount: embeddings.length };
+    }),
+
+  /**
+   * Update article search text for keyword search
+   * Called by: knowledge.activities.ts → updateSearchText
+   */
+  updateArticleSearchText: internalProcedure
+    .input(z.object({
+      articleId: z.string().min(1),
+      searchText: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      const { articleId, searchText } = input;
+
+      await prisma.knowledgeArticle.update({
+        where: { id: articleId },
+        data: { searchText },
+      });
+
+      console.log(`[Internal:updateArticleSearchText] Updated searchText for article ${articleId}`);
+      return { success: true };
+    }),
+
+  /**
+   * Store attachment extracted text
+   * Called by: attachment-extract.workflow.ts → storeExtractedText
+   */
+  storeAttachmentExtractedText: internalProcedure
+    .input(z.object({
+      attachmentId: z.string().min(1),
+      extractedText: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      const { attachmentId, extractedText } = input;
+
+      await prisma.knowledgeAttachment.update({
+        where: { id: attachmentId },
+        data: { extractedText },
+      });
+
+      console.log(`[Internal:storeAttachmentExtractedText] Updated attachment ${attachmentId}`);
+      return { success: true };
+    }),
+
+  /**
+   * Search knowledge chunks using vector similarity
+   * Called by: knowledge.activities.ts → retrieveKnowledgeContext
+   */
+  searchKnowledgeChunks: internalProcedure
+    .input(z.object({
+      workspaceId: z.string().min(1),
+      embedding: z.array(z.number()).length(1536),
+      limit: z.number().min(1).max(50).default(10),
+      minSimilarity: z.number().min(0).max(1).default(0.5),
+    }))
+    .query(async ({ input }) => {
+      const { workspaceId, embedding, limit, minSimilarity } = input;
+
+      // Dynamic import to avoid circular dependencies
+      const { searchKnowledgeChunks: searchChunks } = await import("@cognobserve/db");
+      const chunks = await searchChunks(
+        workspaceId,
+        embedding,
+        limit,
+        minSimilarity
+      );
+
+      console.log(`[Internal:searchKnowledgeChunks] Found ${chunks.length} similar chunks`);
+
+      return {
+        chunks: chunks.map((chunk: { id: string; articleId: string; content: string; sectionTitle: string | null; similarity: number }) => ({
+          id: chunk.id,
+          articleId: chunk.articleId,
+          content: chunk.content,
+          sectionTitle: chunk.sectionTitle,
+          score: chunk.similarity,
+        })),
+      };
+    }),
+
+  /**
+   * Store RCA knowledge matches
+   * Called by: rca.workflow.ts → storeRCAKnowledgeMatches
+   */
+  storeRCAKnowledgeMatches: internalProcedure
+    .input(StoreRCAKnowledgeMatchesInputSchema)
+    .mutation(async ({ input }) => {
+      const { rcaId, matches } = input;
+
+      if (matches.length === 0) {
+        return { storedCount: 0 };
+      }
+
+      // Delete existing matches for this RCA (in case of re-analysis)
+      await prisma.alertRCAKnowledge.deleteMany({
+        where: { rcaId },
+      });
+
+      // Create new matches
+      await prisma.alertRCAKnowledge.createMany({
+        data: matches.map((m) => ({
+          rcaId,
+          articleId: m.articleId,
+          matchType: m.matchType,
+          matchScore: m.matchScore,
+          matchReason: m.matchReason,
+          snapshotTitle: m.snapshotTitle,
+          snapshotExcerpt: m.snapshotExcerpt,
+        })),
+      });
+
+      console.log(`[Internal:storeRCAKnowledgeMatches] Stored ${matches.length} matches for RCA ${rcaId}`);
+      return { storedCount: matches.length };
+    }),
+
+  /**
+   * Clear all chunks for an article (for re-indexing)
+   * Called by: knowledge.activities.ts → clearArticleChunks
+   */
+  clearArticleChunks: internalProcedure
+    .input(z.object({
+      articleId: z.string().min(1),
+    }))
+    .mutation(async ({ input }) => {
+      const { articleId } = input;
+
+      const result = await prisma.knowledgeChunk.deleteMany({
+        where: { articleId },
+      });
+
+      console.log(`[Internal:clearArticleChunks] Deleted ${result.count} chunks for article ${articleId}`);
+      return { deletedCount: result.count };
     }),
 });
 

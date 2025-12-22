@@ -195,6 +195,12 @@ export type WorkspaceWhereInput = {
   allowedDomains?: Prisma.AllowedDomainListRelationFilter
   notificationChannels?: Prisma.NotificationChannelListRelationFilter
   githubInstallation?: Prisma.XOR<Prisma.GitHubInstallationNullableScalarRelationFilter, Prisma.GitHubInstallationWhereInput> | null
+  knowledgeGroups?: Prisma.KnowledgeGroupListRelationFilter
+  knowledgeArticles?: Prisma.KnowledgeArticleListRelationFilter
+  knowledgeRules?: Prisma.KnowledgeRuleListRelationFilter
+  knowledgeLinks?: Prisma.KnowledgeLinkListRelationFilter
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentListRelationFilter
+  knowledgeChunks?: Prisma.KnowledgeChunkListRelationFilter
 }
 
 export type WorkspaceOrderByWithRelationInput = {
@@ -209,6 +215,12 @@ export type WorkspaceOrderByWithRelationInput = {
   allowedDomains?: Prisma.AllowedDomainOrderByRelationAggregateInput
   notificationChannels?: Prisma.NotificationChannelOrderByRelationAggregateInput
   githubInstallation?: Prisma.GitHubInstallationOrderByWithRelationInput
+  knowledgeGroups?: Prisma.KnowledgeGroupOrderByRelationAggregateInput
+  knowledgeArticles?: Prisma.KnowledgeArticleOrderByRelationAggregateInput
+  knowledgeRules?: Prisma.KnowledgeRuleOrderByRelationAggregateInput
+  knowledgeLinks?: Prisma.KnowledgeLinkOrderByRelationAggregateInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentOrderByRelationAggregateInput
+  knowledgeChunks?: Prisma.KnowledgeChunkOrderByRelationAggregateInput
 }
 
 export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -226,6 +238,12 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   allowedDomains?: Prisma.AllowedDomainListRelationFilter
   notificationChannels?: Prisma.NotificationChannelListRelationFilter
   githubInstallation?: Prisma.XOR<Prisma.GitHubInstallationNullableScalarRelationFilter, Prisma.GitHubInstallationWhereInput> | null
+  knowledgeGroups?: Prisma.KnowledgeGroupListRelationFilter
+  knowledgeArticles?: Prisma.KnowledgeArticleListRelationFilter
+  knowledgeRules?: Prisma.KnowledgeRuleListRelationFilter
+  knowledgeLinks?: Prisma.KnowledgeLinkListRelationFilter
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentListRelationFilter
+  knowledgeChunks?: Prisma.KnowledgeChunkListRelationFilter
 }, "id" | "slug">
 
 export type WorkspaceOrderByWithAggregationInput = {
@@ -264,6 +282,12 @@ export type WorkspaceCreateInput = {
   allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
@@ -278,6 +302,12 @@ export type WorkspaceUncheckedCreateInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUpdateInput = {
@@ -292,6 +322,12 @@ export type WorkspaceUpdateInput = {
   allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
@@ -306,6 +342,12 @@ export type WorkspaceUncheckedUpdateInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
@@ -395,6 +437,90 @@ export type WorkspaceUpdateOneRequiredWithoutGithubInstallationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutGithubInstallationInput, Prisma.WorkspaceUpdateWithoutGithubInstallationInput>, Prisma.WorkspaceUncheckedUpdateWithoutGithubInstallationInput>
 }
 
+export type WorkspaceCreateNestedOneWithoutKnowledgeGroupsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeGroupsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeGroupsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeGroupsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeGroupsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeGroupsInput, Prisma.WorkspaceUpdateWithoutKnowledgeGroupsInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutKnowledgeArticlesInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeArticlesInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeArticlesNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeArticlesInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeArticlesInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeArticlesInput, Prisma.WorkspaceUpdateWithoutKnowledgeArticlesInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutKnowledgeRulesInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeRulesInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeRulesInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeRulesNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeRulesInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeRulesInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeRulesInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeRulesInput, Prisma.WorkspaceUpdateWithoutKnowledgeRulesInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutKnowledgeLinksInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeLinksInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeLinksInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeLinksInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeLinksInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeLinksInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeLinksInput, Prisma.WorkspaceUpdateWithoutKnowledgeLinksInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutKnowledgeAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeAttachmentsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeAttachmentsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeAttachmentsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUpdateWithoutKnowledgeAttachmentsInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutKnowledgeChunksInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeChunksInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeChunksInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutKnowledgeChunksNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeChunksInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutKnowledgeChunksInput
+  upsert?: Prisma.WorkspaceUpsertWithoutKnowledgeChunksInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutKnowledgeChunksInput, Prisma.WorkspaceUpdateWithoutKnowledgeChunksInput>, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput>
+}
+
 export type WorkspaceCreateNestedOneWithoutProjectsInput = {
   create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutProjectsInput, Prisma.WorkspaceUncheckedCreateWithoutProjectsInput>
   connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutProjectsInput
@@ -448,6 +574,12 @@ export type WorkspaceCreateWithoutNotificationChannelsInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutNotificationChannelsInput = {
@@ -461,6 +593,12 @@ export type WorkspaceUncheckedCreateWithoutNotificationChannelsInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutNotificationChannelsInput = {
@@ -490,6 +628,12 @@ export type WorkspaceUpdateWithoutNotificationChannelsInput = {
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutNotificationChannelsInput = {
@@ -503,6 +647,12 @@ export type WorkspaceUncheckedUpdateWithoutNotificationChannelsInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutGithubInstallationInput = {
@@ -516,6 +666,12 @@ export type WorkspaceCreateWithoutGithubInstallationInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutGithubInstallationInput = {
@@ -529,6 +685,12 @@ export type WorkspaceUncheckedCreateWithoutGithubInstallationInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutGithubInstallationInput = {
@@ -558,6 +720,12 @@ export type WorkspaceUpdateWithoutGithubInstallationInput = {
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutGithubInstallationInput = {
@@ -571,6 +739,564 @@ export type WorkspaceUncheckedUpdateWithoutGithubInstallationInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeGroupsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeGroupsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeGroupsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeGroupsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeGroupsInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeArticlesInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeArticlesInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeArticlesInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeArticlesInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeArticlesInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeArticlesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeRulesInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeRulesInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeRulesInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeRulesInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeRulesInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeRulesInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeRulesInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeRulesInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeLinksInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeLinksInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeLinksInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeLinksInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeLinksInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeLinksInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeLinksInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeLinksInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeAttachmentsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeAttachmentsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeAttachmentsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeAttachmentsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeAttachmentsInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutKnowledgeChunksInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutKnowledgeChunksInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutKnowledgeChunksInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeChunksInput>
+}
+
+export type WorkspaceUpsertWithoutKnowledgeChunksInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedCreateWithoutKnowledgeChunksInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutKnowledgeChunksInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutKnowledgeChunksInput, Prisma.WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput>
+}
+
+export type WorkspaceUpdateWithoutKnowledgeChunksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutProjectsInput = {
@@ -584,6 +1310,12 @@ export type WorkspaceCreateWithoutProjectsInput = {
   allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutProjectsInput = {
@@ -597,6 +1329,12 @@ export type WorkspaceUncheckedCreateWithoutProjectsInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutProjectsInput = {
@@ -626,6 +1364,12 @@ export type WorkspaceUpdateWithoutProjectsInput = {
   allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
@@ -639,6 +1383,12 @@ export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutMembersInput = {
@@ -652,6 +1402,12 @@ export type WorkspaceCreateWithoutMembersInput = {
   allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutMembersInput = {
@@ -665,6 +1421,12 @@ export type WorkspaceUncheckedCreateWithoutMembersInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutMembersInput = {
@@ -694,6 +1456,12 @@ export type WorkspaceUpdateWithoutMembersInput = {
   allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutMembersInput = {
@@ -707,6 +1475,12 @@ export type WorkspaceUncheckedUpdateWithoutMembersInput = {
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAllowedDomainsInput = {
@@ -720,6 +1494,12 @@ export type WorkspaceCreateWithoutAllowedDomainsInput = {
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
@@ -733,6 +1513,12 @@ export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAllowedDomainsInput = {
@@ -762,6 +1548,12 @@ export type WorkspaceUpdateWithoutAllowedDomainsInput = {
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
@@ -775,6 +1567,12 @@ export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 
@@ -787,6 +1585,12 @@ export type WorkspaceCountOutputType = {
   projects: number
   allowedDomains: number
   notificationChannels: number
+  knowledgeGroups: number
+  knowledgeArticles: number
+  knowledgeRules: number
+  knowledgeLinks: number
+  knowledgeAttachments: number
+  knowledgeChunks: number
 }
 
 export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -794,6 +1598,12 @@ export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensi
   projects?: boolean | WorkspaceCountOutputTypeCountProjectsArgs
   allowedDomains?: boolean | WorkspaceCountOutputTypeCountAllowedDomainsArgs
   notificationChannels?: boolean | WorkspaceCountOutputTypeCountNotificationChannelsArgs
+  knowledgeGroups?: boolean | WorkspaceCountOutputTypeCountKnowledgeGroupsArgs
+  knowledgeArticles?: boolean | WorkspaceCountOutputTypeCountKnowledgeArticlesArgs
+  knowledgeRules?: boolean | WorkspaceCountOutputTypeCountKnowledgeRulesArgs
+  knowledgeLinks?: boolean | WorkspaceCountOutputTypeCountKnowledgeLinksArgs
+  knowledgeAttachments?: boolean | WorkspaceCountOutputTypeCountKnowledgeAttachmentsArgs
+  knowledgeChunks?: boolean | WorkspaceCountOutputTypeCountKnowledgeChunksArgs
 }
 
 /**
@@ -834,6 +1644,48 @@ export type WorkspaceCountOutputTypeCountNotificationChannelsArgs<ExtArgs extend
   where?: Prisma.NotificationChannelWhereInput
 }
 
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeGroupWhereInput
+}
+
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeArticlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeArticleWhereInput
+}
+
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeRuleWhereInput
+}
+
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeLinkWhereInput
+}
+
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeAttachmentWhereInput
+}
+
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountKnowledgeChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeChunkWhereInput
+}
+
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -847,6 +1699,12 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   allowedDomains?: boolean | Prisma.Workspace$allowedDomainsArgs<ExtArgs>
   notificationChannels?: boolean | Prisma.Workspace$notificationChannelsArgs<ExtArgs>
   githubInstallation?: boolean | Prisma.Workspace$githubInstallationArgs<ExtArgs>
+  knowledgeGroups?: boolean | Prisma.Workspace$knowledgeGroupsArgs<ExtArgs>
+  knowledgeArticles?: boolean | Prisma.Workspace$knowledgeArticlesArgs<ExtArgs>
+  knowledgeRules?: boolean | Prisma.Workspace$knowledgeRulesArgs<ExtArgs>
+  knowledgeLinks?: boolean | Prisma.Workspace$knowledgeLinksArgs<ExtArgs>
+  knowledgeAttachments?: boolean | Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>
+  knowledgeChunks?: boolean | Prisma.Workspace$knowledgeChunksArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
@@ -884,6 +1742,12 @@ export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   allowedDomains?: boolean | Prisma.Workspace$allowedDomainsArgs<ExtArgs>
   notificationChannels?: boolean | Prisma.Workspace$notificationChannelsArgs<ExtArgs>
   githubInstallation?: boolean | Prisma.Workspace$githubInstallationArgs<ExtArgs>
+  knowledgeGroups?: boolean | Prisma.Workspace$knowledgeGroupsArgs<ExtArgs>
+  knowledgeArticles?: boolean | Prisma.Workspace$knowledgeArticlesArgs<ExtArgs>
+  knowledgeRules?: boolean | Prisma.Workspace$knowledgeRulesArgs<ExtArgs>
+  knowledgeLinks?: boolean | Prisma.Workspace$knowledgeLinksArgs<ExtArgs>
+  knowledgeAttachments?: boolean | Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>
+  knowledgeChunks?: boolean | Prisma.Workspace$knowledgeChunksArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -897,6 +1761,12 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     allowedDomains: Prisma.$AllowedDomainPayload<ExtArgs>[]
     notificationChannels: Prisma.$NotificationChannelPayload<ExtArgs>[]
     githubInstallation: Prisma.$GitHubInstallationPayload<ExtArgs> | null
+    knowledgeGroups: Prisma.$KnowledgeGroupPayload<ExtArgs>[]
+    knowledgeArticles: Prisma.$KnowledgeArticlePayload<ExtArgs>[]
+    knowledgeRules: Prisma.$KnowledgeRulePayload<ExtArgs>[]
+    knowledgeLinks: Prisma.$KnowledgeLinkPayload<ExtArgs>[]
+    knowledgeAttachments: Prisma.$KnowledgeAttachmentPayload<ExtArgs>[]
+    knowledgeChunks: Prisma.$KnowledgeChunkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1304,6 +2174,12 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
   allowedDomains<T extends Prisma.Workspace$allowedDomainsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$allowedDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AllowedDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notificationChannels<T extends Prisma.Workspace$notificationChannelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$notificationChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   githubInstallation<T extends Prisma.Workspace$githubInstallationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$githubInstallationArgs<ExtArgs>>): Prisma.Prisma__GitHubInstallationClient<runtime.Types.Result.GetResult<Prisma.$GitHubInstallationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  knowledgeGroups<T extends Prisma.Workspace$knowledgeGroupsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeArticles<T extends Prisma.Workspace$knowledgeArticlesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeArticlesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeRules<T extends Prisma.Workspace$knowledgeRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeLinks<T extends Prisma.Workspace$knowledgeLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeAttachments<T extends Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeChunks<T extends Prisma.Workspace$knowledgeChunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeChunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1839,6 +2715,150 @@ export type Workspace$githubInstallationArgs<ExtArgs extends runtime.Types.Exten
    */
   include?: Prisma.GitHubInstallationInclude<ExtArgs> | null
   where?: Prisma.GitHubInstallationWhereInput
+}
+
+/**
+ * Workspace.knowledgeGroups
+ */
+export type Workspace$knowledgeGroupsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeGroup
+   */
+  select?: Prisma.KnowledgeGroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeGroup
+   */
+  omit?: Prisma.KnowledgeGroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeGroupInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeGroupWhereInput
+  orderBy?: Prisma.KnowledgeGroupOrderByWithRelationInput | Prisma.KnowledgeGroupOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeGroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeGroupScalarFieldEnum | Prisma.KnowledgeGroupScalarFieldEnum[]
+}
+
+/**
+ * Workspace.knowledgeArticles
+ */
+export type Workspace$knowledgeArticlesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeArticle
+   */
+  select?: Prisma.KnowledgeArticleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeArticle
+   */
+  omit?: Prisma.KnowledgeArticleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeArticleInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeArticleWhereInput
+  orderBy?: Prisma.KnowledgeArticleOrderByWithRelationInput | Prisma.KnowledgeArticleOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeArticleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeArticleScalarFieldEnum | Prisma.KnowledgeArticleScalarFieldEnum[]
+}
+
+/**
+ * Workspace.knowledgeRules
+ */
+export type Workspace$knowledgeRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeRule
+   */
+  select?: Prisma.KnowledgeRuleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeRule
+   */
+  omit?: Prisma.KnowledgeRuleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeRuleInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeRuleWhereInput
+  orderBy?: Prisma.KnowledgeRuleOrderByWithRelationInput | Prisma.KnowledgeRuleOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeRuleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeRuleScalarFieldEnum | Prisma.KnowledgeRuleScalarFieldEnum[]
+}
+
+/**
+ * Workspace.knowledgeLinks
+ */
+export type Workspace$knowledgeLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeLink
+   */
+  select?: Prisma.KnowledgeLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeLink
+   */
+  omit?: Prisma.KnowledgeLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeLinkInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeLinkWhereInput
+  orderBy?: Prisma.KnowledgeLinkOrderByWithRelationInput | Prisma.KnowledgeLinkOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeLinkScalarFieldEnum | Prisma.KnowledgeLinkScalarFieldEnum[]
+}
+
+/**
+ * Workspace.knowledgeAttachments
+ */
+export type Workspace$knowledgeAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeAttachment
+   */
+  select?: Prisma.KnowledgeAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeAttachment
+   */
+  omit?: Prisma.KnowledgeAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeAttachmentInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeAttachmentWhereInput
+  orderBy?: Prisma.KnowledgeAttachmentOrderByWithRelationInput | Prisma.KnowledgeAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeAttachmentScalarFieldEnum | Prisma.KnowledgeAttachmentScalarFieldEnum[]
+}
+
+/**
+ * Workspace.knowledgeChunks
+ */
+export type Workspace$knowledgeChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeChunk
+   */
+  select?: Prisma.KnowledgeChunkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeChunk
+   */
+  omit?: Prisma.KnowledgeChunkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeChunkInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeChunkWhereInput
+  orderBy?: Prisma.KnowledgeChunkOrderByWithRelationInput | Prisma.KnowledgeChunkOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeChunkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeChunkScalarFieldEnum | Prisma.KnowledgeChunkScalarFieldEnum[]
 }
 
 /**

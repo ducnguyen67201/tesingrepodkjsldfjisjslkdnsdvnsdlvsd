@@ -212,6 +212,10 @@ export type UserWhereInput = {
   workspaces?: Prisma.WorkspaceMemberListRelationFilter
   domainsCreated?: Prisma.AllowedDomainListRelationFilter
   rcaFeedback?: Prisma.AlertRCAListRelationFilter
+  articlesCreated?: Prisma.KnowledgeArticleListRelationFilter
+  articlesUpdated?: Prisma.KnowledgeArticleListRelationFilter
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionListRelationFilter
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -229,6 +233,10 @@ export type UserOrderByWithRelationInput = {
   workspaces?: Prisma.WorkspaceMemberOrderByRelationAggregateInput
   domainsCreated?: Prisma.AllowedDomainOrderByRelationAggregateInput
   rcaFeedback?: Prisma.AlertRCAOrderByRelationAggregateInput
+  articlesCreated?: Prisma.KnowledgeArticleOrderByRelationAggregateInput
+  articlesUpdated?: Prisma.KnowledgeArticleOrderByRelationAggregateInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionOrderByRelationAggregateInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -249,6 +257,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   workspaces?: Prisma.WorkspaceMemberListRelationFilter
   domainsCreated?: Prisma.AllowedDomainListRelationFilter
   rcaFeedback?: Prisma.AlertRCAListRelationFilter
+  articlesCreated?: Prisma.KnowledgeArticleListRelationFilter
+  articlesUpdated?: Prisma.KnowledgeArticleListRelationFilter
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionListRelationFilter
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -294,6 +306,10 @@ export type UserCreateInput = {
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -311,6 +327,10 @@ export type UserUncheckedCreateInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -328,6 +348,10 @@ export type UserUpdateInput = {
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -345,6 +369,10 @@ export type UserUncheckedUpdateInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -451,6 +479,70 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutArticlesCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutArticlesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutArticlesUpdatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutArticlesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesUpdatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutArticlesCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutArticlesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesCreatedInput
+  upsert?: Prisma.UserUpsertWithoutArticlesCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArticlesCreatedInput, Prisma.UserUpdateWithoutArticlesCreatedInput>, Prisma.UserUncheckedUpdateWithoutArticlesCreatedInput>
+}
+
+export type UserUpdateOneWithoutArticlesUpdatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutArticlesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticlesUpdatedInput
+  upsert?: Prisma.UserUpsertWithoutArticlesUpdatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArticlesUpdatedInput, Prisma.UserUpdateWithoutArticlesUpdatedInput>, Prisma.UserUncheckedUpdateWithoutArticlesUpdatedInput>
+}
+
+export type UserCreateNestedOneWithoutArticleVersionsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedCreateWithoutArticleVersionsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticleVersionsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutArticleVersionsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedCreateWithoutArticleVersionsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutArticleVersionsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutArticleVersionsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutArticleVersionsCreatedInput, Prisma.UserUpdateWithoutArticleVersionsCreatedInput>, Prisma.UserUncheckedUpdateWithoutArticleVersionsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutKnowledgeLinksCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedCreateWithoutKnowledgeLinksCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKnowledgeLinksCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutKnowledgeLinksCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedCreateWithoutKnowledgeLinksCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKnowledgeLinksCreatedInput
+  upsert?: Prisma.UserUpsertWithoutKnowledgeLinksCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutKnowledgeLinksCreatedInput, Prisma.UserUpdateWithoutKnowledgeLinksCreatedInput>, Prisma.UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput>
+}
+
 export type UserCreateNestedOneWithoutProjectsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProjectsInput, Prisma.UserUncheckedCreateWithoutProjectsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectsInput
@@ -523,6 +615,10 @@ export type UserCreateWithoutAccountsInput = {
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -539,6 +635,10 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -571,6 +671,10 @@ export type UserUpdateWithoutAccountsInput = {
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -587,6 +691,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -603,6 +711,10 @@ export type UserCreateWithoutSessionsInput = {
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -619,6 +731,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -651,6 +767,10 @@ export type UserUpdateWithoutSessionsInput = {
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -667,6 +787,394 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutArticlesCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutArticlesCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutArticlesCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutArticlesCreatedInput>
+}
+
+export type UserCreateWithoutArticlesUpdatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutArticlesUpdatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutArticlesUpdatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutArticlesUpdatedInput>
+}
+
+export type UserUpsertWithoutArticlesCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutArticlesCreatedInput, Prisma.UserUncheckedUpdateWithoutArticlesCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutArticlesCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutArticlesCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutArticlesCreatedInput, Prisma.UserUncheckedUpdateWithoutArticlesCreatedInput>
+}
+
+export type UserUpdateWithoutArticlesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutArticlesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUpsertWithoutArticlesUpdatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutArticlesUpdatedInput, Prisma.UserUncheckedUpdateWithoutArticlesUpdatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutArticlesUpdatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutArticlesUpdatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutArticlesUpdatedInput, Prisma.UserUncheckedUpdateWithoutArticlesUpdatedInput>
+}
+
+export type UserUpdateWithoutArticlesUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutArticlesUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutArticleVersionsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutArticleVersionsCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutArticleVersionsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedCreateWithoutArticleVersionsCreatedInput>
+}
+
+export type UserUpsertWithoutArticleVersionsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedUpdateWithoutArticleVersionsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedCreateWithoutArticleVersionsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutArticleVersionsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutArticleVersionsCreatedInput, Prisma.UserUncheckedUpdateWithoutArticleVersionsCreatedInput>
+}
+
+export type UserUpdateWithoutArticleVersionsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutArticleVersionsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutKnowledgeLinksCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutKnowledgeLinksCreatedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutKnowledgeLinksCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedCreateWithoutKnowledgeLinksCreatedInput>
+}
+
+export type UserUpsertWithoutKnowledgeLinksCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedCreateWithoutKnowledgeLinksCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutKnowledgeLinksCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutKnowledgeLinksCreatedInput, Prisma.UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput>
+}
+
+export type UserUpdateWithoutKnowledgeLinksCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
@@ -683,6 +1191,10 @@ export type UserCreateWithoutProjectsInput = {
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -699,6 +1211,10 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -731,6 +1247,10 @@ export type UserUpdateWithoutProjectsInput = {
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -747,6 +1267,10 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutRcaFeedbackInput = {
@@ -763,6 +1287,10 @@ export type UserCreateWithoutRcaFeedbackInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutRcaFeedbackInput = {
@@ -779,6 +1307,10 @@ export type UserUncheckedCreateWithoutRcaFeedbackInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutRcaFeedbackInput = {
@@ -811,6 +1343,10 @@ export type UserUpdateWithoutRcaFeedbackInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
@@ -827,6 +1363,10 @@ export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutWorkspacesInput = {
@@ -843,6 +1383,10 @@ export type UserCreateWithoutWorkspacesInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutWorkspacesInput = {
@@ -859,6 +1403,10 @@ export type UserUncheckedCreateWithoutWorkspacesInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutWorkspacesInput = {
@@ -891,6 +1439,10 @@ export type UserUpdateWithoutWorkspacesInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkspacesInput = {
@@ -907,6 +1459,10 @@ export type UserUncheckedUpdateWithoutWorkspacesInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateWithoutDomainsCreatedInput = {
@@ -923,6 +1479,10 @@ export type UserCreateWithoutDomainsCreatedInput = {
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutDomainsCreatedInput = {
@@ -939,6 +1499,10 @@ export type UserUncheckedCreateWithoutDomainsCreatedInput = {
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutDomainsCreatedInput = {
@@ -971,6 +1535,10 @@ export type UserUpdateWithoutDomainsCreatedInput = {
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
@@ -987,6 +1555,10 @@ export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -1001,6 +1573,10 @@ export type UserCountOutputType = {
   workspaces: number
   domainsCreated: number
   rcaFeedback: number
+  articlesCreated: number
+  articlesUpdated: number
+  articleVersionsCreated: number
+  knowledgeLinksCreated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1010,6 +1586,10 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   workspaces?: boolean | UserCountOutputTypeCountWorkspacesArgs
   domainsCreated?: boolean | UserCountOutputTypeCountDomainsCreatedArgs
   rcaFeedback?: boolean | UserCountOutputTypeCountRcaFeedbackArgs
+  articlesCreated?: boolean | UserCountOutputTypeCountArticlesCreatedArgs
+  articlesUpdated?: boolean | UserCountOutputTypeCountArticlesUpdatedArgs
+  articleVersionsCreated?: boolean | UserCountOutputTypeCountArticleVersionsCreatedArgs
+  knowledgeLinksCreated?: boolean | UserCountOutputTypeCountKnowledgeLinksCreatedArgs
 }
 
 /**
@@ -1064,6 +1644,34 @@ export type UserCountOutputTypeCountRcaFeedbackArgs<ExtArgs extends runtime.Type
   where?: Prisma.AlertRCAWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountArticlesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeArticleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountArticlesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeArticleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountArticleVersionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeArticleVersionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountKnowledgeLinksCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KnowledgeLinkWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1080,6 +1688,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   workspaces?: boolean | Prisma.User$workspacesArgs<ExtArgs>
   domainsCreated?: boolean | Prisma.User$domainsCreatedArgs<ExtArgs>
   rcaFeedback?: boolean | Prisma.User$rcaFeedbackArgs<ExtArgs>
+  articlesCreated?: boolean | Prisma.User$articlesCreatedArgs<ExtArgs>
+  articlesUpdated?: boolean | Prisma.User$articlesUpdatedArgs<ExtArgs>
+  articleVersionsCreated?: boolean | Prisma.User$articleVersionsCreatedArgs<ExtArgs>
+  knowledgeLinksCreated?: boolean | Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1124,6 +1736,10 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   workspaces?: boolean | Prisma.User$workspacesArgs<ExtArgs>
   domainsCreated?: boolean | Prisma.User$domainsCreatedArgs<ExtArgs>
   rcaFeedback?: boolean | Prisma.User$rcaFeedbackArgs<ExtArgs>
+  articlesCreated?: boolean | Prisma.User$articlesCreatedArgs<ExtArgs>
+  articlesUpdated?: boolean | Prisma.User$articlesUpdatedArgs<ExtArgs>
+  articleVersionsCreated?: boolean | Prisma.User$articleVersionsCreatedArgs<ExtArgs>
+  knowledgeLinksCreated?: boolean | Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1138,6 +1754,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     workspaces: Prisma.$WorkspaceMemberPayload<ExtArgs>[]
     domainsCreated: Prisma.$AllowedDomainPayload<ExtArgs>[]
     rcaFeedback: Prisma.$AlertRCAPayload<ExtArgs>[]
+    articlesCreated: Prisma.$KnowledgeArticlePayload<ExtArgs>[]
+    articlesUpdated: Prisma.$KnowledgeArticlePayload<ExtArgs>[]
+    articleVersionsCreated: Prisma.$KnowledgeArticleVersionPayload<ExtArgs>[]
+    knowledgeLinksCreated: Prisma.$KnowledgeLinkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1548,6 +2168,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   workspaces<T extends Prisma.User$workspacesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$workspacesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkspaceMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   domainsCreated<T extends Prisma.User$domainsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$domainsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AllowedDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rcaFeedback<T extends Prisma.User$rcaFeedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$rcaFeedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertRCAPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articlesCreated<T extends Prisma.User$articlesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articlesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articlesUpdated<T extends Prisma.User$articlesUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articlesUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  articleVersionsCreated<T extends Prisma.User$articleVersionsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articleVersionsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticleVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  knowledgeLinksCreated<T extends Prisma.User$knowledgeLinksCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2114,6 +2738,102 @@ export type User$rcaFeedbackArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.AlertRCAScalarFieldEnum | Prisma.AlertRCAScalarFieldEnum[]
+}
+
+/**
+ * User.articlesCreated
+ */
+export type User$articlesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeArticle
+   */
+  select?: Prisma.KnowledgeArticleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeArticle
+   */
+  omit?: Prisma.KnowledgeArticleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeArticleInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeArticleWhereInput
+  orderBy?: Prisma.KnowledgeArticleOrderByWithRelationInput | Prisma.KnowledgeArticleOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeArticleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeArticleScalarFieldEnum | Prisma.KnowledgeArticleScalarFieldEnum[]
+}
+
+/**
+ * User.articlesUpdated
+ */
+export type User$articlesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeArticle
+   */
+  select?: Prisma.KnowledgeArticleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeArticle
+   */
+  omit?: Prisma.KnowledgeArticleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeArticleInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeArticleWhereInput
+  orderBy?: Prisma.KnowledgeArticleOrderByWithRelationInput | Prisma.KnowledgeArticleOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeArticleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeArticleScalarFieldEnum | Prisma.KnowledgeArticleScalarFieldEnum[]
+}
+
+/**
+ * User.articleVersionsCreated
+ */
+export type User$articleVersionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeArticleVersion
+   */
+  select?: Prisma.KnowledgeArticleVersionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeArticleVersion
+   */
+  omit?: Prisma.KnowledgeArticleVersionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeArticleVersionInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeArticleVersionWhereInput
+  orderBy?: Prisma.KnowledgeArticleVersionOrderByWithRelationInput | Prisma.KnowledgeArticleVersionOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeArticleVersionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeArticleVersionScalarFieldEnum | Prisma.KnowledgeArticleVersionScalarFieldEnum[]
+}
+
+/**
+ * User.knowledgeLinksCreated
+ */
+export type User$knowledgeLinksCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KnowledgeLink
+   */
+  select?: Prisma.KnowledgeLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KnowledgeLink
+   */
+  omit?: Prisma.KnowledgeLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KnowledgeLinkInclude<ExtArgs> | null
+  where?: Prisma.KnowledgeLinkWhereInput
+  orderBy?: Prisma.KnowledgeLinkOrderByWithRelationInput | Prisma.KnowledgeLinkOrderByWithRelationInput[]
+  cursor?: Prisma.KnowledgeLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KnowledgeLinkScalarFieldEnum | Prisma.KnowledgeLinkScalarFieldEnum[]
 }
 
 /**

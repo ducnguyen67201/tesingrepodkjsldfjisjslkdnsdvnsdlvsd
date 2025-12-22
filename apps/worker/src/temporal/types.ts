@@ -741,6 +741,21 @@ export interface RCAGenerationInput {
   traceAnalysis: TraceAnalysisOutput;
   /** Output from correlateCodeChanges activity */
   codeCorrelation: CodeCorrelationOutput;
+  /** Knowledge context from KB (optional) */
+  knowledgeContext?: {
+    articles: Array<{
+      id: string;
+      title: string;
+      slug: string;
+      summary: string | null;
+      excerpt: string;
+      matchType: "RULE" | "SEMANTIC" | "DIRECT_LINK";
+      matchScore: number;
+      matchReason: string;
+    }>;
+    promptContext: string | null;
+    totalMatches: number;
+  };
 }
 
 /**

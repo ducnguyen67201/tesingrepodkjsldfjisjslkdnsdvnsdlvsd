@@ -24,6 +24,7 @@ import { trpc } from "@/lib/trpc/client";
 import { clipboardToast } from "@/lib/success";
 import { formatDuration } from "@/lib/format";
 import { SpanTree } from "./span-tree";
+import { TraceKnowledgeSection } from "@/components/knowledge/integration";
 
 // ------------------------------------------------------------
 // Types
@@ -255,6 +256,12 @@ export function TraceDetailPanel({
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Knowledge Articles */}
+                <TraceKnowledgeSection
+                  workspaceSlug={workspaceSlug}
+                  traceId={data.trace.id}
+                />
 
                 <Separator />
 

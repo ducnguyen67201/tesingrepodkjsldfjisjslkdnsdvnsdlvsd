@@ -20,6 +20,9 @@ interface WorkspaceBreadcrumbProps {
 const PAGE_LABELS: Record<string, string> = {
   "/projects": "Projects",
   "/traces": "Traces",
+  "/prompts": "Prompts",
+  "/knowledge": "Knowledge Base",
+  "/settings": "Settings",
 };
 
 /** Get the current page label from pathname */

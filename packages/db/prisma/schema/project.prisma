@@ -28,6 +28,9 @@ model Project {
   evalSuites    EvalSuite[]
   prompts       Prompt[]
 
+  // Knowledge Base
+  knowledgeRules KnowledgeRule[]
+
   @@index([workspaceId])
 }
 

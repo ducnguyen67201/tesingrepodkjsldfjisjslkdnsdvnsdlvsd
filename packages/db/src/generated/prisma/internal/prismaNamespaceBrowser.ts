@@ -63,12 +63,21 @@ export const ModelName = {
   ModelPricing: 'ModelPricing',
   CostDailySummary: 'CostDailySummary',
   EvalSuite: 'EvalSuite',
+  EvalSuiteKnowledge: 'EvalSuiteKnowledge',
   EvalRun: 'EvalRun',
   GitHubInstallation: 'GitHubInstallation',
   GitHubRepository: 'GitHubRepository',
   GitCommit: 'GitCommit',
   GitPullRequest: 'GitPullRequest',
   CodeChunk: 'CodeChunk',
+  KnowledgeGroup: 'KnowledgeGroup',
+  KnowledgeArticle: 'KnowledgeArticle',
+  KnowledgeArticleVersion: 'KnowledgeArticleVersion',
+  KnowledgeRule: 'KnowledgeRule',
+  KnowledgeLink: 'KnowledgeLink',
+  KnowledgeAttachment: 'KnowledgeAttachment',
+  KnowledgeChunk: 'KnowledgeChunk',
+  AlertRCAKnowledge: 'AlertRCAKnowledge',
   Project: 'Project',
   ProjectMember: 'ProjectMember',
   ApiKey: 'ApiKey',
@@ -286,6 +295,16 @@ export const EvalSuiteScalarFieldEnum = {
 export type EvalSuiteScalarFieldEnum = (typeof EvalSuiteScalarFieldEnum)[keyof typeof EvalSuiteScalarFieldEnum]
 
 
+export const EvalSuiteKnowledgeScalarFieldEnum = {
+  id: 'id',
+  suiteId: 'suiteId',
+  articleId: 'articleId',
+  createdAt: 'createdAt'
+} as const
+
+export type EvalSuiteKnowledgeScalarFieldEnum = (typeof EvalSuiteKnowledgeScalarFieldEnum)[keyof typeof EvalSuiteKnowledgeScalarFieldEnum]
+
+
 export const EvalRunScalarFieldEnum = {
   id: 'id',
   suiteId: 'suiteId',
@@ -389,6 +408,145 @@ export const CodeChunkScalarFieldEnum = {
 } as const
 
 export type CodeChunkScalarFieldEnum = (typeof CodeChunkScalarFieldEnum)[keyof typeof CodeChunkScalarFieldEnum]
+
+
+export const KnowledgeGroupScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  name: 'name',
+  description: 'description',
+  parentId: 'parentId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KnowledgeGroupScalarFieldEnum = (typeof KnowledgeGroupScalarFieldEnum)[keyof typeof KnowledgeGroupScalarFieldEnum]
+
+
+export const KnowledgeArticleScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  groupId: 'groupId',
+  title: 'title',
+  slug: 'slug',
+  summary: 'summary',
+  content: 'content',
+  tags: 'tags',
+  status: 'status',
+  searchText: 'searchText',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  viewCount: 'viewCount',
+  lastViewedAt: 'lastViewedAt',
+  helpfulCount: 'helpfulCount',
+  notHelpfulCount: 'notHelpfulCount'
+} as const
+
+export type KnowledgeArticleScalarFieldEnum = (typeof KnowledgeArticleScalarFieldEnum)[keyof typeof KnowledgeArticleScalarFieldEnum]
+
+
+export const KnowledgeArticleVersionScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  version: 'version',
+  title: 'title',
+  summary: 'summary',
+  content: 'content',
+  tags: 'tags',
+  diff: 'diff',
+  checksum: 'checksum',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type KnowledgeArticleVersionScalarFieldEnum = (typeof KnowledgeArticleVersionScalarFieldEnum)[keyof typeof KnowledgeArticleVersionScalarFieldEnum]
+
+
+export const KnowledgeRuleScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  name: 'name',
+  description: 'description',
+  enabled: 'enabled',
+  priority: 'priority',
+  scope: 'scope',
+  projectId: 'projectId',
+  condition: 'condition',
+  articleId: 'articleId',
+  groupId: 'groupId',
+  matchReasonTemplate: 'matchReasonTemplate',
+  matchCount: 'matchCount',
+  lastMatchedAt: 'lastMatchedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KnowledgeRuleScalarFieldEnum = (typeof KnowledgeRuleScalarFieldEnum)[keyof typeof KnowledgeRuleScalarFieldEnum]
+
+
+export const KnowledgeLinkScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  articleId: 'articleId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  note: 'note',
+  createdById: 'createdById',
+  createdAt: 'createdAt'
+} as const
+
+export type KnowledgeLinkScalarFieldEnum = (typeof KnowledgeLinkScalarFieldEnum)[keyof typeof KnowledgeLinkScalarFieldEnum]
+
+
+export const KnowledgeAttachmentScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  articleId: 'articleId',
+  fileName: 'fileName',
+  contentType: 'contentType',
+  sizeBytes: 'sizeBytes',
+  storageKey: 'storageKey',
+  extractedText: 'extractedText',
+  createdAt: 'createdAt'
+} as const
+
+export type KnowledgeAttachmentScalarFieldEnum = (typeof KnowledgeAttachmentScalarFieldEnum)[keyof typeof KnowledgeAttachmentScalarFieldEnum]
+
+
+export const KnowledgeChunkScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  workspaceId: 'workspaceId',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  content: 'content',
+  contentHash: 'contentHash',
+  startOffset: 'startOffset',
+  endOffset: 'endOffset',
+  sectionTitle: 'sectionTitle',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KnowledgeChunkScalarFieldEnum = (typeof KnowledgeChunkScalarFieldEnum)[keyof typeof KnowledgeChunkScalarFieldEnum]
+
+
+export const AlertRCAKnowledgeScalarFieldEnum = {
+  id: 'id',
+  rcaId: 'rcaId',
+  articleId: 'articleId',
+  matchType: 'matchType',
+  matchScore: 'matchScore',
+  matchReason: 'matchReason',
+  snapshotTitle: 'snapshotTitle',
+  snapshotExcerpt: 'snapshotExcerpt',
+  createdAt: 'createdAt'
+} as const
+
+export type AlertRCAKnowledgeScalarFieldEnum = (typeof AlertRCAKnowledgeScalarFieldEnum)[keyof typeof AlertRCAKnowledgeScalarFieldEnum]
 
 
 export const ProjectScalarFieldEnum = {

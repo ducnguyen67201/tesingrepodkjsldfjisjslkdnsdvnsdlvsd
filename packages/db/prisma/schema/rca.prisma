@@ -21,6 +21,9 @@ model AlertRCA {
   alert        Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
   feedbackUser User? @relation("RCAFeedbackUser", fields: [feedbackUserId], references: [id], onDelete: SetNull)
 
+  // Knowledge Base matches
+  knowledgeMatches AlertRCAKnowledge[]
+
   @@index([alertId])
   @@index([triggeredAt(sort: Desc)])
 }

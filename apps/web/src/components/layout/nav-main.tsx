@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, FolderKanban, Activity, FileCode, Settings } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Activity, FileCode, BookOpen, Settings } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -41,6 +41,7 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Developer Tools",
     items: [
       { title: "Prompts", path: "/prompts", icon: FileCode },
+      { title: "Knowledge", path: "/knowledge", icon: BookOpen },
     ],
   },
   {

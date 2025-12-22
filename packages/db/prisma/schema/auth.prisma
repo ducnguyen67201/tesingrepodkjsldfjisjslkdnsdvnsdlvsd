@@ -18,6 +18,12 @@ model User {
   workspaces     WorkspaceMember[]
   domainsCreated AllowedDomain[]  @relation("DomainCreatedBy")
   rcaFeedback    AlertRCA[]       @relation("RCAFeedbackUser")
+
+  // Knowledge Base
+  articlesCreated         KnowledgeArticle[]        @relation("ArticleCreatedBy")
+  articlesUpdated         KnowledgeArticle[]        @relation("ArticleUpdatedBy")
+  articleVersionsCreated  KnowledgeArticleVersion[] @relation("ArticleVersionCreatedBy")
+  knowledgeLinksCreated   KnowledgeLink[]           @relation("LinkCreatedBy")
 }
 
 model Account {

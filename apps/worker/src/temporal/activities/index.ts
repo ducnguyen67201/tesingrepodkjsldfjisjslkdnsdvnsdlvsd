@@ -70,3 +70,23 @@ export {
   storeResults,
   triggerAlert,
 } from "./eval.activities";
+
+// Knowledge Base activities
+export {
+  getArticleForIndexing,
+  chunkArticleContent,
+  storeKnowledgeChunks,
+  generateKnowledgeEmbeddings,
+  storeKnowledgeEmbeddings,
+  updateArticleSearchText,
+  clearArticleChunks,
+  evaluateKnowledgeRules,
+  retrieveKnowledgeContext,
+} from "./knowledge.activities";
+
+// Attachment activities
+export {
+  getAttachmentForExtraction,
+  extractTextFromAttachment,
+  storeAttachmentText,
+} from "./attachment.activities";

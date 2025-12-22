@@ -30,6 +30,7 @@ import { githubRouter } from "./github";
 import { evalsRouter } from "./evals";
 import { filtersRouter } from "./filters";
 import { promptsRouter } from "./prompts";
+import { knowledgeRouter } from "./knowledge";
 
 /**
  * Main application router.
@@ -243,6 +244,60 @@ export const appRouter = createRouter({
   prompts: promptsRouter,
 
   /**
+   * Knowledge Base (Workspace-Level KB)
+   * @see ./knowledge.ts
+   *
+   * Workspace-level knowledge base for rules, runbooks, and domain knowledge.
+   * Integrates with RCA and trace views for auto-matched guidance.
+   *
+   * Groups:
+   * - knowledge.listGroups    - List hierarchical groups
+   * - knowledge.createGroup   - Create a group/folder
+   * - knowledge.updateGroup   - Update group metadata
+   * - knowledge.deleteGroup   - Delete group (moves children)
+   *
+   * Articles:
+   * - knowledge.listArticles  - List articles with filters
+   * - knowledge.getArticle    - Get article with versions
+   * - knowledge.createArticle - Create new article
+   * - knowledge.updateArticle - Update article content
+   * - knowledge.publishArticle - Publish article (triggers indexing)
+   * - knowledge.archiveArticle - Archive/unarchive article
+   * - knowledge.deleteArticle - Permanently delete article
+   *
+   * Versions:
+   * - knowledge.listVersions    - List version history
+   * - knowledge.getVersion      - Get specific version
+   * - knowledge.revertToVersion - Revert to previous version
+   * - knowledge.compareVersions - Compare two versions (diff)
+   *
+   * Attachments:
+   * - knowledge.uploadAttachment - Upload file attachment
+   * - knowledge.deleteAttachment - Delete attachment
+   * - knowledge.listAttachments  - List article attachments
+   *
+   * Search:
+   * - knowledge.search - Keyword + semantic search
+   *
+   * Links:
+   * - knowledge.linkEntity   - Link article to entity
+   * - knowledge.unlinkEntity - Unlink article from entity
+   * - knowledge.listLinks    - List entity links
+   *
+   * Rules:
+   * - knowledge.upsertRule  - Create/update auto-match rule
+   * - knowledge.deleteRule  - Delete rule
+   * - knowledge.listRules   - List rules
+   * - knowledge.previewRule - Preview rule matches
+   *
+   * Stats:
+   * - knowledge.stats        - Get KB statistics
+   * - knowledge.submitFeedback - Submit article feedback
+   * - knowledge.getTags      - Get all tags
+   */
+  knowledge: knowledgeRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -273,4 +328,5 @@ export {
   evalsRouter,
   filtersRouter,
   promptsRouter,
+  knowledgeRouter,
 };

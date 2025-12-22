@@ -9,6 +9,7 @@ import { RCAEvidenceCard } from "./rca-evidence-card";
 import { RCARelatedChangesCard } from "./rca-related-changes";
 import { RCARemediationCard } from "./rca-remediation-card";
 import { RCATracesCard } from "./rca-traces-card";
+import { RCAKnowledgeCard } from "./rca-knowledge-card";
 import { RCAFeedbackCard } from "./rca-feedback-card";
 import { RCADetailSkeleton } from "./rca-detail-skeleton";
 import { TraceDetailPanel } from "@/components/traces/trace-detail-panel";
@@ -95,7 +96,7 @@ export function RCADetailPage({
     );
   }
 
-  const { rca, alert, project, alertHistory, commits, pullRequests, traces, githubRepo } = data;
+  const { rca, alert, project, alertHistory, commits, pullRequests, traces, githubRepo, knowledgeMatches } = data;
 
   return (
     <div className="space-y-6 p-4">
@@ -124,6 +125,14 @@ export function RCADetailPage({
             githubRepo={githubRepo}
           />
         </div>
+
+        {/* Knowledge base matches */}
+        {knowledgeMatches.length > 0 && (
+          <RCAKnowledgeCard
+            knowledgeMatches={knowledgeMatches}
+            workspaceSlug={workspaceSlug}
+          />
+        )}
 
         <RCARemediationCard remediation={rca.analysis.remediation} />
 

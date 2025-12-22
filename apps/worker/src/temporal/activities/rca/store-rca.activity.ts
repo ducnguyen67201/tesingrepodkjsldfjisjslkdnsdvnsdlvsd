@@ -41,6 +41,15 @@ export interface StoreRCAActivityInput {
     errorPatternCount: number;
     anomalyCount: number;
   };
+  /** Knowledge matches from KB for this RCA */
+  knowledgeMatches?: Array<{
+    articleId: string;
+    matchType: "RULE" | "SEMANTIC" | "DIRECT_LINK";
+    matchScore: number;
+    matchReason: string;
+    snapshotTitle: string;
+    snapshotExcerpt: string;
+  }>;
 }
 
 // Re-export output type from schemas
@@ -99,6 +108,32 @@ export async function storeRCA(
     estimatedCost: input.rcaReport.llmMetadata.estimatedCost,
     latencyMs: input.rcaReport.llmMetadata.latencyMs,
   });
+
+  // Store knowledge matches if present
+  if (input.knowledgeMatches && input.knowledgeMatches.length > 0) {
+    logger.info("[storeRCA] Storing knowledge matches", {
+      rcaId: result.rcaId,
+      matchCount: input.knowledgeMatches.length,
+    });
+
+    try {
+      await caller.internal.storeRCAKnowledgeMatches({
+        rcaId: result.rcaId,
+        matches: input.knowledgeMatches,
+      });
+
+      logger.info("[storeRCA] Knowledge matches stored", {
+        rcaId: result.rcaId,
+        matchCount: input.knowledgeMatches.length,
+      });
+    } catch (error) {
+      // Don't fail the RCA if knowledge matches fail to store
+      logger.warn("[storeRCA] Failed to store knowledge matches", {
+        rcaId: result.rcaId,
+        error,
+      });
+    }
+  }
 
   return result;
 }

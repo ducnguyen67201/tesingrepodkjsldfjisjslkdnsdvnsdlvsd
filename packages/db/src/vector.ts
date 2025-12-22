@@ -342,3 +342,212 @@ export async function clearRepositoryEmbeddings(
 
   return result;
 }
+
+// ============================================================
+// Knowledge Base Vector Operations
+// ============================================================
+
+/**
+ * Result from knowledge similarity search
+ */
+export interface SimilarKnowledgeChunk {
+  id: string;
+  articleId: string;
+  workspaceId: string;
+  content: string;
+  sectionTitle: string | null;
+  sourceType: string;
+  similarity: number;
+}
+
+/**
+ * Input for knowledge embedding batch storage
+ */
+export interface KnowledgeEmbeddingBatchItem {
+  chunkId: string;
+  embedding: number[];
+}
+
+/**
+ * Store embedding for a single knowledge chunk.
+ *
+ * @param chunkId - ID of the knowledge chunk
+ * @param embedding - 1536-dimensional embedding array
+ */
+export async function setKnowledgeChunkEmbedding(
+  chunkId: string,
+  embedding: number[]
+): Promise<void> {
+  validateEmbedding(embedding);
+
+  const vectorLiteral = formatVector(embedding);
+
+  await prisma.$executeRaw`
+    UPDATE "KnowledgeChunk"
+    SET embedding = ${Prisma.raw(`'${vectorLiteral}'::vector`)}
+    WHERE id = ${chunkId}
+  `;
+}
+
+/**
+ * Store embeddings for multiple knowledge chunks in a single transaction.
+ * More efficient than calling setKnowledgeChunkEmbedding() multiple times.
+ *
+ * @param items - Array of {chunkId, embedding} pairs
+ */
+export async function setKnowledgeChunkEmbeddings(
+  items: KnowledgeEmbeddingBatchItem[]
+): Promise<void> {
+  if (items.length === 0) return;
+
+  // Validate all chunk IDs and embeddings first
+  for (const item of items) {
+    validateCuid(item.chunkId, "chunkId");
+    validateEmbedding(item.embedding);
+  }
+
+  // Build batch update using CASE WHEN
+  const ids = items.map((item) => item.chunkId);
+  const cases = items
+    .map((item) => {
+      const vectorLiteral = formatVector(item.embedding);
+      return `WHEN id = '${item.chunkId}' THEN '${vectorLiteral}'::vector`;
+    })
+    .join("\n      ");
+
+  await prisma.$executeRaw`
+    UPDATE "KnowledgeChunk"
+    SET embedding = CASE
+      ${Prisma.raw(cases)}
+    END
+    WHERE id = ANY(${ids})
+  `;
+}
+
+/**
+ * Search for similar knowledge chunks using vector similarity.
+ *
+ * Uses cosine similarity (1 - cosine distance) for comparison.
+ * Results are ordered by similarity (highest first).
+ *
+ * @param workspaceId - Workspace ID to search within
+ * @param queryEmbedding - 1536-dimensional query embedding
+ * @param topK - Maximum number of results (default: 10)
+ * @param minSimilarity - Minimum similarity threshold 0-1 (default: 0.5)
+ * @returns Array of similar chunks with similarity scores
+ */
+export async function searchKnowledgeChunks(
+  workspaceId: string,
+  queryEmbedding: number[],
+  topK: number = DEFAULT_TOP_K,
+  minSimilarity: number = DEFAULT_MIN_SIMILARITY
+): Promise<SimilarKnowledgeChunk[]> {
+  validateEmbedding(queryEmbedding);
+
+  const vectorLiteral = formatVector(queryEmbedding);
+
+  const results = await prisma.$queryRaw<SimilarKnowledgeChunk[]>`
+    SELECT
+      kc.id,
+      kc."articleId",
+      kc."workspaceId",
+      kc.content,
+      kc."sectionTitle",
+      kc."sourceType",
+      1 - (kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) as similarity
+    FROM "KnowledgeChunk" kc
+    INNER JOIN "KnowledgeArticle" ka ON kc."articleId" = ka.id
+    WHERE kc."workspaceId" = ${workspaceId}
+      AND ka.status = 'PUBLISHED'
+      AND kc.embedding IS NOT NULL
+      AND 1 - (kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) >= ${minSimilarity}
+    ORDER BY kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}
+    LIMIT ${topK}
+  `;
+
+  return results;
+}
+
+/**
+ * Search for similar knowledge chunks filtered by article IDs.
+ * Useful when you have a pre-filtered set of relevant articles (e.g., from rules).
+ *
+ * @param workspaceId - Workspace ID to search within
+ * @param queryEmbedding - 1536-dimensional query embedding
+ * @param articleIds - Article IDs to search within
+ * @param topK - Maximum number of results
+ * @param minSimilarity - Minimum similarity threshold
+ * @returns Array of similar chunks with similarity scores
+ */
+export async function searchKnowledgeChunksInArticles(
+  workspaceId: string,
+  queryEmbedding: number[],
+  articleIds: string[],
+  topK: number = DEFAULT_TOP_K,
+  minSimilarity: number = DEFAULT_MIN_SIMILARITY
+): Promise<SimilarKnowledgeChunk[]> {
+  validateEmbedding(queryEmbedding);
+
+  if (articleIds.length === 0) {
+    return [];
+  }
+
+  const vectorLiteral = formatVector(queryEmbedding);
+
+  const results = await prisma.$queryRaw<SimilarKnowledgeChunk[]>`
+    SELECT
+      kc.id,
+      kc."articleId",
+      kc."workspaceId",
+      kc.content,
+      kc."sectionTitle",
+      kc."sourceType",
+      1 - (kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) as similarity
+    FROM "KnowledgeChunk" kc
+    WHERE kc."workspaceId" = ${workspaceId}
+      AND kc."articleId" = ANY(${articleIds})
+      AND kc.embedding IS NOT NULL
+      AND 1 - (kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}) >= ${minSimilarity}
+    ORDER BY kc.embedding <=> ${Prisma.raw(`'${vectorLiteral}'::vector`)}
+    LIMIT ${topK}
+  `;
+
+  return results;
+}
+
+/**
+ * Count knowledge chunks with embeddings for an article.
+ * Useful for progress tracking during indexing.
+ */
+export async function countKnowledgeChunksWithEmbeddings(
+  articleId: string
+): Promise<{ total: number; withEmbedding: number }> {
+  const result = await prisma.$queryRaw<
+    Array<{ total: bigint; with_embedding: bigint }>
+  >`
+    SELECT
+      COUNT(*) as total,
+      COUNT(embedding) as with_embedding
+    FROM "KnowledgeChunk"
+    WHERE "articleId" = ${articleId}
+  `;
+
+  return {
+    total: Number(result[0]?.total ?? 0),
+    withEmbedding: Number(result[0]?.with_embedding ?? 0),
+  };
+}
+
+/**
+ * Clear all chunks and embeddings for an article.
+ * Used when re-indexing an article.
+ */
+export async function clearArticleChunks(
+  articleId: string
+): Promise<number> {
+  const result = await prisma.knowledgeChunk.deleteMany({
+    where: { articleId },
+  });
+
+  return result.count;
+}
