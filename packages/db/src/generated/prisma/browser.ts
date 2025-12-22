@@ -78,6 +78,11 @@ export type CostDailySummary = Prisma.CostDailySummaryModel
  */
 export type EvalSuite = Prisma.EvalSuiteModel
 /**
+ * Model EvalSuiteKnowledge
+ * Join table for EvalSuite <-> KnowledgeArticle (optional KB context for evals)
+ */
+export type EvalSuiteKnowledge = Prisma.EvalSuiteKnowledgeModel
+/**
  * Model EvalRun
  * 
  */
@@ -107,6 +112,46 @@ export type GitPullRequest = Prisma.GitPullRequestModel
  * 
  */
 export type CodeChunk = Prisma.CodeChunkModel
+/**
+ * Model KnowledgeGroup
+ * 
+ */
+export type KnowledgeGroup = Prisma.KnowledgeGroupModel
+/**
+ * Model KnowledgeArticle
+ * 
+ */
+export type KnowledgeArticle = Prisma.KnowledgeArticleModel
+/**
+ * Model KnowledgeArticleVersion
+ * 
+ */
+export type KnowledgeArticleVersion = Prisma.KnowledgeArticleVersionModel
+/**
+ * Model KnowledgeRule
+ * 
+ */
+export type KnowledgeRule = Prisma.KnowledgeRuleModel
+/**
+ * Model KnowledgeLink
+ * 
+ */
+export type KnowledgeLink = Prisma.KnowledgeLinkModel
+/**
+ * Model KnowledgeAttachment
+ * 
+ */
+export type KnowledgeAttachment = Prisma.KnowledgeAttachmentModel
+/**
+ * Model KnowledgeChunk
+ * 
+ */
+export type KnowledgeChunk = Prisma.KnowledgeChunkModel
+/**
+ * Model AlertRCAKnowledge
+ * 
+ */
+export type AlertRCAKnowledge = Prisma.AlertRCAKnowledgeModel
 /**
  * Model Project
  * 

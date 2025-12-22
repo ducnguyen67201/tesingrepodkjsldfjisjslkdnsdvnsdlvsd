@@ -403,7 +403,29 @@ export async function createEvalRun(input: CreateRunInput): Promise<string> {
 - **EvalSuite**: Suite config with prompts, endpoint, baseline thresholds
 - **EvalRun**: Individual run with status, metrics, regression details
 
-Always use `pnpm db:migrate --name <name>` for schema changes to create versioned migrations.
+## Database Migrations (CRITICAL)
+
+**ALWAYS create a migration when editing Prisma schemas.** This is a strict rule.
+
+```bash
+# After ANY change to files in packages/db/prisma/schema/*.prisma
+pnpm db:migrate --name <descriptive_name>
+
+# Examples:
+pnpm db:migrate --name add_knowledge_base
+pnpm db:migrate --name add_user_preferences
+pnpm db:migrate --name update_alert_thresholds
+```
+
+**Migration naming conventions:**
+- Use snake_case: `add_knowledge_base`, NOT `addKnowledgeBase`
+- Be descriptive: `add_user_avatar_column`, NOT `update`
+- Group related changes: `add_eval_suite_knowledge_relation`
+
+**Why this matters:**
+- Migrations are version-controlled database changes
+- Without migrations, schema changes are lost when others pull
+- Production deployments rely on migration files
 
 ## LLM Center (CRITICAL)
 
@@ -1801,6 +1823,7 @@ When adding new response methods:
 | **URL State** | Sync panels/modals/tabs to URL query params | Local state only for shareable UI |
 | **Backend** | Thin routers + service files | Business logic in routers |
 | **Temporal** | Activities use `getInternalCaller()` for mutations | Direct DB writes in activities |
+| **Migrations** | Run `pnpm db:migrate --name <name>` after editing Prisma schemas | Edit schemas without creating migration |
 | **Competitors** | Use "industry standard" or "similar platforms" | Name specific competitors |
 
 ### No Competitor Names (STRICT)

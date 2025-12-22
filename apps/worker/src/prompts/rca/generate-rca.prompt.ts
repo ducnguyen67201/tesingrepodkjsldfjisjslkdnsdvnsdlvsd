@@ -130,6 +130,11 @@ export function buildRCAUserPrompt(input: RCAGenerationInput): string {
     sections.push(`## Suspected Pull Requests\n${prs}`);
   }
 
+  // Knowledge context (if available)
+  if (input.knowledgeContext?.promptContext) {
+    sections.push(input.knowledgeContext.promptContext);
+  }
+
   // Instructions
   sections.push(`## Instructions
 Analyze the above data and provide:

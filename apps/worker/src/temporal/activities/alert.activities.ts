@@ -134,6 +134,7 @@ export interface DispatchNotificationResult {
   alertType?: string;
   projectId?: string;
   projectName?: string;
+  workspaceId?: string;
   windowMins?: number;
   severity?: string;
 }
@@ -171,6 +172,7 @@ export async function dispatchNotification(
       alertType: result.alertType,
       projectId: result.projectId,
       projectName: result.projectName,
+      workspaceId: result.workspaceId,
       windowMins: result.windowMins,
       severity: result.severity,
     };

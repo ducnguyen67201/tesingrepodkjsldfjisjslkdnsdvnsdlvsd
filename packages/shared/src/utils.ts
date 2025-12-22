@@ -97,3 +97,15 @@ export function truncateCodeContent(
   }
   return content.slice(0, maxLength) + "\n// ... truncated ...";
 }
+
+/**
+ * Formats a file size in bytes to a human-readable string.
+ * - Under 1KB: displays in bytes (e.g., "500 B")
+ * - Under 1MB: displays in KB (e.g., "2.5 KB")
+ * - 1MB or more: displays in MB (e.g., "1.5 MB")
+ */
+export function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}

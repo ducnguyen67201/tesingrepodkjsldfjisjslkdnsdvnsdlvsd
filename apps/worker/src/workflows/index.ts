@@ -32,3 +32,7 @@ export { rcaAnalysisWorkflow } from "./rca-analysis.workflow";
 
 // Eval pipeline workflow (PR merge / manual / scheduled)
 export { evalPipelineWorkflow } from "./eval.workflow";
+
+// Knowledge base workflows
+export { knowledgeIndexWorkflow } from "./knowledge-index.workflow";
+export { attachmentExtractWorkflow } from "./attachment-extract.workflow";

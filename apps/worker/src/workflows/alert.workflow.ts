@@ -192,6 +192,7 @@ async function evaluateAlertCycle(input: AlertWorkflowInput): Promise<void> {
         alertValue: result.currentValue,
         threshold: result.threshold,
         severity: (dispatchResult.severity ?? input.severity) as RCAAnalysisWorkflowInput["severity"],
+        workspaceId: dispatchResult.workspaceId ?? "",
         projectId: dispatchResult.projectId,
         projectName: dispatchResult.projectName ?? "Unknown",
         windowStart,

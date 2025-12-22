@@ -477,3 +477,44 @@ export const alertError = {
       description: "The analysis is taking longer than expected. Please try again later.",
     }),
 } as const;
+
+// ============================================================
+// Knowledge Base Error Toasts
+// ============================================================
+
+export const knowledgeError = {
+  articleNotFound: () =>
+    toast.error("Article Not Found", {
+      description: "This article doesn't exist or has been deleted.",
+    }),
+
+  groupNotFound: () =>
+    toast.error("Group Not Found", {
+      description: "This group doesn't exist or has been deleted.",
+    }),
+
+  slugExists: (slug: string) =>
+    toast.error("Slug Already Exists", {
+      description: `An article with slug "${slug}" already exists in this workspace.`,
+    }),
+
+  publishFailed: (reason?: string) =>
+    toast.error("Publish Failed", {
+      description: reason ?? "Failed to publish article. Please try again.",
+    }),
+
+  indexingFailed: () =>
+    toast.error("Indexing Failed", {
+      description: "Failed to index article for search. It may not appear in search results.",
+    }),
+
+  attachmentTooLarge: (maxSize: string) =>
+    toast.error("File Too Large", {
+      description: `Attachment exceeds the maximum size of ${maxSize}.`,
+    }),
+
+  attachmentUploadFailed: () =>
+    toast.error("Upload Failed", {
+      description: "Failed to upload attachment. Please try again.",
+    }),
+} as const;

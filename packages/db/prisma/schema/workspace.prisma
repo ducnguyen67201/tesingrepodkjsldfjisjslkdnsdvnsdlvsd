@@ -22,6 +22,14 @@ model Workspace {
   notificationChannels NotificationChannel[]
   githubInstallation   GitHubInstallation?
 
+  // Knowledge Base
+  knowledgeGroups      KnowledgeGroup[]
+  knowledgeArticles    KnowledgeArticle[]
+  knowledgeRules       KnowledgeRule[]
+  knowledgeLinks       KnowledgeLink[]
+  knowledgeAttachments KnowledgeAttachment[]
+  knowledgeChunks      KnowledgeChunk[]
+
   @@index([slug])
 }
 

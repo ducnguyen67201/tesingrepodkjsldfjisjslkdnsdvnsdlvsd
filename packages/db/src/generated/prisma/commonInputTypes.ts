@@ -561,6 +561,91 @@ export type EnumIndexStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumIndexStatusFilter<$PrismaModel>
 }
 
+export type EnumArticleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ArticleStatus | Prisma.EnumArticleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel> | $Enums.ArticleStatus
+}
+
+export type EnumArticleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ArticleStatus | Prisma.EnumArticleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumArticleStatusWithAggregatesFilter<$PrismaModel> | $Enums.ArticleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel>
+}
+
+export type EnumKnowledgeRuleScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeRuleScope | Prisma.EnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel> | $Enums.KnowledgeRuleScope
+}
+
+export type EnumKnowledgeRuleScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeRuleScope | Prisma.EnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeRuleScopeWithAggregatesFilter<$PrismaModel> | $Enums.KnowledgeRuleScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel>
+}
+
+export type EnumKnowledgeEntityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeEntityType | Prisma.EnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel> | $Enums.KnowledgeEntityType
+}
+
+export type EnumKnowledgeEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeEntityType | Prisma.EnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.KnowledgeEntityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel>
+}
+
+export type EnumChunkSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ChunkSourceType | Prisma.EnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel> | $Enums.ChunkSourceType
+}
+
+export type EnumChunkSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ChunkSourceType | Prisma.EnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumChunkSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChunkSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel>
+}
+
+export type EnumRuleMatchTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RuleMatchType | Prisma.EnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel> | $Enums.RuleMatchType
+}
+
+export type EnumRuleMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RuleMatchType | Prisma.EnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRuleMatchTypeWithAggregatesFilter<$PrismaModel> | $Enums.RuleMatchType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel>
+}
+
 export type EnumProjectRoleFilter<$PrismaModel = never> = {
   equals?: $Enums.ProjectRole | Prisma.EnumProjectRoleFieldRefInput<$PrismaModel>
   in?: $Enums.ProjectRole[] | Prisma.ListEnumProjectRoleFieldRefInput<$PrismaModel>
@@ -1104,6 +1189,91 @@ export type NestedEnumIndexStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumIndexStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumIndexStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumArticleStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ArticleStatus | Prisma.EnumArticleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel> | $Enums.ArticleStatus
+}
+
+export type NestedEnumArticleStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ArticleStatus | Prisma.EnumArticleStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ArticleStatus[] | Prisma.ListEnumArticleStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumArticleStatusWithAggregatesFilter<$PrismaModel> | $Enums.ArticleStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumArticleStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumKnowledgeRuleScopeFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeRuleScope | Prisma.EnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel> | $Enums.KnowledgeRuleScope
+}
+
+export type NestedEnumKnowledgeRuleScopeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeRuleScope | Prisma.EnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeRuleScope[] | Prisma.ListEnumKnowledgeRuleScopeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeRuleScopeWithAggregatesFilter<$PrismaModel> | $Enums.KnowledgeRuleScope
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumKnowledgeRuleScopeFilter<$PrismaModel>
+}
+
+export type NestedEnumKnowledgeEntityTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeEntityType | Prisma.EnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel> | $Enums.KnowledgeEntityType
+}
+
+export type NestedEnumKnowledgeEntityTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.KnowledgeEntityType | Prisma.EnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.KnowledgeEntityType[] | Prisma.ListEnumKnowledgeEntityTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumKnowledgeEntityTypeWithAggregatesFilter<$PrismaModel> | $Enums.KnowledgeEntityType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumKnowledgeEntityTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumChunkSourceTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ChunkSourceType | Prisma.EnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel> | $Enums.ChunkSourceType
+}
+
+export type NestedEnumChunkSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ChunkSourceType | Prisma.EnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ChunkSourceType[] | Prisma.ListEnumChunkSourceTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumChunkSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChunkSourceType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumChunkSourceTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumRuleMatchTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RuleMatchType | Prisma.EnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel> | $Enums.RuleMatchType
+}
+
+export type NestedEnumRuleMatchTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RuleMatchType | Prisma.EnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RuleMatchType[] | Prisma.ListEnumRuleMatchTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRuleMatchTypeWithAggregatesFilter<$PrismaModel> | $Enums.RuleMatchType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRuleMatchTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumProjectRoleFilter<$PrismaModel = never> = {

@@ -148,6 +148,71 @@ export const promptToast = {
 } as const;
 
 // ============================================================
+// Knowledge Base Toasts
+// ============================================================
+
+export const knowledgeToast = {
+  articleCreated: (title: string) =>
+    toast.success("Article created", { description: `"${title}" is ready.` }),
+
+  articleUpdated: (title: string) =>
+    toast.success("Article updated", { description: `"${title}" has been updated.` }),
+
+  articlePublished: (title: string) =>
+    toast.success("Article published", { description: `"${title}" is now published.` }),
+
+  articleArchived: (title: string, archived: boolean) =>
+    toast.success(archived ? "Article archived" : "Article restored", {
+      description: `"${title}" has been ${archived ? "archived" : "restored"}.`,
+    }),
+
+  articleDeleted: (title?: string) =>
+    toast.success("Article deleted", {
+      description: title ? `"${title}" has been removed.` : undefined,
+    }),
+
+  articleReverted: () =>
+    toast.success("Version reverted", { description: "Article reverted to previous version." }),
+
+  articleLinked: () =>
+    toast.success("Article linked", { description: "Knowledge article has been linked." }),
+
+  articleUnlinked: () =>
+    toast.success("Article unlinked", { description: "Knowledge article has been unlinked." }),
+
+  groupCreated: (name: string) =>
+    toast.success("Group created", { description: `"${name}" is ready.` }),
+
+  groupUpdated: (name: string) =>
+    toast.success("Group updated", { description: `"${name}" has been updated.` }),
+
+  groupDeleted: (name?: string) =>
+    toast.success("Group deleted", {
+      description: name ? `"${name}" has been removed.` : undefined,
+    }),
+
+  ruleCreated: (name: string) =>
+    toast.success("Rule created", { description: `"${name}" is now active.` }),
+
+  ruleUpdated: (name: string) =>
+    toast.success("Rule updated", { description: `"${name}" has been updated.` }),
+
+  ruleDeleted: (name?: string) =>
+    toast.success("Rule deleted", {
+      description: name ? `"${name}" has been removed.` : undefined,
+    }),
+
+  linkCreated: () =>
+    toast.success("Link created", { description: "Entity linked to article." }),
+
+  linkRemoved: () =>
+    toast.success("Link removed", { description: "Entity unlinked from article." }),
+
+  feedbackSubmitted: () =>
+    toast.success("Feedback submitted", { description: "Thank you for your feedback." }),
+} as const;
+
+// ============================================================
 // API Key Toasts
 // ============================================================
 

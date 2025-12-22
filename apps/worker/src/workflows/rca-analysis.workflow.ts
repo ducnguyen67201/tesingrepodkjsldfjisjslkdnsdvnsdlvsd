@@ -9,8 +9,9 @@
 // Steps:
 // 1. Analyze traces in the alert window
 // 2. Correlate with recent code changes
-// 3. Generate LLM-based RCA report
-// 4. Store RCA results
+// 3. Retrieve knowledge context from KB
+// 4. Generate LLM-based RCA report
+// 5. Store RCA results and knowledge matches
 // ============================================================
 
 import { proxyActivities, log } from "@temporalio/workflow";
@@ -22,6 +23,7 @@ import type {
   CodeCorrelationOutput,
   RCAReport,
 } from "../temporal/types";
+import type { RetrieveKnowledgeContextOutput } from "../temporal/activities/knowledge.activities";
 import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
 
 // ============================================================
@@ -39,6 +41,7 @@ export interface RCAAnalysisWorkflowInput {
   alertValue: number;
   threshold: number;
   severity: AlertSeverity;
+  workspaceId: string;
   projectId: string;
   projectName: string;
   windowStart: string; // ISO 8601
@@ -51,11 +54,16 @@ export interface RCAAnalysisWorkflowInput {
 // Activity Proxies
 // ============================================================
 
-const { analyzeTraces, correlateCodeChanges, generateRCA, storeRCA } =
-  proxyActivities<typeof activities>({
-    startToCloseTimeout: WORKFLOW_TIMEOUTS.ALERT.ACTIVITY,
-    retry: ACTIVITY_RETRY.ALERT,
-  });
+const {
+  analyzeTraces,
+  correlateCodeChanges,
+  retrieveKnowledgeContext,
+  generateRCA,
+  storeRCA,
+} = proxyActivities<typeof activities>({
+  startToCloseTimeout: WORKFLOW_TIMEOUTS.ALERT.ACTIVITY,
+  retry: ACTIVITY_RETRY.ALERT,
+});
 
 // ============================================================
 // Workflow Implementation
@@ -130,8 +138,38 @@ export async function rcaAnalysisWorkflow(
     relevantCodeChunks: codeCorrelation.relevantCodeChunks.length,
   });
 
-  // Step 3: Generate LLM-based RCA report
-  log.info("Step 3: Generating RCA report");
+  // Step 3: Retrieve knowledge context from KB
+  log.info("Step 3: Retrieving knowledge context", {
+    workspaceId: input.workspaceId,
+    projectId: input.projectId,
+    alertId: input.alertId,
+  });
+
+  let knowledgeContext: RetrieveKnowledgeContextOutput | undefined;
+  try {
+    knowledgeContext = await retrieveKnowledgeContext({
+      workspaceId: input.workspaceId,
+      projectId: input.projectId,
+      alertId: input.alertId,
+      alertHistoryId: input.alertHistoryId,
+      traceContext: {
+        errorCount: traceAnalysis.summary.errorCount,
+        hasErrors: traceAnalysis.summary.errorCount > 0,
+        errorPatterns: traceAnalysis.errorPatterns.map((p) => p.message),
+        anomalyTypes: traceAnalysis.anomalies.map((a) => a.type),
+      },
+    });
+    log.info("Knowledge context retrieved", {
+      matchedArticles: knowledgeContext.totalMatches,
+    });
+  } catch (error) {
+    // Knowledge retrieval is optional - log and continue
+    log.warn("Knowledge context retrieval failed, continuing without", { error });
+    knowledgeContext = undefined;
+  }
+
+  // Step 4: Generate LLM-based RCA report
+  log.info("Step 4: Generating RCA report");
 
   const windowMins = Math.round(
     (new Date(input.windowEnd).getTime() -
@@ -157,6 +195,7 @@ export async function rcaAnalysisWorkflow(
       },
       traceAnalysis,
       codeCorrelation,
+      knowledgeContext,
     });
   } catch (error) {
     log.error("RCA generation failed", { error });
@@ -169,8 +208,8 @@ export async function rcaAnalysisWorkflow(
     category: rcaReport.rootCause.category,
   });
 
-  // Step 4: Store RCA results
-  log.info("Step 4: Storing RCA results");
+  // Step 5: Store RCA results and knowledge matches
+  log.info("Step 5: Storing RCA results");
 
   try {
     await storeRCA({
@@ -196,6 +235,14 @@ export async function rcaAnalysisWorkflow(
         errorPatternCount: traceAnalysis.errorPatterns.length,
         anomalyCount: traceAnalysis.anomalies.length,
       },
+      knowledgeMatches: knowledgeContext?.articles.map((a) => ({
+        articleId: a.id,
+        matchType: a.matchType,
+        matchScore: a.matchScore,
+        matchReason: a.matchReason,
+        snapshotTitle: a.title,
+        snapshotExcerpt: a.excerpt,
+      })),
     });
   } catch (error) {
     log.error("RCA storage failed", { error });
@@ -206,5 +253,6 @@ export async function rcaAnalysisWorkflow(
     alertId: input.alertId,
     alertHistoryId: input.alertHistoryId,
     confidence: rcaReport.confidence,
+    knowledgeMatches: knowledgeContext?.totalMatches ?? 0,
   });
 }

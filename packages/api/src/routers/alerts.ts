@@ -895,6 +895,23 @@ export const alertsRouter = createRouter({
           })
         : [];
 
+      // 8. Fetch knowledge matches (if any)
+      const knowledgeMatches = await prisma.alertRCAKnowledge.findMany({
+        where: { rcaId: rca.id },
+        include: {
+          article: {
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              summary: true,
+            },
+          },
+        },
+        orderBy: { matchScore: "desc" },
+        take: 5,
+      });
+
       return {
         rca: {
           id: rca.id,
@@ -923,6 +940,24 @@ export const alertsRouter = createRouter({
         commits,
         pullRequests,
         traces,
+        // Knowledge base matches
+        knowledgeMatches: knowledgeMatches.map((km) => ({
+          id: km.id,
+          articleId: km.articleId,
+          matchType: km.matchType,
+          matchScore: km.matchScore,
+          matchReason: km.matchReason,
+          snapshotTitle: km.snapshotTitle,
+          snapshotExcerpt: km.snapshotExcerpt,
+          article: km.article
+            ? {
+                id: km.article.id,
+                title: km.article.title,
+                slug: km.article.slug,
+                summary: km.article.summary,
+              }
+            : null,
+        })),
       };
     }),
 
