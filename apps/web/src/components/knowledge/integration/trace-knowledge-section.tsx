@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { BookOpen, Plus, ExternalLink, X } from "lucide-react";
+import { BookOpen, Plus, X } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -126,20 +126,15 @@ export function TraceKnowledgeSection({
                       {link.article.title}
                     </span>
                   </Link>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={(e) => handleUnlink(link.articleId, e)}
-                      disabled={unlinkMutation.isPending}
-                    >
-                      <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
-                    </Button>
-                    <Link href={`/workspace/${workspaceSlug}/knowledge?articleId=${link.articleId}`}>
-                      <ExternalLink className="h-3 w-3 text-muted-foreground" />
-                    </Link>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                    onClick={(e) => handleUnlink(link.articleId, e)}
+                    disabled={unlinkMutation.isPending}
+                  >
+                    <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+                  </Button>
                 </div>
               ))}
               {links.length >= 5 && (

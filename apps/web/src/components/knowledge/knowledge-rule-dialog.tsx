@@ -55,11 +55,17 @@ const ruleFormSchema = z
     matchReasonTemplate: z.string().max(200).optional(),
   })
   .refine(
-    (data) =>
-      (data.articleId && !data.groupId) || (!data.articleId && data.groupId),
+    (data) => Boolean(data.articleId) || Boolean(data.groupId),
     {
-      message: "Select either an Article or a Group (exactly one)",
+      message: "Select an Article or a Group (at least one required)",
       path: ["articleId"],
+    }
+  )
+  .refine(
+    (data) => !(data.articleId && data.groupId),
+    {
+      message: "Select only one: Article or Group (not both)",
+      path: ["groupId"],
     }
   )
   .refine((data) => data.scope !== "PROJECT" || data.projectId, {
@@ -88,13 +94,6 @@ interface SimpleCondition {
   field: string;
   value?: string | number;
 }
-
-interface CompoundCondition {
-  operator: "and" | "or";
-  conditions: SimpleCondition[];
-}
-
-type Condition = SimpleCondition | CompoundCondition;
 
 interface KnowledgeRuleDialogProps {
   open: boolean;
@@ -194,30 +193,60 @@ export function KnowledgeRuleDialog({
 
   // Parse existing condition on edit
   useEffect(() => {
-    if (rule?.condition) {
-      const cond = rule.condition as Condition;
-      if (cond.operator === "and" || cond.operator === "or") {
-        setConditionType(cond.operator);
-        setConditions((cond as CompoundCondition).conditions);
-      } else {
+    if (rule?.condition && typeof rule.condition === "object") {
+      const cond = rule.condition as Record<string, unknown>;
+      const operator = cond.operator;
+
+      if (operator === "and" || operator === "or") {
+        const conditions = cond.conditions;
+        if (Array.isArray(conditions)) {
+          setConditionType(operator);
+          setConditions(
+            conditions.map((c) => ({
+              operator: (c as Record<string, unknown>).operator as SimpleCondition["operator"],
+              field: String((c as Record<string, unknown>).field ?? "serviceName"),
+              value: (c as Record<string, unknown>).value as string | number | undefined,
+            }))
+          );
+        }
+      } else if (typeof operator === "string") {
         setConditionType("single");
-        setConditions([cond as SimpleCondition]);
+        setConditions([
+          {
+            operator: operator as SimpleCondition["operator"],
+            field: String(cond.field ?? "serviceName"),
+            value: cond.value as string | number | undefined,
+          },
+        ]);
       }
     }
   }, [rule]);
 
   // Build condition object
   const buildCondition = useCallback((): Record<string, unknown> => {
-    if (conditionType === "single" && conditions.length === 1) {
-      const cond = conditions[0]!;
+    // Single condition type with exactly one condition - return simple condition
+    if (conditionType === "single") {
+      if (conditions.length === 1) {
+        const cond = conditions[0]!;
+        return {
+          operator: cond.operator,
+          field: cond.field,
+          value: cond.value,
+        };
+      }
+      // Multiple conditions in "single" mode - use AND
       return {
-        operator: cond.operator,
-        field: cond.field,
-        value: cond.value,
+        operator: "and",
+        conditions: conditions.map((c) => ({
+          operator: c.operator,
+          field: c.field,
+          value: c.value,
+        })),
       };
     }
+    // Compound condition (and/or)
     return {
-      operator: conditionType === "single" ? "and" : conditionType,
+      operator: conditionType,
       conditions: conditions.map((c) => ({
         operator: c.operator,
         field: c.field,
@@ -281,7 +310,8 @@ export function KnowledgeRuleDialog({
       const condition = buildCondition();
       const result = await previewRule(condition, projectId);
       setPreviewResults(result.matches);
-    } catch {
+    } catch (error) {
+      console.error("Rule preview failed:", error);
       setPreviewResults([]);
     } finally {
       setIsPreviewing(false);

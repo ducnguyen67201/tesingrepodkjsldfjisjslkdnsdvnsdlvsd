@@ -68,6 +68,7 @@ export default function RCALookupPage() {
     if (status?.status === "not_started" && historyId && !triggerRCA.isPending) {
       triggerRCA.mutate({ workspaceSlug, alertHistoryId: historyId });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- triggerRCA object changes each render, using stable .mutate ref
   }, [status?.status, historyId, workspaceSlug, triggerRCA.mutate, triggerRCA.isPending]);
 
   // Redirect to RCA page when completed

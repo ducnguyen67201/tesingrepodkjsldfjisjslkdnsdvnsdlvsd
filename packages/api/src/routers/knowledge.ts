@@ -67,7 +67,7 @@ function calculateChecksum(
  */
 function buildSearchText(content: string): string {
   return content
-    .replace(/[#*_`~\[\]()]/g, " ")
+    .replace(/[#*_`~[\]()]/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 10000);
@@ -144,13 +144,14 @@ function evaluateCondition(
     case "not_equals":
       return field ? context[field] !== value : false;
 
-    case "contains":
+    case "contains": {
       if (!field) return false;
       const fieldValue = context[field];
       if (typeof fieldValue === "string" && typeof value === "string") {
         return fieldValue.toLowerCase().includes(value.toLowerCase());
       }
       return false;
+    }
 
     case "exists":
       return field ? context[field] !== undefined && context[field] !== null : false;
@@ -167,7 +168,7 @@ function evaluateCondition(
     case "lte":
       return field ? Number(context[field]) <= Number(value) : false;
 
-    case "regex":
+    case "regex": {
       if (!field) return false;
       const regexFieldValue = context[field];
       if (typeof regexFieldValue === "string" && typeof value === "string") {
@@ -178,6 +179,7 @@ function evaluateCondition(
         }
       }
       return false;
+    }
 
     case "and": {
       const andConditions = condition.conditions as Record<string, unknown>[] | undefined;
@@ -494,10 +496,8 @@ export const knowledgeRouter = createRouter({
     .input(UpdateArticleInputSchema)
     .use(workspaceMiddleware)
     .mutation(async ({ ctx, input }) => {
-      const existing = await verifyArticleInWorkspace(
-        input.articleId,
-        ctx.workspace.id
-      );
+      // Verify article exists in workspace (throws if not found)
+      await verifyArticleInWorkspace(input.articleId, ctx.workspace.id);
 
       // Get current article for version comparison
       const current = await prisma.knowledgeArticle.findUnique({

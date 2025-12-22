@@ -131,12 +131,25 @@ export async function knowledgeIndexWorkflow(
   console.log(`[KnowledgeIndexWorkflow] Stored ${storeResult.chunksCreated} chunks`);
 
   // Step 5: Generate embeddings
+  // Validate array lengths match before mapping
+  if (storeResult.chunkIds.length !== chunkResult.chunks.length) {
+    throw new Error(
+      `Chunk count mismatch: stored ${storeResult.chunkIds.length} but created ${chunkResult.chunks.length}`
+    );
+  }
+
   const embeddingResult = await generateKnowledgeEmbeddings({
-    chunks: storeResult.chunkIds.map((id, index) => ({
-      id,
-      content: chunkResult.chunks[index]!.content,
-      contentHash: chunkResult.chunks[index]!.contentHash,
-    })),
+    chunks: storeResult.chunkIds.map((id, index) => {
+      const chunk = chunkResult.chunks[index];
+      if (!chunk) {
+        throw new Error(`Missing chunk at index ${index}`);
+      }
+      return {
+        id,
+        content: chunk.content,
+        contentHash: chunk.contentHash,
+      };
+    }),
   });
 
   console.log(

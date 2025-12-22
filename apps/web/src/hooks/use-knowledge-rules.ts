@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { knowledgeToast } from "@/lib/success";
 import { showError } from "@/lib/errors";
@@ -44,7 +44,7 @@ export function useKnowledgeRules({
 
   // Delete rule mutation
   const deleteMutation = trpc.knowledge.deleteRule.useMutation({
-    onSuccess: (_result, variables) => {
+    onSuccess: () => {
       knowledgeToast.ruleDeleted();
       utils.knowledge.listRules.invalidate();
     },
@@ -127,30 +127,30 @@ interface UseRulePreviewOptions {
 }
 
 export function useRulePreview({ workspaceSlug }: UseRulePreviewOptions) {
-  // Preview rule query (lazy)
-  const previewQuery = trpc.knowledge.previewRule.useQuery(
-    { workspaceSlug, condition: {}, limit: 10 },
-    { enabled: false }
-  );
-
   const utils = trpc.useUtils();
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Preview handler
+  // Preview handler - uses direct fetch for on-demand preview
   const previewRule = useCallback(
     async (condition: Record<string, unknown>, projectId?: string) => {
-      const result = await utils.knowledge.previewRule.fetch({
-        workspaceSlug,
-        projectId,
-        condition,
-        limit: 10,
-      });
-      return result;
+      setIsLoading(true);
+      try {
+        const result = await utils.knowledge.previewRule.fetch({
+          workspaceSlug,
+          projectId,
+          condition,
+          limit: 10,
+        });
+        return result;
+      } finally {
+        setIsLoading(false);
+      }
     },
     [utils.knowledge.previewRule, workspaceSlug]
   );
 
   return {
     previewRule,
-    isLoading: previewQuery.isLoading,
+    isLoading,
   };
 }

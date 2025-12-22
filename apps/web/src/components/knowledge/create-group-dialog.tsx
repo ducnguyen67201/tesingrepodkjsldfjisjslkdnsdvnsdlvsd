@@ -74,7 +74,7 @@ export function CreateGroupDialog({
     (data: CreateGroupForm) => {
       createGroup.mutate({
         workspaceSlug,
-        parentId: parentId || undefined,
+        parentId,
         name: data.name,
         description: data.description || undefined,
       });

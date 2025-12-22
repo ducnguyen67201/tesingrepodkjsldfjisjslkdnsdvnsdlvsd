@@ -17,17 +17,11 @@
 
 import { proxyActivities } from "@temporalio/workflow";
 import { ACTIVITY_RETRY } from "@cognobserve/shared";
-import type * as activities from "../temporal/activities/knowledge.activities";
 import type * as attachmentActivities from "../temporal/activities/attachment.activities";
 
 // ============================================
 // Activity Proxies
 // ============================================
-
-const knowledgeActivities = proxyActivities<typeof activities>({
-  startToCloseTimeout: "5m",
-  retry: ACTIVITY_RETRY.DEFAULT,
-});
 
 const { getAttachmentForExtraction, extractTextFromAttachment, storeAttachmentText } =
   proxyActivities<typeof attachmentActivities>({

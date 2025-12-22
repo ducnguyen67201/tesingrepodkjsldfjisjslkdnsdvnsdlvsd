@@ -104,12 +104,6 @@ const TARGET_CHUNK_SIZE = 1500;
 /** Minimum chunk size (don't create tiny chunks) */
 const MIN_CHUNK_SIZE = 200;
 
-/** Maximum chunk size */
-const MAX_CHUNK_SIZE = 3000;
-
-/** Overlap between chunks for context continuity */
-const CHUNK_OVERLAP = 100;
-
 /** Maximum tokens per embedding (OpenAI limit with buffer) */
 const MAX_TOKENS_PER_CHUNK = 8000;
 
@@ -282,9 +276,17 @@ export async function chunkArticleContent(
       const paragraphs = section.split(/\n\n+/);
       let buffer = "";
       let bufferStart = currentOffset;
+      let paragraphOffset = currentOffset;
 
-      for (const paragraph of paragraphs) {
+      for (let i = 0; i < paragraphs.length; i++) {
+        const paragraph = paragraphs[i]!;
+        const isLast = i === paragraphs.length - 1;
+
         if (buffer.length + paragraph.length <= TARGET_CHUNK_SIZE) {
+          // First paragraph in buffer sets the start offset
+          if (!buffer) {
+            bufferStart = paragraphOffset;
+          }
           buffer += (buffer ? "\n\n" : "") + paragraph;
         } else {
           // Flush current buffer
@@ -293,14 +295,15 @@ export async function chunkArticleContent(
               content: buffer.trim(),
               contentHash: hashContent(buffer.trim()),
               startOffset: bufferStart,
-              endOffset: bufferStart + buffer.length,
+              endOffset: paragraphOffset,
               sectionTitle,
             });
           }
           buffer = paragraph;
-          bufferStart = currentOffset;
+          bufferStart = paragraphOffset;
         }
-        currentOffset += paragraph.length + 2; // Account for \n\n
+        // Advance offset: paragraph length + separator (2 chars, except for last)
+        paragraphOffset += paragraph.length + (isLast ? 0 : 2);
       }
 
       // Flush remaining buffer
@@ -309,12 +312,14 @@ export async function chunkArticleContent(
           content: buffer.trim(),
           contentHash: hashContent(buffer.trim()),
           startOffset: bufferStart,
-          endOffset: bufferStart + buffer.length,
+          endOffset: paragraphOffset,
           sectionTitle,
         });
       }
+
     }
 
+    // Advance offset to end of section
     currentOffset += section.length;
   }
 

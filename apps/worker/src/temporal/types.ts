@@ -741,7 +741,10 @@ export interface RCAGenerationInput {
   traceAnalysis: TraceAnalysisOutput;
   /** Output from correlateCodeChanges activity */
   codeCorrelation: CodeCorrelationOutput;
-  /** Knowledge context from KB (optional) */
+  /**
+   * Knowledge context from KB (optional).
+   * Matched articles are included in RCA prompt for enhanced analysis.
+   */
   knowledgeContext?: {
     articles: Array<{
       id: string;
@@ -749,6 +752,10 @@ export interface RCAGenerationInput {
       slug: string;
       summary: string | null;
       excerpt: string;
+      /**
+       * How this article was matched.
+       * Must stay in sync with RuleMatchType in packages/api/src/schemas/knowledge.ts
+       */
       matchType: "RULE" | "SEMANTIC" | "DIRECT_LINK";
       matchScore: number;
       matchReason: string;

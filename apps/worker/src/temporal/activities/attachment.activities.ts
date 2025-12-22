@@ -8,7 +8,6 @@
  */
 
 import { prisma } from "@cognobserve/db";
-import { getLLM } from "@/lib/llm-manager";
 import { getInternalCaller } from "@/lib/trpc-caller";
 
 // ============================================
@@ -57,9 +56,6 @@ const EXTRACTABLE_CONTENT_TYPES = new Set([
   "text/plain",
   "text/markdown",
 ]);
-
-/** Maximum file size for extraction (10MB) */
-const MAX_EXTRACTION_SIZE = 10 * 1024 * 1024;
 
 // ============================================
 // Activity: Get Attachment Metadata
@@ -141,10 +137,7 @@ export async function extractTextFromAttachment(
 
       // TODO: Download file from storage
       // TODO: For PDFs, convert pages to images
-      // TODO: Send to LLM vision API
-
-      // Stub implementation
-      const llm = getLLM();
+      // TODO: Send to LLM vision API using getLLM()
 
       // In a real implementation, we would:
       // 1. Download the file from S3/R2

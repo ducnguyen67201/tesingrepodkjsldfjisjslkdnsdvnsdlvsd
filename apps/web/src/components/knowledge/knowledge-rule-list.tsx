@@ -8,8 +8,6 @@ import {
   Pencil,
   Trash2,
   Eye,
-  ToggleLeft,
-  ToggleRight,
   AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,6 +56,10 @@ export function KnowledgeRuleList({
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingRule, setEditingRule] = useState<RuleData | null>(null);
   const [deletingRuleId, setDeletingRuleId] = useState<string | null>(null);
+
+  const handleOpenCreate = useCallback(() => {
+    setIsCreateOpen(true);
+  }, []);
 
   const {
     rules,
@@ -123,7 +125,7 @@ export function KnowledgeRuleList({
             Rules automatically link articles to traces based on conditions
           </p>
         </div>
-        <Button size="sm" onClick={() => setIsCreateOpen(true)}>
+        <Button size="sm" onClick={handleOpenCreate}>
           <Plus className="mr-1.5 h-4 w-4" />
           New Rule
         </Button>
@@ -142,7 +144,7 @@ export function KnowledgeRuleList({
                 Create rules to automatically match knowledge articles to traces
                 based on conditions like error type or service name.
               </p>
-              <Button className="mt-4" onClick={() => setIsCreateOpen(true)}>
+              <Button className="mt-4" onClick={handleOpenCreate}>
                 <Plus className="mr-2 h-4 w-4" />
                 Create First Rule
               </Button>
@@ -348,12 +350,13 @@ function RuleCard({ rule, onToggleEnabled, onEdit, onDelete }: RuleCardProps) {
 
 /** Condition badge component */
 function ConditionBadge({ condition }: { condition: unknown }) {
-  const cond = condition as Record<string, unknown> | null;
-  if (!cond) return null;
+  // Validate condition structure
+  if (!condition || typeof condition !== "object") return null;
 
-  const operator = cond.operator as string | undefined;
-  const field = cond.field as string | undefined;
-  const value = cond.value as string | undefined;
+  const cond = condition as Record<string, unknown>;
+  const operator = typeof cond.operator === "string" ? cond.operator : undefined;
+  const field = typeof cond.field === "string" ? cond.field : undefined;
+  const value = cond.value !== undefined ? String(cond.value) : undefined;
 
   if (!operator) return null;
 

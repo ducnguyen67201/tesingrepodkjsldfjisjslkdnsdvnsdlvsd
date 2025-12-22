@@ -18,14 +18,12 @@ import {
   type ChannelProvider,
   type RCASummary,
   type RCATopChange,
-  RCA_CATEGORY_LABELS,
 } from "../schemas/alerting";
 import { StoreGitHubIndexSchema } from "../schemas/github";
 import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
 import {
   StoreKnowledgeChunksInputSchema,
   StoreKnowledgeEmbeddingsInputSchema,
-  FindMatchingKnowledgeInputSchema,
   StoreRCAKnowledgeMatchesInputSchema,
 } from "../schemas/knowledge";
 import { AdapterRegistry } from "../lib/alerting/registry";
@@ -84,21 +82,6 @@ const ScoreIngestSchema = z.object({
   comment: z.string().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
-
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-// NOTE: Legacy trace ingestion helpers removed - replaced by OTLP-first ingest-node service
-
-function parseDate(dateStr: string | undefined | null): Date {
-  if (!dateStr) return new Date();
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime()) || date.getFullYear() < 2000) {
-    return new Date();
-  }
-  return date;
-}
 
 // ============================================================
 // RCA NOTIFICATION HELPERS
@@ -292,12 +275,13 @@ export const internalRouter = createRouter({
           case "RESOLVED":
             newState = "PENDING";
             break;
-          case "FIRING":
+          case "FIRING": {
             const lastNotifyAge = alert.lastTriggeredAt
               ? now.getTime() - alert.lastTriggeredAt.getTime()
               : Infinity;
             shouldNotify = lastNotifyAge >= cooldownMs;
             break;
+          }
         }
       } else {
         switch (previousState) {

@@ -49,3 +49,6 @@ export const formatCost = (cost: number): string => {
   if (cost >= 0.01) return `$${cost.toFixed(3)}`;
   return `$${cost.toFixed(4)}`;
 };
+
+// Re-export formatFileSize from shared utils
+export { formatFileSize } from "@cognobserve/shared";
