@@ -30,11 +30,14 @@ jobs:
       - name: Type check
         run: pnpm --filter @cognobserve/worker typecheck
 
-      - name: Build
-        run: pnpm --filter @cognobserve/worker build
+      - name: Test
+        run: pnpm --filter @cognobserve/worker test
 
       - name: Lint
         run: pnpm --filter @cognobserve/worker lint
+
+      - name: Build worker
+        run: pnpm --filter @cognobserve/worker build
 
       # Temporal architecture checks
       - name: Verify Temporal structure

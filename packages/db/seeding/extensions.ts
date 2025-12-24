@@ -72,6 +72,28 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
+    slug: "cognobserve.theme.pink",
+    name: "Pink Sakura",
+    description: "A vibrant pink theme inspired by cherry blossoms.",
+    type: "THEME",
+    visibility: "PUBLIC",
+    version: "1.0.0",
+    manifest: {
+      id: "cognobserve.theme.pink",
+      name: "Pink Sakura",
+      version: "1.0.0",
+      type: "THEME",
+      description: "A vibrant pink theme inspired by cherry blossoms.",
+      permissions: ["ui:theme"],
+      configSchema: {
+        type: "object",
+        properties: {
+          primaryColor: { type: "string", default: "#ec4899" },
+        },
+      },
+    },
+  },
+  {
     slug: "cognobserve.ingestion.pii-scrubber",
     name: "PII Scrubber",
     description: "Automatically detects and redacts personally identifiable information from traces.",

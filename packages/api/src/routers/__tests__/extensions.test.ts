@@ -23,11 +23,15 @@ vi.mock("@cognobserve/db", () => ({
       findFirst: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      updateMany: vi.fn(),
       delete: vi.fn(),
     },
     extensionAuditLog: {
       create: vi.fn(),
       findMany: vi.fn(),
+    },
+    workspaceMember: {
+      findMany: vi.fn().mockResolvedValue([]),
     },
     $transaction: vi.fn((callback: (tx: unknown) => Promise<unknown>) =>
       callback({
@@ -189,9 +193,14 @@ describe("extensionsRouter", () => {
 
       await caller.list({ type: "THEME" });
 
+      // Query uses AND array structure with visibility + type filters
       expect(prisma.extension.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({ type: "THEME" }),
+          where: expect.objectContaining({
+            AND: expect.arrayContaining([
+              expect.objectContaining({ type: "THEME" }),
+            ]),
+          }),
         })
       );
     });
@@ -202,12 +211,17 @@ describe("extensionsRouter", () => {
 
       await caller.list({ search: "dark mode" });
 
+      // Query uses AND array structure with visibility + search filters
       expect(prisma.extension.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            OR: expect.arrayContaining([
-              expect.objectContaining({ name: expect.anything() }),
-              expect.objectContaining({ description: expect.anything() }),
+            AND: expect.arrayContaining([
+              expect.objectContaining({
+                OR: expect.arrayContaining([
+                  expect.objectContaining({ name: expect.anything() }),
+                  expect.objectContaining({ description: expect.anything() }),
+                ]),
+              }),
             ]),
           }),
         })
@@ -388,14 +402,30 @@ describe("extensionsRouter", () => {
     it("enables extension", async () => {
       const caller = createTestCaller();
 
-      vi.mocked(prisma.extensionInstall.findFirst).mockResolvedValue({
+      const mockInstallWithRelations = {
         ...mockInstall,
         enabled: false,
+        extensionId: mockExtension.id,
         extension: mockExtension,
         version: mockVersion,
-      } as unknown as Awaited<ReturnType<typeof prisma.extensionInstall.findFirst>>);
+        configJson: {},
+        approvedPermissions: ["ui:theme"],
+      };
 
-      vi.mocked(prisma.$transaction).mockResolvedValue(undefined);
+      // Mock the interactive transaction to execute the callback
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+        const tx = {
+          extensionInstall: {
+            findFirst: vi.fn().mockResolvedValue(mockInstallWithRelations),
+            update: vi.fn().mockResolvedValue(mockInstallWithRelations),
+          },
+          extensionAuditLog: {
+            create: vi.fn().mockResolvedValue({}),
+          },
+        };
+        return callback(tx);
+      });
 
       const result = await caller.toggle({
         workspaceId: "ws_123",
@@ -409,14 +439,30 @@ describe("extensionsRouter", () => {
     it("disables extension", async () => {
       const caller = createTestCaller();
 
-      vi.mocked(prisma.extensionInstall.findFirst).mockResolvedValue({
+      const mockInstallWithRelations = {
         ...mockInstall,
         enabled: true,
+        extensionId: mockExtension.id,
         extension: mockExtension,
         version: mockVersion,
-      } as unknown as Awaited<ReturnType<typeof prisma.extensionInstall.findFirst>>);
+        configJson: {},
+        approvedPermissions: ["ui:theme"],
+      };
 
-      vi.mocked(prisma.$transaction).mockResolvedValue(undefined);
+      // Mock the interactive transaction to execute the callback
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+        const tx = {
+          extensionInstall: {
+            findFirst: vi.fn().mockResolvedValue(mockInstallWithRelations),
+            update: vi.fn().mockResolvedValue(mockInstallWithRelations),
+          },
+          extensionAuditLog: {
+            create: vi.fn().mockResolvedValue({}),
+          },
+        };
+        return callback(tx);
+      });
 
       const result = await caller.toggle({
         workspaceId: "ws_123",
@@ -429,7 +475,17 @@ describe("extensionsRouter", () => {
 
     it("throws NOT_FOUND for non-existent install", async () => {
       const caller = createTestCaller();
-      vi.mocked(prisma.extensionInstall.findFirst).mockResolvedValue(null);
+
+      // Mock the interactive transaction to throw NOT_FOUND when install doesn't exist
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+        const tx = {
+          extensionInstall: {
+            findFirst: vi.fn().mockResolvedValue(null),
+          },
+        };
+        return callback(tx);
+      });
 
       await expect(
         caller.toggle({
@@ -647,7 +703,7 @@ describe("extensionsRouter", () => {
         versions: [mockVersion],
       } as unknown as Awaited<ReturnType<typeof prisma.extension.create>>);
 
-      const result = await caller.importManifest({
+      await caller.importManifest({
         workspaceId: "ws_123",
         manifest: validManifest,
       });

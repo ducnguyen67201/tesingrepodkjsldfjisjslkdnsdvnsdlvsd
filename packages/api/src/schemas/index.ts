@@ -19,3 +19,4 @@ export * from "./filtering";
 export * from "./prompts";
 export * from "./knowledge";
 export * from "./extensions";
+export * from "./theme";

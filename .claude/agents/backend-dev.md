@@ -1,8 +1,8 @@
 ---
 name: backend-dev
 description: Backend developer for CognObserve. Implements tRPC routers, Zod schemas, and services following strict conventions. Use after test-writer.
-tools: Read, Write, Edit, Glob, Grep, Bash
-model: sonnet
+tools: Read, Write, Edit, Bash
+model: opus
 ---
 
 # CognObserve Backend Developer

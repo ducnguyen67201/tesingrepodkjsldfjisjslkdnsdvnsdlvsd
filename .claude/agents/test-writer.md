@@ -1,8 +1,8 @@
 ---
 name: test-writer
 description: TDD expert for CognObserve. Writes tests BEFORE implementation using vitest patterns. Use after planner creates the plan.
-tools: Read, Write, Edit, Glob, Grep, Bash
-model: sonnet
+tools: Read, Write, Edit, Bash
+model: opus
 ---
 
 # CognObserve Test Writer

@@ -10,10 +10,6 @@ import { TRPCError } from "@trpc/server";
 import { prisma } from "@cognobserve/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import {
-  EvalSuiteConfigSchema,
-  CreateEvalSuiteSchema,
-  UpdateEvalSuiteSchema,
-  EvalRunStatusSchema,
   EvalPromptSchema,
   ExpectedBehaviorSchema,
   EVAL_STATUS_LABELS,

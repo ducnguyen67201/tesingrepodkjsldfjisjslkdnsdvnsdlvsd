@@ -147,8 +147,9 @@ describe("ExtensionManifestSchema", () => {
   });
 
   it("validates id format (lowercase, dots, hyphens)", () => {
+    // Must have at least 2 segments with dot (e.g., vendor.extension-name)
     const validIds = [
-      "my-extension",
+      "com.extension",
       "com.example.extension",
       "org.company.feature-name",
     ];
@@ -158,6 +159,7 @@ describe("ExtensionManifestSchema", () => {
     }
 
     const invalidIds = [
+      "my-extension", // missing vendor segment (no dot)
       "MyExtension", // uppercase
       "my_extension", // underscore
       "my extension", // space
