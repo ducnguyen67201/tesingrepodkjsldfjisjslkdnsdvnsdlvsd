@@ -86,7 +86,7 @@ export class TraceQueryBuilder {
       projectId,
       timeRange,
       filter,
-      _spanMatch = "any",
+      spanMatch: _spanMatch = "any",
       limit = 50,
       cursor,
     } = input;
