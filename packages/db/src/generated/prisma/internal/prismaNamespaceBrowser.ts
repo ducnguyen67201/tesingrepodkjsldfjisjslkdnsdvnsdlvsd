@@ -65,6 +65,10 @@ export const ModelName = {
   EvalSuite: 'EvalSuite',
   EvalSuiteKnowledge: 'EvalSuiteKnowledge',
   EvalRun: 'EvalRun',
+  Extension: 'Extension',
+  ExtensionVersion: 'ExtensionVersion',
+  ExtensionInstall: 'ExtensionInstall',
+  ExtensionAuditLog: 'ExtensionAuditLog',
   GitHubInstallation: 'GitHubInstallation',
   GitHubRepository: 'GitHubRepository',
   GitCommit: 'GitCommit',
@@ -325,6 +329,63 @@ export const EvalRunScalarFieldEnum = {
 } as const
 
 export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
+
+
+export const ExtensionScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  visibility: 'visibility',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtensionScalarFieldEnum = (typeof ExtensionScalarFieldEnum)[keyof typeof ExtensionScalarFieldEnum]
+
+
+export const ExtensionVersionScalarFieldEnum = {
+  id: 'id',
+  extensionId: 'extensionId',
+  version: 'version',
+  manifest: 'manifest',
+  entry: 'entry',
+  changelog: 'changelog',
+  deprecated: 'deprecated',
+  createdAt: 'createdAt'
+} as const
+
+export type ExtensionVersionScalarFieldEnum = (typeof ExtensionVersionScalarFieldEnum)[keyof typeof ExtensionVersionScalarFieldEnum]
+
+
+export const ExtensionInstallScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  extensionId: 'extensionId',
+  extensionVersionId: 'extensionVersionId',
+  enabled: 'enabled',
+  configJson: 'configJson',
+  approvedPermissions: 'approvedPermissions',
+  installedById: 'installedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtensionInstallScalarFieldEnum = (typeof ExtensionInstallScalarFieldEnum)[keyof typeof ExtensionInstallScalarFieldEnum]
+
+
+export const ExtensionAuditLogScalarFieldEnum = {
+  id: 'id',
+  installId: 'installId',
+  action: 'action',
+  actorId: 'actorId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ExtensionAuditLogScalarFieldEnum = (typeof ExtensionAuditLogScalarFieldEnum)[keyof typeof ExtensionAuditLogScalarFieldEnum]
 
 
 export const GitHubInstallationScalarFieldEnum = {

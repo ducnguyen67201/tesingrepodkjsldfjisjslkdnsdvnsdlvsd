@@ -4,13 +4,14 @@
  *
  * Usage:
  *   pnpm db:seed              # Run all seeds
- *   pnpm db:seed traces       # Run specific seed
+ *   pnpm db:seed extensions   # Run specific seed
  *   pnpm db:seed --list       # List available seeds
  *
- * Add new seeds:
- *   1. Create a new file in this folder (e.g., users.ts)
- *   2. Export an async function (e.g., seedUsers)
- *   3. Register it in SEEDS below
+ * Available seeds:
+ *   - users: Demo user and workspace
+ *   - model-pricing: LLM model pricing data
+ *   - extensions: Built-in extensions (themes, ingestion handlers)
+ *   - knowledge: Knowledge base groups and articles
  */
 
 import dotenv from "dotenv";
@@ -24,25 +25,39 @@ dotenv.config({ path: resolve(__dirname, "../../../.env") });
 
 // Dynamic imports to ensure env is loaded first
 const { prisma } = await import("../src/index.js");
-const { seedTraces } = await import("./traces.js");
+const { seedUsers } = await import("./users.js");
 const { seedModelPricing } = await import("./model-pricing.js");
+const { seedExtensions } = await import("./extensions.js");
+const { seedKnowledge } = await import("./knowledge.js");
 
-// Registry of available seeds
+// Registry of available seeds (order matters - users first)
 const SEEDS: Record<string, { name: string; description: string; fn: () => Promise<void> }> = {
+  users: {
+    name: "users",
+    description: "Demo user, workspace, and project",
+    fn: seedUsers,
+  },
   "model-pricing": {
     name: "model-pricing",
-    description: "Default LLM model pricing (OpenAI, Anthropic, Google, Mistral)",
+    description: "LLM model pricing (OpenAI, Anthropic, Google, Mistral)",
     fn: seedModelPricing,
   },
-  traces: {
-    name: "traces",
-    description: "Full hierarchy: Users → Sessions → Traces → Spans (with LLM calls)",
-    fn: seedTraces,
+  extensions: {
+    name: "extensions",
+    description: "Built-in extensions (themes, ingestion handlers)",
+    fn: seedExtensions,
+  },
+  knowledge: {
+    name: "knowledge",
+    description: "Knowledge base groups and articles",
+    fn: seedKnowledge,
   },
 };
 
 function printUsage() {
-  console.log("Database Seeding Tool\n");
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  console.log("  CognObserve Database Seeding Tool");
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
   console.log("Usage:");
   console.log("  pnpm db:seed              Run all seeds");
   console.log("  pnpm db:seed <name>       Run specific seed");
@@ -51,7 +66,7 @@ function printUsage() {
 }
 
 function listSeeds() {
-  console.log("Available seeds:\n");
+  console.log("\nAvailable seeds:\n");
   for (const [key, seed] of Object.entries(SEEDS)) {
     console.log(`  ${key.padEnd(15)} ${seed.description}`);
   }
@@ -61,8 +76,8 @@ function listSeeds() {
 async function runSeed(name: string) {
   const seed = SEEDS[name];
   if (!seed) {
-    console.error(`Unknown seed: ${name}`);
-    console.log(`Run 'pnpm db:seed --list' to see available seeds.`);
+    console.error(`\n❌ Unknown seed: ${name}`);
+    console.log(`Run 'pnpm db:seed --list' to see available seeds.\n`);
     process.exit(1);
   }
 
@@ -71,14 +86,18 @@ async function runSeed(name: string) {
 }
 
 async function runAllSeeds() {
-  console.log("Running all seeds...\n");
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  console.log("  Running All Seeds");
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-  for (const [key, seed] of Object.entries(SEEDS)) {
-    console.log(`\n━━━ Running seed: ${seed.name} ━━━\n`);
+  for (const [_key, seed] of Object.entries(SEEDS)) {
+    console.log(`\n━━━ ${seed.name} ━━━\n`);
     await seed.fn();
   }
 
-  console.log("\n✅ All seeds completed!");
+  console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+  console.log("  ✅ All seeds completed!");
+  console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 }
 
 async function main() {

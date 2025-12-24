@@ -398,6 +398,10 @@ export const ModelName = {
   EvalSuite: 'EvalSuite',
   EvalSuiteKnowledge: 'EvalSuiteKnowledge',
   EvalRun: 'EvalRun',
+  Extension: 'Extension',
+  ExtensionVersion: 'ExtensionVersion',
+  ExtensionInstall: 'ExtensionInstall',
+  ExtensionAuditLog: 'ExtensionAuditLog',
   GitHubInstallation: 'GitHubInstallation',
   GitHubRepository: 'GitHubRepository',
   GitCommit: 'GitCommit',
@@ -440,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
+    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1477,6 +1481,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EvalRunCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EvalRunCountAggregateOutputType> | number
+        }
+      }
+    }
+    Extension: {
+      payload: Prisma.$ExtensionPayload<ExtArgs>
+      fields: Prisma.ExtensionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExtensionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExtensionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        findFirst: {
+          args: Prisma.ExtensionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExtensionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        findMany: {
+          args: Prisma.ExtensionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>[]
+        }
+        create: {
+          args: Prisma.ExtensionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        createMany: {
+          args: Prisma.ExtensionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExtensionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>[]
+        }
+        delete: {
+          args: Prisma.ExtensionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        update: {
+          args: Prisma.ExtensionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExtensionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExtensionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExtensionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExtensionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionPayload>
+        }
+        aggregate: {
+          args: Prisma.ExtensionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExtension>
+        }
+        groupBy: {
+          args: Prisma.ExtensionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExtensionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ExtensionVersion: {
+      payload: Prisma.$ExtensionVersionPayload<ExtArgs>
+      fields: Prisma.ExtensionVersionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExtensionVersionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExtensionVersionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        findFirst: {
+          args: Prisma.ExtensionVersionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExtensionVersionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        findMany: {
+          args: Prisma.ExtensionVersionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>[]
+        }
+        create: {
+          args: Prisma.ExtensionVersionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        createMany: {
+          args: Prisma.ExtensionVersionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExtensionVersionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>[]
+        }
+        delete: {
+          args: Prisma.ExtensionVersionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        update: {
+          args: Prisma.ExtensionVersionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExtensionVersionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExtensionVersionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExtensionVersionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExtensionVersionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionVersionPayload>
+        }
+        aggregate: {
+          args: Prisma.ExtensionVersionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExtensionVersion>
+        }
+        groupBy: {
+          args: Prisma.ExtensionVersionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionVersionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExtensionVersionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionVersionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ExtensionInstall: {
+      payload: Prisma.$ExtensionInstallPayload<ExtArgs>
+      fields: Prisma.ExtensionInstallFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExtensionInstallFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExtensionInstallFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        findFirst: {
+          args: Prisma.ExtensionInstallFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExtensionInstallFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        findMany: {
+          args: Prisma.ExtensionInstallFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>[]
+        }
+        create: {
+          args: Prisma.ExtensionInstallCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        createMany: {
+          args: Prisma.ExtensionInstallCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExtensionInstallCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>[]
+        }
+        delete: {
+          args: Prisma.ExtensionInstallDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        update: {
+          args: Prisma.ExtensionInstallUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExtensionInstallDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExtensionInstallUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExtensionInstallUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExtensionInstallUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionInstallPayload>
+        }
+        aggregate: {
+          args: Prisma.ExtensionInstallAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExtensionInstall>
+        }
+        groupBy: {
+          args: Prisma.ExtensionInstallGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionInstallGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExtensionInstallCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionInstallCountAggregateOutputType> | number
+        }
+      }
+    }
+    ExtensionAuditLog: {
+      payload: Prisma.$ExtensionAuditLogPayload<ExtArgs>
+      fields: Prisma.ExtensionAuditLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExtensionAuditLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExtensionAuditLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        findFirst: {
+          args: Prisma.ExtensionAuditLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExtensionAuditLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        findMany: {
+          args: Prisma.ExtensionAuditLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>[]
+        }
+        create: {
+          args: Prisma.ExtensionAuditLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        createMany: {
+          args: Prisma.ExtensionAuditLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExtensionAuditLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>[]
+        }
+        delete: {
+          args: Prisma.ExtensionAuditLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        update: {
+          args: Prisma.ExtensionAuditLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExtensionAuditLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExtensionAuditLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExtensionAuditLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExtensionAuditLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExtensionAuditLogPayload>
+        }
+        aggregate: {
+          args: Prisma.ExtensionAuditLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExtensionAuditLog>
+        }
+        groupBy: {
+          args: Prisma.ExtensionAuditLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionAuditLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExtensionAuditLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExtensionAuditLogCountAggregateOutputType> | number
         }
       }
     }
@@ -3734,6 +4034,63 @@ export const EvalRunScalarFieldEnum = {
 export type EvalRunScalarFieldEnum = (typeof EvalRunScalarFieldEnum)[keyof typeof EvalRunScalarFieldEnum]
 
 
+export const ExtensionScalarFieldEnum = {
+  id: 'id',
+  slug: 'slug',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  visibility: 'visibility',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtensionScalarFieldEnum = (typeof ExtensionScalarFieldEnum)[keyof typeof ExtensionScalarFieldEnum]
+
+
+export const ExtensionVersionScalarFieldEnum = {
+  id: 'id',
+  extensionId: 'extensionId',
+  version: 'version',
+  manifest: 'manifest',
+  entry: 'entry',
+  changelog: 'changelog',
+  deprecated: 'deprecated',
+  createdAt: 'createdAt'
+} as const
+
+export type ExtensionVersionScalarFieldEnum = (typeof ExtensionVersionScalarFieldEnum)[keyof typeof ExtensionVersionScalarFieldEnum]
+
+
+export const ExtensionInstallScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  extensionId: 'extensionId',
+  extensionVersionId: 'extensionVersionId',
+  enabled: 'enabled',
+  configJson: 'configJson',
+  approvedPermissions: 'approvedPermissions',
+  installedById: 'installedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExtensionInstallScalarFieldEnum = (typeof ExtensionInstallScalarFieldEnum)[keyof typeof ExtensionInstallScalarFieldEnum]
+
+
+export const ExtensionAuditLogScalarFieldEnum = {
+  id: 'id',
+  installId: 'installId',
+  action: 'action',
+  actorId: 'actorId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ExtensionAuditLogScalarFieldEnum = (typeof ExtensionAuditLogScalarFieldEnum)[keyof typeof ExtensionAuditLogScalarFieldEnum]
+
+
 export const GitHubInstallationScalarFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
@@ -4452,6 +4809,34 @@ export type ListEnumEvalRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'ExtensionType'
+ */
+export type EnumExtensionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtensionType'>
+    
+
+
+/**
+ * Reference to a field of type 'ExtensionType[]'
+ */
+export type ListEnumExtensionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtensionType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExtensionVisibility'
+ */
+export type EnumExtensionVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtensionVisibility'>
+    
+
+
+/**
+ * Reference to a field of type 'ExtensionVisibility[]'
+ */
+export type ListEnumExtensionVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExtensionVisibility[]'>
+    
+
+
+/**
  * Reference to a field of type 'IndexStatus'
  */
 export type EnumIndexStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'IndexStatus'>
@@ -4655,6 +5040,10 @@ export type GlobalOmitConfig = {
   evalSuite?: Prisma.EvalSuiteOmit
   evalSuiteKnowledge?: Prisma.EvalSuiteKnowledgeOmit
   evalRun?: Prisma.EvalRunOmit
+  extension?: Prisma.ExtensionOmit
+  extensionVersion?: Prisma.ExtensionVersionOmit
+  extensionInstall?: Prisma.ExtensionInstallOmit
+  extensionAuditLog?: Prisma.ExtensionAuditLogOmit
   gitHubInstallation?: Prisma.GitHubInstallationOmit
   gitHubRepository?: Prisma.GitHubRepositoryOmit
   gitCommit?: Prisma.GitCommitOmit

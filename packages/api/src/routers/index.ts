@@ -31,6 +31,7 @@ import { evalsRouter } from "./evals";
 import { filtersRouter } from "./filters";
 import { promptsRouter } from "./prompts";
 import { knowledgeRouter } from "./knowledge";
+import { extensionsRouter } from "./extensions";
 
 /**
  * Main application router.
@@ -298,6 +299,27 @@ export const appRouter = createRouter({
   knowledge: knowledgeRouter,
 
   /**
+   * Extensions Hub
+   * @see ./extensions.ts
+   *
+   * Workspace-level extension management for themes, ingestion handlers, etc.
+   *
+   * Catalog:
+   * - extensions.list        - List available extensions
+   * - extensions.getById     - Get extension details with versions
+   *
+   * Installation (admin only):
+   * - extensions.install     - Install extension to workspace
+   * - extensions.toggle      - Enable/disable installed extension
+   * - extensions.configure   - Update extension config
+   * - extensions.uninstall   - Uninstall extension
+   *
+   * Publishing (admin only):
+   * - extensions.importManifest - Import manifest to create extension
+   */
+  extensions: extensionsRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -329,4 +351,5 @@ export {
   filtersRouter,
   promptsRouter,
   knowledgeRouter,
+  extensionsRouter,
 };

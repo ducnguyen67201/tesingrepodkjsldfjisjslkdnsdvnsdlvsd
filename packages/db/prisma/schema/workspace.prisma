@@ -30,6 +30,9 @@ model Workspace {
   knowledgeAttachments KnowledgeAttachment[]
   knowledgeChunks      KnowledgeChunk[]
 
+  // Extensions Hub
+  extensionInstalls ExtensionInstall[]
+
   @@index([slug])
 }
 

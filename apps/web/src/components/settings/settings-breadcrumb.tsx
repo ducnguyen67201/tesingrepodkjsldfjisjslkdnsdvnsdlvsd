@@ -45,6 +45,7 @@ const SETTINGS_PAGES: Record<string, string> = {
   "/settings/repositories": "Repositories",
   "/settings/domains": "Domains",
   "/settings/channels": "Channels",
+  "/settings/extensions": "Extensions",
   "/settings/api-keys": "API Keys",
 };
 

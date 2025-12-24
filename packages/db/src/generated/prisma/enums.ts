@@ -69,6 +69,25 @@ export const EvalRunStatus = {
 export type EvalRunStatus = (typeof EvalRunStatus)[keyof typeof EvalRunStatus]
 
 
+export const ExtensionType = {
+  THEME: 'THEME',
+  INGESTION: 'INGESTION',
+  POLICY: 'POLICY',
+  WEBHOOK: 'WEBHOOK'
+} as const
+
+export type ExtensionType = (typeof ExtensionType)[keyof typeof ExtensionType]
+
+
+export const ExtensionVisibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE',
+  UNLISTED: 'UNLISTED'
+} as const
+
+export type ExtensionVisibility = (typeof ExtensionVisibility)[keyof typeof ExtensionVisibility]
+
+
 export const IndexStatus = {
   PENDING: 'PENDING',
   INDEXING: 'INDEXING',
