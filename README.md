@@ -50,6 +50,38 @@ CognObserve is an **open source LLM observability** platform. It helps teams col
 
 ---
 
+## Prompt Management
+
+Prompt A/B testing lets you compare two prompt versions and route live traffic
+to each variant while tracking usage, latency, cost, and error rate.
+
+### Prompt A/B Testing UI (Mock)
+
+```text
++--------------------------------------------------------------------------------+
+| Prompts / Experiments                                                          |
++-------------------------------+------------------------------------------------+
+| Prompt List                   | Experiment: checkout-copy-test                |
+| - checkout-copy (v5)          | Status: RUNNING   Allocation: 50%             |
+| - checkout-copy (v6)          | Variants:                                      |
+| - onboarding (v3)             |  A (control): checkout-copy v5   Weight: 50%  |
+|                               |  B:           checkout-copy v6   Weight: 50%  |
+|                               |                                                |
+|                               | [Compare A vs B] [Pause] [End] [Promote B]     |
+|                               +------------------------------------------------+
+|                               | Metrics (last 7 days)                          |
+|                               |  Variant   Usage   P95 Latency   Cost   Errors |
+|                               |  A         12,430  420ms         $14.22 1.2%   |
+|                               |  B         12,201  398ms         $13.80 1.1%   |
+|                               +------------------------------------------------+
+|                               | Diff                                           |
+|                               | - system: You are an expert support agent...   |
+|                               | + system: You are a concise support agent...   |
++--------------------------------------------------------------------------------+
+```
+
+---
+
 ## 📦 Self Hosting
 
 CognObserve can be self-hosted using Docker Compose:
