@@ -35,7 +35,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useKnowledgeRules, useRulePreview } from "@/hooks/use-knowledge-rules";
 import { trpc } from "@/lib/trpc/client";
@@ -338,7 +337,7 @@ export function KnowledgeRuleDialog({
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex-1 overflow-hidden flex flex-col"
           >
-            <ScrollArea className="flex-1 -mx-6 px-6">
+            <div className="flex-1 -mx-6 px-6 overflow-y-auto max-h-[55vh]">
               <div className="space-y-6 pb-4">
                 {/* Basic Info */}
                 <div className="space-y-4">
@@ -683,7 +682,7 @@ export function KnowledgeRuleDialog({
                   />
                 </div>
               </div>
-            </ScrollArea>
+            </div>
 
             <DialogFooter className="mt-4">
               <Button
