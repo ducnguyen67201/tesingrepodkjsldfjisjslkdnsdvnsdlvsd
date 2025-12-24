@@ -42,24 +42,53 @@ import type { SessionWithWorkspaces } from "../context";
 export const extensionsRouter = createRouter({
   /**
    * List available extensions (catalog + install status)
+   *
+   * Visibility filtering:
+   * - PUBLIC: visible to all users
+   * - PRIVATE/UNLISTED: only visible to owner or users in workspace that owns it
    */
-  list: protectedProcedure.input(ListExtensionsInput).query(async ({ input }) => {
-    const where: Record<string, unknown> = {};
+  list: protectedProcedure.input(ListExtensionsInput).query(async ({ ctx, input }) => {
+    const session = ctx.session as SessionWithWorkspaces;
+    const userId = session.user.id;
 
-    if (input.type) {
-      where.type = input.type;
-    }
+    // Get workspace IDs that the user belongs to (for visibility filtering)
+    const userWorkspaceIds = session.user.workspaces?.map((w) => w.id) ?? [];
 
-    if (input.visibility) {
-      where.visibility = input.visibility;
-    }
+    // Get user IDs of members in user's workspaces for visibility filtering
+    const workspaceMembers = userWorkspaceIds.length > 0
+      ? await prisma.workspaceMember.findMany({
+          where: { workspaceId: { in: userWorkspaceIds } },
+          select: { userId: true },
+        })
+      : [];
+    const workspaceMemberIds = workspaceMembers.map((m) => m.userId);
 
-    if (input.search) {
-      where.OR = [
-        { name: { contains: input.search, mode: "insensitive" } },
-        { description: { contains: input.search, mode: "insensitive" } },
-      ];
-    }
+    // Build visibility filter: PUBLIC OR owned by user OR owned by user's workspace members
+    const visibilityFilter: Prisma.ExtensionWhereInput = {
+      OR: [
+        { visibility: "PUBLIC" },
+        { ownerId: userId },
+        // Extensions owned by members of user's workspaces
+        { ownerId: { in: workspaceMemberIds } },
+      ],
+    };
+
+    // Build the where clause
+    const where: Prisma.ExtensionWhereInput = {
+      AND: [
+        visibilityFilter,
+        input.type ? { type: input.type } : {},
+        input.visibility ? { visibility: input.visibility } : {},
+        input.search
+          ? {
+              OR: [
+                { name: { contains: input.search, mode: "insensitive" } },
+                { description: { contains: input.search, mode: "insensitive" } },
+              ],
+            }
+          : {},
+      ],
+    };
 
     const extensions = await prisma.extension.findMany({
       where,
@@ -156,14 +185,24 @@ export const extensionsRouter = createRouter({
       }
 
       // Validate manifest and permissions
-      const manifest = ExtensionManifestSchema.parse(version.manifest);
+      const manifestParseResult = ExtensionManifestSchema.safeParse(version.manifest);
+      if (!manifestParseResult.success) {
+        const details = manifestParseResult.error.issues
+          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+          .join("; ");
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Invalid manifest format: ${details}`,
+        });
+      }
+      const manifest = manifestParseResult.data;
       const handler = getExtensionHandler(extension.type);
 
       const manifestResult = handler.validateManifest(manifest);
       if (!manifestResult.success) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: manifestResult.error ?? "Invalid manifest",
+          message: `Invalid manifest: ${manifestResult.error}`,
         });
       }
 
@@ -236,6 +275,10 @@ export const extensionsRouter = createRouter({
 
   /**
    * Enable/disable extension
+   *
+   * Race condition prevention: Database update happens first in a transaction,
+   * then the handler is called. This ensures DB state is consistent even if
+   * the handler has side effects that can't be rolled back.
    */
   toggle: protectedProcedure
     .input(ToggleExtensionInput)
@@ -243,21 +286,67 @@ export const extensionsRouter = createRouter({
     .mutation(async ({ ctx, input }) => {
       const session = ctx.session as SessionWithWorkspaces;
 
-      const install = await prisma.extensionInstall.findFirst({
-        where: { id: input.installId, workspaceId: input.workspaceId },
-        include: { extension: true, version: true },
+      // Use interactive transaction to ensure atomicity
+      const { install, manifest, handler } = await prisma.$transaction(async (tx) => {
+        const existingInstall = await tx.extensionInstall.findFirst({
+          where: { id: input.installId, workspaceId: input.workspaceId },
+          include: { extension: true, version: true },
+        });
+
+        if (!existingInstall) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Install not found",
+          });
+        }
+
+        // Parse manifest (should always succeed since it was validated on install)
+        const manifestParseResult = ExtensionManifestSchema.safeParse(
+          existingInstall.version.manifest
+        );
+        if (!manifestParseResult.success) {
+          const details = manifestParseResult.error.issues
+            .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+            .join("; ");
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Extension manifest corrupted: ${details}`,
+          });
+        }
+
+        // Skip if already in desired state
+        if (existingInstall.enabled === input.enabled) {
+          return {
+            install: existingInstall,
+            manifest: manifestParseResult.data,
+            handler: getExtensionHandler(existingInstall.extension.type),
+            alreadyInState: true,
+          };
+        }
+
+        // Update state atomically
+        await tx.extensionInstall.update({
+          where: { id: input.installId },
+          data: { enabled: input.enabled },
+        });
+
+        await tx.extensionAuditLog.create({
+          data: {
+            installId: input.installId,
+            action: input.enabled ? "ENABLED" : "DISABLED",
+            actorId: session.user.id,
+          },
+        });
+
+        return {
+          install: existingInstall,
+          manifest: manifestParseResult.data,
+          handler: getExtensionHandler(existingInstall.extension.type),
+          alreadyInState: false,
+        };
       });
 
-      if (!install) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Install not found",
-        });
-      }
-
-      const handler = getExtensionHandler(install.extension.type);
-      const manifest = ExtensionManifestSchema.parse(install.version.manifest);
-
+      // Call handler after transaction commits (side effects are now safe)
       const extensionCtx = {
         workspaceId: input.workspaceId,
         extensionId: install.extensionId,
@@ -267,39 +356,24 @@ export const extensionsRouter = createRouter({
         permissions: install.approvedPermissions as ExtensionPermission[],
       };
 
-      // Call appropriate lifecycle hook
       if (input.enabled) {
         const result = await handler.onEnable(extensionCtx);
         if (!result.success) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: result.error ?? "Failed to enable extension",
-          });
+          // Log warning but don't fail - DB state is correct
+          console.warn(
+            `Extension ${install.extensionId} enabled in DB but handler failed:`,
+            result.error
+          );
         }
       } else {
         const result = await handler.onDisable(extensionCtx);
         if (!result.success) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: result.error ?? "Failed to disable extension",
-          });
+          console.warn(
+            `Extension ${install.extensionId} disabled in DB but handler failed:`,
+            result.error
+          );
         }
       }
-
-      // Update state
-      await prisma.$transaction([
-        prisma.extensionInstall.update({
-          where: { id: input.installId },
-          data: { enabled: input.enabled },
-        }),
-        prisma.extensionAuditLog.create({
-          data: {
-            installId: input.installId,
-            action: input.enabled ? "ENABLED" : "DISABLED",
-            actorId: session.user.id,
-          },
-        }),
-      ]);
 
       return { success: true };
     }),
@@ -326,14 +400,26 @@ export const extensionsRouter = createRouter({
       }
 
       const handler = getExtensionHandler(install.extension.type);
-      const manifest = ExtensionManifestSchema.parse(install.version.manifest);
+
+      // Parse manifest (should always succeed since it was validated on install)
+      const manifestParseResult = ExtensionManifestSchema.safeParse(install.version.manifest);
+      if (!manifestParseResult.success) {
+        const details = manifestParseResult.error.issues
+          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+          .join("; ");
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Extension manifest corrupted: ${details}`,
+        });
+      }
+      const manifest = manifestParseResult.data;
 
       // Validate new config
       const configResult = handler.validateConfig(input.config);
       if (!configResult.success) {
         throw new TRPCError({
           code: "BAD_REQUEST",
-          message: configResult.error ?? "Invalid configuration",
+          message: `Invalid configuration: ${configResult.error}`,
         });
       }
 
@@ -353,7 +439,7 @@ export const extensionsRouter = createRouter({
       if (!result.success) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: result.error ?? "Failed to configure extension",
+          message: `Failed to configure extension: ${result.error}`,
         });
       }
 
@@ -396,7 +482,19 @@ export const extensionsRouter = createRouter({
       }
 
       const handler = getExtensionHandler(install.extension.type);
-      const manifest = ExtensionManifestSchema.parse(install.version.manifest);
+
+      // Parse manifest (should always succeed since it was validated on install)
+      const manifestParseResult = ExtensionManifestSchema.safeParse(install.version.manifest);
+      if (!manifestParseResult.success) {
+        const details = manifestParseResult.error.issues
+          .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+          .join("; ");
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Extension manifest corrupted: ${details}`,
+        });
+      }
+      const manifest = manifestParseResult.data;
 
       // Call handler
       await handler.onUninstall({

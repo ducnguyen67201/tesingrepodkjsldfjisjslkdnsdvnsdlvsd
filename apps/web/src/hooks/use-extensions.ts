@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { showSuccess } from "@/lib/success";
@@ -93,11 +93,36 @@ export function useExtensions(options: UseExtensionsOptions) {
     }
   );
 
+  // Create O(1) lookup maps for extension names
+  const { extensionNameById, extensionNameByInstallId } = useMemo(() => {
+    const byId = new Map<string, string>();
+    const byInstallId = new Map<string, string>();
+
+    for (const ext of extensions) {
+      byId.set(ext.id, ext.name);
+      if (ext.install?.id) {
+        byInstallId.set(ext.install.id, ext.name);
+      }
+    }
+
+    return { extensionNameById: byId, extensionNameByInstallId: byInstallId };
+  }, [extensions]);
+
+  // Helper to get extension name with fallback
+  const getExtensionName = useCallback(
+    (extensionId: string) => extensionNameById.get(extensionId) ?? "Extension",
+    [extensionNameById]
+  );
+
+  const getExtensionNameByInstall = useCallback(
+    (installId: string) => extensionNameByInstallId.get(installId) ?? "Extension",
+    [extensionNameByInstallId]
+  );
+
   // Mutation: Install extension
   const installMutation = trpc.extensions.install.useMutation({
     onSuccess: (_, variables) => {
-      const ext = extensions.find((e) => e.id === variables.extensionId);
-      extensionToast.installed(ext?.name ?? "Extension");
+      extensionToast.installed(getExtensionName(variables.extensionId));
       utils.extensions.list.invalidate({ workspaceSlug });
     },
     onError: showError,
@@ -106,11 +131,11 @@ export function useExtensions(options: UseExtensionsOptions) {
   // Mutation: Toggle extension
   const toggleMutation = trpc.extensions.toggle.useMutation({
     onSuccess: (_, variables) => {
-      const ext = extensions.find((e) => e.install?.id === variables.installId);
+      const name = getExtensionNameByInstall(variables.installId);
       if (variables.enabled) {
-        extensionToast.enabled(ext?.name ?? "Extension");
+        extensionToast.enabled(name);
       } else {
-        extensionToast.disabled(ext?.name ?? "Extension");
+        extensionToast.disabled(name);
       }
       utils.extensions.list.invalidate({ workspaceSlug });
     },
@@ -120,8 +145,7 @@ export function useExtensions(options: UseExtensionsOptions) {
   // Mutation: Configure extension
   const configureMutation = trpc.extensions.configure.useMutation({
     onSuccess: (_, variables) => {
-      const ext = extensions.find((e) => e.install?.id === variables.installId);
-      extensionToast.configured(ext?.name ?? "Extension");
+      extensionToast.configured(getExtensionNameByInstall(variables.installId));
       utils.extensions.list.invalidate({ workspaceSlug });
     },
     onError: showError,
@@ -130,8 +154,7 @@ export function useExtensions(options: UseExtensionsOptions) {
   // Mutation: Uninstall extension
   const uninstallMutation = trpc.extensions.uninstall.useMutation({
     onSuccess: (_, variables) => {
-      const ext = extensions.find((e) => e.install?.id === variables.installId);
-      extensionToast.uninstalled(ext?.name ?? "Extension");
+      extensionToast.uninstalled(getExtensionNameByInstall(variables.installId));
       utils.extensions.list.invalidate({ workspaceSlug });
     },
     onError: showError,

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ExtensionList } from "./extension-list";
@@ -15,7 +16,15 @@ import {
   type ExtensionPermission,
   type ExtensionManifest,
   type ExtensionVisibility,
+  ExtensionTypeSchema,
 } from "@cognobserve/api/schemas";
+
+// URL query param names (namespaced to avoid conflicts)
+const URL_PARAMS = {
+  SEARCH: "extSearch",
+  TYPE: "extType",
+  INSTALLED_ONLY: "extInstalled",
+} as const;
 
 // ============================================================================
 // Types
@@ -31,10 +40,23 @@ interface ExtensionsHubProps {
 // ============================================================================
 
 export function ExtensionsHub({ workspaceSlug, workspaceId }: ExtensionsHubProps) {
-  // Filter state
-  const [search, setSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState<ExtensionType | undefined>();
-  const [installedOnly, setInstalledOnly] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize filter state from URL params
+  const [search, setSearch] = useState(() => searchParams.get(URL_PARAMS.SEARCH) ?? "");
+  const [typeFilter, setTypeFilter] = useState<ExtensionType | undefined>(() => {
+    const typeParam = searchParams.get(URL_PARAMS.TYPE);
+    if (typeParam) {
+      const parsed = ExtensionTypeSchema.safeParse(typeParam);
+      if (parsed.success) return parsed.data;
+    }
+    return undefined;
+  });
+  const [installedOnly, setInstalledOnly] = useState(
+    () => searchParams.get(URL_PARAMS.INSTALLED_ONLY) === "true"
+  );
   const debouncedSearch = useDebounce(search, 300);
 
   // Dialog state
@@ -43,6 +65,36 @@ export function ExtensionsHub({ workspaceSlug, workspaceId }: ExtensionsHubProps
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [selectedExtensionId, setSelectedExtensionId] = useState<string | null>(null);
   const [selectedInstallId, setSelectedInstallId] = useState<string | null>(null);
+
+  // Sync filter state to URL
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    // Update search param
+    if (debouncedSearch) {
+      params.set(URL_PARAMS.SEARCH, debouncedSearch);
+    } else {
+      params.delete(URL_PARAMS.SEARCH);
+    }
+
+    // Update type param
+    if (typeFilter) {
+      params.set(URL_PARAMS.TYPE, typeFilter);
+    } else {
+      params.delete(URL_PARAMS.TYPE);
+    }
+
+    // Update installedOnly param
+    if (installedOnly) {
+      params.set(URL_PARAMS.INSTALLED_ONLY, "true");
+    } else {
+      params.delete(URL_PARAMS.INSTALLED_ONLY);
+    }
+
+    // Update URL without scroll
+    const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  }, [debouncedSearch, typeFilter, installedOnly, pathname, router, searchParams]);
 
   // Data fetching
   const {

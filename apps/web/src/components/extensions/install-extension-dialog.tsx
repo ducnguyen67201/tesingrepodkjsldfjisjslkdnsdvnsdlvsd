@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,14 +50,13 @@ export function InstallExtensionDialog({
   const [approvedPermissions, setApprovedPermissions] = useState<ExtensionPermission[]>([]);
   const { extension, isLoading } = useExtension(extensionId ?? "", workspaceId);
 
-  // Parse manifest to get permissions
-  const manifest = extension?.versions?.[0]?.manifest;
-  const parsedManifest = manifest
-    ? ExtensionManifestSchema.safeParse(manifest)
-    : null;
-  const permissions = parsedManifest?.success
-    ? parsedManifest.data.permissions
-    : [];
+  // Parse manifest to get permissions (memoized to prevent dependency issues)
+  const permissions = useMemo(() => {
+    const manifest = extension?.versions?.[0]?.manifest;
+    if (!manifest) return [];
+    const parsedManifest = ExtensionManifestSchema.safeParse(manifest);
+    return parsedManifest.success ? parsedManifest.data.permissions : [];
+  }, [extension?.versions]);
 
   // Reset approved permissions when extension changes
   useEffect(() => {

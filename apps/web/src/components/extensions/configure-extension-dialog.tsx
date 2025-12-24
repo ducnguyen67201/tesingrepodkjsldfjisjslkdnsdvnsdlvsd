@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -51,9 +50,11 @@ export function ConfigureExtensionDialog({
   const [jsonError, setJsonError] = useState<string | null>(null);
   const { extension, isLoading } = useExtension(extensionId ?? "", workspaceId);
 
-  // Get current config from install
-  const currentInstall = extension?.installs?.[0];
-  const currentConfig = currentInstall?.configJson ?? {};
+  // Get current config from install (memoized to prevent infinite re-renders)
+  const currentConfig = useMemo(() => {
+    const currentInstall = extension?.installs?.[0];
+    return currentInstall?.configJson ?? {};
+  }, [extension?.installs]);
 
   // Reset config when extension changes
   useEffect(() => {

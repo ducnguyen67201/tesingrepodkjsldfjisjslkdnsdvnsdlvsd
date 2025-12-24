@@ -169,7 +169,6 @@ const SAMPLE_MANIFESTS: Record<ExtensionType, object> = {
 export function ImportManifestDialog({
   open,
   onOpenChange,
-  workspaceId,
   onImport,
   isImporting,
 }: ImportManifestDialogProps) {
@@ -270,6 +269,18 @@ export function ImportManifestDialog({
     setError(null);
   }, [extType]);
 
+  const resetForm = useCallback(() => {
+    setMode("guided");
+    setVisibility("PRIVATE");
+    setExtType("THEME");
+    setExtId("");
+    setExtName("");
+    setExtVersion("1.0.0");
+    setExtDescription("");
+    setManifestJson("");
+    setError(null);
+  }, []);
+
   const handleImport = useCallback(async () => {
     let manifest: ExtensionManifest | null = null;
 
@@ -302,19 +313,7 @@ export function ImportManifestDialog({
     } catch {
       // Error handled by parent
     }
-  }, [mode, guidedManifest, guidedValidation, jsonValidation, visibility, onImport]);
-
-  const resetForm = useCallback(() => {
-    setMode("guided");
-    setVisibility("PRIVATE");
-    setExtType("THEME");
-    setExtId("");
-    setExtName("");
-    setExtVersion("1.0.0");
-    setExtDescription("");
-    setManifestJson("");
-    setError(null);
-  }, []);
+  }, [mode, guidedManifest, guidedValidation, jsonValidation, visibility, onImport, resetForm]);
 
   const handleOpenChange = useCallback(
     (open: boolean) => {

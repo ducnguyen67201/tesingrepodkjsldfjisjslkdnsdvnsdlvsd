@@ -14,8 +14,8 @@
 import { prisma, Prisma } from "@cognobserve/db";
 import { type ExtensionType, type ExtensionPermission } from "../../schemas/extensions";
 
-/** System user ID for built-in extensions owner */
-const SYSTEM_USER_SLUG = "system";
+/** System user email for built-in extensions owner */
+const SYSTEM_USER_EMAIL = "system@cognobserve.internal";
 
 /**
  * Built-in extension definition
@@ -71,7 +71,7 @@ async function getOrCreateSystemUser(): Promise<string> {
   // First, try to find existing system user
   const existing = await prisma.user.findFirst({
     where: {
-      email: "system@cognobserve.internal",
+      email: SYSTEM_USER_EMAIL,
     },
     select: { id: true },
   });
@@ -83,7 +83,7 @@ async function getOrCreateSystemUser(): Promise<string> {
   // Create system user if not exists
   const systemUser = await prisma.user.create({
     data: {
-      email: "system@cognobserve.internal",
+      email: SYSTEM_USER_EMAIL,
       name: "CognObserve System",
       // System user has no auth - it's only for ownership records
     },

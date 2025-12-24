@@ -109,8 +109,8 @@ export const ExtensionManifestSchema = z.object({
   id: z
     .string()
     .regex(
-      /^[a-z0-9-]+(\.[a-z0-9-]+)*$/,
-      "Invalid extension ID format (use lowercase, dots, hyphens)"
+      /^[a-z0-9-]+\.[a-z0-9-]+(\.[a-z0-9-]+)*$/,
+      "Extension ID must have at least 2 segments (e.g., 'vendor.extension-name')"
     ),
   name: z.string().min(1, "Name is required").max(100),
   version: z.string().regex(/^\d+\.\d+\.\d+$/, "Must be valid semver (x.y.z)"),
