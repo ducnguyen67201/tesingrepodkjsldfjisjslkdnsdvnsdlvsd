@@ -3,6 +3,7 @@
 import { createContext, useContext, useMemo, useEffect, type ReactNode } from "react";
 import {
   type WorkspaceThemeConfig,
+  ALLOWED_CSS_VARS,
   DEFAULT_CSS_VARS,
   DEFAULT_DARK_CSS_VARS,
 } from "@cognobserve/api/schemas";
@@ -124,11 +125,20 @@ export function ThemeWrapper({
 
   // Apply CSS variables to document root so portaled elements (tooltips, modals) inherit them
   useEffect(() => {
-    if (!hasCustomTheme) {
-      // Remove custom properties when theme is disabled
-      for (const key of Object.keys(cssVars)) {
-        document.documentElement.style.removeProperty(key);
+    // Helper to remove all possible theme CSS variables
+    const removeAllThemeVars = () => {
+      for (const varName of ALLOWED_CSS_VARS) {
+        document.documentElement.style.removeProperty(`--${varName}`);
       }
+      // Also remove font variables
+      document.documentElement.style.removeProperty("--font-body");
+      document.documentElement.style.removeProperty("--font-heading");
+      document.documentElement.style.removeProperty("--font-mono");
+    };
+
+    if (!hasCustomTheme) {
+      // Remove all possible custom properties when theme is disabled
+      removeAllThemeVars();
       return;
     }
 
@@ -139,9 +149,7 @@ export function ThemeWrapper({
 
     // Cleanup on unmount or when theme changes
     return () => {
-      for (const key of Object.keys(cssVars)) {
-        document.documentElement.style.removeProperty(key);
-      }
+      removeAllThemeVars();
     };
   }, [cssVars, hasCustomTheme]);
 

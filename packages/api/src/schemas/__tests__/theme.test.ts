@@ -390,7 +390,7 @@ describe("THEME_PRESETS", () => {
   });
 
   it("all presets have valid configs", () => {
-    for (const [key, preset] of Object.entries(THEME_PRESETS)) {
+    for (const [_key, preset] of Object.entries(THEME_PRESETS)) {
       const result = WorkspaceThemeConfigSchema.safeParse(preset.config);
       expect(result.success).toBe(true);
     }

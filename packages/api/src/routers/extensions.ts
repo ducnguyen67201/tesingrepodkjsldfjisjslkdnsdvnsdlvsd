@@ -5,7 +5,6 @@
  * Provides CRUD operations for extensions catalog and workspace installations.
  */
 
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { prisma, Prisma } from "@cognobserve/db";
 import {

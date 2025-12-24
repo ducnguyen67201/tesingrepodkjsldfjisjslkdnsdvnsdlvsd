@@ -160,6 +160,14 @@ export function ThemeStudio({ workspaceId }: ThemeStudioProps) {
     [workingConfig]
   );
 
+  // Create color change handler for a specific variable (curried)
+  const createColorChangeHandler = useCallback(
+    (varName: AllowedCssVar) => (value: string) => {
+      handleColorChange(varName, value);
+    },
+    [handleColorChange]
+  );
+
   // Update font
   const handleFontChange = useCallback(
     (fontType: "body" | "heading" | "mono", value: AllowedFont | undefined) => {
@@ -241,13 +249,13 @@ export function ThemeStudio({ workspaceId }: ThemeStudioProps) {
               key={varName}
               label={varName.replace(/-/g, " ")}
               value={getVarValue(varName)}
-              onChange={(value) => handleColorChange(varName, value)}
+              onChange={createColorChangeHandler(varName)}
             />
           ))}
         </div>
       </div>
     ),
-    [getVarValue, handleColorChange]
+    [getVarValue, createColorChangeHandler]
   );
 
   if (isLoading) {

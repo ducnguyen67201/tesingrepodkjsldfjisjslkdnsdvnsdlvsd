@@ -27,10 +27,15 @@ import type { SessionWithWorkspaces } from "../context";
 
 /**
  * Parse and validate theme config from JSON.
+ * Falls back to DEFAULT_THEME if validation fails.
  */
 function parseThemeConfig(configJson: unknown): WorkspaceThemeConfig {
   const result = WorkspaceThemeConfigSchema.safeParse(configJson);
   if (!result.success) {
+    console.warn(
+      "[theme] Invalid theme config, falling back to default:",
+      result.error.issues
+    );
     return DEFAULT_THEME;
   }
   return result.data;

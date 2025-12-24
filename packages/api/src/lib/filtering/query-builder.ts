@@ -10,11 +10,9 @@
 import { prisma, Prisma } from "@cognobserve/db";
 import {
   type FilterExpression,
-  type SpanMatchMode,
   type TracesListV2Input,
   type SpansListV2Input,
   type PaginationCursor,
-  FILTER_LIMITS,
 } from "../../schemas/filtering";
 import { getFilterParser, type ParsedFilter } from "./filter-parser";
 
@@ -88,7 +86,7 @@ export class TraceQueryBuilder {
       projectId,
       timeRange,
       filter,
-      spanMatch = "any",
+      _spanMatch = "any",
       limit = 50,
       cursor,
     } = input;
@@ -280,7 +278,7 @@ export class TraceQueryBuilder {
   async getFilterStats(
     projectId: string,
     timeRange: { from: string; to: string },
-    filter?: FilterExpression
+    _filter?: FilterExpression
   ) {
     const baseWhere: Prisma.TraceWhereInput = {
       projectId,

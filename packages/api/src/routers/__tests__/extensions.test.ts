@@ -703,7 +703,7 @@ describe("extensionsRouter", () => {
         versions: [mockVersion],
       } as unknown as Awaited<ReturnType<typeof prisma.extension.create>>);
 
-      const result = await caller.importManifest({
+      await caller.importManifest({
         workspaceId: "ws_123",
         manifest: validManifest,
       });

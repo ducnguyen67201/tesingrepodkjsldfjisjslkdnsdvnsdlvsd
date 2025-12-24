@@ -99,7 +99,7 @@ export class IntervalScheduler implements IScheduler {
    * Update the interval of a scheduled task
    * Note: This will reset the interval timer
    */
-  updateInterval(name: string, newIntervalMs: number): void {
+  updateInterval(name: string, _newIntervalMs: number): void {
     const task = this.tasks.get(name);
     if (!task) {
       console.warn(`Cannot update interval: task "${name}" not found`);
