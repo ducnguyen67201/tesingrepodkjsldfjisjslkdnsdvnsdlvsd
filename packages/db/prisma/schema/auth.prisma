@@ -24,6 +24,11 @@ model User {
   articlesUpdated         KnowledgeArticle[]        @relation("ArticleUpdatedBy")
   articleVersionsCreated  KnowledgeArticleVersion[] @relation("ArticleVersionCreatedBy")
   knowledgeLinksCreated   KnowledgeLink[]           @relation("LinkCreatedBy")
+
+  // Extensions Hub
+  extensionsOwned    Extension[]          @relation("ExtensionOwner")
+  extensionsInstalled ExtensionInstall[]   @relation("ExtensionInstalledBy")
+  extensionAuditLogs ExtensionAuditLog[]  @relation("ExtensionAuditActor")
 }
 
 model Account {

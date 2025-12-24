@@ -427,6 +427,53 @@ pnpm db:migrate --name update_alert_thresholds
 - Without migrations, schema changes are lost when others pull
 - Production deployments rely on migration files
 
+## Feature Development Workflow (CRITICAL)
+
+**Follow this workflow for all new features, especially those involving API changes:**
+
+```
+Plan → Schema Changes → Migration → Unit Tests → API Implementation → Frontend
+```
+
+### Workflow Steps
+
+1. **Plan**: Create detailed implementation plan with architecture design
+2. **Schema Changes**: If database changes needed, update Prisma schema files
+3. **Migration**: Run `pnpm db:migrate --name <feature_name>` to create migration
+4. **Unit Tests FIRST**: Write tests for the API/service layer BEFORE implementation
+5. **API Implementation**: Implement the API to pass the tests
+6. **Frontend**: Build UI components and hooks
+
+### Why Tests First?
+
+- **Defines behavior**: Tests document expected API behavior before coding
+- **Catches edge cases**: Thinking about tests reveals edge cases early
+- **Prevents regression**: Tests ensure changes don't break existing functionality
+- **Faster iteration**: Running tests is faster than manual testing
+
+### Test File Locations
+
+| Layer | Test Location | Pattern |
+|-------|---------------|---------|
+| tRPC Routers | `packages/api/src/routers/__tests__/` | `*.test.ts` |
+| Services | `packages/api/src/services/__tests__/` | `*.test.ts` |
+| Schemas | `packages/api/src/schemas/__tests__/` | `*.test.ts` |
+| Frontend Hooks | `apps/web/src/hooks/__tests__/` | `*.test.ts` |
+| Components | `apps/web/src/components/**/__tests__/` | `*.test.tsx` |
+
+### Test Command
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests for specific package
+pnpm --filter @cognobserve/api test
+
+# Run tests in watch mode
+pnpm --filter @cognobserve/api test -- --watch
+```
+
 ## LLM Center (CRITICAL)
 
 The LLM Center (`packages/shared/src/llm/`) is the centralized abstraction for all LLM operations. **All LLM calls MUST go through the LLM Center.**

@@ -216,6 +216,9 @@ export type UserWhereInput = {
   articlesUpdated?: Prisma.KnowledgeArticleListRelationFilter
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionListRelationFilter
   knowledgeLinksCreated?: Prisma.KnowledgeLinkListRelationFilter
+  extensionsOwned?: Prisma.ExtensionListRelationFilter
+  extensionsInstalled?: Prisma.ExtensionInstallListRelationFilter
+  extensionAuditLogs?: Prisma.ExtensionAuditLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -237,6 +240,9 @@ export type UserOrderByWithRelationInput = {
   articlesUpdated?: Prisma.KnowledgeArticleOrderByRelationAggregateInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionOrderByRelationAggregateInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkOrderByRelationAggregateInput
+  extensionsOwned?: Prisma.ExtensionOrderByRelationAggregateInput
+  extensionsInstalled?: Prisma.ExtensionInstallOrderByRelationAggregateInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -261,6 +267,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   articlesUpdated?: Prisma.KnowledgeArticleListRelationFilter
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionListRelationFilter
   knowledgeLinksCreated?: Prisma.KnowledgeLinkListRelationFilter
+  extensionsOwned?: Prisma.ExtensionListRelationFilter
+  extensionsInstalled?: Prisma.ExtensionInstallListRelationFilter
+  extensionAuditLogs?: Prisma.ExtensionAuditLogListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -310,6 +319,9 @@ export type UserCreateInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -331,6 +343,9 @@ export type UserUncheckedCreateInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserUpdateInput = {
@@ -352,6 +367,9 @@ export type UserUpdateInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -373,6 +391,9 @@ export type UserUncheckedUpdateInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -477,6 +498,48 @@ export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSessionsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutExtensionsOwnedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionsOwnedInput, Prisma.UserUncheckedCreateWithoutExtensionsOwnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionsOwnedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutExtensionsOwnedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionsOwnedInput, Prisma.UserUncheckedCreateWithoutExtensionsOwnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionsOwnedInput
+  upsert?: Prisma.UserUpsertWithoutExtensionsOwnedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExtensionsOwnedInput, Prisma.UserUpdateWithoutExtensionsOwnedInput>, Prisma.UserUncheckedUpdateWithoutExtensionsOwnedInput>
+}
+
+export type UserCreateNestedOneWithoutExtensionsInstalledInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionsInstalledInput, Prisma.UserUncheckedCreateWithoutExtensionsInstalledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionsInstalledInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutExtensionsInstalledNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionsInstalledInput, Prisma.UserUncheckedCreateWithoutExtensionsInstalledInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionsInstalledInput
+  upsert?: Prisma.UserUpsertWithoutExtensionsInstalledInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExtensionsInstalledInput, Prisma.UserUpdateWithoutExtensionsInstalledInput>, Prisma.UserUncheckedUpdateWithoutExtensionsInstalledInput>
+}
+
+export type UserCreateNestedOneWithoutExtensionAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedCreateWithoutExtensionAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionAuditLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutExtensionAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedCreateWithoutExtensionAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutExtensionAuditLogsInput
+  upsert?: Prisma.UserUpsertWithoutExtensionAuditLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExtensionAuditLogsInput, Prisma.UserUpdateWithoutExtensionAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutExtensionAuditLogsInput>
 }
 
 export type UserCreateNestedOneWithoutArticlesCreatedInput = {
@@ -619,6 +682,9 @@ export type UserCreateWithoutAccountsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -639,6 +705,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -675,6 +744,9 @@ export type UserUpdateWithoutAccountsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -695,6 +767,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -715,6 +790,9 @@ export type UserCreateWithoutSessionsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -735,6 +813,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -771,6 +852,9 @@ export type UserUpdateWithoutSessionsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -791,6 +875,333 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutExtensionsOwnedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutExtensionsOwnedInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutExtensionsOwnedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionsOwnedInput, Prisma.UserUncheckedCreateWithoutExtensionsOwnedInput>
+}
+
+export type UserUpsertWithoutExtensionsOwnedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutExtensionsOwnedInput, Prisma.UserUncheckedUpdateWithoutExtensionsOwnedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionsOwnedInput, Prisma.UserUncheckedCreateWithoutExtensionsOwnedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutExtensionsOwnedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutExtensionsOwnedInput, Prisma.UserUncheckedUpdateWithoutExtensionsOwnedInput>
+}
+
+export type UserUpdateWithoutExtensionsOwnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutExtensionsOwnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutExtensionsInstalledInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutExtensionsInstalledInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutExtensionsInstalledInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionsInstalledInput, Prisma.UserUncheckedCreateWithoutExtensionsInstalledInput>
+}
+
+export type UserUpsertWithoutExtensionsInstalledInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutExtensionsInstalledInput, Prisma.UserUncheckedUpdateWithoutExtensionsInstalledInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionsInstalledInput, Prisma.UserUncheckedCreateWithoutExtensionsInstalledInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutExtensionsInstalledInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutExtensionsInstalledInput, Prisma.UserUncheckedUpdateWithoutExtensionsInstalledInput>
+}
+
+export type UserUpdateWithoutExtensionsInstalledInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutExtensionsInstalledInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutExtensionAuditLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCACreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+}
+
+export type UserUncheckedCreateWithoutExtensionAuditLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  emailVerified?: Date | string | null
+  password?: string | null
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutCreatedByInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedCreateNestedManyWithoutFeedbackUserInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+}
+
+export type UserCreateOrConnectWithoutExtensionAuditLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedCreateWithoutExtensionAuditLogsInput>
+}
+
+export type UserUpsertWithoutExtensionAuditLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedUpdateWithoutExtensionAuditLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedCreateWithoutExtensionAuditLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutExtensionAuditLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutExtensionAuditLogsInput, Prisma.UserUncheckedUpdateWithoutExtensionAuditLogsInput>
+}
+
+export type UserUpdateWithoutExtensionAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutExtensionAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  domainsCreated?: Prisma.AllowedDomainUncheckedUpdateManyWithoutCreatedByNestedInput
+  rcaFeedback?: Prisma.AlertRCAUncheckedUpdateManyWithoutFeedbackUserNestedInput
+  articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
 }
 
 export type UserCreateWithoutArticlesCreatedInput = {
@@ -811,6 +1222,9 @@ export type UserCreateWithoutArticlesCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutArticlesCreatedInput = {
@@ -831,6 +1245,9 @@ export type UserUncheckedCreateWithoutArticlesCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutArticlesCreatedInput = {
@@ -856,6 +1273,9 @@ export type UserCreateWithoutArticlesUpdatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutArticlesUpdatedInput = {
@@ -876,6 +1296,9 @@ export type UserUncheckedCreateWithoutArticlesUpdatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutArticlesUpdatedInput = {
@@ -912,6 +1335,9 @@ export type UserUpdateWithoutArticlesCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutArticlesCreatedInput = {
@@ -932,6 +1358,9 @@ export type UserUncheckedUpdateWithoutArticlesCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserUpsertWithoutArticlesUpdatedInput = {
@@ -963,6 +1392,9 @@ export type UserUpdateWithoutArticlesUpdatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutArticlesUpdatedInput = {
@@ -983,6 +1415,9 @@ export type UserUncheckedUpdateWithoutArticlesUpdatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutArticleVersionsCreatedInput = {
@@ -1003,6 +1438,9 @@ export type UserCreateWithoutArticleVersionsCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutArticleVersionsCreatedInput = {
@@ -1023,6 +1461,9 @@ export type UserUncheckedCreateWithoutArticleVersionsCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutArticleVersionsCreatedInput = {
@@ -1059,6 +1500,9 @@ export type UserUpdateWithoutArticleVersionsCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutArticleVersionsCreatedInput = {
@@ -1079,6 +1523,9 @@ export type UserUncheckedUpdateWithoutArticleVersionsCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutKnowledgeLinksCreatedInput = {
@@ -1099,6 +1546,9 @@ export type UserCreateWithoutKnowledgeLinksCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleCreateNestedManyWithoutCreatedByInput
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutKnowledgeLinksCreatedInput = {
@@ -1119,6 +1569,9 @@ export type UserUncheckedCreateWithoutKnowledgeLinksCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutCreatedByInput
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutKnowledgeLinksCreatedInput = {
@@ -1155,6 +1608,9 @@ export type UserUpdateWithoutKnowledgeLinksCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUpdateManyWithoutCreatedByNestedInput
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput = {
@@ -1175,6 +1631,9 @@ export type UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput = {
   articlesCreated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutCreatedByNestedInput
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutProjectsInput = {
@@ -1195,6 +1654,9 @@ export type UserCreateWithoutProjectsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutProjectsInput = {
@@ -1215,6 +1677,9 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutProjectsInput = {
@@ -1251,6 +1716,9 @@ export type UserUpdateWithoutProjectsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectsInput = {
@@ -1271,6 +1739,9 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutRcaFeedbackInput = {
@@ -1291,6 +1762,9 @@ export type UserCreateWithoutRcaFeedbackInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutRcaFeedbackInput = {
@@ -1311,6 +1785,9 @@ export type UserUncheckedCreateWithoutRcaFeedbackInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutRcaFeedbackInput = {
@@ -1347,6 +1824,9 @@ export type UserUpdateWithoutRcaFeedbackInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
@@ -1367,6 +1847,9 @@ export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutWorkspacesInput = {
@@ -1387,6 +1870,9 @@ export type UserCreateWithoutWorkspacesInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutWorkspacesInput = {
@@ -1407,6 +1893,9 @@ export type UserUncheckedCreateWithoutWorkspacesInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutWorkspacesInput = {
@@ -1443,6 +1932,9 @@ export type UserUpdateWithoutWorkspacesInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWorkspacesInput = {
@@ -1463,6 +1955,9 @@ export type UserUncheckedUpdateWithoutWorkspacesInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutDomainsCreatedInput = {
@@ -1483,6 +1978,9 @@ export type UserCreateWithoutDomainsCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutDomainsCreatedInput = {
@@ -1503,6 +2001,9 @@ export type UserUncheckedCreateWithoutDomainsCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutUpdatedByInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedCreateNestedManyWithoutCreatedByInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutCreatedByInput
+  extensionsOwned?: Prisma.ExtensionUncheckedCreateNestedManyWithoutOwnerInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutInstalledByInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutDomainsCreatedInput = {
@@ -1539,6 +2040,9 @@ export type UserUpdateWithoutDomainsCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
@@ -1559,6 +2063,9 @@ export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
   articlesUpdated?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
   articleVersionsCreated?: Prisma.KnowledgeArticleVersionUncheckedUpdateManyWithoutCreatedByNestedInput
   knowledgeLinksCreated?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutCreatedByNestedInput
+  extensionsOwned?: Prisma.ExtensionUncheckedUpdateManyWithoutOwnerNestedInput
+  extensionsInstalled?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutInstalledByNestedInput
+  extensionAuditLogs?: Prisma.ExtensionAuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 
@@ -1577,6 +2084,9 @@ export type UserCountOutputType = {
   articlesUpdated: number
   articleVersionsCreated: number
   knowledgeLinksCreated: number
+  extensionsOwned: number
+  extensionsInstalled: number
+  extensionAuditLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1590,6 +2100,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   articlesUpdated?: boolean | UserCountOutputTypeCountArticlesUpdatedArgs
   articleVersionsCreated?: boolean | UserCountOutputTypeCountArticleVersionsCreatedArgs
   knowledgeLinksCreated?: boolean | UserCountOutputTypeCountKnowledgeLinksCreatedArgs
+  extensionsOwned?: boolean | UserCountOutputTypeCountExtensionsOwnedArgs
+  extensionsInstalled?: boolean | UserCountOutputTypeCountExtensionsInstalledArgs
+  extensionAuditLogs?: boolean | UserCountOutputTypeCountExtensionAuditLogsArgs
 }
 
 /**
@@ -1672,6 +2185,27 @@ export type UserCountOutputTypeCountKnowledgeLinksCreatedArgs<ExtArgs extends ru
   where?: Prisma.KnowledgeLinkWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountExtensionsOwnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExtensionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountExtensionsInstalledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExtensionInstallWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountExtensionAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExtensionAuditLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1692,6 +2226,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   articlesUpdated?: boolean | Prisma.User$articlesUpdatedArgs<ExtArgs>
   articleVersionsCreated?: boolean | Prisma.User$articleVersionsCreatedArgs<ExtArgs>
   knowledgeLinksCreated?: boolean | Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>
+  extensionsOwned?: boolean | Prisma.User$extensionsOwnedArgs<ExtArgs>
+  extensionsInstalled?: boolean | Prisma.User$extensionsInstalledArgs<ExtArgs>
+  extensionAuditLogs?: boolean | Prisma.User$extensionAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1740,6 +2277,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   articlesUpdated?: boolean | Prisma.User$articlesUpdatedArgs<ExtArgs>
   articleVersionsCreated?: boolean | Prisma.User$articleVersionsCreatedArgs<ExtArgs>
   knowledgeLinksCreated?: boolean | Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>
+  extensionsOwned?: boolean | Prisma.User$extensionsOwnedArgs<ExtArgs>
+  extensionsInstalled?: boolean | Prisma.User$extensionsInstalledArgs<ExtArgs>
+  extensionAuditLogs?: boolean | Prisma.User$extensionAuditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1758,6 +2298,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     articlesUpdated: Prisma.$KnowledgeArticlePayload<ExtArgs>[]
     articleVersionsCreated: Prisma.$KnowledgeArticleVersionPayload<ExtArgs>[]
     knowledgeLinksCreated: Prisma.$KnowledgeLinkPayload<ExtArgs>[]
+    extensionsOwned: Prisma.$ExtensionPayload<ExtArgs>[]
+    extensionsInstalled: Prisma.$ExtensionInstallPayload<ExtArgs>[]
+    extensionAuditLogs: Prisma.$ExtensionAuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2172,6 +2715,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   articlesUpdated<T extends Prisma.User$articlesUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articlesUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   articleVersionsCreated<T extends Prisma.User$articleVersionsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$articleVersionsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeArticleVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   knowledgeLinksCreated<T extends Prisma.User$knowledgeLinksCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$knowledgeLinksCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  extensionsOwned<T extends Prisma.User$extensionsOwnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$extensionsOwnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtensionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  extensionsInstalled<T extends Prisma.User$extensionsInstalledArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$extensionsInstalledArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtensionInstallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  extensionAuditLogs<T extends Prisma.User$extensionAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$extensionAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtensionAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2834,6 +3380,78 @@ export type User$knowledgeLinksCreatedArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.KnowledgeLinkScalarFieldEnum | Prisma.KnowledgeLinkScalarFieldEnum[]
+}
+
+/**
+ * User.extensionsOwned
+ */
+export type User$extensionsOwnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Extension
+   */
+  select?: Prisma.ExtensionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Extension
+   */
+  omit?: Prisma.ExtensionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtensionInclude<ExtArgs> | null
+  where?: Prisma.ExtensionWhereInput
+  orderBy?: Prisma.ExtensionOrderByWithRelationInput | Prisma.ExtensionOrderByWithRelationInput[]
+  cursor?: Prisma.ExtensionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExtensionScalarFieldEnum | Prisma.ExtensionScalarFieldEnum[]
+}
+
+/**
+ * User.extensionsInstalled
+ */
+export type User$extensionsInstalledArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExtensionInstall
+   */
+  select?: Prisma.ExtensionInstallSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExtensionInstall
+   */
+  omit?: Prisma.ExtensionInstallOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtensionInstallInclude<ExtArgs> | null
+  where?: Prisma.ExtensionInstallWhereInput
+  orderBy?: Prisma.ExtensionInstallOrderByWithRelationInput | Prisma.ExtensionInstallOrderByWithRelationInput[]
+  cursor?: Prisma.ExtensionInstallWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExtensionInstallScalarFieldEnum | Prisma.ExtensionInstallScalarFieldEnum[]
+}
+
+/**
+ * User.extensionAuditLogs
+ */
+export type User$extensionAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExtensionAuditLog
+   */
+  select?: Prisma.ExtensionAuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExtensionAuditLog
+   */
+  omit?: Prisma.ExtensionAuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExtensionAuditLogInclude<ExtArgs> | null
+  where?: Prisma.ExtensionAuditLogWhereInput
+  orderBy?: Prisma.ExtensionAuditLogOrderByWithRelationInput | Prisma.ExtensionAuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.ExtensionAuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExtensionAuditLogScalarFieldEnum | Prisma.ExtensionAuditLogScalarFieldEnum[]
 }
 
 /**

@@ -88,6 +88,26 @@ export type EvalSuiteKnowledge = Prisma.EvalSuiteKnowledgeModel
  */
 export type EvalRun = Prisma.EvalRunModel
 /**
+ * Model Extension
+ * 
+ */
+export type Extension = Prisma.ExtensionModel
+/**
+ * Model ExtensionVersion
+ * 
+ */
+export type ExtensionVersion = Prisma.ExtensionVersionModel
+/**
+ * Model ExtensionInstall
+ * 
+ */
+export type ExtensionInstall = Prisma.ExtensionInstallModel
+/**
+ * Model ExtensionAuditLog
+ * 
+ */
+export type ExtensionAuditLog = Prisma.ExtensionAuditLogModel
+/**
  * Model GitHubInstallation
  * 
  */

@@ -1,13 +1,18 @@
 /**
- * API package initialization.
- * Configures shared utilities with environment variables.
- * This file MUST be imported before any routes that use api-key functions.
+ * API Package Initialization
+ *
+ * Configures shared utilities and registers handlers/adapters.
+ * This file MUST be imported before any routes that use these features.
  */
+
 import { setApiKeyConfig } from "@cognobserve/shared";
 import { initializeAlertingAdapters } from "./lib/alerting/init";
+import { initializeExtensionHandlers } from "./lib/extensions/init";
 
-// Initialize API key config from environment variables
-// These are validated and have defaults in the web app's env.ts
+// ============================================================================
+// Configuration
+// ============================================================================
+
 setApiKeyConfig({
   prefix: process.env.API_KEY_PREFIX || "co_sk_",
   randomBytesLength: parseInt(process.env.API_KEY_RANDOM_BYTES_LENGTH || "32", 10),
@@ -16,5 +21,9 @@ setApiKeyConfig({
     "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
 });
 
-// Initialize alerting adapters (Discord, Gmail, etc.)
+// ============================================================================
+// Handler & Adapter Registration
+// ============================================================================
+
 initializeAlertingAdapters();
+initializeExtensionHandlers();
