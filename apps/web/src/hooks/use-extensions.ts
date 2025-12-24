@@ -138,6 +138,9 @@ export function useExtensions(options: UseExtensionsOptions) {
         extensionToast.disabled(name);
       }
       utils.extensions.list.invalidate({ workspaceSlug });
+      // Also invalidate theme query in case this is a theme extension
+      // This ensures ThemeWrapper picks up theme enable/disable immediately
+      utils.theme.getActive.invalidate({ workspaceId: variables.workspaceId });
     },
     onError: showError,
   });

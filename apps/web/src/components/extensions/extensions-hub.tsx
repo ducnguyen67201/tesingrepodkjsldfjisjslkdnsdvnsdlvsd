@@ -68,33 +68,29 @@ export function ExtensionsHub({ workspaceSlug, workspaceId }: ExtensionsHubProps
 
   // Sync filter state to URL
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
 
     // Update search param
     if (debouncedSearch) {
       params.set(URL_PARAMS.SEARCH, debouncedSearch);
-    } else {
-      params.delete(URL_PARAMS.SEARCH);
     }
 
     // Update type param
     if (typeFilter) {
       params.set(URL_PARAMS.TYPE, typeFilter);
-    } else {
-      params.delete(URL_PARAMS.TYPE);
     }
 
     // Update installedOnly param
     if (installedOnly) {
       params.set(URL_PARAMS.INSTALLED_ONLY, "true");
-    } else {
-      params.delete(URL_PARAMS.INSTALLED_ONLY);
     }
 
     // Update URL without scroll
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
     router.replace(newUrl, { scroll: false });
-  }, [debouncedSearch, typeFilter, installedOnly, pathname, router, searchParams]);
+    // NOTE: searchParams intentionally excluded to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, typeFilter, installedOnly, pathname]);
 
   // Data fetching
   const {
