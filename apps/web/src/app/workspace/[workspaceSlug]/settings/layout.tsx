@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Settings, Users, Key, Building2, Globe, Bell, Github, Puzzle } from "lucide-react";
+import { Settings, Users, Key, Building2, Globe, Bell, Github, Puzzle, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
 
@@ -19,6 +19,7 @@ const SETTINGS_NAV_ITEMS: SettingsNavItem[] = [
   { title: "Domains", path: "/settings/domains", icon: Globe },
   { title: "Channels", path: "/settings/channels", icon: Bell },
   { title: "Extensions", path: "/settings/extensions", icon: Puzzle },
+  { title: "Appearance", path: "/settings/appearance", icon: Palette },
   { title: "API Keys", path: "/settings/api-keys", icon: Key },
 ];
 

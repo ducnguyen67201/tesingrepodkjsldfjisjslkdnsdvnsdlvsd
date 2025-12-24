@@ -46,6 +46,7 @@ const SETTINGS_PAGES: Record<string, string> = {
   "/settings/domains": "Domains",
   "/settings/channels": "Channels",
   "/settings/extensions": "Extensions",
+  "/settings/appearance": "Appearance",
   "/settings/api-keys": "API Keys",
 };
 
@@ -100,7 +101,7 @@ export function SettingsBreadcrumb() {
             const isLast = index === items.length - 1;
 
             return (
-              <Fragment key={item.label}>
+              <Fragment key={`${index}-${item.label}`}>
                 <BreadcrumbItem>
                   {item.href && !isLast ? (
                     <BreadcrumbLink asChild>

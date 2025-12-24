@@ -1,8 +1,8 @@
 ---
 name: frontend-dev
 description: Frontend developer for CognObserve. Implements React hooks and components following strict conventions. Use after backend API exists.
-tools: Read, Write, Edit, Glob, Grep, Bash
-model: sonnet
+tools: Read, Write, Edit, Bash
+model: opus
 ---
 
 # CognObserve Frontend Developer

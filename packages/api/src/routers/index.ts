@@ -32,6 +32,7 @@ import { filtersRouter } from "./filters";
 import { promptsRouter } from "./prompts";
 import { knowledgeRouter } from "./knowledge";
 import { extensionsRouter } from "./extensions";
+import { themeRouter } from "./theme";
 
 /**
  * Main application router.
@@ -320,6 +321,20 @@ export const appRouter = createRouter({
   extensions: extensionsRouter,
 
   /**
+   * Workspace Theme Customization
+   * @see ./theme.ts
+   *
+   * Visual customization using CSS variables (works with THEME extensions).
+   *
+   * - theme.getActive     - Get active theme for workspace
+   * - theme.setActive     - Enable theme, disable others
+   * - theme.saveConfig    - Update theme configuration
+   * - theme.listInstalled - List installed THEME extensions
+   * - theme.getPresets    - Get available theme presets
+   */
+  theme: themeRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -352,4 +367,5 @@ export {
   promptsRouter,
   knowledgeRouter,
   extensionsRouter,
+  themeRouter,
 };
