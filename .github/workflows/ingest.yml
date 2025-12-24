@@ -29,14 +29,14 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate:ci
 
-      - name: Lint ingest-node
-        run: pnpm --filter @cognobserve/ingest-node lint
+      - name: Type check
+        run: pnpm typecheck
 
-      - name: Type check ingest-node
-        run: pnpm --filter @cognobserve/ingest-node typecheck
+      - name: Test
+        run: pnpm test
 
-      - name: Run tests
-        run: pnpm --filter @cognobserve/ingest-node test
+      - name: Lint
+        run: pnpm lint
 
       - name: Build ingest-node
         run: pnpm --filter @cognobserve/ingest-node build

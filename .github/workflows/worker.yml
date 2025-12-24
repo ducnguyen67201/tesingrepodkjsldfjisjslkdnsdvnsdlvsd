@@ -28,13 +28,16 @@ jobs:
         run: pnpm db:generate:ci
 
       - name: Type check
-        run: pnpm --filter @cognobserve/worker typecheck
+        run: pnpm typecheck
 
-      - name: Build
-        run: pnpm --filter @cognobserve/worker build
+      - name: Test
+        run: pnpm test
 
       - name: Lint
-        run: pnpm --filter @cognobserve/worker lint
+        run: pnpm lint
+
+      - name: Build worker
+        run: pnpm --filter @cognobserve/worker build
 
       # Temporal architecture checks
       - name: Verify Temporal structure

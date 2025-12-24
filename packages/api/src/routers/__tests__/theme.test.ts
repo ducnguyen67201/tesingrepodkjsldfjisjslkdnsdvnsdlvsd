@@ -455,10 +455,11 @@ describe("themeRouter", () => {
 
       const result = await caller.getPresets();
 
-      expect(result).toHaveLength(5);
+      expect(result).toHaveLength(6);
       expect(result.map((p) => p.key)).toContain("default");
       expect(result.map((p) => p.key)).toContain("dark");
       expect(result.map((p) => p.key)).toContain("blue");
+      expect(result.map((p) => p.key)).toContain("pink");
     });
 
     it("each preset has name, description, and config", async () => {

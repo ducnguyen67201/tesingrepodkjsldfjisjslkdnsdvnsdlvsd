@@ -1,9 +1,8 @@
 "use client";
 
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useEffect, type ReactNode } from "react";
 import {
   type WorkspaceThemeConfig,
-  type AllowedCssVar,
   DEFAULT_CSS_VARS,
   DEFAULT_DARK_CSS_VARS,
 } from "@cognobserve/api/schemas";
@@ -123,15 +122,32 @@ export function ThemeWrapper({
   // Only apply CSS variables if there's an active theme
   const hasCustomTheme = isActive && config && Object.keys(cssVars).length > 0;
 
+  // Apply CSS variables to document root so portaled elements (tooltips, modals) inherit them
+  useEffect(() => {
+    if (!hasCustomTheme) {
+      // Remove custom properties when theme is disabled
+      for (const key of Object.keys(cssVars)) {
+        document.documentElement.style.removeProperty(key);
+      }
+      return;
+    }
+
+    // Apply custom properties to :root
+    for (const [key, value] of Object.entries(cssVars)) {
+      document.documentElement.style.setProperty(key, value);
+    }
+
+    // Cleanup on unmount or when theme changes
+    return () => {
+      for (const key of Object.keys(cssVars)) {
+        document.documentElement.style.removeProperty(key);
+      }
+    };
+  }, [cssVars, hasCustomTheme]);
+
   return (
     <ThemeContext.Provider value={contextValue}>
-      {hasCustomTheme ? (
-        <div style={cssVars} className="contents">
-          {children}
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </ThemeContext.Provider>
   );
 }

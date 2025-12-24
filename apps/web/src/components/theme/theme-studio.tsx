@@ -23,12 +23,9 @@ import {
   type WorkspaceThemeConfig,
   type AllowedCssVar,
   type AllowedFont,
-  ALLOWED_CSS_VARS,
-  ALLOWED_FONTS,
   DEFAULT_CSS_VARS,
   DEFAULT_THEME,
 } from "@cognobserve/api/schemas";
-import { cn } from "@/lib/utils";
 
 // ============================================================================
 // Types
