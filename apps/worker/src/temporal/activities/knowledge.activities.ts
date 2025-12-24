@@ -678,7 +678,20 @@ function evaluateFilterExpression(
     case "eq": {
       const field = condition.field as string;
       const value = condition.value;
-      return getNestedValue(context, field) === value;
+      const contextValue = getNestedValue(context, field);
+
+      // Handle type coercion for boolean fields
+      if (typeof contextValue === "boolean") {
+        if (value === "true" || value === true) return contextValue === true;
+        if (value === "false" || value === false) return contextValue === false;
+      }
+
+      // Handle numeric comparisons (string vs number)
+      if (typeof contextValue === "number" && typeof value === "string") {
+        return contextValue === parseFloat(value);
+      }
+
+      return contextValue === value;
     }
 
     case "contains": {
