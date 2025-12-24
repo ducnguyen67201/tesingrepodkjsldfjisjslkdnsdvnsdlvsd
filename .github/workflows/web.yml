@@ -56,7 +56,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Test
-        run: pnpm test:ci
+        run: pnpm --filter @cognobserve/web --filter @cognobserve/api test
 
       - name: Lint
         run: pnpm lint

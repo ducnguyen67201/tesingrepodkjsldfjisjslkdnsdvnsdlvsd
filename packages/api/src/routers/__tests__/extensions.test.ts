@@ -193,9 +193,14 @@ describe("extensionsRouter", () => {
 
       await caller.list({ type: "THEME" });
 
+      // Query uses AND array structure with visibility + type filters
       expect(prisma.extension.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({ type: "THEME" }),
+          where: expect.objectContaining({
+            AND: expect.arrayContaining([
+              expect.objectContaining({ type: "THEME" }),
+            ]),
+          }),
         })
       );
     });
@@ -206,12 +211,17 @@ describe("extensionsRouter", () => {
 
       await caller.list({ search: "dark mode" });
 
+      // Query uses AND array structure with visibility + search filters
       expect(prisma.extension.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: expect.objectContaining({
-            OR: expect.arrayContaining([
-              expect.objectContaining({ name: expect.anything() }),
-              expect.objectContaining({ description: expect.anything() }),
+            AND: expect.arrayContaining([
+              expect.objectContaining({
+                OR: expect.arrayContaining([
+                  expect.objectContaining({ name: expect.anything() }),
+                  expect.objectContaining({ description: expect.anything() }),
+                ]),
+              }),
             ]),
           }),
         })

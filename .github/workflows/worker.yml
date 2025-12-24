@@ -31,7 +31,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Test
-        run: pnpm test:ci
+        run: pnpm --filter @cognobserve/worker test
 
       - name: Lint
         run: pnpm lint
