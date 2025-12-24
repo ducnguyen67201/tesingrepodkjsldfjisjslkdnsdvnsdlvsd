@@ -6,6 +6,16 @@ export default [
   ...tseslint.configs.recommended,
   {
     files: ["**/*.{js,ts}"],
+    rules: {
+      // Allow underscore-prefixed variables to be unused
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+    },
   },
   {
     ignores: ["node_modules/**", "dist/**"],

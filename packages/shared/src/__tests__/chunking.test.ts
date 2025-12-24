@@ -10,7 +10,7 @@ import {
 // Helper Functions
 // ============================================
 
-const createTestFile = (lines: string[], extension: string = ".ts"): string => {
+const createTestFile = (lines: string[], _extension: string = ".ts"): string => {
   return lines.join("\n");
 };
 

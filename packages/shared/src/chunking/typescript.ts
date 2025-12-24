@@ -93,7 +93,6 @@ function findBraceEnd(lines: string[], startIndex: number): number {
   let inString = false;
   let stringChar = "";
   let inTemplate = false;
-  let templateDepth = 0;
 
   for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i] ?? "";
@@ -109,7 +108,7 @@ function findBraceEnd(lines: string[], startIndex: number): number {
           stringChar = char ?? "";
           if (char === "`") {
             inTemplate = true;
-            templateDepth = 1;
+            // templateDepth tracking reserved for future nested template support
           }
         } else if (char === stringChar) {
           inString = false;
@@ -175,8 +174,8 @@ function findTypeEnd(lines: string[], startIndex: number): number {
  */
 function chunkTypeScriptCode(
   content: string,
-  filePath: string,
-  opts: ResolvedOptions
+  _filePath: string,
+  _opts: ResolvedOptions
 ): RawChunk[] {
   const lines = content.split("\n");
   const chunks: RawChunk[] = [];

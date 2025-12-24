@@ -8,7 +8,6 @@
 import { createHash } from "crypto";
 import type { ChunkInput, ChunkOptions, CodeChunk } from "./types";
 import {
-  CHUNK_DEFAULTS,
   EXTENSION_TO_LANGUAGE,
   TS_LANGUAGES,
   HEURISTIC_LANGUAGES,

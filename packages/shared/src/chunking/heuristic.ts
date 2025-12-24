@@ -48,7 +48,7 @@ const GO_PATTERNS: LanguagePatterns = {
 /**
  * Get patterns for a language
  */
-function getPatternsForLanguage(language: string): LanguagePatterns | null {
+function _getPatternsForLanguage(language: string): LanguagePatterns | null {
   switch (language) {
     case "python":
       return PYTHON_PATTERNS;
@@ -122,8 +122,8 @@ function findGoBraceEnd(lines: string[], startIndex: number): number {
  */
 function chunkPython(
   content: string,
-  filePath: string,
-  opts: ResolvedOptions
+  _filePath: string,
+  _opts: ResolvedOptions
 ): RawChunk[] {
   const lines = content.split("\n");
   const patterns = PYTHON_PATTERNS;
@@ -192,8 +192,8 @@ function chunkPython(
  */
 function chunkGo(
   content: string,
-  filePath: string,
-  opts: ResolvedOptions
+  _filePath: string,
+  _opts: ResolvedOptions
 ): RawChunk[] {
   const lines = content.split("\n");
   const patterns = GO_PATTERNS;

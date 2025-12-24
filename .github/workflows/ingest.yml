@@ -30,13 +30,13 @@ jobs:
         run: pnpm db:generate:ci
 
       - name: Type check
-        run: pnpm typecheck
+        run: pnpm --filter @cognobserve/ingest-node typecheck
 
       - name: Test
         run: pnpm --filter @cognobserve/ingest-node test
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm --filter @cognobserve/ingest-node lint
 
       - name: Build ingest-node
         run: pnpm --filter @cognobserve/ingest-node build

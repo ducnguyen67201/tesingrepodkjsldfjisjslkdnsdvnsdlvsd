@@ -28,13 +28,13 @@ jobs:
         run: pnpm db:generate:ci
 
       - name: Type check
-        run: pnpm typecheck
+        run: pnpm --filter @cognobserve/worker typecheck
 
       - name: Test
         run: pnpm --filter @cognobserve/worker test
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm --filter @cognobserve/worker lint
 
       - name: Build worker
         run: pnpm --filter @cognobserve/worker build
