@@ -138,3 +138,74 @@ export function useLogSeverityStats(workspaceSlug: string, projectId?: string) {
     isLoading,
   };
 }
+
+// ============================================================================
+// V2 Hooks - Advanced Filtering with LogFilterExpression
+// ============================================================================
+
+import type { LogFilterExpression } from "@cognobserve/api/schemas";
+
+export interface LogFiltersV2 {
+  filter?: LogFilterExpression;
+  projectId?: string;
+  timeRange: { from: string; to: string };
+}
+
+/**
+ * Hook for fetching logs with v2 filter expression support
+ */
+export function useLogsV2(workspaceSlug: string, filters: LogFiltersV2) {
+  const { filter, projectId, timeRange } = filters;
+
+  const queryInput = useMemo(
+    () => ({
+      workspaceSlug,
+      projectId,
+      timeRange,
+      filter,
+    }),
+    [workspaceSlug, projectId, timeRange, filter]
+  );
+
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = trpc.logs.listV2.useInfiniteQuery(queryInput, {
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    enabled: !!workspaceSlug,
+    staleTime: 30_000,
+  });
+
+  // Flatten pages into single array
+  const logs = useMemo(
+    () => data?.pages.flatMap((page) => page.items) ?? [],
+    [data]
+  );
+
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
+
+  // Load more handler
+  const loadMore = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage().catch(showError);
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  return {
+    logs,
+    totalCount,
+    isLoading,
+    isFetching,
+    error,
+    loadMore,
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    refetch,
+  };
+}

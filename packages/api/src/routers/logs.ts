@@ -3,11 +3,22 @@
  *
  * Provides workspace-level access to ingested log records.
  * Supports filtering, pagination, and service aggregation.
+ *
+ * v2 procedures (listV2, filterKeys, filterValues, filterStats) support
+ * the LogFilterExpression DSL for advanced query-based filtering.
  */
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { prisma, Prisma } from "@cognobserve/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
+import { LogFilterService } from "../services/log-filter.service";
+import {
+  LogsListV2InputSchema,
+  LogFilterKeysInputSchema,
+  LogFilterValuesInputSchema,
+  LogFilterStatsInputSchema,
+  validateLogFilterGuardrails,
+} from "../schemas/log-filtering";
 
 /**
  * Log record list item
@@ -333,5 +344,267 @@ export const logsRouter = createRouter({
       }
 
       return levels;
+    }),
+
+  // ============================================================================
+  // v2 Procedures - Advanced Filtering with LogFilterExpression
+  // ============================================================================
+
+  /**
+   * List logs with v2 FilterExpression support
+   */
+  listV2: protectedProcedure
+    .input(LogsListV2InputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }): Promise<LogsListResponse> => {
+      const { projectId, timeRange, filter, limit, cursor } = input;
+
+      // Validate filter guardrails
+      if (filter) {
+        const validation = validateLogFilterGuardrails(filter);
+        if (!validation.valid) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: validation.errors.join("; "),
+          });
+        }
+      }
+
+      // Get all projects in workspace
+      const workspaceProjects = await prisma.project.findMany({
+        where: { workspaceId: ctx.workspace.id },
+        select: { id: true, name: true },
+      });
+
+      if (workspaceProjects.length === 0) {
+        return { items: [], nextCursor: null, totalCount: 0 };
+      }
+
+      const projectIds = projectId
+        ? [projectId]
+        : workspaceProjects.map((p) => p.id);
+
+      // Build where clause using LogFilterService
+      const where = LogFilterService.buildWhereClause(projectIds, timeRange, filter);
+
+      // Add cursor for pagination
+      const paginatedWhere: Prisma.LogRecordWhereInput = cursor
+        ? { AND: [where, { id: { lt: cursor } }] }
+        : where;
+
+      // Get total count (without cursor)
+      const totalCount = await prisma.logRecord.count({ where });
+
+      // Get logs
+      const logs = await prisma.logRecord.findMany({
+        where: paginatedWhere,
+        orderBy: { timestamp: "desc" },
+        take: limit + 1,
+        select: {
+          id: true,
+          timestamp: true,
+          severityNumber: true,
+          severityText: true,
+          serviceName: true,
+          bodyText: true,
+          traceId: true,
+          spanId: true,
+          projectId: true,
+        },
+      });
+
+      // Determine next cursor
+      let nextCursor: string | null = null;
+      if (logs.length > limit) {
+        const nextItem = logs.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      // Map project names
+      const projectMap = new Map(workspaceProjects.map((p) => [p.id, p.name]));
+
+      const items: LogListItem[] = logs.map((log) => ({
+        id: log.id,
+        timestamp: log.timestamp.toISOString(),
+        severityNumber: log.severityNumber,
+        severityText: log.severityText,
+        serviceName: log.serviceName,
+        bodyText: log.bodyText,
+        traceId: log.traceId,
+        spanId: log.spanId,
+        projectId: log.projectId,
+        projectName: projectMap.get(log.projectId) ?? "Unknown",
+      }));
+
+      return { items, nextCursor, totalCount };
+    }),
+
+  /**
+   * Get attribute keys for autocomplete
+   */
+  filterKeys: protectedProcedure
+    .input(LogFilterKeysInputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      const { projectId, scope, prefix, limit } = input;
+
+      // Get all projects in workspace
+      const workspaceProjects = await prisma.project.findMany({
+        where: { workspaceId: ctx.workspace.id },
+        select: { id: true },
+      });
+
+      const projectIds = projectId
+        ? [projectId]
+        : workspaceProjects.map((p) => p.id);
+
+      const column = scope === "resource" ? "resource" : "attributes";
+
+      // Query for distinct keys from JSONB column
+      // Using raw query for JSONB key extraction
+      const prefixFilter = prefix ? `AND key LIKE '${prefix}%'` : "";
+      const projectIdList = projectIds.map((id) => `'${id}'`).join(",");
+
+      const result = await prisma.$queryRaw<{ key: string }[]>`
+        SELECT DISTINCT jsonb_object_keys(${Prisma.raw(column)}) as key
+        FROM "LogRecord"
+        WHERE "projectId" IN (${Prisma.raw(projectIdList)})
+          AND ${Prisma.raw(column)} IS NOT NULL
+        ${Prisma.raw(prefixFilter)}
+        LIMIT ${limit}
+      `;
+
+      return {
+        keys: result.map((r) => r.key),
+      };
+    }),
+
+  /**
+   * Get attribute values for autocomplete
+   */
+  filterValues: protectedProcedure
+    .input(LogFilterValuesInputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      const { projectId, scope, key, prefix, limit } = input;
+
+      // Get all projects in workspace
+      const workspaceProjects = await prisma.project.findMany({
+        where: { workspaceId: ctx.workspace.id },
+        select: { id: true },
+      });
+
+      const projectIds = projectId
+        ? [projectId]
+        : workspaceProjects.map((p) => p.id);
+
+      const column = scope === "resource" ? "resource" : "attributes";
+      const projectIdList = projectIds.map((id) => `'${id}'`).join(",");
+      const prefixFilter = prefix
+        ? `AND (${column}->>'${key}') LIKE '${prefix}%'`
+        : "";
+
+      const result = await prisma.$queryRaw<{ value: string }[]>`
+        SELECT DISTINCT (${Prisma.raw(column)}->>${Prisma.raw(`'${key}'`)}) as value
+        FROM "LogRecord"
+        WHERE "projectId" IN (${Prisma.raw(projectIdList)})
+          AND ${Prisma.raw(column)} IS NOT NULL
+          AND ${Prisma.raw(column)}->>${Prisma.raw(`'${key}'`)} IS NOT NULL
+        ${Prisma.raw(prefixFilter)}
+        LIMIT ${limit}
+      `;
+
+      return {
+        values: result.map((r) => r.value).filter((v) => v !== null),
+      };
+    }),
+
+  /**
+   * Get filter statistics (facets) for UI
+   */
+  filterStats: protectedProcedure
+    .input(LogFilterStatsInputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      const { projectId, timeRange, filter } = input;
+
+      // Get all projects in workspace
+      const workspaceProjects = await prisma.project.findMany({
+        where: { workspaceId: ctx.workspace.id },
+        select: { id: true },
+      });
+
+      const projectIds = projectId
+        ? [projectId]
+        : workspaceProjects.map((p) => p.id);
+
+      // Build where clause
+      const where = LogFilterService.buildWhereClause(projectIds, timeRange, filter);
+
+      // Get service counts
+      const services = await prisma.logRecord.groupBy({
+        by: ["serviceName"],
+        where: { ...where, serviceName: { not: null } },
+        _count: { serviceName: true },
+        orderBy: { _count: { serviceName: "desc" } },
+        take: 20,
+      });
+
+      // Get severity distribution
+      const severities = await prisma.logRecord.groupBy({
+        by: ["severityNumber"],
+        where,
+        _count: { severityNumber: true },
+      });
+
+      // Get environment counts
+      const environments = await prisma.logRecord.groupBy({
+        by: ["environment"],
+        where: { ...where, environment: { not: null } },
+        _count: { environment: true },
+        orderBy: { _count: { environment: "desc" } },
+        take: 10,
+      });
+
+      // Get total count
+      const totalCount = await prisma.logRecord.count({ where });
+
+      // Map severity numbers to levels
+      const severityLevels = {
+        trace: 0,
+        debug: 0,
+        info: 0,
+        warn: 0,
+        error: 0,
+        fatal: 0,
+      };
+
+      for (const s of severities) {
+        const num = s.severityNumber ?? 0;
+        const count = s._count.severityNumber;
+
+        if (num <= 4) severityLevels.trace += count;
+        else if (num <= 8) severityLevels.debug += count;
+        else if (num <= 12) severityLevels.info += count;
+        else if (num <= 16) severityLevels.warn += count;
+        else if (num <= 20) severityLevels.error += count;
+        else severityLevels.fatal += count;
+      }
+
+      return {
+        services: services.map((s) => ({
+          name: s.serviceName ?? "unknown",
+          count: s._count.serviceName,
+        })),
+        severities: Object.entries(severityLevels).map(([level, count]) => ({
+          level,
+          count,
+        })),
+        environments: environments.map((e) => ({
+          name: e.environment ?? "unknown",
+          count: e._count.environment,
+        })),
+        totalCount,
+      };
     }),
 });

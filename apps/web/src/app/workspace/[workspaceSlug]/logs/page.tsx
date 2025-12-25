@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { ScrollText, Search, X, Filter } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { ScrollText, Filter } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -15,12 +14,19 @@ import { Badge } from "@/components/ui/badge";
 import { LogsTable } from "@/components/logs/logs-table";
 import { LogDetailPanel } from "@/components/logs/log-detail-panel";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-import { useLogs, useLogServices, useLogSeverityStats } from "@/hooks/use-logs";
+import { useLogServices, useLogSeverityStats, useLogsV2 } from "@/hooks/use-logs";
 import {
   SEVERITY_FILTER_OPTIONS,
   type SeverityFilterValue,
 } from "@/lib/log-utils";
 import { cn } from "@/lib/utils";
+import { useLogFiltersV2 } from "@/hooks/use-log-filters-v2";
+import {
+  LogQueryBuilderInput,
+  LogFilterChips,
+  LogFilterPills,
+} from "@/components/logs/filters-v2";
+import type { LogFilterExpression } from "@cognobserve/api/schemas";
 
 // Sidebar filter component
 function LogsFilterSidebar({
@@ -167,34 +173,109 @@ function LogsFilterSidebar({
 export default function LogsPage() {
   const { workspaceSlug } = useWorkspaceUrl();
 
-  // Filter state
+  // V2 filter state (URL-synced)
+  const {
+    filter,
+    timeRange,
+    hasFilters: hasV2Filters,
+    predicates,
+    removePredicate,
+    applyQuickPreset,
+    isPresetActive,
+    clearFilters: clearV2Filters,
+    setFilter,
+    quickPresets,
+  } = useLogFiltersV2();
+
+  // V1 filter state (keeping for sidebar compatibility)
   const [severityFilter, setSeverityFilter] = useState<SeverityFilterValue>("all");
   const [serviceName, setServiceName] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedLogId, setSelectedLogId] = useState<string | null>(null);
 
-  // Debounced search
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  // Local query input state
+  const [queryInput, setQueryInput] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setSearchQuery(value);
+  // Parse query string into filter expression
+  const parseQueryToFilter = useCallback(
+    (query: string): LogFilterExpression | null => {
+      if (!query.trim()) return null;
 
-      // Debounce the actual search
-      const timeout = setTimeout(() => {
-        setDebouncedSearch(value);
-      }, 300);
+      const trimmed = query.trim();
 
-      return () => clearTimeout(timeout);
+      // Simple parsing: field=value AND field2=value2
+      const parts = trimmed.split(/\s+(AND|OR)\s+/i);
+      const expressions: LogFilterExpression[] = [];
+
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i]?.trim() ?? "";
+        if (!part || part.toUpperCase() === "AND" || part.toUpperCase() === "OR") {
+          continue;
+        }
+
+        // Match field<op>value pattern
+        const opMatch = part.match(/^([a-zA-Z][a-zA-Z0-9_.]*)(>=|<=|!=|<>|==|=|>|<)(.+)$/);
+        if (opMatch) {
+          const [, field, operator, rawValue] = opMatch;
+          let value: string | number = rawValue!.trim();
+
+          // Remove quotes
+          if ((value.startsWith('"') && value.endsWith('"')) ||
+              (value.startsWith("'") && value.endsWith("'"))) {
+            value = value.slice(1, -1);
+          }
+
+          // Convert to number if numeric
+          if (/^\d+$/.test(value)) {
+            value = parseInt(value, 10);
+          }
+
+          // Map operator
+          const opMap: Record<string, string> = {
+            "=": "eq",
+            "==": "eq",
+            "!=": "neq",
+            "<>": "neq",
+            ">": "gt",
+            ">=": "gte",
+            "<": "lt",
+            "<=": "lte",
+          };
+
+          expressions.push({
+            field: field as "log.serviceName" | "log.severity" | "log.severityNumber" | "log.body" | "log.environment" | "log.traceId" | "log.spanId" | "log.scopeName" | "log.serviceVersion",
+            op: (opMap[operator!] ?? "eq") as "eq" | "neq" | "gt" | "gte" | "lt" | "lte",
+            value,
+          });
+        } else {
+          // Treat as body search
+          expressions.push({
+            search: { query: part, mode: "terms" },
+          });
+        }
+      }
+
+      if (expressions.length === 0) return null;
+      if (expressions.length === 1) return expressions[0]!;
+
+      // Check for OR in original query
+      if (/\s+OR\s+/i.test(trimmed)) {
+        return { or: expressions };
+      }
+      return { and: expressions };
     },
     []
   );
 
-  const handleClearSearch = useCallback(() => {
-    setSearchQuery("");
-    setDebouncedSearch("");
-  }, []);
+  const handleQueryExecute = useCallback(
+    (query: string) => {
+      setIsSearching(true);
+      const parsed = parseQueryToFilter(query);
+      setFilter(parsed);
+      setTimeout(() => setIsSearching(false), 500);
+    },
+    [parseQueryToFilter, setFilter]
+  );
 
   const handleSeverityChange = useCallback((value: SeverityFilterValue) => {
     setSeverityFilter(value);
@@ -215,27 +296,66 @@ export default function LogsPage() {
   const handleClearFilters = useCallback(() => {
     setSeverityFilter("all");
     setServiceName(null);
-    setSearchQuery("");
-    setDebouncedSearch("");
-  }, []);
+    setQueryInput("");
+    clearV2Filters();
+  }, [clearV2Filters]);
+
+  // Combine V1 sidebar filters with V2 expression filter
+  const combinedFilter = useMemo((): LogFilterExpression | undefined => {
+    const expressions: LogFilterExpression[] = [];
+
+    // Add V2 filter if present
+    if (filter) {
+      expressions.push(filter);
+    }
+
+    // Add severity filter from sidebar
+    if (severityFilter !== "all") {
+      const severityMinMap: Record<SeverityFilterValue, number> = {
+        all: 0,
+        debug: 5,
+        info: 9,
+        warn: 13,
+        error: 17,
+      };
+      expressions.push({
+        field: "log.severityNumber",
+        op: "gte",
+        value: severityMinMap[severityFilter],
+      });
+    }
+
+    // Add service filter from sidebar
+    if (serviceName) {
+      expressions.push({
+        field: "log.serviceName",
+        op: "eq",
+        value: serviceName,
+      });
+    }
+
+    if (expressions.length === 0) return undefined;
+    if (expressions.length === 1) return expressions[0];
+    return { and: expressions };
+  }, [filter, severityFilter, serviceName]);
 
   // Active filter count
   const hasFilters = useMemo(() => {
-    return severityFilter !== "all" || !!serviceName || !!debouncedSearch;
-  }, [severityFilter, serviceName, debouncedSearch]);
+    return severityFilter !== "all" || !!serviceName || hasV2Filters;
+  }, [severityFilter, serviceName, hasV2Filters]);
 
-  // Fetch data
+  // Fetch data with V2 endpoint
   const {
     logs,
     totalCount,
     isLoading,
+    isFetching,
     loadMore,
     hasNextPage,
     isFetchingNextPage,
-  } = useLogs(workspaceSlug ?? "", {
-    severityFilter,
-    serviceName,
-    search: debouncedSearch || undefined,
+  } = useLogsV2(workspaceSlug ?? "", {
+    filter: combinedFilter,
+    timeRange,
   });
 
   const { services, isLoading: servicesLoading } = useLogServices(
@@ -248,36 +368,43 @@ export default function LogsPage() {
     return null;
   }
 
-  // Search bar component
+  // Search bar component with query builder
   const searchBar = (
     <div className="border-b px-3 py-2 space-y-2">
+      {/* Query Builder Input */}
       <div className="flex items-center gap-2">
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="Search log body..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="h-8 pl-8 pr-8 text-xs"
-          />
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-1 top-1/2 h-5 w-5 -translate-y-1/2"
-              onClick={handleClearSearch}
-            >
-              <X className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
+        <LogQueryBuilderInput
+          workspaceSlug={workspaceSlug}
+          value={queryInput}
+          onChange={setQueryInput}
+          onExecute={handleQueryExecute}
+          isLoading={isSearching || isFetching}
+          className="flex-1"
+        />
 
         {/* Stats */}
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
           <ScrollText className="h-3.5 w-3.5" />
           <span>{totalCount.toLocaleString()} logs</span>
         </div>
+      </div>
+
+      {/* Quick filter chips */}
+      <div className="flex items-center gap-3">
+        <LogFilterChips
+          presets={quickPresets}
+          isPresetActive={isPresetActive}
+          onPresetClick={applyQuickPreset}
+        />
+
+        {/* Active filter pills */}
+        {predicates.length > 0 && (
+          <LogFilterPills
+            predicates={predicates}
+            onRemove={removePredicate}
+            onClearAll={clearV2Filters}
+          />
+        )}
       </div>
     </div>
   );
