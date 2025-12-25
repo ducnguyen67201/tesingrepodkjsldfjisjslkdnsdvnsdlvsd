@@ -181,24 +181,6 @@ const parseEvents = (events: unknown): Array<{ name: string; timestamp?: string;
   return events;
 };
 
-// Extract HTTP-specific info from attributes
-const getHttpInfo = (attrs: AttributeMap) => {
-  const url = attrs["url.full"] || attrs["http.url"] || attrs["http.target"];
-  const method = attrs["http.request.method"] || attrs["http.method"];
-  const statusCode = attrs["http.response.status_code"] || attrs["http.status_code"];
-  const host = attrs["server.address"] || attrs["http.host"] || attrs["net.peer.name"];
-  return { url, method, statusCode, host };
-};
-
-// Extract DB-specific info
-const getDbInfo = (attrs: AttributeMap) => {
-  const system = attrs["db.system"];
-  const statement = attrs["db.statement"];
-  const operation = attrs["db.operation"];
-  const name = attrs["db.name"];
-  return { system, statement, operation, name };
-};
-
 // Group attributes by category for better display
 interface AttributeGroups {
   http: AttributeMap;
@@ -281,85 +263,6 @@ function AttributeSection({ title, icon: Icon, attributes }: { title: string; ic
           <AttributeRow key={key} label={key} value={formatAttrValue(value)} mono />
         ))}
       </div>
-    </div>
-  );
-}
-
-function HttpSummary({ attrs }: { attrs: AttributeMap }) {
-  const { url, method, statusCode, host } = getHttpInfo(attrs);
-  if (!url && !method) return null;
-
-  const statusNum = typeof statusCode === "number" ? statusCode : Number(statusCode);
-  const isSuccess = !isNaN(statusNum) && statusNum >= 200 && statusNum < 400;
-  const isHttpError = !isNaN(statusNum) && statusNum >= 400;
-
-  const methodStr = method ? String(method) : null;
-  const statusStr = statusCode ? String(statusCode) : null;
-  const hostStr = host ? String(host) : null;
-  const urlStr = url ? String(url) : null;
-
-  return (
-    <div className="rounded bg-muted/50 p-2 space-y-1">
-      <div className="flex items-center gap-2 text-[11px]">
-        <Globe className="h-3.5 w-3.5 text-blue-600" />
-        {methodStr && (
-          <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-mono">
-            {methodStr}
-          </Badge>
-        )}
-        {statusStr && (
-          <Badge
-            variant="outline"
-            className={cn(
-              "text-[10px] px-1.5 py-0 font-mono",
-              isSuccess && "border-green-500 text-green-600",
-              isHttpError && "border-red-500 text-red-600"
-            )}
-          >
-            {statusStr}
-          </Badge>
-        )}
-        {hostStr && <span className="text-muted-foreground">{hostStr}</span>}
-      </div>
-      {urlStr && (
-        <div className="text-[11px] font-mono text-muted-foreground break-all pl-5">
-          {urlStr}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function DbSummary({ attrs }: { attrs: AttributeMap }) {
-  const { system, statement, operation, name } = getDbInfo(attrs);
-  if (!system && !statement) return null;
-
-  const systemStr = system ? String(system) : null;
-  const operationStr = operation ? String(operation) : null;
-  const nameStr = name ? String(name) : null;
-  const statementStr = statement ? String(statement) : null;
-
-  return (
-    <div className="rounded bg-muted/50 p-2 space-y-1">
-      <div className="flex items-center gap-2 text-[11px]">
-        <Database className="h-3.5 w-3.5 text-green-600" />
-        {systemStr && (
-          <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-mono">
-            {systemStr}
-          </Badge>
-        )}
-        {operationStr && (
-          <Badge variant="outline" className="text-[10px] px-1.5 py-0 font-mono">
-            {operationStr}
-          </Badge>
-        )}
-        {nameStr && <span className="text-muted-foreground">{nameStr}</span>}
-      </div>
-      {statementStr && (
-        <pre className="text-[10px] font-mono text-muted-foreground bg-muted rounded p-1.5 overflow-x-auto max-h-24">
-          {statementStr}
-        </pre>
-      )}
     </div>
   );
 }
