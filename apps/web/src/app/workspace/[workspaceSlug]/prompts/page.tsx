@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   FileCode,
   Plus,
@@ -17,6 +18,7 @@ import {
   Layers,
   FolderKanban,
   ChevronDown,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +42,7 @@ import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
 import { usePrompts, usePromptDetail } from "@/hooks/use-prompts";
 import { showSuccess } from "@/lib/success";
+import { showError } from "@/lib/errors";
 import { PromptCard } from "@/components/prompts/prompt-card";
 import { CreatePromptDialog } from "@/components/prompts/create-prompt-dialog";
 import { CreateVersionDialog } from "@/components/prompts/create-version-dialog";
@@ -47,6 +50,8 @@ import { VersionCard } from "@/components/prompts/version-card";
 import { ImportPromptsDialog } from "@/components/prompts/import-prompts-dialog";
 import { PromptPlayground } from "@/components/prompts/prompt-playground";
 import { PromptAnalytics } from "@/components/prompts/prompt-analytics";
+import { EditPromptDialog } from "@/components/prompts/edit-prompt-dialog";
+import { CreateExperimentDialog } from "@/components/experiments/create-experiment-dialog";
 
 export default function WorkspacePromptsPage() {
   const searchParams = useSearchParams();
@@ -60,9 +65,13 @@ export default function WorkspacePromptsPage() {
   // State
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isExperimentOpen, setIsExperimentOpen] = useState(false);
+  const [editingPromptId, setEditingPromptId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [showArchived, setShowArchived] = useState(false);
 
   // Fetch projects for selector
   const { data: projects = [], isLoading: isLoadingProjects } =
@@ -79,13 +88,35 @@ export default function WorkspacePromptsPage() {
   const {
     prompts,
     isLoading: isLoadingPrompts,
+    updatePrompt,
     archivePrompt,
     deletePrompt,
+    isUpdating,
     isDeleting,
     isArchiving,
   } = usePrompts({
     workspaceSlug: workspaceSlug ?? "",
     projectId: effectiveProjectId ?? "",
+    includeArchived: showArchived,
+  });
+
+  // tRPC utils for cache invalidation
+  const utils = trpc.useUtils();
+
+  // Fetch editing prompt details
+  const { data: editingPromptData, isLoading: isLoadingEditingPrompt } = trpc.prompts.get.useQuery(
+    { workspaceSlug: workspaceSlug ?? "", promptId: editingPromptId ?? "" },
+    { enabled: !!workspaceSlug && !!editingPromptId && isEditOpen }
+  );
+
+  // Create version mutation for editing
+  const createVersionMutation = trpc.prompts.createVersion.useMutation({
+    onSuccess: (newVersion) => {
+      showSuccess("Version created", `Version ${newVersion.version} has been created.`);
+      utils.prompts.list.invalidate({ workspaceSlug: workspaceSlug ?? "", projectId: effectiveProjectId ?? "" });
+      utils.prompts.get.invalidate({ workspaceSlug: workspaceSlug ?? "", promptId: editingPromptId ?? "" });
+    },
+    onError: showError,
   });
 
   // Export functionality
@@ -136,8 +167,58 @@ export default function WorkspacePromptsPage() {
   );
 
   const handleEdit = useCallback((promptId: string) => {
-    console.log("Edit prompt:", promptId);
+    setEditingPromptId(promptId);
+    setIsEditOpen(true);
   }, []);
+
+  const handleToggleArchived = useCallback(() => {
+    setShowArchived((prev) => !prev);
+  }, []);
+
+  const handleCreateVersionForEdit = useCallback(
+    async (data: { template: { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: string; content: string; name?: string }> } }) => {
+      if (!editingPromptId || !workspaceSlug) return;
+      // Type assertion to match the expected schema type
+      const template = data.template.type === "text"
+        ? data.template
+        : {
+            type: "chat" as const,
+            messages: data.template.messages.map((m) => ({
+              role: m.role as "system" | "user" | "assistant" | "tool",
+              content: m.content,
+              name: m.name,
+            })),
+          };
+      await createVersionMutation.mutateAsync({
+        workspaceSlug,
+        promptId: editingPromptId,
+        template,
+      });
+    },
+    [editingPromptId, workspaceSlug, createVersionMutation]
+  );
+
+  const handleCloseEditDialog = useCallback((open: boolean) => {
+    setIsEditOpen(open);
+    if (!open) {
+      setEditingPromptId(null);
+    }
+  }, []);
+
+  // Prepare editing prompt data with version content
+  const editingPrompt = useMemo(() => {
+    if (!editingPromptData) return null;
+    const latestVersion = editingPromptData.versions[0];
+    return {
+      id: editingPromptData.id,
+      name: editingPromptData.name,
+      slug: editingPromptData.slug,
+      description: editingPromptData.description,
+      tags: editingPromptData.tags,
+      latestVersionType: latestVersion?.type as "text" | "chat" | undefined,
+      latestVersionContent: latestVersion?.content as { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: string; content: string }> } | undefined,
+    };
+  }, [editingPromptData]);
 
   const handleDelete = useCallback(
     async (promptId: string) => {
@@ -338,6 +419,27 @@ export default function WorkspacePromptsPage() {
               <Download className="h-4 w-4" />
             </Button>
             <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExperimentOpen(true)}
+              disabled={!effectiveProjectId || prompts.length < 2}
+              title={prompts.length < 2 ? "Need at least 2 prompts to create an A/B test" : ""}
+            >
+              <FlaskConical className="mr-1.5 h-4 w-4" />
+              A/B Test
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="text-muted-foreground"
+            >
+              <Link href={`/workspace/${workspaceSlug}/experiments${effectiveProjectId ? `?projectId=${effectiveProjectId}` : ""}`}>
+                <ExternalLink className="mr-1.5 h-4 w-4" />
+                View Experiments
+              </Link>
+            </Button>
+            <Button
               size="sm"
               onClick={() => setIsCreateOpen(true)}
               disabled={!effectiveProjectId}
@@ -395,6 +497,18 @@ export default function WorkspacePromptsPage() {
               </Badge>
             );
           })}
+
+          <div className="w-px h-4 bg-border mx-1" />
+
+          <Badge
+            variant={showArchived ? "default" : "outline"}
+            className={`cursor-pointer text-[10px] px-2 py-0.5 ${
+              showArchived ? "" : "hover:bg-muted"
+            }`}
+            onClick={handleToggleArchived}
+          >
+            {showArchived ? "Showing archived" : "Show archived"}
+          </Badge>
 
           {availableTags.length > 0 && (
             <div className="w-px h-4 bg-border mx-1" />
@@ -534,6 +648,24 @@ export default function WorkspacePromptsPage() {
             workspaceSlug={workspaceSlug ?? ""}
             projectId={effectiveProjectId}
           />
+
+          <EditPromptDialog
+            open={isEditOpen}
+            onOpenChange={handleCloseEditDialog}
+            prompt={editingPrompt}
+            onUpdate={updatePrompt}
+            onCreateVersion={handleCreateVersionForEdit}
+            isUpdating={isUpdating}
+            isCreatingVersion={createVersionMutation.isPending}
+            workspaceSlug={workspaceSlug ?? ""}
+          />
+
+          <CreateExperimentDialog
+            open={isExperimentOpen}
+            onOpenChange={setIsExperimentOpen}
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={effectiveProjectId ?? ""}
+          />
         </>
       )}
     </div>
@@ -562,8 +694,10 @@ function PromptDetailPanel({
     isLoading,
     createVersion,
     setLabel,
+    removeLabel,
     isCreatingVersion,
     isSettingLabel,
+    isRemovingLabel,
   } = usePromptDetail({ workspaceSlug, promptId });
 
   const handleOpenPlayground = useCallback((versionId: string) => {
@@ -657,7 +791,9 @@ function PromptDetailPanel({
                   labels={version.labels}
                   createdAt={version.createdAt}
                   onSetLabel={setLabel}
+                  onRemoveLabel={removeLabel}
                   isSettingLabel={isSettingLabel}
+                  isRemovingLabel={isRemovingLabel}
                   onPlayground={handleOpenPlayground}
                 />
               ))}

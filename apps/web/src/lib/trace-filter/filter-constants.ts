@@ -50,6 +50,7 @@ export type FilterFieldCategory =
   | "rpc"
   | "genai"
   | "exception"
+  | "experiment"
   | "general";
 
 /**
@@ -62,6 +63,7 @@ export const FILTER_CATEGORY_LABELS: Record<FilterFieldCategory, string> = {
   rpc: "RPC",
   genai: "GenAI / LLM",
   exception: "Exceptions",
+  experiment: "A/B Experiments",
   general: "General",
 } as const;
 
@@ -482,6 +484,38 @@ export const SPAN_FIELD_META: Record<SpanField, FilterFieldMeta> = {
     category: "general",
     operators: ["eq", "neq", "in", "nin"],
     knownValues: ["LLM", "HTTP", "DB", "RPC", "FUNCTION", "CUSTOM"],
+    common: true,
+  },
+
+  // Prompt Experiment fields
+  "span.promptExperimentId": {
+    label: "Experiment ID",
+    type: "string",
+    category: "experiment",
+    operators: ["eq", "neq", "in", "nin", "exists"],
+    placeholder: "e.g., clxyz123...",
+  },
+  "span.promptExperimentSlug": {
+    label: "Experiment Slug",
+    type: "string",
+    category: "experiment",
+    operators: STRING_OPS,
+    placeholder: "e.g., checkout-copy-test",
+    common: true,
+  },
+  "span.promptVariantId": {
+    label: "Variant ID",
+    type: "string",
+    category: "experiment",
+    operators: ["eq", "neq", "in", "nin", "exists"],
+    placeholder: "e.g., clxyz456...",
+  },
+  "span.promptVariantName": {
+    label: "Variant Name",
+    type: "string",
+    category: "experiment",
+    operators: ["eq", "neq", "in", "nin"],
+    knownValues: ["A", "B"],
     common: true,
   },
 } as const;

@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -39,7 +40,9 @@ interface VersionCardProps {
   labels: string[];
   createdAt: Date;
   onSetLabel: (versionId: string, label: "production" | "staging" | "latest") => Promise<unknown>;
+  onRemoveLabel?: (label: "production" | "staging") => Promise<unknown>;
   isSettingLabel: boolean;
+  isRemovingLabel?: boolean;
   onPlayground?: (versionId: string) => void;
 }
 
@@ -51,7 +54,9 @@ export function VersionCard({
   labels,
   createdAt,
   onSetLabel,
+  onRemoveLabel,
   isSettingLabel,
+  isRemovingLabel,
   onPlayground,
 }: VersionCardProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +72,14 @@ export function VersionCard({
   const handleSetStaging = useCallback(async () => {
     await onSetLabel(id, "staging");
   }, [id, onSetLabel]);
+
+  const handleRemoveProduction = useCallback(async () => {
+    await onRemoveLabel?.("production");
+  }, [onRemoveLabel]);
+
+  const handleRemoveStaging = useCallback(async () => {
+    await onRemoveLabel?.("staging");
+  }, [onRemoveLabel]);
 
   const handlePlayground = useCallback(() => {
     onPlayground?.(id);
@@ -181,18 +194,43 @@ export function VersionCard({
                 )}
                 <DropdownMenuItem
                   onClick={handleSetProduction}
-                  disabled={isSettingLabel || isProduction}
+                  disabled={isSettingLabel || isRemovingLabel || isProduction}
                 >
                   <Rocket className="mr-2 h-4 w-4" />
                   Set as Production
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleSetStaging}
-                  disabled={isSettingLabel || isStaging}
+                  disabled={isSettingLabel || isRemovingLabel || isStaging}
                 >
                   <FlaskConical className="mr-2 h-4 w-4" />
                   Set as Staging
                 </DropdownMenuItem>
+                {(isProduction || isStaging) && onRemoveLabel && (
+                  <>
+                    <DropdownMenuSeparator />
+                    {isProduction && (
+                      <DropdownMenuItem
+                        onClick={handleRemoveProduction}
+                        disabled={isSettingLabel || isRemovingLabel}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <X className="mr-2 h-4 w-4" />
+                        Remove Production
+                      </DropdownMenuItem>
+                    )}
+                    {isStaging && (
+                      <DropdownMenuItem
+                        onClick={handleRemoveStaging}
+                        disabled={isSettingLabel || isRemovingLabel}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <X className="mr-2 h-4 w-4" />
+                        Remove Staging
+                      </DropdownMenuItem>
+                    )}
+                  </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem disabled>
                   <Tag className="mr-2 h-4 w-4" />

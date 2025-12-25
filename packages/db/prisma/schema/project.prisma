@@ -27,6 +27,7 @@ model Project {
   githubRepo    GitHubRepository?
   evalSuites    EvalSuite[]
   prompts       Prompt[]
+  promptExperiments PromptExperiment[]
 
   // Knowledge Base
   knowledgeRules KnowledgeRule[]

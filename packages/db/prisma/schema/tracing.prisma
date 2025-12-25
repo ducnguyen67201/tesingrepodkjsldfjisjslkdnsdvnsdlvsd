@@ -163,6 +163,15 @@ model Span {
   // ============================================================
   searchText          String?   // Denormalized text for FTS
 
+  // ============================================================
+  // Prompt Experiment Tracking
+  // ============================================================
+  promptExperimentId   String?
+  promptExperimentSlug String?
+  promptVariantId      String?
+  promptVariantName    String?  // "A" | "B"
+  assignmentKeyHash    String?  // SHA-256 hash (never store raw)
+
   // Audit
   createdAt        DateTime @default(now())
 

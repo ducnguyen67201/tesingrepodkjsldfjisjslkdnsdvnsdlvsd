@@ -37,9 +37,18 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
 import { useKnowledge, useArticleDetail } from "@/hooks/use-knowledge";
+import { Loader2, RotateCcw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import {
   ARTICLE_STATUS_LABELS,
@@ -572,22 +581,42 @@ function GroupTreeItem({
   const isSelected = selectedGroupId === group.id;
   const articleCount = articles.filter((a) => a.groupId === group.id).length;
 
+  const handleToggleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      onToggle(group.id);
+    },
+    [onToggle, group.id]
+  );
+
+  const handleSelectClick = useCallback(() => {
+    onSelect(group.id);
+  }, [onSelect, group.id]);
+
   return (
     <div>
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         className={cn(
-          "flex items-center gap-1 w-full px-2 py-1.5 rounded-md text-sm text-left hover:bg-muted",
+          "flex items-center gap-1 w-full px-2 py-1.5 rounded-md text-sm text-left hover:bg-muted cursor-pointer",
           isSelected && "bg-muted font-medium"
         )}
         style={{ paddingLeft: `${8 + level * 16}px` }}
-        onClick={() => onSelect(group.id)}
+        onClick={handleSelectClick}
+        onKeyDown={(e) => e.key === "Enter" && handleSelectClick()}
       >
         {hasChildren ? (
-          <button
+          <span
+            role="button"
+            tabIndex={0}
             className="p-0.5 hover:bg-muted-foreground/20 rounded"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle(group.id);
+            onClick={handleToggleClick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.stopPropagation();
+                onToggle(group.id);
+              }
             }}
           >
             {isExpanded ? (
@@ -595,7 +624,7 @@ function GroupTreeItem({
             ) : (
               <ChevronRight className="h-3 w-3" />
             )}
-          </button>
+          </span>
         ) : (
           <span className="w-4" />
         )}
@@ -606,7 +635,7 @@ function GroupTreeItem({
             {articleCount}
           </Badge>
         )}
-      </button>
+      </div>
 
       {hasChildren && isExpanded && (
         <div>
@@ -775,6 +804,18 @@ function ArticleRow({
 }
 
 /** Article detail panel */
+/** Version type from the hook */
+interface ArticleVersion {
+  id: string;
+  version: number;
+  title: string;
+  summary: string | null;
+  content: string;
+  tags: string[];
+  createdAt: Date;
+  createdBy: { id: string; name: string | null; image: string | null } | null;
+}
+
 function ArticleDetailPanel({
   workspaceSlug,
   articleId,
@@ -791,10 +832,13 @@ function ArticleDetailPanel({
     tags: string[];
   }) => void;
 }) {
-  const { article, versions, isLoading, publishArticle, isPublishing } = useArticleDetail({
+  const { article, versions, isLoading, publishArticle, isPublishing, revertToVersion, isReverting } = useArticleDetail({
     workspaceSlug,
     articleId,
   });
+
+  // State for viewing a version
+  const [viewingVersion, setViewingVersion] = useState<ArticleVersion | null>(null);
 
   const handleEdit = useCallback(() => {
     if (article) {
@@ -812,6 +856,20 @@ function ArticleDetailPanel({
   const handlePublish = useCallback(async () => {
     await publishArticle();
   }, [publishArticle]);
+
+  const handleViewVersion = useCallback((version: ArticleVersion) => {
+    setViewingVersion(version);
+  }, []);
+
+  const handleCloseVersionDialog = useCallback(() => {
+    setViewingVersion(null);
+  }, []);
+
+  const handleRevertToVersion = useCallback(async () => {
+    if (!viewingVersion) return;
+    await revertToVersion(viewingVersion.version);
+    setViewingVersion(null);
+  }, [viewingVersion, revertToVersion]);
 
   if (isLoading) {
     return (
@@ -951,27 +1009,31 @@ function ArticleDetailPanel({
                   No version history yet
                 </p>
               ) : (
-                versions.map((version) => (
-                  <Card key={version.id}>
-                    <CardContent className="p-3">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="font-medium text-sm">
-                            Version {version.version}
-                          </span>
-                          <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(version.createdAt), {
-                              addSuffix: true,
-                            })}
-                          </p>
+                versions.map((version) => {
+                  const handleClick = () => handleViewVersion(version as ArticleVersion);
+                  return (
+                    <Card key={version.id}>
+                      <CardContent className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="font-medium text-sm">
+                              Version {version.version}
+                            </span>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDistanceToNow(new Date(version.createdAt), {
+                                addSuffix: true,
+                              })}
+                            </p>
+                          </div>
+                          <Button size="sm" variant="ghost" onClick={handleClick}>
+                            <Eye className="mr-1.5 h-4 w-4" />
+                            View
+                          </Button>
                         </div>
-                        <Button size="sm" variant="ghost">
-                          View
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
+                      </CardContent>
+                    </Card>
+                  );
+                })
               )}
             </div>
           </ScrollArea>
@@ -1016,6 +1078,88 @@ function ArticleDetailPanel({
           </ScrollArea>
         </TabsContent>
       </Tabs>
+
+      {/* Version View Dialog */}
+      <Dialog open={!!viewingVersion} onOpenChange={(open) => !open && handleCloseVersionDialog()}>
+        <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>
+              Version {viewingVersion?.version}
+            </DialogTitle>
+            <DialogDescription>
+              {viewingVersion?.createdAt && (
+                <>
+                  Created {formatDistanceToNow(new Date(viewingVersion.createdAt), { addSuffix: true })}
+                  {viewingVersion.createdBy?.name && ` by ${viewingVersion.createdBy.name}`}
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          {viewingVersion && (
+            <ScrollArea className="flex-1 -mx-6 px-6">
+              <div className="space-y-4 pb-4">
+                {/* Title */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-muted-foreground">Title</label>
+                  <p className="font-medium">{viewingVersion.title}</p>
+                </div>
+
+                {/* Summary */}
+                {viewingVersion.summary && (
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-muted-foreground">Summary</label>
+                    <p className="text-sm text-muted-foreground">{viewingVersion.summary}</p>
+                  </div>
+                )}
+
+                {/* Tags */}
+                {viewingVersion.tags.length > 0 && (
+                  <div className="space-y-1">
+                    <label className="text-xs font-medium text-muted-foreground">Tags</label>
+                    <div className="flex flex-wrap gap-1">
+                      {viewingVersion.tags.map((tag) => (
+                        <Badge key={tag} variant="outline" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <Separator />
+
+                {/* Content */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-muted-foreground">Content</label>
+                  <div className="rounded-md border bg-muted/30 p-4">
+                    <pre className="whitespace-pre-wrap text-sm">{viewingVersion.content}</pre>
+                  </div>
+                </div>
+              </div>
+            </ScrollArea>
+          )}
+
+          <DialogFooter className="border-t pt-4 mt-4">
+            <Button variant="outline" onClick={handleCloseVersionDialog}>
+              Close
+            </Button>
+            <Button onClick={handleRevertToVersion} disabled={isReverting}>
+              {isReverting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Reverting...
+                </>
+              ) : (
+                <>
+                  <RotateCcw className="mr-2 h-4 w-4" />
+                  Revert to Version {viewingVersion?.version}
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

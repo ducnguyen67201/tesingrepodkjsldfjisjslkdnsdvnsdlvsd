@@ -148,6 +148,51 @@ export const promptToast = {
 } as const;
 
 // ============================================================
+// Experiment Toasts
+// ============================================================
+
+export const experimentToast = {
+  created: (slug: string) =>
+    toast.success("Experiment created", { description: `"${slug}" is ready.` }),
+
+  updated: (name?: string) =>
+    toast.success("Experiment updated", {
+      description: name ? `"${name}" has been updated.` : undefined,
+    }),
+
+  deleted: (name?: string) =>
+    toast.success("Experiment deleted", {
+      description: name ? `"${name}" has been removed.` : undefined,
+    }),
+
+  started: (name?: string) =>
+    toast.success("Experiment started", {
+      description: name ? `"${name}" is now running.` : "Experiment is now running.",
+    }),
+
+  paused: (name?: string) =>
+    toast.success("Experiment paused", {
+      description: name ? `"${name}" has been paused.` : "Experiment has been paused.",
+    }),
+
+  completed: (name?: string) =>
+    toast.success("Experiment completed", {
+      description: name ? `"${name}" has been completed.` : "Experiment has been completed.",
+    }),
+
+  archived: (name?: string) =>
+    toast.success("Experiment archived", {
+      description: name ? `"${name}" has been archived.` : undefined,
+    }),
+
+  weightsUpdated: () =>
+    toast.success("Weights updated", { description: "Variant weights have been updated." }),
+
+  winnerDeclared: (variantName: string) =>
+    toast.success("Winner declared", { description: `Variant ${variantName} has been declared the winner.` }),
+} as const;
+
+// ============================================================
 // Knowledge Base Toasts
 // ============================================================
 

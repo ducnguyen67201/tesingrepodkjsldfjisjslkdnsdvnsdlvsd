@@ -88,6 +88,8 @@ export const ModelName = {
   Prompt: 'Prompt',
   PromptVersion: 'PromptVersion',
   PromptLabel: 'PromptLabel',
+  PromptExperiment: 'PromptExperiment',
+  PromptExperimentVariant: 'PromptExperimentVariant',
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
@@ -694,6 +696,41 @@ export const PromptLabelScalarFieldEnum = {
 export type PromptLabelScalarFieldEnum = (typeof PromptLabelScalarFieldEnum)[keyof typeof PromptLabelScalarFieldEnum]
 
 
+export const PromptExperimentScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  status: 'status',
+  allocationPct: 'allocationPct',
+  assignmentSeed: 'assignmentSeed',
+  assignmentKey: 'assignmentKey',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  metrics: 'metrics',
+  tags: 'tags',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PromptExperimentScalarFieldEnum = (typeof PromptExperimentScalarFieldEnum)[keyof typeof PromptExperimentScalarFieldEnum]
+
+
+export const PromptExperimentVariantScalarFieldEnum = {
+  id: 'id',
+  experimentId: 'experimentId',
+  name: 'name',
+  weight: 'weight',
+  promptVersionId: 'promptVersionId',
+  isControl: 'isControl',
+  createdAt: 'createdAt'
+} as const
+
+export type PromptExperimentVariantScalarFieldEnum = (typeof PromptExperimentVariantScalarFieldEnum)[keyof typeof PromptExperimentVariantScalarFieldEnum]
+
+
 export const AlertRCAScalarFieldEnum = {
   id: 'id',
   alertId: 'alertId',
@@ -789,6 +826,11 @@ export const SpanScalarFieldEnum = {
   genAiProvider: 'genAiProvider',
   spanType: 'spanType',
   searchText: 'searchText',
+  promptExperimentId: 'promptExperimentId',
+  promptExperimentSlug: 'promptExperimentSlug',
+  promptVariantId: 'promptVariantId',
+  promptVariantName: 'promptVariantName',
+  assignmentKeyHash: 'assignmentKeyHash',
   createdAt: 'createdAt'
 } as const
 

@@ -193,6 +193,7 @@ export type ProjectWhereInput = {
   githubRepo?: Prisma.XOR<Prisma.GitHubRepositoryNullableScalarRelationFilter, Prisma.GitHubRepositoryWhereInput> | null
   evalSuites?: Prisma.EvalSuiteListRelationFilter
   prompts?: Prisma.PromptListRelationFilter
+  promptExperiments?: Prisma.PromptExperimentListRelationFilter
   knowledgeRules?: Prisma.KnowledgeRuleListRelationFilter
 }
 
@@ -213,6 +214,7 @@ export type ProjectOrderByWithRelationInput = {
   githubRepo?: Prisma.GitHubRepositoryOrderByWithRelationInput
   evalSuites?: Prisma.EvalSuiteOrderByRelationAggregateInput
   prompts?: Prisma.PromptOrderByRelationAggregateInput
+  promptExperiments?: Prisma.PromptExperimentOrderByRelationAggregateInput
   knowledgeRules?: Prisma.KnowledgeRuleOrderByRelationAggregateInput
 }
 
@@ -236,6 +238,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   githubRepo?: Prisma.XOR<Prisma.GitHubRepositoryNullableScalarRelationFilter, Prisma.GitHubRepositoryWhereInput> | null
   evalSuites?: Prisma.EvalSuiteListRelationFilter
   prompts?: Prisma.PromptListRelationFilter
+  promptExperiments?: Prisma.PromptExperimentListRelationFilter
   knowledgeRules?: Prisma.KnowledgeRuleListRelationFilter
 }, "id">
 
@@ -277,6 +280,7 @@ export type ProjectCreateInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -296,6 +300,7 @@ export type ProjectUncheckedCreateInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -315,6 +320,7 @@ export type ProjectUpdateInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -334,6 +340,7 @@ export type ProjectUncheckedUpdateInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -520,6 +527,20 @@ export type ProjectUpdateOneRequiredWithoutPromptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutPromptsInput, Prisma.ProjectUpdateWithoutPromptsInput>, Prisma.ProjectUncheckedUpdateWithoutPromptsInput>
 }
 
+export type ProjectCreateNestedOneWithoutPromptExperimentsInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedCreateWithoutPromptExperimentsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPromptExperimentsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutPromptExperimentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedCreateWithoutPromptExperimentsInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutPromptExperimentsInput
+  upsert?: Prisma.ProjectUpsertWithoutPromptExperimentsInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutPromptExperimentsInput, Prisma.ProjectUpdateWithoutPromptExperimentsInput>, Prisma.ProjectUncheckedUpdateWithoutPromptExperimentsInput>
+}
+
 export type ProjectCreateNestedOneWithoutTracesInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutTracesInput, Prisma.ProjectUncheckedCreateWithoutTracesInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutTracesInput
@@ -619,6 +640,7 @@ export type ProjectCreateWithoutAlertsInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -637,6 +659,7 @@ export type ProjectUncheckedCreateWithoutAlertsInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -671,6 +694,7 @@ export type ProjectUpdateWithoutAlertsInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -689,6 +713,7 @@ export type ProjectUncheckedUpdateWithoutAlertsInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -707,6 +732,7 @@ export type ProjectCreateWithoutCostSummaryInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -725,6 +751,7 @@ export type ProjectUncheckedCreateWithoutCostSummaryInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -759,6 +786,7 @@ export type ProjectUpdateWithoutCostSummaryInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -777,6 +805,7 @@ export type ProjectUncheckedUpdateWithoutCostSummaryInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -795,6 +824,7 @@ export type ProjectCreateWithoutEvalSuitesInput = {
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -813,6 +843,7 @@ export type ProjectUncheckedCreateWithoutEvalSuitesInput = {
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -847,6 +878,7 @@ export type ProjectUpdateWithoutEvalSuitesInput = {
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -865,6 +897,7 @@ export type ProjectUncheckedUpdateWithoutEvalSuitesInput = {
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -883,6 +916,7 @@ export type ProjectCreateWithoutGithubRepoInput = {
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -901,6 +935,7 @@ export type ProjectUncheckedCreateWithoutGithubRepoInput = {
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -935,6 +970,7 @@ export type ProjectUpdateWithoutGithubRepoInput = {
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -953,6 +989,7 @@ export type ProjectUncheckedUpdateWithoutGithubRepoInput = {
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -972,6 +1009,7 @@ export type ProjectCreateWithoutKnowledgeRulesInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUncheckedCreateWithoutKnowledgeRulesInput = {
@@ -990,6 +1028,7 @@ export type ProjectUncheckedCreateWithoutKnowledgeRulesInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutKnowledgeRulesInput = {
@@ -1024,6 +1063,7 @@ export type ProjectUpdateWithoutKnowledgeRulesInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateWithoutKnowledgeRulesInput = {
@@ -1042,6 +1082,7 @@ export type ProjectUncheckedUpdateWithoutKnowledgeRulesInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutMembersInput = {
@@ -1059,6 +1100,7 @@ export type ProjectCreateWithoutMembersInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1077,6 +1119,7 @@ export type ProjectUncheckedCreateWithoutMembersInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1111,6 +1154,7 @@ export type ProjectUpdateWithoutMembersInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1129,6 +1173,7 @@ export type ProjectUncheckedUpdateWithoutMembersInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1147,6 +1192,7 @@ export type ProjectCreateWithoutApiKeysInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1165,6 +1211,7 @@ export type ProjectUncheckedCreateWithoutApiKeysInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1199,6 +1246,7 @@ export type ProjectUpdateWithoutApiKeysInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1217,6 +1265,7 @@ export type ProjectUncheckedUpdateWithoutApiKeysInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1235,6 +1284,7 @@ export type ProjectCreateWithoutPromptsInput = {
   alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1253,6 +1303,7 @@ export type ProjectUncheckedCreateWithoutPromptsInput = {
   alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1287,6 +1338,7 @@ export type ProjectUpdateWithoutPromptsInput = {
   alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1305,6 +1357,99 @@ export type ProjectUncheckedUpdateWithoutPromptsInput = {
   alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutPromptExperimentsInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
+  prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectUncheckedCreateWithoutPromptExperimentsInput = {
+  id?: string
+  name: string
+  workspaceId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutProjectInput
+  traces?: Prisma.TraceUncheckedCreateNestedManyWithoutProjectInput
+  traceSessions?: Prisma.TraceSessionUncheckedCreateNestedManyWithoutProjectInput
+  trackedUsers?: Prisma.TrackedUserUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  costSummary?: Prisma.CostDailySummaryUncheckedCreateNestedManyWithoutProjectInput
+  alerts?: Prisma.AlertUncheckedCreateNestedManyWithoutProjectInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
+  evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
+  prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutPromptExperimentsInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedCreateWithoutPromptExperimentsInput>
+}
+
+export type ProjectUpsertWithoutPromptExperimentsInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedUpdateWithoutPromptExperimentsInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedCreateWithoutPromptExperimentsInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutPromptExperimentsInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutPromptExperimentsInput, Prisma.ProjectUncheckedUpdateWithoutPromptExperimentsInput>
+}
+
+export type ProjectUpdateWithoutPromptExperimentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
+  prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutPromptExperimentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutProjectNestedInput
+  traces?: Prisma.TraceUncheckedUpdateManyWithoutProjectNestedInput
+  traceSessions?: Prisma.TraceSessionUncheckedUpdateManyWithoutProjectNestedInput
+  trackedUsers?: Prisma.TrackedUserUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  costSummary?: Prisma.CostDailySummaryUncheckedUpdateManyWithoutProjectNestedInput
+  alerts?: Prisma.AlertUncheckedUpdateManyWithoutProjectNestedInput
+  githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
+  evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
+  prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1323,6 +1468,7 @@ export type ProjectCreateWithoutTracesInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1341,6 +1487,7 @@ export type ProjectUncheckedCreateWithoutTracesInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1375,6 +1522,7 @@ export type ProjectUpdateWithoutTracesInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1393,6 +1541,7 @@ export type ProjectUncheckedUpdateWithoutTracesInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1411,6 +1560,7 @@ export type ProjectCreateWithoutTrackedUsersInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1429,6 +1579,7 @@ export type ProjectUncheckedCreateWithoutTrackedUsersInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1463,6 +1614,7 @@ export type ProjectUpdateWithoutTrackedUsersInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1481,6 +1633,7 @@ export type ProjectUncheckedUpdateWithoutTrackedUsersInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1499,6 +1652,7 @@ export type ProjectCreateWithoutTraceSessionsInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1517,6 +1671,7 @@ export type ProjectUncheckedCreateWithoutTraceSessionsInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1551,6 +1706,7 @@ export type ProjectUpdateWithoutTraceSessionsInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1569,6 +1725,7 @@ export type ProjectUncheckedUpdateWithoutTraceSessionsInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1587,6 +1744,7 @@ export type ProjectCreateWithoutWorkspaceInput = {
   githubRepo?: Prisma.GitHubRepositoryCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutProjectInput
 }
 
@@ -1605,6 +1763,7 @@ export type ProjectUncheckedCreateWithoutWorkspaceInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedCreateNestedOneWithoutProjectInput
   evalSuites?: Prisma.EvalSuiteUncheckedCreateNestedManyWithoutProjectInput
   prompts?: Prisma.PromptUncheckedCreateNestedManyWithoutProjectInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedCreateNestedManyWithoutProjectInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutProjectInput
 }
 
@@ -1667,6 +1826,7 @@ export type ProjectUpdateWithoutWorkspaceInput = {
   githubRepo?: Prisma.GitHubRepositoryUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutProjectNestedInput
 }
 
@@ -1685,6 +1845,7 @@ export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
   githubRepo?: Prisma.GitHubRepositoryUncheckedUpdateOneWithoutProjectNestedInput
   evalSuites?: Prisma.EvalSuiteUncheckedUpdateManyWithoutProjectNestedInput
   prompts?: Prisma.PromptUncheckedUpdateManyWithoutProjectNestedInput
+  promptExperiments?: Prisma.PromptExperimentUncheckedUpdateManyWithoutProjectNestedInput
   knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutProjectNestedInput
 }
 
@@ -1710,6 +1871,7 @@ export type ProjectCountOutputType = {
   alerts: number
   evalSuites: number
   prompts: number
+  promptExperiments: number
   knowledgeRules: number
 }
 
@@ -1723,6 +1885,7 @@ export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   alerts?: boolean | ProjectCountOutputTypeCountAlertsArgs
   evalSuites?: boolean | ProjectCountOutputTypeCountEvalSuitesArgs
   prompts?: boolean | ProjectCountOutputTypeCountPromptsArgs
+  promptExperiments?: boolean | ProjectCountOutputTypeCountPromptExperimentsArgs
   knowledgeRules?: boolean | ProjectCountOutputTypeCountKnowledgeRulesArgs
 }
 
@@ -1802,6 +1965,13 @@ export type ProjectCountOutputTypeCountPromptsArgs<ExtArgs extends runtime.Types
 /**
  * ProjectCountOutputType without action
  */
+export type ProjectCountOutputTypeCountPromptExperimentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PromptExperimentWhereInput
+}
+
+/**
+ * ProjectCountOutputType without action
+ */
 export type ProjectCountOutputTypeCountKnowledgeRulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.KnowledgeRuleWhereInput
 }
@@ -1824,6 +1994,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   githubRepo?: boolean | Prisma.Project$githubRepoArgs<ExtArgs>
   evalSuites?: boolean | Prisma.Project$evalSuitesArgs<ExtArgs>
   prompts?: boolean | Prisma.Project$promptsArgs<ExtArgs>
+  promptExperiments?: boolean | Prisma.Project$promptExperimentsArgs<ExtArgs>
   knowledgeRules?: boolean | Prisma.Project$knowledgeRulesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["project"]>
@@ -1867,6 +2038,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   githubRepo?: boolean | Prisma.Project$githubRepoArgs<ExtArgs>
   evalSuites?: boolean | Prisma.Project$evalSuitesArgs<ExtArgs>
   prompts?: boolean | Prisma.Project$promptsArgs<ExtArgs>
+  promptExperiments?: boolean | Prisma.Project$promptExperimentsArgs<ExtArgs>
   knowledgeRules?: boolean | Prisma.Project$knowledgeRulesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1891,6 +2063,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     githubRepo: Prisma.$GitHubRepositoryPayload<ExtArgs> | null
     evalSuites: Prisma.$EvalSuitePayload<ExtArgs>[]
     prompts: Prisma.$PromptPayload<ExtArgs>[]
+    promptExperiments: Prisma.$PromptExperimentPayload<ExtArgs>[]
     knowledgeRules: Prisma.$KnowledgeRulePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2304,6 +2477,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   githubRepo<T extends Prisma.Project$githubRepoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$githubRepoArgs<ExtArgs>>): Prisma.Prisma__GitHubRepositoryClient<runtime.Types.Result.GetResult<Prisma.$GitHubRepositoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   evalSuites<T extends Prisma.Project$evalSuitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$evalSuitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EvalSuitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   prompts<T extends Prisma.Project$promptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$promptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  promptExperiments<T extends Prisma.Project$promptExperimentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$promptExperimentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromptExperimentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   knowledgeRules<T extends Prisma.Project$knowledgeRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$knowledgeRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2967,6 +3141,30 @@ export type Project$promptsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.PromptScalarFieldEnum | Prisma.PromptScalarFieldEnum[]
+}
+
+/**
+ * Project.promptExperiments
+ */
+export type Project$promptExperimentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PromptExperiment
+   */
+  select?: Prisma.PromptExperimentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PromptExperiment
+   */
+  omit?: Prisma.PromptExperimentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PromptExperimentInclude<ExtArgs> | null
+  where?: Prisma.PromptExperimentWhereInput
+  orderBy?: Prisma.PromptExperimentOrderByWithRelationInput | Prisma.PromptExperimentOrderByWithRelationInput[]
+  cursor?: Prisma.PromptExperimentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PromptExperimentScalarFieldEnum | Prisma.PromptExperimentScalarFieldEnum[]
 }
 
 /**

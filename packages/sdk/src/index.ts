@@ -36,6 +36,14 @@ export type {
   CompiledTextPrompt,
   CompiledChatPrompt,
   GetPromptOptions,
+  // Experiment types
+  VariantName,
+  ExperimentStatus,
+  GetExperimentOptions,
+  ExperimentInfo,
+  VariantInfo,
+  ExperimentTraceMetadata,
+  ExperimentAssignment,
 } from './prompts';
 
 // Prompt utilities

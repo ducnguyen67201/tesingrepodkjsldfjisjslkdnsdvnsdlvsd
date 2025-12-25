@@ -176,6 +176,11 @@ export const SpanFieldSchema = z.enum([
   "span.exceptionMessage",
   // V2: Inferred type
   "span.spanType",
+  // Prompt Experiment fields
+  "span.promptExperimentId",
+  "span.promptExperimentSlug",
+  "span.promptVariantId",
+  "span.promptVariantName",
 ]);
 export type SpanField = z.infer<typeof SpanFieldSchema>;
 

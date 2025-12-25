@@ -7,6 +7,7 @@ import { healthRouter } from "./routes/health.js";
 import { tracesRouter } from "./routes/traces.js";
 import { metricsRouter } from "./routes/metrics.js";
 import { promptsRouter } from "./routes/prompts.js";
+import { promptExperimentsRouter } from "./routes/prompt-experiments.js";
 
 /**
  * Create and configure the Express application
@@ -47,6 +48,9 @@ export function createServer(): Express {
 
   // Prompts API - SDK retrieval endpoint
   app.use("/v1/prompts", promptsRouter);
+
+  // Prompt Experiments API - A/B testing resolution
+  app.use("/v1/prompt-experiments", promptExperimentsRouter);
 
   // 404 handler
   app.use((_req: Request, res: Response) => {

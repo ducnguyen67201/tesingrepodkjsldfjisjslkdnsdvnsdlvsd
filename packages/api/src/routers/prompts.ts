@@ -15,6 +15,7 @@ import {
   UpdatePromptInputSchema,
   CreateVersionInputSchema,
   SetLabelInputSchema,
+  RemoveLabelInputSchema,
   ArchivePromptInputSchema,
   ListPromptsInputSchema,
   GetPromptInputSchema,
@@ -565,10 +566,28 @@ export const promptsRouter = createRouter({
     .mutation(async ({ ctx, input }) => {
       await verifyPromptInWorkspace(input.promptId, ctx.workspace.id);
 
+      // If slug is being changed, check for uniqueness within the project
+      if (input.slug) {
+        const existing = await prisma.prompt.findFirst({
+          where: {
+            slug: input.slug,
+            project: { workspaceId: ctx.workspace.id },
+            id: { not: input.promptId },
+          },
+        });
+        if (existing) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "A prompt with this slug already exists in the project",
+          });
+        }
+      }
+
       const updated = await prisma.prompt.update({
         where: { id: input.promptId },
         data: {
           name: input.name,
+          slug: input.slug,
           description: input.description,
           tags: input.tags,
         },
@@ -625,6 +644,36 @@ export const promptsRouter = createRouter({
       });
 
       return { label: label.name, versionId: label.versionId, version: version.version };
+    }),
+
+  /**
+   * Remove label from prompt (de-set production/staging)
+   */
+  removeLabel: protectedProcedure
+    .input(RemoveLabelInputSchema)
+    .use(workspaceMiddleware)
+    .mutation(async ({ ctx, input }) => {
+      await verifyPromptInWorkspace(input.promptId, ctx.workspace.id);
+
+      // Delete the label
+      const deleted = await prisma.promptLabel.deleteMany({
+        where: {
+          promptId: input.promptId,
+          name: input.label,
+        },
+      });
+
+      if (deleted.count === 0) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Label not found" });
+      }
+
+      console.info("Prompt label removed", {
+        promptId: input.promptId,
+        label: input.label,
+        userId: ctx.session.user.id,
+      });
+
+      return { success: true, label: input.label };
     }),
 
   /**

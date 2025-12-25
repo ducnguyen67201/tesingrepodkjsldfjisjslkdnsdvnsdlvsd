@@ -95,6 +95,91 @@ export interface PromptConfig {
   [key: string]: unknown;
 }
 
+// ============================================================
+// Experiment Types
+// ============================================================
+
+/**
+ * Variant name
+ */
+export type VariantName = "A" | "B";
+
+/**
+ * Experiment status
+ */
+export type ExperimentStatus = "draft" | "running" | "paused" | "completed" | "archived";
+
+/**
+ * Options for resolving an experiment
+ */
+export interface GetExperimentOptions {
+  /** Assignment key for deterministic bucketing (userId, sessionId, etc.) */
+  assignmentKey: string;
+  /** Force a specific variant for testing */
+  forceVariant?: VariantName;
+  /** Use cached version if available (default: true) */
+  cache?: boolean;
+  /** Cache TTL in seconds (default: 60) - cache key includes assignmentKey */
+  cacheTTL?: number;
+}
+
+/**
+ * Experiment metadata
+ */
+export interface ExperimentInfo {
+  id: string;
+  slug: string;
+  name: string;
+  status: ExperimentStatus;
+}
+
+/**
+ * Assigned variant info
+ */
+export interface VariantInfo {
+  id: string;
+  name: VariantName;
+  isControl: boolean;
+}
+
+/**
+ * Trace metadata for spans (attach to LLM calls)
+ */
+export interface ExperimentTraceMetadata {
+  promptExperimentId: string;
+  promptExperimentSlug: string;
+  promptVariantId: string;
+  promptVariantName: string;
+  assignmentKeyHash: string;
+}
+
+/**
+ * Experiment assignment result
+ */
+export interface ExperimentAssignment {
+  /** Experiment metadata */
+  experiment: ExperimentInfo;
+  /** Assigned variant */
+  variant: VariantInfo;
+  /** Whether user is in experiment allocation (vs fallback) */
+  inAllocation: boolean;
+  /** Prompt with compile method */
+  prompt: Prompt;
+  /** Trace metadata to attach to spans */
+  traceMetadata: ExperimentTraceMetadata;
+}
+
+/**
+ * Raw experiment resolve response from API
+ */
+interface ExperimentResolveResponse {
+  experiment: ExperimentInfo;
+  variant: VariantInfo;
+  inAllocation: boolean;
+  prompt: PromptResponse;
+  traceMetadata: ExperimentTraceMetadata;
+}
+
 /**
  * Options for fetching a prompt
  */
@@ -184,6 +269,11 @@ interface CacheEntry {
   etag: string;
 }
 
+interface ExperimentCacheEntry {
+  data: ExperimentResolveResponse;
+  expiresAt: number;
+}
+
 // ============================================================
 // Prompt Client
 // ============================================================
@@ -194,6 +284,7 @@ interface CacheEntry {
 export class PromptClient {
   private config: ResolvedConfig;
   private cache: Map<string, CacheEntry> = new Map();
+  private experimentCache: Map<string, ExperimentCacheEntry> = new Map();
   private defaultCacheTTL = 60; // 60 seconds
 
   constructor(config: ResolvedConfig) {
@@ -400,6 +491,139 @@ export class PromptClient {
   }
 
   /**
+   * Resolve an A/B experiment and get the assigned variant's prompt
+   *
+   * @param slug - Experiment slug
+   * @param options - Options including assignmentKey for bucketing
+   * @returns Experiment assignment with prompt and trace metadata
+   *
+   * @example
+   * ```typescript
+   * const assignment = await client.getExperiment("checkout-copy", {
+   *   assignmentKey: userId,
+   * });
+   *
+   * // Use the assigned prompt
+   * const compiled = assignment.prompt.compile({ plan: "pro" });
+   *
+   * // Attach trace metadata to span
+   * span.setAttributes(assignment.traceMetadata);
+   *
+   * // Check which variant was assigned
+   * if (assignment.variant.name === "B") {
+   *   console.log("User is in treatment group");
+   * }
+   * ```
+   */
+  async getExperiment(
+    slug: string,
+    options: GetExperimentOptions
+  ): Promise<ExperimentAssignment> {
+    if (this.config.disabled) {
+      throw new Error("[CognObserve] SDK is disabled");
+    }
+
+    const { assignmentKey, forceVariant, cache: useCache = true, cacheTTL = this.defaultCacheTTL } = options;
+
+    // Build cache key (includes assignmentKey for sticky assignment)
+    const cacheKey = `exp:${slug}:${assignmentKey}${forceVariant ? `:force:${forceVariant}` : ""}`;
+
+    // Check cache first
+    if (useCache) {
+      const cached = this.experimentCache.get(cacheKey);
+      if (cached && Date.now() < cached.expiresAt) {
+        if (this.config.debug) {
+          console.log(`[CognObserve] Experiment cache hit: ${slug}`);
+        }
+        return this.wrapExperimentAssignment(cached.data);
+      }
+    }
+
+    // Build query params
+    const params = new URLSearchParams();
+    params.set("assignmentKey", assignmentKey);
+    if (forceVariant) params.set("forceVariant", forceVariant);
+
+    const url = `${this.config.endpoint}/v1/prompt-experiments/${encodeURIComponent(slug)}/resolve?${params.toString()}`;
+
+    if (this.config.debug) {
+      console.log(`[CognObserve] Resolving experiment: ${slug}`);
+    }
+
+    // Fetch from API
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${this.config.apiKey}`,
+      },
+    });
+
+    // Handle errors
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorMessage: string;
+
+      try {
+        const parsed: unknown = JSON.parse(errorText);
+        if (typeof parsed === "object" && parsed !== null) {
+          const obj = parsed as Record<string, unknown>;
+          if (typeof obj.message === "string") {
+            errorMessage = obj.message;
+          } else if (typeof obj.error === "string") {
+            errorMessage = obj.error;
+          } else {
+            errorMessage = errorText;
+          }
+        } else {
+          errorMessage = errorText;
+        }
+      } catch {
+        errorMessage = errorText;
+      }
+
+      if (response.status === 404) {
+        throw new Error(`Experiment not found or not running: ${slug}`);
+      }
+      if (response.status === 401) {
+        throw new Error(`Unauthorized: Invalid API key`);
+      }
+
+      throw new Error(`Failed to resolve experiment: ${errorMessage}`);
+    }
+
+    // Parse response
+    const data = (await response.json()) as ExperimentResolveResponse;
+
+    // Store in cache
+    if (useCache) {
+      this.experimentCache.set(cacheKey, {
+        data,
+        expiresAt: Date.now() + cacheTTL * 1000,
+      });
+    }
+
+    if (this.config.debug) {
+      console.log(
+        `[CognObserve] Experiment resolved: ${slug} → variant ${data.variant.name} (${data.inAllocation ? "in allocation" : "fallback"})`
+      );
+    }
+
+    return this.wrapExperimentAssignment(data);
+  }
+
+  /**
+   * Wrap experiment response with prompt compile method
+   */
+  private wrapExperimentAssignment(data: ExperimentResolveResponse): ExperimentAssignment {
+    return {
+      experiment: data.experiment,
+      variant: data.variant,
+      inAllocation: data.inAllocation,
+      prompt: this.wrapPrompt(data.prompt),
+      traceMetadata: data.traceMetadata,
+    };
+  }
+
+  /**
    * Prefetch multiple prompts into cache
    *
    * @param slugs - Array of prompt slugs to prefetch
@@ -426,13 +650,13 @@ export class PromptClient {
   }
 
   /**
-   * Clear cache for a specific prompt or all prompts
+   * Clear cache for a specific prompt/experiment or all entries
    *
    * @param slug - Optional slug to clear; if omitted, clears entire cache
    */
   clearCache(slug?: string): void {
     if (slug) {
-      // Clear all cache entries for this slug
+      // Clear all cache entries for this slug (prompts)
       for (const key of this.cache.keys()) {
         if (key.startsWith(`${slug}:`)) {
           this.cache.delete(key);
@@ -440,8 +664,16 @@ export class PromptClient {
       }
       // Also check exact match
       this.cache.delete(slug);
+
+      // Clear experiment cache entries for this slug
+      for (const key of this.experimentCache.keys()) {
+        if (key.startsWith(`exp:${slug}:`)) {
+          this.experimentCache.delete(key);
+        }
+      }
     } else {
       this.cache.clear();
+      this.experimentCache.clear();
     }
 
     if (this.config.debug) {
@@ -471,10 +703,21 @@ export class PromptClient {
   /**
    * Get cache statistics
    */
-  getCacheStats(): { size: number; keys: string[] } {
+  getCacheStats(): {
+    prompts: { size: number; keys: string[] };
+    experiments: { size: number; keys: string[] };
+    total: number;
+  } {
     return {
-      size: this.cache.size,
-      keys: Array.from(this.cache.keys()),
+      prompts: {
+        size: this.cache.size,
+        keys: Array.from(this.cache.keys()),
+      },
+      experiments: {
+        size: this.experimentCache.size,
+        keys: Array.from(this.experimentCache.keys()),
+      },
+      total: this.cache.size + this.experimentCache.size,
     };
   }
 }

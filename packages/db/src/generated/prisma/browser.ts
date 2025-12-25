@@ -203,6 +203,16 @@ export type PromptVersion = Prisma.PromptVersionModel
  */
 export type PromptLabel = Prisma.PromptLabelModel
 /**
+ * Model PromptExperiment
+ * 
+ */
+export type PromptExperiment = Prisma.PromptExperimentModel
+/**
+ * Model PromptExperimentVariant
+ * 
+ */
+export type PromptExperimentVariant = Prisma.PromptExperimentVariantModel
+/**
  * Model AlertRCA
  * 
  */
