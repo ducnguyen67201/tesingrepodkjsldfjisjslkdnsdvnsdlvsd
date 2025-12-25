@@ -68,3 +68,12 @@ jobs:
             exit 1
           fi
           echo "✓ No direct DB mutations in activities"
+
+      - name: Check for uncommitted changes (drift check)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Uncommitted changes detected after build. Please commit all generated files."
+            git status --porcelain
+            git diff
+            exit 1
+          fi
