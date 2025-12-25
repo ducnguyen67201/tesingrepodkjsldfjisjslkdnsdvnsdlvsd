@@ -90,3 +90,12 @@ export {
   extractTextFromAttachment,
   storeAttachmentText,
 } from "./attachment.activities";
+
+// Experiment Analysis activities
+export {
+  getExperimentWithVariants,
+  aggregateVariantMetrics,
+  markAnalysisStarted,
+  generateComparisonAnalysis,
+  storeExperimentAnalysis,
+} from "./experiment-analysis.activities";

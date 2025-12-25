@@ -92,6 +92,12 @@ export type SpanMinAggregateOutputType = {
   genAiProvider: string | null
   spanType: string | null
   searchText: string | null
+  promptExperimentId: string | null
+  promptExperimentSlug: string | null
+  promptVariantId: string | null
+  promptVariantName: string | null
+  assignmentKeyHash: string | null
+  promptVersionId: string | null
   createdAt: Date | null
 }
 
@@ -137,6 +143,12 @@ export type SpanMaxAggregateOutputType = {
   genAiProvider: string | null
   spanType: string | null
   searchText: string | null
+  promptExperimentId: string | null
+  promptExperimentSlug: string | null
+  promptVariantId: string | null
+  promptVariantName: string | null
+  assignmentKeyHash: string | null
+  promptVersionId: string | null
   createdAt: Date | null
 }
 
@@ -188,6 +200,12 @@ export type SpanCountAggregateOutputType = {
   genAiProvider: number
   spanType: number
   searchText: number
+  promptExperimentId: number
+  promptExperimentSlug: number
+  promptVariantId: number
+  promptVariantName: number
+  assignmentKeyHash: number
+  promptVersionId: number
   createdAt: number
   _all: number
 }
@@ -259,6 +277,12 @@ export type SpanMinAggregateInputType = {
   genAiProvider?: true
   spanType?: true
   searchText?: true
+  promptExperimentId?: true
+  promptExperimentSlug?: true
+  promptVariantId?: true
+  promptVariantName?: true
+  assignmentKeyHash?: true
+  promptVersionId?: true
   createdAt?: true
 }
 
@@ -304,6 +328,12 @@ export type SpanMaxAggregateInputType = {
   genAiProvider?: true
   spanType?: true
   searchText?: true
+  promptExperimentId?: true
+  promptExperimentSlug?: true
+  promptVariantId?: true
+  promptVariantName?: true
+  assignmentKeyHash?: true
+  promptVersionId?: true
   createdAt?: true
 }
 
@@ -355,6 +385,12 @@ export type SpanCountAggregateInputType = {
   genAiProvider?: true
   spanType?: true
   searchText?: true
+  promptExperimentId?: true
+  promptExperimentSlug?: true
+  promptVariantId?: true
+  promptVariantName?: true
+  assignmentKeyHash?: true
+  promptVersionId?: true
   createdAt?: true
   _all?: true
 }
@@ -493,6 +529,12 @@ export type SpanGroupByOutputType = {
   genAiProvider: string | null
   spanType: string | null
   searchText: string | null
+  promptExperimentId: string | null
+  promptExperimentSlug: string | null
+  promptVariantId: string | null
+  promptVariantName: string | null
+  assignmentKeyHash: string | null
+  promptVersionId: string | null
   createdAt: Date
   _count: SpanCountAggregateOutputType | null
   _avg: SpanAvgAggregateOutputType | null
@@ -567,6 +609,12 @@ export type SpanWhereInput = {
   genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
   spanType?: Prisma.StringNullableFilter<"Span"> | string | null
   searchText?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentSlug?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantName?: Prisma.StringNullableFilter<"Span"> | string | null
+  assignmentKeyHash?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVersionId?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
@@ -620,6 +668,12 @@ export type SpanOrderByWithRelationInput = {
   genAiProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   spanType?: Prisma.SortOrderInput | Prisma.SortOrder
   searchText?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptExperimentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptExperimentSlug?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVariantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVariantName?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignmentKeyHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   trace?: Prisma.TraceOrderByWithRelationInput
   pricing?: Prisma.ModelPricingOrderByWithRelationInput
@@ -677,6 +731,12 @@ export type SpanWhereUniqueInput = Prisma.AtLeast<{
   genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
   spanType?: Prisma.StringNullableFilter<"Span"> | string | null
   searchText?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentSlug?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantName?: Prisma.StringNullableFilter<"Span"> | string | null
+  assignmentKeyHash?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVersionId?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
   trace?: Prisma.XOR<Prisma.TraceScalarRelationFilter, Prisma.TraceWhereInput>
   pricing?: Prisma.XOR<Prisma.ModelPricingNullableScalarRelationFilter, Prisma.ModelPricingWhereInput> | null
@@ -730,6 +790,12 @@ export type SpanOrderByWithAggregationInput = {
   genAiProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   spanType?: Prisma.SortOrderInput | Prisma.SortOrder
   searchText?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptExperimentId?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptExperimentSlug?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVariantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVariantName?: Prisma.SortOrderInput | Prisma.SortOrder
+  assignmentKeyHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  promptVersionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SpanCountOrderByAggregateInput
   _avg?: Prisma.SpanAvgOrderByAggregateInput
@@ -789,6 +855,12 @@ export type SpanScalarWhereWithAggregatesInput = {
   genAiProvider?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   spanType?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   searchText?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  promptExperimentId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  promptExperimentSlug?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  promptVariantId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  promptVariantName?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  assignmentKeyHash?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
+  promptVersionId?: Prisma.StringNullableWithAggregatesFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Span"> | Date | string
 }
 
@@ -838,6 +910,12 @@ export type SpanCreateInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
   pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
@@ -891,6 +969,12 @@ export type SpanUncheckedCreateInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -940,6 +1024,12 @@ export type SpanUpdateInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
   pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
@@ -993,6 +1083,12 @@ export type SpanUncheckedUpdateInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1044,6 +1140,12 @@ export type SpanCreateManyInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -1093,6 +1195,12 @@ export type SpanUpdateManyMutationInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1144,6 +1252,12 @@ export type SpanUncheckedUpdateManyInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1210,6 +1324,12 @@ export type SpanCountOrderByAggregateInput = {
   genAiProvider?: Prisma.SortOrder
   spanType?: Prisma.SortOrder
   searchText?: Prisma.SortOrder
+  promptExperimentId?: Prisma.SortOrder
+  promptExperimentSlug?: Prisma.SortOrder
+  promptVariantId?: Prisma.SortOrder
+  promptVariantName?: Prisma.SortOrder
+  assignmentKeyHash?: Prisma.SortOrder
+  promptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -1267,6 +1387,12 @@ export type SpanMaxOrderByAggregateInput = {
   genAiProvider?: Prisma.SortOrder
   spanType?: Prisma.SortOrder
   searchText?: Prisma.SortOrder
+  promptExperimentId?: Prisma.SortOrder
+  promptExperimentSlug?: Prisma.SortOrder
+  promptVariantId?: Prisma.SortOrder
+  promptVariantName?: Prisma.SortOrder
+  assignmentKeyHash?: Prisma.SortOrder
+  promptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -1312,6 +1438,12 @@ export type SpanMinOrderByAggregateInput = {
   genAiProvider?: Prisma.SortOrder
   spanType?: Prisma.SortOrder
   searchText?: Prisma.SortOrder
+  promptExperimentId?: Prisma.SortOrder
+  promptExperimentSlug?: Prisma.SortOrder
+  promptVariantId?: Prisma.SortOrder
+  promptVariantName?: Prisma.SortOrder
+  assignmentKeyHash?: Prisma.SortOrder
+  promptVersionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -1465,6 +1597,12 @@ export type SpanCreateWithoutPricingInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
   trace: Prisma.TraceCreateNestedOneWithoutSpansInput
 }
@@ -1516,6 +1654,12 @@ export type SpanUncheckedCreateWithoutPricingInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -1596,6 +1740,12 @@ export type SpanScalarWhereInput = {
   genAiProvider?: Prisma.StringNullableFilter<"Span"> | string | null
   spanType?: Prisma.StringNullableFilter<"Span"> | string | null
   searchText?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptExperimentSlug?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantId?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVariantName?: Prisma.StringNullableFilter<"Span"> | string | null
+  assignmentKeyHash?: Prisma.StringNullableFilter<"Span"> | string | null
+  promptVersionId?: Prisma.StringNullableFilter<"Span"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Span"> | Date | string
 }
 
@@ -1645,6 +1795,12 @@ export type SpanCreateWithoutTraceInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
   pricing?: Prisma.ModelPricingCreateNestedOneWithoutSpansInput
 }
@@ -1696,6 +1852,12 @@ export type SpanUncheckedCreateWithoutTraceInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -1772,6 +1934,12 @@ export type SpanCreateManyPricingInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -1821,6 +1989,12 @@ export type SpanUpdateWithoutPricingInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   trace?: Prisma.TraceUpdateOneRequiredWithoutSpansNestedInput
 }
@@ -1872,6 +2046,12 @@ export type SpanUncheckedUpdateWithoutPricingInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1922,6 +2102,12 @@ export type SpanUncheckedUpdateManyWithoutPricingInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1972,6 +2158,12 @@ export type SpanCreateManyTraceInput = {
   genAiProvider?: string | null
   spanType?: string | null
   searchText?: string | null
+  promptExperimentId?: string | null
+  promptExperimentSlug?: string | null
+  promptVariantId?: string | null
+  promptVariantName?: string | null
+  assignmentKeyHash?: string | null
+  promptVersionId?: string | null
   createdAt?: Date | string
 }
 
@@ -2021,6 +2213,12 @@ export type SpanUpdateWithoutTraceInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pricing?: Prisma.ModelPricingUpdateOneWithoutSpansNestedInput
 }
@@ -2072,6 +2270,12 @@ export type SpanUncheckedUpdateWithoutTraceInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -2122,6 +2326,12 @@ export type SpanUncheckedUpdateManyWithoutTraceInput = {
   genAiProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   spanType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   searchText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptExperimentSlug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVariantName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignmentKeyHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promptVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -2175,6 +2385,12 @@ export type SpanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   genAiProvider?: boolean
   spanType?: boolean
   searchText?: boolean
+  promptExperimentId?: boolean
+  promptExperimentSlug?: boolean
+  promptVariantId?: boolean
+  promptVariantName?: boolean
+  assignmentKeyHash?: boolean
+  promptVersionId?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -2228,6 +2444,12 @@ export type SpanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   genAiProvider?: boolean
   spanType?: boolean
   searchText?: boolean
+  promptExperimentId?: boolean
+  promptExperimentSlug?: boolean
+  promptVariantId?: boolean
+  promptVariantName?: boolean
+  assignmentKeyHash?: boolean
+  promptVersionId?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -2281,6 +2503,12 @@ export type SpanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   genAiProvider?: boolean
   spanType?: boolean
   searchText?: boolean
+  promptExperimentId?: boolean
+  promptExperimentSlug?: boolean
+  promptVariantId?: boolean
+  promptVariantName?: boolean
+  assignmentKeyHash?: boolean
+  promptVersionId?: boolean
   createdAt?: boolean
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -2334,10 +2562,16 @@ export type SpanSelectScalar = {
   genAiProvider?: boolean
   spanType?: boolean
   searchText?: boolean
+  promptExperimentId?: boolean
+  promptExperimentSlug?: boolean
+  promptVariantId?: boolean
+  promptVariantName?: boolean
+  assignmentKeyHash?: boolean
+  promptVersionId?: boolean
   createdAt?: boolean
 }
 
-export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "externalSpanId" | "parentSpanId" | "name" | "kind" | "statusCode" | "statusMessage" | "traceState" | "startTime" | "endTime" | "durationMs" | "attributes" | "events" | "links" | "libraryName" | "libraryVersion" | "model" | "modelParameters" | "input" | "output" | "promptTokens" | "completionTokens" | "totalTokens" | "inputCost" | "outputCost" | "totalCost" | "pricingId" | "httpMethod" | "httpRoute" | "httpStatusCode" | "httpUrl" | "dbSystem" | "dbName" | "dbOperation" | "dbStatement" | "dbCollection" | "rpcSystem" | "rpcService" | "rpcMethod" | "rpcStatusCode" | "exceptionType" | "exceptionMessage" | "genAiOperation" | "genAiProvider" | "spanType" | "searchText" | "createdAt", ExtArgs["result"]["span"]>
+export type SpanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "traceId" | "externalSpanId" | "parentSpanId" | "name" | "kind" | "statusCode" | "statusMessage" | "traceState" | "startTime" | "endTime" | "durationMs" | "attributes" | "events" | "links" | "libraryName" | "libraryVersion" | "model" | "modelParameters" | "input" | "output" | "promptTokens" | "completionTokens" | "totalTokens" | "inputCost" | "outputCost" | "totalCost" | "pricingId" | "httpMethod" | "httpRoute" | "httpStatusCode" | "httpUrl" | "dbSystem" | "dbName" | "dbOperation" | "dbStatement" | "dbCollection" | "rpcSystem" | "rpcService" | "rpcMethod" | "rpcStatusCode" | "exceptionType" | "exceptionMessage" | "genAiOperation" | "genAiProvider" | "spanType" | "searchText" | "promptExperimentId" | "promptExperimentSlug" | "promptVariantId" | "promptVariantName" | "assignmentKeyHash" | "promptVersionId" | "createdAt", ExtArgs["result"]["span"]>
 export type SpanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   trace?: boolean | Prisma.TraceDefaultArgs<ExtArgs>
   pricing?: boolean | Prisma.Span$pricingArgs<ExtArgs>
@@ -2405,6 +2639,12 @@ export type $SpanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     genAiProvider: string | null
     spanType: string | null
     searchText: string | null
+    promptExperimentId: string | null
+    promptExperimentSlug: string | null
+    promptVariantId: string | null
+    promptVariantName: string | null
+    assignmentKeyHash: string | null
+    promptVersionId: string | null
     createdAt: Date
   }, ExtArgs["result"]["span"]>
   composites: {}
@@ -2878,6 +3118,12 @@ export interface SpanFieldRefs {
   readonly genAiProvider: Prisma.FieldRef<"Span", 'String'>
   readonly spanType: Prisma.FieldRef<"Span", 'String'>
   readonly searchText: Prisma.FieldRef<"Span", 'String'>
+  readonly promptExperimentId: Prisma.FieldRef<"Span", 'String'>
+  readonly promptExperimentSlug: Prisma.FieldRef<"Span", 'String'>
+  readonly promptVariantId: Prisma.FieldRef<"Span", 'String'>
+  readonly promptVariantName: Prisma.FieldRef<"Span", 'String'>
+  readonly assignmentKeyHash: Prisma.FieldRef<"Span", 'String'>
+  readonly promptVersionId: Prisma.FieldRef<"Span", 'String'>
   readonly createdAt: Prisma.FieldRef<"Span", 'DateTime'>
 }
     

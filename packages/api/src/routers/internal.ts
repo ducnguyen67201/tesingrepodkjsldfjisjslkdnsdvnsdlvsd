@@ -1058,6 +1058,68 @@ export const internalRouter = createRouter({
       console.log(`[Internal:clearArticleChunks] Deleted ${result.count} chunks for article ${articleId}`);
       return { deletedCount: result.count };
     }),
+
+  // ============================================================
+  // EXPERIMENT ANALYSIS PROCEDURES
+  // ============================================================
+
+  /**
+   * Start experiment analysis
+   * Called by: experiment-analysis.activities.ts → markAnalysisStarted
+   * Sets experiment analysis status to "running"
+   */
+  startExperimentAnalysis: internalProcedure
+    .input(z.object({
+      experimentId: z.string().min(1),
+    }))
+    .mutation(async ({ input }) => {
+      const { experimentId } = input;
+
+      const experiment = await prisma.promptExperiment.update({
+        where: { id: experimentId },
+        data: {
+          analysisStatus: "running",
+          analysisStartedAt: new Date(),
+          analysisError: null,
+        },
+      });
+
+      console.log(`[Internal:startExperimentAnalysis] Started analysis for experiment ${experimentId}`);
+      return { experimentId: experiment.id };
+    }),
+
+  /**
+   * Update experiment analysis results
+   * Called by: experiment-analysis.activities.ts → storeExperimentAnalysis
+   * Stores LLM comparison results and winner determination
+   */
+  updateExperimentAnalysis: internalProcedure
+    .input(z.object({
+      experimentId: z.string().min(1),
+      status: z.enum(["pending", "running", "completed", "failed"]),
+      result: z.unknown().optional(),
+      error: z.string().optional(),
+      winnerVariantId: z.string().optional().nullable(),
+      winnerConfidence: z.number().optional().nullable(),
+    }))
+    .mutation(async ({ input }) => {
+      const { experimentId, status, result, error, winnerVariantId, winnerConfidence } = input;
+
+      const experiment = await prisma.promptExperiment.update({
+        where: { id: experimentId },
+        data: {
+          analysisStatus: status,
+          analysisCompletedAt: status === "completed" || status === "failed" ? new Date() : undefined,
+          analysisResult: result as Prisma.InputJsonValue ?? undefined,
+          analysisError: error,
+          winnerVariantId,
+          winnerConfidence,
+        },
+      });
+
+      console.log(`[Internal:updateExperimentAnalysis] Updated analysis for ${experimentId} to ${status}`);
+      return { experimentId: experiment.id, status };
+    }),
 });
 
 export type InternalRouter = typeof internalRouter;

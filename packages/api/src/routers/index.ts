@@ -30,6 +30,7 @@ import { githubRouter } from "./github";
 import { evalsRouter } from "./evals";
 import { filtersRouter } from "./filters";
 import { promptsRouter } from "./prompts";
+import { promptExperimentsRouter } from "./prompt-experiments";
 import { knowledgeRouter } from "./knowledge";
 import { extensionsRouter } from "./extensions";
 import { themeRouter } from "./theme";
@@ -246,6 +247,30 @@ export const appRouter = createRouter({
   prompts: promptsRouter,
 
   /**
+   * Prompt A/B Experiments
+   * @see ./prompt-experiments.ts
+   *
+   * A/B testing for prompts with deterministic assignment and analytics.
+   *
+   * - promptExperiments.list      - List experiments for a project
+   * - promptExperiments.get       - Get experiment with variants
+   * - promptExperiments.getBySlug - Get experiment by slug
+   * - promptExperiments.create    - Create new experiment with variants
+   * - promptExperiments.update    - Update experiment metadata
+   * - promptExperiments.updateWeights - Update variant weights
+   * - promptExperiments.start     - Start experiment
+   * - promptExperiments.pause     - Pause experiment
+   * - promptExperiments.stop      - Complete experiment
+   * - promptExperiments.archive   - Archive experiment
+   * - promptExperiments.delete    - Delete experiment
+   * - promptExperiments.analytics - Get variant analytics
+   * - promptExperiments.compare   - Compare two prompt versions
+   * - promptExperiments.getPresets - Get labels and defaults
+   * - promptExperiments.getTags   - Get experiment tags
+   */
+  promptExperiments: promptExperimentsRouter,
+
+  /**
    * Knowledge Base (Workspace-Level KB)
    * @see ./knowledge.ts
    *
@@ -365,6 +390,7 @@ export {
   evalsRouter,
   filtersRouter,
   promptsRouter,
+  promptExperimentsRouter,
   knowledgeRouter,
   extensionsRouter,
   themeRouter,

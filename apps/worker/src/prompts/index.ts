@@ -9,3 +9,6 @@ export type { PromptConfig, PromptModule } from "./types";
 
 // RCA prompts
 export * from "./rca";
+
+// Experiment prompts
+export * from "./experiment";

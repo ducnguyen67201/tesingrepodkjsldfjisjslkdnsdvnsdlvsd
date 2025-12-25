@@ -163,6 +163,20 @@ model Span {
   // ============================================================
   searchText          String?   // Denormalized text for FTS
 
+  // ============================================================
+  // Prompt Experiment Tracking
+  // ============================================================
+  promptExperimentId   String?
+  promptExperimentSlug String?
+  promptVariantId      String?
+  promptVariantName    String?  // "A" | "B"
+  assignmentKeyHash    String?  // SHA-256 hash (never store raw)
+
+  // ============================================================
+  // Prompt Version Tracking (for A/B analysis)
+  // ============================================================
+  promptVersionId      String?  // Links span to specific prompt version
+
   // Audit
   createdAt        DateTime @default(now())
 
@@ -184,4 +198,8 @@ model Span {
   @@index([exceptionType])
   @@index([genAiOperation])
   @@index([genAiProvider])
+
+  // Prompt tracking indexes
+  @@index([promptVersionId])
+  @@index([promptVariantId])
 }

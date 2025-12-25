@@ -5,15 +5,16 @@
 import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
-import { promptToast } from "@/lib/success";
+import { promptToast, showSuccess } from "@/lib/success";
 import { type PromptLabelName } from "@cognobserve/api/schemas";
 
 interface UsePromptsOptions {
   workspaceSlug: string;
   projectId: string;
+  includeArchived?: boolean;
 }
 
-export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
+export function usePrompts({ workspaceSlug, projectId, includeArchived = false }: UsePromptsOptions) {
   const utils = trpc.useUtils();
 
   // Query prompts
@@ -22,8 +23,11 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
     isLoading,
     error,
   } = trpc.prompts.list.useQuery(
-    { workspaceSlug, projectId },
-    { staleTime: 30_000 }
+    { workspaceSlug, projectId, includeArchived },
+    {
+      staleTime: 30_000,
+      enabled: !!workspaceSlug && !!projectId,
+    }
   );
 
   // Extract items from paginated response
@@ -90,6 +94,16 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
     onError: showError,
   });
 
+  // Remove label mutation
+  const removeLabel = trpc.prompts.removeLabel.useMutation({
+    onSuccess: (_result, variables) => {
+      showSuccess("Label removed", `${variables.label} label has been removed.`);
+      utils.prompts.list.invalidate({ workspaceSlug, projectId });
+      utils.prompts.get.invalidate({ workspaceSlug, promptId: variables.promptId });
+    },
+    onError: showError,
+  });
+
   // Helper functions
   const handleCreate = useCallback(
     async (data: Parameters<typeof createPrompt.mutateAsync>[0]) => {
@@ -133,6 +147,13 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
     [setLabel, workspaceSlug]
   );
 
+  const handleRemoveLabel = useCallback(
+    async (promptId: string, label: PromptLabelName) => {
+      return removeLabel.mutateAsync({ workspaceSlug, promptId, label });
+    },
+    [removeLabel, workspaceSlug]
+  );
+
   return {
     prompts,
     isLoading,
@@ -143,12 +164,14 @@ export function usePrompts({ workspaceSlug, projectId }: UsePromptsOptions) {
     deletePrompt: handleDelete,
     createVersion: handleCreateVersion,
     setLabel: handleSetLabel,
+    removeLabel: handleRemoveLabel,
     isCreating: createPrompt.isPending,
     isUpdating: updatePrompt.isPending,
     isArchiving: archivePrompt.isPending,
     isDeleting: deletePrompt.isPending,
     isCreatingVersion: createVersion.isPending,
     isSettingLabel: setLabel.isPending,
+    isRemovingLabel: removeLabel.isPending,
   };
 }
 
@@ -191,6 +214,15 @@ export function usePromptDetail({
     onError: showError,
   });
 
+  // Remove label mutation
+  const removeLabel = trpc.prompts.removeLabel.useMutation({
+    onSuccess: (_result, variables) => {
+      showSuccess("Label removed", `${variables.label} label has been removed.`);
+      utils.prompts.get.invalidate({ workspaceSlug, promptId });
+    },
+    onError: showError,
+  });
+
   const handleCreateVersion = useCallback(
     async (data: {
       template: Parameters<typeof createVersion.mutateAsync>[0]["template"];
@@ -215,13 +247,22 @@ export function usePromptDetail({
     [setLabel, workspaceSlug, promptId]
   );
 
+  const handleRemoveLabel = useCallback(
+    async (label: PromptLabelName) => {
+      return removeLabel.mutateAsync({ workspaceSlug, promptId, label });
+    },
+    [removeLabel, workspaceSlug, promptId]
+  );
+
   return {
     prompt,
     isLoading,
     error,
     createVersion: handleCreateVersion,
     setLabel: handleSetLabel,
+    removeLabel: handleRemoveLabel,
     isCreatingVersion: createVersion.isPending,
     isSettingLabel: setLabel.isPending,
+    isRemovingLabel: removeLabel.isPending,
   };
 }

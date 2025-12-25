@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
-  FileCode,
   Plus,
   Search,
   Upload,
@@ -13,40 +13,38 @@ import {
   Rocket,
   FlaskConical,
   Clock,
-  BarChart3,
-  Layers,
   FolderKanban,
   ChevronDown,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-import { usePrompts, usePromptDetail } from "@/hooks/use-prompts";
+import { usePrompts } from "@/hooks/use-prompts";
 import { showSuccess } from "@/lib/success";
-import { PromptCard } from "@/components/prompts/prompt-card";
-import { CreatePromptDialog } from "@/components/prompts/create-prompt-dialog";
-import { CreateVersionDialog } from "@/components/prompts/create-version-dialog";
-import { VersionCard } from "@/components/prompts/version-card";
-import { ImportPromptsDialog } from "@/components/prompts/import-prompts-dialog";
-import { PromptPlayground } from "@/components/prompts/prompt-playground";
-import { PromptAnalytics } from "@/components/prompts/prompt-analytics";
+import { showError } from "@/lib/errors";
+import {
+  PromptCard,
+  CreatePromptDialog,
+  ImportPromptsDialog,
+  EditPromptDialog,
+  PromptDetailPanel,
+  NoProjectsEmptyState,
+  NoPromptsEmptyState,
+  NoResultsEmptyState,
+  NoSelectionEmptyState,
+  PromptsPageSkeleton,
+} from "@/components/prompts";
+import { CreateExperimentDialog } from "@/components/experiments/create-experiment-dialog";
 
 export default function WorkspacePromptsPage() {
   const searchParams = useSearchParams();
@@ -60,9 +58,13 @@ export default function WorkspacePromptsPage() {
   // State
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isExperimentOpen, setIsExperimentOpen] = useState(false);
+  const [editingPromptId, setEditingPromptId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [showArchived, setShowArchived] = useState(false);
 
   // Fetch projects for selector
   const { data: projects = [], isLoading: isLoadingProjects } =
@@ -79,13 +81,35 @@ export default function WorkspacePromptsPage() {
   const {
     prompts,
     isLoading: isLoadingPrompts,
+    updatePrompt,
     archivePrompt,
     deletePrompt,
+    isUpdating,
     isDeleting,
     isArchiving,
   } = usePrompts({
     workspaceSlug: workspaceSlug ?? "",
     projectId: effectiveProjectId ?? "",
+    includeArchived: showArchived,
+  });
+
+  // tRPC utils for cache invalidation
+  const utils = trpc.useUtils();
+
+  // Fetch editing prompt details (isLoading not needed - dialog handles loading state)
+  const { data: editingPromptData } = trpc.prompts.get.useQuery(
+    { workspaceSlug: workspaceSlug ?? "", promptId: editingPromptId ?? "" },
+    { enabled: !!workspaceSlug && !!editingPromptId && isEditOpen }
+  );
+
+  // Create version mutation for editing
+  const createVersionMutation = trpc.prompts.createVersion.useMutation({
+    onSuccess: (newVersion) => {
+      showSuccess("Version created", `Version ${newVersion.version} has been created.`);
+      utils.prompts.list.invalidate({ workspaceSlug: workspaceSlug ?? "", projectId: effectiveProjectId ?? "" });
+      utils.prompts.get.invalidate({ workspaceSlug: workspaceSlug ?? "", promptId: editingPromptId ?? "" });
+    },
+    onError: showError,
   });
 
   // Export functionality
@@ -136,8 +160,57 @@ export default function WorkspacePromptsPage() {
   );
 
   const handleEdit = useCallback((promptId: string) => {
-    console.log("Edit prompt:", promptId);
+    setEditingPromptId(promptId);
+    setIsEditOpen(true);
   }, []);
+
+  const handleToggleArchived = useCallback(() => {
+    setShowArchived((prev) => !prev);
+  }, []);
+
+  const handleCreateVersionForEdit = useCallback(
+    async (data: { template: { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: string; content: string; name?: string }> } }) => {
+      if (!editingPromptId || !workspaceSlug) return;
+      const template = data.template.type === "text"
+        ? data.template
+        : {
+            type: "chat" as const,
+            messages: data.template.messages.map((m) => ({
+              role: m.role as "system" | "user" | "assistant" | "tool",
+              content: m.content,
+              name: m.name,
+            })),
+          };
+      await createVersionMutation.mutateAsync({
+        workspaceSlug,
+        promptId: editingPromptId,
+        template,
+      });
+    },
+    [editingPromptId, workspaceSlug, createVersionMutation]
+  );
+
+  const handleCloseEditDialog = useCallback((open: boolean) => {
+    setIsEditOpen(open);
+    if (!open) {
+      setEditingPromptId(null);
+    }
+  }, []);
+
+  // Prepare editing prompt data with version content
+  const editingPrompt = useMemo(() => {
+    if (!editingPromptData) return null;
+    const latestVersion = editingPromptData.versions[0];
+    return {
+      id: editingPromptData.id,
+      name: editingPromptData.name,
+      slug: editingPromptData.slug,
+      description: editingPromptData.description,
+      tags: editingPromptData.tags,
+      latestVersionType: latestVersion?.type as "text" | "chat" | undefined,
+      latestVersionContent: latestVersion?.content as { type: "text"; text: string } | { type: "chat"; messages: Array<{ role: string; content: string }> } | undefined,
+    };
+  }, [editingPromptData]);
 
   const handleDelete = useCallback(
     async (promptId: string) => {
@@ -241,48 +314,18 @@ export default function WorkspacePromptsPage() {
   const isLoading = isLoadingProjects || (effectiveProjectId && isLoadingPrompts);
 
   if (isLoading) {
-    return (
-      <div className="flex h-full">
-        <div className="flex-1 flex flex-col border-r p-4 space-y-4">
-          <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-full" />
-          <div className="space-y-3">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-32" />
-            ))}
-          </div>
-        </div>
-        <div className="w-[480px] p-4 space-y-4">
-          <Skeleton className="h-6 w-32" />
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-32" />
-          ))}
-        </div>
-      </div>
-    );
+    return <PromptsPageSkeleton />;
   }
 
   if (projects.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center max-w-md">
-          <div className="rounded-full bg-muted/50 p-5 mx-auto w-fit">
-            <FolderKanban className="h-10 w-10 text-muted-foreground/70" />
-          </div>
-          <h2 className="mt-6 text-lg font-semibold">No projects yet</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Create a project first to start managing prompts.
-          </p>
-        </div>
-      </div>
-    );
+    return <NoProjectsEmptyState />;
   }
 
   return (
     <div className="flex h-full">
       {/* Left: Prompts List */}
       <div className="flex-1 flex flex-col border-r">
-        {/* Row 1: Header - aligns with right panel header */}
+        {/* Row 1: Header */}
         <div className="flex items-center justify-between h-[72px] px-4 border-b">
           <div>
             <h1 className="text-lg font-semibold">Prompts</h1>
@@ -338,6 +381,27 @@ export default function WorkspacePromptsPage() {
               <Download className="h-4 w-4" />
             </Button>
             <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsExperimentOpen(true)}
+              disabled={!effectiveProjectId || prompts.length < 2}
+              title={prompts.length < 2 ? "Need at least 2 prompts to create an A/B test" : ""}
+            >
+              <FlaskConical className="mr-1.5 h-4 w-4" />
+              A/B Test
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="text-muted-foreground"
+            >
+              <Link href={`/workspace/${workspaceSlug}/experiments${effectiveProjectId ? `?projectId=${effectiveProjectId}` : ""}`}>
+                <ExternalLink className="mr-1.5 h-4 w-4" />
+                View Experiments
+              </Link>
+            </Button>
+            <Button
               size="sm"
               onClick={() => setIsCreateOpen(true)}
               disabled={!effectiveProjectId}
@@ -348,7 +412,7 @@ export default function WorkspacePromptsPage() {
           </div>
         </div>
 
-        {/* Row 2: Search - aligns with right panel tabs */}
+        {/* Row 2: Search */}
         <div className="flex items-center h-[52px] px-4 border-b">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -371,7 +435,7 @@ export default function WorkspacePromptsPage() {
           </div>
         </div>
 
-        {/* Row 3: Filters - aligns with right panel description (h-[36px]) */}
+        {/* Row 3: Filters */}
         <div className="flex items-center gap-1.5 h-[36px] px-4 border-b bg-muted/30">
           {availableLabels.map((label) => {
             const isSelected = selectedLabels.includes(label);
@@ -395,6 +459,18 @@ export default function WorkspacePromptsPage() {
               </Badge>
             );
           })}
+
+          <div className="w-px h-4 bg-border mx-1" />
+
+          <Badge
+            variant={showArchived ? "default" : "outline"}
+            className={`cursor-pointer text-[10px] px-2 py-0.5 ${
+              showArchived ? "" : "hover:bg-muted"
+            }`}
+            onClick={handleToggleArchived}
+          >
+            {showArchived ? "Showing archived" : "Show archived"}
+          </Badge>
 
           {availableTags.length > 0 && (
             <div className="w-px h-4 bg-border mx-1" />
@@ -434,38 +510,12 @@ export default function WorkspacePromptsPage() {
         <ScrollArea className="flex-1">
           <div className="p-4">
             {prompts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <div className="rounded-full bg-muted/50 p-5">
-                  <FileCode className="h-10 w-10 text-muted-foreground/70" />
-                </div>
-                <h3 className="mt-6 text-base font-semibold">No prompts yet</h3>
-                <p className="mt-2 text-sm text-muted-foreground max-w-[260px] leading-relaxed">
-                  Create prompts to store and version your templates. Fetch them
-                  at runtime via SDK.
-                </p>
-                <Button
-                  className="mt-4"
-                  onClick={() => setIsCreateOpen(true)}
-                  disabled={!effectiveProjectId}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create First Prompt
-                </Button>
-              </div>
+              <NoPromptsEmptyState
+                onCreateClick={() => setIsCreateOpen(true)}
+                disabled={!effectiveProjectId}
+              />
             ) : filteredPrompts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-center">
-                <h3 className="text-base font-semibold">No matching prompts</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Try adjusting your search or filters
-                </p>
-                <Button
-                  variant="outline"
-                  className="mt-4"
-                  onClick={handleClearFilters}
-                >
-                  Clear Filters
-                </Button>
-              </div>
+              <NoResultsEmptyState onClearFilters={handleClearFilters} />
             ) : (
               <div className="space-y-3">
                 {filteredPrompts.map((prompt) => (
@@ -496,25 +546,7 @@ export default function WorkspacePromptsPage() {
             promptName={selectedPrompt.name}
           />
         ) : (
-          <div className="flex flex-col h-full">
-            {/* Row 1: Empty header - matches left panel */}
-            <div className="flex items-center h-[72px] px-4 border-b bg-background">
-              <span className="text-muted-foreground text-sm">No prompt selected</span>
-            </div>
-            {/* Row 2: Empty tabs placeholder - matches left panel */}
-            <div className="h-[52px] px-4 border-b bg-background" />
-            {/* Row 3: Empty filters placeholder - matches left panel */}
-            <div className="h-[36px] border-b bg-muted/30" />
-            {/* Content: Empty state */}
-            <div className="flex-1 flex items-center justify-center text-center p-8">
-              <div>
-                <FileCode className="h-12 w-12 text-muted-foreground/30 mx-auto" />
-                <p className="mt-4 text-sm text-muted-foreground">
-                  Select a prompt to view versions and details
-                </p>
-              </div>
-            </div>
-          </div>
+          <NoSelectionEmptyState />
         )}
       </div>
 
@@ -534,179 +566,26 @@ export default function WorkspacePromptsPage() {
             workspaceSlug={workspaceSlug ?? ""}
             projectId={effectiveProjectId}
           />
+
+          <EditPromptDialog
+            open={isEditOpen}
+            onOpenChange={handleCloseEditDialog}
+            prompt={editingPrompt}
+            onUpdate={updatePrompt}
+            onCreateVersion={handleCreateVersionForEdit}
+            isUpdating={isUpdating}
+            isCreatingVersion={createVersionMutation.isPending}
+            workspaceSlug={workspaceSlug ?? ""}
+          />
+
+          <CreateExperimentDialog
+            open={isExperimentOpen}
+            onOpenChange={setIsExperimentOpen}
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={effectiveProjectId ?? ""}
+          />
         </>
       )}
-    </div>
-  );
-}
-
-/**
- * Prompt detail panel showing versions and analytics
- */
-function PromptDetailPanel({
-  workspaceSlug,
-  promptId,
-  promptName,
-}: {
-  workspaceSlug: string;
-  promptId: string;
-  promptName: string;
-}) {
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [playgroundVersionId, setPlaygroundVersionId] = useState<string | null>(
-    null
-  );
-
-  const {
-    prompt,
-    isLoading,
-    createVersion,
-    setLabel,
-    isCreatingVersion,
-    isSettingLabel,
-  } = usePromptDetail({ workspaceSlug, promptId });
-
-  const handleOpenPlayground = useCallback((versionId: string) => {
-    setPlaygroundVersionId(versionId);
-  }, []);
-
-  const handleClosePlayground = useCallback(() => {
-    setPlaygroundVersionId(null);
-  }, []);
-
-  const playgroundVersion = prompt?.versions.find(
-    (v) => v.id === playgroundVersionId
-  );
-
-  if (isLoading) {
-    return (
-      <div className="p-4 space-y-4">
-        <Skeleton className="h-6 w-32" />
-        {Array.from({ length: 3 }).map((_, i) => (
-          <Skeleton key={i} className="h-32" />
-        ))}
-      </div>
-    );
-  }
-
-  if (!prompt) {
-    return (
-      <div className="flex-1 flex items-center justify-center text-center p-8">
-        <div>
-          <FileCode className="h-12 w-12 text-muted-foreground/30 mx-auto" />
-          <p className="mt-4 text-sm text-muted-foreground">Prompt not found</p>
-        </div>
-      </div>
-    );
-  }
-
-  const latestVersion = prompt.versions[0];
-
-  return (
-    <div className="flex flex-col h-full">
-      {/* Row 1: Header - aligns with left panel header (h-[72px]) */}
-      <div className="flex items-center justify-between h-[72px] px-4 border-b bg-background">
-        <div>
-          <h2 className="text-lg font-semibold">{promptName}</h2>
-          <code className="text-xs text-muted-foreground mt-1 block">{prompt.slug}</code>
-        </div>
-        <Button size="sm" onClick={() => setIsCreateOpen(true)}>
-          <Plus className="mr-1.5 h-4 w-4" />
-          New Version
-        </Button>
-      </div>
-
-      {/* Row 2: Tabs - aligns with left panel search (h-[52px]) */}
-      <Tabs defaultValue="versions" className="flex-1 flex flex-col">
-        <div className="flex items-center h-[52px] px-4 border-b bg-background">
-          <TabsList className="h-9">
-            <TabsTrigger value="versions" className="h-8 gap-1.5 text-xs px-3">
-              <Layers className="h-3.5 w-3.5" />
-              Versions ({prompt.versions.length})
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="h-8 gap-1.5 text-xs px-3">
-              <BarChart3 className="h-3.5 w-3.5" />
-              Analytics
-            </TabsTrigger>
-          </TabsList>
-        </div>
-
-        {/* Row 3: Description/metadata - aligns with left panel filters */}
-        <div className="flex items-center h-[36px] px-4 border-b bg-muted/30">
-          {prompt.description ? (
-            <p className="text-xs text-muted-foreground truncate">
-              {prompt.description}
-            </p>
-          ) : (
-            <p className="text-xs text-muted-foreground/50">
-              No description
-            </p>
-          )}
-        </div>
-
-        <TabsContent value="versions" className="flex-1 mt-0 overflow-hidden">
-          <ScrollArea className="h-full">
-            <div className="p-4 space-y-3">
-              {prompt.versions.map((version) => (
-                <VersionCard
-                  key={version.id}
-                  id={version.id}
-                  version={version.version}
-                  type={version.type}
-                  content={version.content}
-                  labels={version.labels}
-                  createdAt={version.createdAt}
-                  onSetLabel={setLabel}
-                  isSettingLabel={isSettingLabel}
-                  onPlayground={handleOpenPlayground}
-                />
-              ))}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-
-        <TabsContent value="analytics" className="flex-1 mt-0 overflow-auto p-4">
-          <PromptAnalytics workspaceSlug={workspaceSlug} promptId={promptId} />
-        </TabsContent>
-      </Tabs>
-
-      {/* Create version dialog */}
-      {latestVersion && (
-        <CreateVersionDialog
-          open={isCreateOpen}
-          onOpenChange={setIsCreateOpen}
-          promptName={prompt.name}
-          currentVersion={latestVersion.version}
-          currentType={latestVersion.type}
-          currentContent={latestVersion.content}
-          onCreateVersion={createVersion}
-          isCreating={isCreatingVersion}
-        />
-      )}
-
-      {/* Playground dialog */}
-      <Dialog
-        open={!!playgroundVersionId}
-        onOpenChange={(open) => !open && handleClosePlayground()}
-      >
-        <DialogContent className="max-w-4xl h-[80vh]">
-          <DialogHeader>
-            <DialogTitle>Prompt Playground</DialogTitle>
-          </DialogHeader>
-          {playgroundVersion && (
-            <PromptPlayground
-              workspaceSlug={workspaceSlug}
-              promptId={promptId}
-              versionId={playgroundVersion.id}
-              promptName={prompt.name}
-              version={playgroundVersion.version}
-              type={playgroundVersion.type}
-              content={playgroundVersion.content}
-              config={playgroundVersion.config}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

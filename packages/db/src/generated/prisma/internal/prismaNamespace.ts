@@ -421,6 +421,8 @@ export const ModelName = {
   Prompt: 'Prompt',
   PromptVersion: 'PromptVersion',
   PromptLabel: 'PromptLabel',
+  PromptExperiment: 'PromptExperiment',
+  PromptExperimentVariant: 'PromptExperimentVariant',
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
@@ -444,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
+    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "promptExperiment" | "promptExperimentVariant" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3186,6 +3188,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PromptExperiment: {
+      payload: Prisma.$PromptExperimentPayload<ExtArgs>
+      fields: Prisma.PromptExperimentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromptExperimentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromptExperimentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        findFirst: {
+          args: Prisma.PromptExperimentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromptExperimentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        findMany: {
+          args: Prisma.PromptExperimentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>[]
+        }
+        create: {
+          args: Prisma.PromptExperimentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        createMany: {
+          args: Prisma.PromptExperimentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromptExperimentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>[]
+        }
+        delete: {
+          args: Prisma.PromptExperimentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        update: {
+          args: Prisma.PromptExperimentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromptExperimentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromptExperimentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromptExperimentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromptExperimentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentPayload>
+        }
+        aggregate: {
+          args: Prisma.PromptExperimentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromptExperiment>
+        }
+        groupBy: {
+          args: Prisma.PromptExperimentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptExperimentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromptExperimentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptExperimentCountAggregateOutputType> | number
+        }
+      }
+    }
+    PromptExperimentVariant: {
+      payload: Prisma.$PromptExperimentVariantPayload<ExtArgs>
+      fields: Prisma.PromptExperimentVariantFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromptExperimentVariantFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromptExperimentVariantFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        findFirst: {
+          args: Prisma.PromptExperimentVariantFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromptExperimentVariantFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        findMany: {
+          args: Prisma.PromptExperimentVariantFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>[]
+        }
+        create: {
+          args: Prisma.PromptExperimentVariantCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        createMany: {
+          args: Prisma.PromptExperimentVariantCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromptExperimentVariantCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>[]
+        }
+        delete: {
+          args: Prisma.PromptExperimentVariantDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        update: {
+          args: Prisma.PromptExperimentVariantUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromptExperimentVariantDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromptExperimentVariantUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromptExperimentVariantUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromptExperimentVariantUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromptExperimentVariantPayload>
+        }
+        aggregate: {
+          args: Prisma.PromptExperimentVariantAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromptExperimentVariant>
+        }
+        groupBy: {
+          args: Prisma.PromptExperimentVariantGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptExperimentVariantGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromptExperimentVariantCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromptExperimentVariantCountAggregateOutputType> | number
+        }
+      }
+    }
     AlertRCA: {
       payload: Prisma.$AlertRCAPayload<ExtArgs>
       fields: Prisma.AlertRCAFieldRefs
@@ -4397,6 +4547,48 @@ export const PromptLabelScalarFieldEnum = {
 export type PromptLabelScalarFieldEnum = (typeof PromptLabelScalarFieldEnum)[keyof typeof PromptLabelScalarFieldEnum]
 
 
+export const PromptExperimentScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  status: 'status',
+  allocationPct: 'allocationPct',
+  assignmentSeed: 'assignmentSeed',
+  assignmentKey: 'assignmentKey',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  metrics: 'metrics',
+  tags: 'tags',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  analysisStatus: 'analysisStatus',
+  analysisStartedAt: 'analysisStartedAt',
+  analysisCompletedAt: 'analysisCompletedAt',
+  analysisResult: 'analysisResult',
+  analysisError: 'analysisError',
+  winnerVariantId: 'winnerVariantId',
+  winnerConfidence: 'winnerConfidence'
+} as const
+
+export type PromptExperimentScalarFieldEnum = (typeof PromptExperimentScalarFieldEnum)[keyof typeof PromptExperimentScalarFieldEnum]
+
+
+export const PromptExperimentVariantScalarFieldEnum = {
+  id: 'id',
+  experimentId: 'experimentId',
+  name: 'name',
+  weight: 'weight',
+  promptVersionId: 'promptVersionId',
+  isControl: 'isControl',
+  createdAt: 'createdAt'
+} as const
+
+export type PromptExperimentVariantScalarFieldEnum = (typeof PromptExperimentVariantScalarFieldEnum)[keyof typeof PromptExperimentVariantScalarFieldEnum]
+
+
 export const AlertRCAScalarFieldEnum = {
   id: 'id',
   alertId: 'alertId',
@@ -4492,6 +4684,12 @@ export const SpanScalarFieldEnum = {
   genAiProvider: 'genAiProvider',
   spanType: 'spanType',
   searchText: 'searchText',
+  promptExperimentId: 'promptExperimentId',
+  promptExperimentSlug: 'promptExperimentSlug',
+  promptVariantId: 'promptVariantId',
+  promptVariantName: 'promptVariantName',
+  assignmentKeyHash: 'assignmentKeyHash',
+  promptVersionId: 'promptVersionId',
   createdAt: 'createdAt'
 } as const
 
@@ -5063,6 +5261,8 @@ export type GlobalOmitConfig = {
   prompt?: Prisma.PromptOmit
   promptVersion?: Prisma.PromptVersionOmit
   promptLabel?: Prisma.PromptLabelOmit
+  promptExperiment?: Prisma.PromptExperimentOmit
+  promptExperimentVariant?: Prisma.PromptExperimentVariantOmit
   alertRCA?: Prisma.AlertRCAOmit
   trace?: Prisma.TraceOmit
   span?: Prisma.SpanOmit

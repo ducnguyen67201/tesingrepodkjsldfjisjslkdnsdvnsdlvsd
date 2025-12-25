@@ -187,6 +187,12 @@ export const UpdatePromptInputSchema = z.object({
   workspaceSlug: z.string().min(1),
   promptId: z.string().min(1),
   name: z.string().min(1).max(100).optional(),
+  slug: z
+    .string()
+    .min(1)
+    .max(50)
+    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens")
+    .optional(),
   description: z.string().max(500).optional().nullable(),
   tags: z.array(z.string()).optional(),
 });
@@ -217,6 +223,16 @@ export const SetLabelInputSchema = z.object({
   label: PromptLabelNameSchema,
 });
 export type SetLabelInput = z.infer<typeof SetLabelInputSchema>;
+
+/**
+ * Remove label input
+ */
+export const RemoveLabelInputSchema = z.object({
+  workspaceSlug: z.string().min(1),
+  promptId: z.string().min(1),
+  label: PromptLabelNameSchema,
+});
+export type RemoveLabelInput = z.infer<typeof RemoveLabelInputSchema>;
 
 /**
  * Archive prompt input
