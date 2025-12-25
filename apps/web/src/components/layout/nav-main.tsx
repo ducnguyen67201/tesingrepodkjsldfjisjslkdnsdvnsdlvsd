@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, FolderKanban, Activity, FileCode, BookOpen, Settings } from "lucide-react";
+import { LayoutDashboard, FolderKanban, FileCode, BookOpen, Settings } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -28,13 +28,12 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Overview",
     items: [
       { title: "Dashboard", path: "", icon: LayoutDashboard },
-      { title: "Projects", path: "/projects", icon: FolderKanban },
     ],
   },
   {
     label: "Observability",
     items: [
-      { title: "Traces", path: "/traces", icon: Activity },
+      { title: "Projects", path: "/projects", icon: FolderKanban },
     ],
   },
   {

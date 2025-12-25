@@ -91,11 +91,36 @@ export interface SpanWithType {
   events: unknown;
   libraryName: string | null;
   libraryVersion: string | null;
+  // LLM fields
   model: string | null;
+  modelParameters: unknown;
+  input: unknown;
+  output: unknown;
   promptTokens: number | null;
   completionTokens: number | null;
   totalTokens: number | null;
+  inputCost: number | null;
+  outputCost: number | null;
   totalCost: number | null;
+  genAiProvider: string | null;
+  genAiOperation: string | null;
+  // Error fields
+  exceptionMessage: string | null;
+  exceptionType: string | null;
+  // HTTP fields
+  httpMethod: string | null;
+  httpUrl: string | null;
+  httpStatusCode: number | null;
+  httpRoute: string | null;
+  // DB fields
+  dbSystem: string | null;
+  dbName: string | null;
+  dbStatement: string | null;
+  dbOperation: string | null;
+  // A/B Testing fields
+  promptVariantId: string | null;
+  promptVersionId: string | null;
+  promptExperimentId: string | null;
   /** Inferred span type */
   type: SpanType;
 }
@@ -440,11 +465,36 @@ export const tracesRouter = createRouter({
               events: true,
               libraryName: true,
               libraryVersion: true,
+              // LLM fields
               model: true,
+              modelParameters: true,
+              input: true,
+              output: true,
               promptTokens: true,
               completionTokens: true,
               totalTokens: true,
+              inputCost: true,
+              outputCost: true,
               totalCost: true,
+              genAiProvider: true,
+              genAiOperation: true,
+              // Error fields
+              exceptionMessage: true,
+              exceptionType: true,
+              // HTTP fields
+              httpMethod: true,
+              httpUrl: true,
+              httpStatusCode: true,
+              httpRoute: true,
+              // DB fields
+              dbSystem: true,
+              dbName: true,
+              dbStatement: true,
+              dbOperation: true,
+              // A/B Testing fields
+              promptVariantId: true,
+              promptVersionId: true,
+              promptExperimentId: true,
             },
           },
         },
@@ -470,11 +520,36 @@ export const tracesRouter = createRouter({
         events: span.events,
         libraryName: span.libraryName,
         libraryVersion: span.libraryVersion,
+        // LLM fields
         model: span.model,
+        modelParameters: span.modelParameters,
+        input: span.input,
+        output: span.output,
         promptTokens: span.promptTokens,
         completionTokens: span.completionTokens,
         totalTokens: span.totalTokens,
+        inputCost: span.inputCost?.toNumber() ?? null,
+        outputCost: span.outputCost?.toNumber() ?? null,
         totalCost: span.totalCost?.toNumber() ?? null,
+        genAiProvider: span.genAiProvider,
+        genAiOperation: span.genAiOperation,
+        // Error fields
+        exceptionMessage: span.exceptionMessage,
+        exceptionType: span.exceptionType,
+        // HTTP fields
+        httpMethod: span.httpMethod,
+        httpUrl: span.httpUrl,
+        httpStatusCode: span.httpStatusCode,
+        httpRoute: span.httpRoute,
+        // DB fields
+        dbSystem: span.dbSystem,
+        dbName: span.dbName,
+        dbStatement: span.dbStatement,
+        dbOperation: span.dbOperation,
+        // A/B Testing fields
+        promptVariantId: span.promptVariantId,
+        promptVersionId: span.promptVersionId,
+        promptExperimentId: span.promptExperimentId,
         type: inferSpanType(span),
       }));
 

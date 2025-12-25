@@ -245,6 +245,92 @@
       </div>
     </div>
 
+    <!-- Prompt Testing Section -->
+    <div class="card">
+      <h2 class="card-title">Prompt Testing</h2>
+      <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+        Test prompt management and A/B experiments. Requires COGNOBSERVE_API_KEY to be configured.
+      </p>
+
+      <!-- Mode Toggle -->
+      <div style="margin-bottom: 1rem;">
+        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <input type="checkbox" id="experiment-mode" onchange="toggleExperimentMode()">
+          <span>Experiment Mode (A/B Testing)</span>
+        </label>
+      </div>
+
+      <!-- Single Prompt Form -->
+      <div id="single-prompt-form">
+        <div style="display: grid; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Prompt Slug</label>
+            <input type="text" id="prompt-slug" placeholder="e.g., movie-critic"
+              style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Label</label>
+            <select id="prompt-label" style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text);">
+              <option value="">Default (production)</option>
+              <option value="production">Production</option>
+              <option value="staging">Staging</option>
+              <option value="latest">Latest</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Variables (JSON)</label>
+            <textarea id="prompt-variables" rows="2" placeholder='{"movie": "Dune 2"}'
+              style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: monospace; resize: vertical;"></textarea>
+          </div>
+        </div>
+        <button onclick="testSinglePrompt()" style="width: 100%;">
+          <span class="icon">📝</span> Test Prompt
+        </button>
+      </div>
+
+      <!-- Experiment Form (hidden by default) -->
+      <div id="experiment-form" style="display: none;">
+        <div style="display: grid; gap: 0.75rem; margin-bottom: 1rem;">
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Experiment Slug</label>
+            <input type="text" id="experiment-slug" placeholder="e.g., checkout-copy-v2"
+              style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Assignment Key (userId, sessionId, etc.)</label>
+            <input type="text" id="assignment-key" placeholder="e.g., user-123"
+              style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text);">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Force Variant (optional)</label>
+            <select id="force-variant" style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text);">
+              <option value="">Auto-assign</option>
+              <option value="A">Force Variant A</option>
+              <option value="B">Force Variant B</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.25rem;">Variables (JSON)</label>
+            <textarea id="experiment-variables" rows="2" placeholder='{"movie": "Dune 2"}'
+              style="width: 100%; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: monospace; resize: vertical;"></textarea>
+          </div>
+        </div>
+        <button onclick="testExperiment()" style="width: 100%;">
+          <span class="icon">🧪</span> Test Experiment
+        </button>
+      </div>
+
+      <div class="result-section">
+        <div class="result-header">
+          <span class="result-label">Prompt Test Response</span>
+          <span id="prompt-trace-id" class="trace-id" style="display: none;"></span>
+        </div>
+        <div id="prompt-result" class="result-box">
+          Configure and run a prompt test...
+        </div>
+      </div>
+    </div>
+
     <div class="status-bar">
       <div class="status-item">
         <span id="api-status" class="status-dot"></span>
@@ -319,6 +405,151 @@
         resultBox.className = 'result-box error';
         resultBox.textContent = `Error: ${error.message}`;
         traceStatus.className = 'status-dot error';
+      }
+    }
+
+    // Toggle between single prompt and experiment mode
+    function toggleExperimentMode() {
+      const isExperiment = document.getElementById('experiment-mode').checked;
+      document.getElementById('single-prompt-form').style.display = isExperiment ? 'none' : 'block';
+      document.getElementById('experiment-form').style.display = isExperiment ? 'block' : 'none';
+    }
+
+    // Test single prompt
+    async function testSinglePrompt() {
+      const resultBox = document.getElementById('prompt-result');
+      const traceIdSpan = document.getElementById('prompt-trace-id');
+
+      const promptSlug = document.getElementById('prompt-slug').value.trim();
+      const label = document.getElementById('prompt-label').value;
+      const variablesText = document.getElementById('prompt-variables').value.trim();
+
+      if (!promptSlug) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = 'Error: Prompt slug is required';
+        return;
+      }
+
+      // Parse variables
+      let variables = {};
+      if (variablesText) {
+        try {
+          variables = JSON.parse(variablesText);
+        } catch (e) {
+          resultBox.className = 'result-box error';
+          resultBox.textContent = 'Error: Invalid JSON in variables field';
+          return;
+        }
+      }
+
+      // Show loading state
+      resultBox.className = 'result-box loading';
+      resultBox.textContent = 'Fetching prompt and running mock LLM...';
+      traceIdSpan.style.display = 'none';
+
+      try {
+        const body = {
+          promptSlug,
+          variables,
+        };
+        if (label) body.label = label;
+
+        const res = await fetch('/api/demo/prompt-test/single', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          resultBox.className = 'result-box';
+        } else {
+          resultBox.className = 'result-box error';
+        }
+
+        resultBox.textContent = JSON.stringify(data, null, 2);
+
+        if (data.traceId) {
+          traceIdSpan.textContent = `Trace: ${data.traceId}`;
+          traceIdSpan.style.display = 'inline-block';
+        }
+      } catch (error) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    // Test A/B experiment
+    async function testExperiment() {
+      const resultBox = document.getElementById('prompt-result');
+      const traceIdSpan = document.getElementById('prompt-trace-id');
+
+      const experimentSlug = document.getElementById('experiment-slug').value.trim();
+      const assignmentKey = document.getElementById('assignment-key').value.trim();
+      const forceVariant = document.getElementById('force-variant').value;
+      const variablesText = document.getElementById('experiment-variables').value.trim();
+
+      if (!experimentSlug) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = 'Error: Experiment slug is required';
+        return;
+      }
+
+      if (!assignmentKey) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = 'Error: Assignment key is required';
+        return;
+      }
+
+      // Parse variables
+      let variables = {};
+      if (variablesText) {
+        try {
+          variables = JSON.parse(variablesText);
+        } catch (e) {
+          resultBox.className = 'result-box error';
+          resultBox.textContent = 'Error: Invalid JSON in variables field';
+          return;
+        }
+      }
+
+      // Show loading state
+      resultBox.className = 'result-box loading';
+      resultBox.textContent = 'Resolving experiment and running mock LLM...';
+      traceIdSpan.style.display = 'none';
+
+      try {
+        const body = {
+          experimentSlug,
+          assignmentKey,
+          variables,
+        };
+        if (forceVariant) body.forceVariant = forceVariant;
+
+        const res = await fetch('/api/demo/prompt-test/experiment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          resultBox.className = 'result-box';
+        } else {
+          resultBox.className = 'result-box error';
+        }
+
+        resultBox.textContent = JSON.stringify(data, null, 2);
+
+        if (data.traceId) {
+          traceIdSpan.textContent = `Trace: ${data.traceId}`;
+          traceIdSpan.style.display = 'inline-block';
+        }
+      } catch (error) {
+        resultBox.className = 'result-box error';
+        resultBox.textContent = `Error: ${error.message}`;
       }
     }
   </script>

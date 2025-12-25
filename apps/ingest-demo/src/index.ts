@@ -19,6 +19,7 @@ import { weatherRouter } from "./routes/weather.js";
 import { quotesRouter } from "./routes/quotes.js";
 import { jokesRouter } from "./routes/jokes.js";
 import { llmRouter } from "./routes/llm-mock.js";
+import { promptTestRouter } from "./routes/prompt-test.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,6 +44,7 @@ app.use("/api/demo", weatherRouter);
 app.use("/api/demo", quotesRouter);
 app.use("/api/demo", jokesRouter);
 app.use("/api/demo", llmRouter);
+app.use("/api/demo", promptTestRouter);
 
 // Root route redirects to static UI
 app.get("/", (_req, res) => {
@@ -63,10 +65,12 @@ app.listen(port, () => {
   Health check:          http://localhost:${port}/health
 
   API Endpoints:
-    POST /api/demo/weather   - Weather data (wttr.in)
-    POST /api/demo/quotes    - Random quotes (zenquotes.io)
-    POST /api/demo/jokes     - Dad jokes (icanhazdadjoke.com)
-    POST /api/demo/llm       - Mock LLM response
+    POST /api/demo/weather              - Weather data (wttr.in)
+    POST /api/demo/quotes               - Random quotes (zenquotes.io)
+    POST /api/demo/jokes                - Dad jokes (icanhazdadjoke.com)
+    POST /api/demo/llm                  - Mock LLM response
+    POST /api/demo/prompt-test/single   - Test prompt fetch + mock LLM
+    POST /api/demo/prompt-test/experiment - Test A/B experiment + mock LLM
 
   Traces exporting to:   ${config.cognobserve.tracesUrl}
   `);
