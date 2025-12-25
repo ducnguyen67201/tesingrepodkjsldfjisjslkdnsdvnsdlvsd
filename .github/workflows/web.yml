@@ -53,44 +53,37 @@ jobs:
       - name: Run migrations
         run: pnpm --filter @cognobserve/db db:migrate:deploy
 
-      # Schema Drift Detection using Shadow Database
-      - name: Check migration drift (migrations vs schema)
+      # Schema Drift Detection
+      # Checks if migrations match the Prisma schema (catches missing migrations)
+      # --exit-code returns: 0 = no diff, 1 = error, 2 = diff exists
+      - name: Check schema drift (migrations vs schema)
         run: |
           echo "Checking if migrations match the Prisma schema..."
-          cd packages/db && pnpm exec prisma migrate diff \
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
             --from-migrations ./prisma/schema/migrations \
             --to-schema ./prisma/schema \
-            --exit-code
-        continue-on-error: false
+            --exit-code; then
+            echo ""
+            echo "::error::Schema drift detected! Run 'pnpm db:migrate --name <descriptive_name>' locally to create the migration."
+            exit 1
+          fi
+          echo "✓ Migrations match schema"
 
+      # Checks if database matches migrations (catches manual DB changes)
       - name: Check database drift (database vs migrations)
         run: |
           echo "Checking if database state matches applied migrations..."
-          cd packages/db && pnpm exec prisma migrate diff \
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
             --from-config-datasource \
             --to-migrations ./prisma/schema/migrations \
-            --exit-code
-        continue-on-error: false
-
-      - name: Validate no pending migrations needed
-        run: |
-          echo "Checking if any new migrations are needed..."
-          cd packages/db
-          # Use shadow database to simulate migration creation
-          # If this produces output, a migration is needed
-          OUTPUT=$(pnpm exec prisma migrate diff \
-            --from-migrations ./prisma/schema/migrations \
-            --to-schema ./prisma/schema \
-            --script 2>&1) || true
-
-          if [ -n "$OUTPUT" ] && [ "$OUTPUT" != "-- This is an empty migration." ]; then
-            echo "::error::Schema drift detected! The following migration is needed:"
-            echo "$OUTPUT"
+            --exit-code; then
             echo ""
-            echo "Run 'pnpm db:migrate --name <descriptive_name>' to create the migration."
+            echo "::error::Database drift detected! The database state doesn't match the migrations."
             exit 1
           fi
-          echo "✓ No pending migrations needed"
+          echo "✓ Database matches migrations"
 
       - name: Type check
         run: pnpm --filter @cognobserve/web --filter @cognobserve/api typecheck
