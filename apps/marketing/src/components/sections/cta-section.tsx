@@ -1,22 +1,13 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { COLORS } from "@/lib/colors";
 
 /**
- * Final call-to-action section with email signup.
+ * Final call-to-action section with demo booking.
  */
 export function CtaSection() {
-  const [email, setEmail] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement email signup
-    console.log("Email submitted:", email);
-  };
-
   return (
-    <section className="py-32 px-6 text-center relative overflow-hidden">
+    <section className="py-32 px-6 sm:px-8 lg:px-12 text-center relative overflow-hidden">
       {/* Background Gradient */}
       <div
         className="absolute inset-0 -z-10"
@@ -40,34 +31,23 @@ export function CtaSection() {
         </h2>
 
         <p className="text-lg mb-10" style={{ color: COLORS.ink.secondary }}>
-          Join thousands of engineers reducing MTTR with AI-driven
-          observability.
+          See how CognObserve can transform your observability stack.
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        <Link
+          href="/demo"
+          className="inline-flex items-center justify-center gap-2 h-14 px-8 rounded-xl font-semibold text-lg transition-all duration-200 hover:scale-105 hover:shadow-lg"
+          style={{
+            background: `linear-gradient(135deg, ${COLORS.accent.yellow} 0%, ${COLORS.accent.yellowStrong} 100%)`,
+            color: COLORS.ink.primary,
+          }}
         >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="eng@company.com"
-            className="flex-1 h-12 rounded-lg px-4 shadow-sm transition-all focus:outline-none"
-            style={{
-              backgroundColor: COLORS.bg.white,
-              border: `1px solid ${COLORS.border.light}`,
-              color: COLORS.ink.primary,
-            }}
-            required
-          />
-          <button type="submit" className="h-12 px-6 btn-primary rounded-lg">
-            Get Started
-          </button>
-        </form>
+          Book a Demo
+          <ArrowRight className="w-5 h-5" />
+        </Link>
 
-        <p className="mt-4 text-xs" style={{ color: COLORS.ink.muted }}>
-          No credit card required for free tier.
+        <p className="mt-6 text-sm" style={{ color: COLORS.ink.muted }}>
+          30-minute call · No commitment required
         </p>
       </div>
     </section>

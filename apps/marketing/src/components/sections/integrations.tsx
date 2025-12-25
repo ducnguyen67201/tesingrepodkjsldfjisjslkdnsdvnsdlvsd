@@ -28,10 +28,10 @@ export function Integrations() {
   return (
     <section
       id="integrations"
-      className="py-24 px-6 relative"
+      className="py-24 px-6 sm:px-8 lg:px-12 relative"
       style={{ backgroundColor: COLORS.bg.primary }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <h3
           className="text-center text-xs font-bold tracking-widest uppercase mb-16"

@@ -8,8 +8,11 @@ import { COLORS } from "@/lib/colors";
 export function AiInsightPanel() {
   return (
     <div
-      className="absolute -right-4 top-12 w-64 glass-panel-high p-4 z-20 transform rotate-1 hidden md:block ai-active"
-      style={{ borderLeft: `4px solid ${COLORS.accent.yellow}` }}
+      className="absolute -right-8 -top-8 w-64 glass-panel-high p-4 z-20 transform rotate-1 hidden md:block ai-active"
+      style={{
+        border: `2px solid ${COLORS.accent.yellow}`,
+        boxShadow: `0 0 20px ${COLORS.glow.yellow}, 0 10px 40px rgba(0,0,0,0.1)`,
+      }}
     >
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
