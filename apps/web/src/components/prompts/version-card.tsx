@@ -29,14 +29,15 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState, useCallback } from "react";
+import { type PromptTemplate, type PromptVariable } from "@cognobserve/api/schemas";
+import { PromptVariableInjector } from "./prompt-variable-injector";
 
 interface VersionCardProps {
   id: string;
   version: number;
   type: "text" | "chat";
-  content:
-    | { type: "text"; text: string }
-    | { type: "chat"; messages: Array<{ role: string; content: string; name?: string }> };
+  content: PromptTemplate;
+  variables?: PromptVariable[] | null;
   labels: string[];
   createdAt: Date;
   onSetLabel: (versionId: string, label: "production" | "staging" | "latest") => Promise<unknown>;
@@ -51,6 +52,7 @@ export function VersionCard({
   version,
   type,
   content,
+  variables,
   labels,
   createdAt,
   onSetLabel,
@@ -243,7 +245,10 @@ export function VersionCard({
 
         {/* Expanded content */}
         <CollapsibleContent className="mt-4">
-          {renderFullContent()}
+          <div className="space-y-4">
+            {renderFullContent()}
+            <PromptVariableInjector content={content} variables={variables} />
+          </div>
         </CollapsibleContent>
       </div>
     </Collapsible>

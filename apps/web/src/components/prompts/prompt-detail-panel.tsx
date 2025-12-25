@@ -62,6 +62,35 @@ export function PromptDetailPanel({
     (v) => v.id === playgroundVersionId
   );
 
+  type PromptVersion = NonNullable<typeof prompt>["versions"][number];
+
+  const renderVersionCard = useCallback(
+    (version: PromptVersion) => (
+      <VersionCard
+        key={version.id}
+        id={version.id}
+        version={version.version}
+        type={version.type}
+        content={version.content}
+        variables={version.variables}
+        labels={version.labels}
+        createdAt={version.createdAt}
+        onSetLabel={setLabel}
+        onRemoveLabel={removeLabel}
+        isSettingLabel={isSettingLabel}
+        isRemovingLabel={isRemovingLabel}
+        onPlayground={handleOpenPlayground}
+      />
+    ),
+    [
+      handleOpenPlayground,
+      isRemovingLabel,
+      isSettingLabel,
+      removeLabel,
+      setLabel,
+    ]
+  );
+
   if (isLoading) {
     return (
       <div className="p-4 space-y-4">
@@ -131,22 +160,7 @@ export function PromptDetailPanel({
         <TabsContent value="versions" className="flex-1 mt-0 overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-4 space-y-3">
-              {prompt.versions.map((version) => (
-                <VersionCard
-                  key={version.id}
-                  id={version.id}
-                  version={version.version}
-                  type={version.type}
-                  content={version.content}
-                  labels={version.labels}
-                  createdAt={version.createdAt}
-                  onSetLabel={setLabel}
-                  onRemoveLabel={removeLabel}
-                  isSettingLabel={isSettingLabel}
-                  isRemovingLabel={isRemovingLabel}
-                  onPlayground={handleOpenPlayground}
-                />
-              ))}
+              {prompt.versions.map(renderVersionCard)}
             </div>
           </ScrollArea>
         </TabsContent>
