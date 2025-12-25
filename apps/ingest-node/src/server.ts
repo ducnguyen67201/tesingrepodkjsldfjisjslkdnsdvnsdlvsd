@@ -5,6 +5,7 @@ import { config } from "./config/env.js";
 import { logger } from "./lib/logger.js";
 import { healthRouter } from "./routes/health.js";
 import { tracesRouter } from "./routes/traces.js";
+import { logsRouter } from "./routes/logs.js";
 import { metricsRouter } from "./routes/metrics.js";
 import { promptsRouter } from "./routes/prompts.js";
 import { promptExperimentsRouter } from "./routes/prompt-experiments.js";
@@ -33,10 +34,11 @@ export function createServer(): Express {
   // Compression for responses
   app.use(compression());
 
-  // Routes - traces route handles its own body parsing for gzip support
+  // Routes - traces and logs routes handle their own body parsing for gzip support
   app.use("/", healthRouter);
   app.use("/", metricsRouter);
   app.use("/v1/traces", tracesRouter);
+  app.use("/v1/logs", logsRouter);
 
   // Body parsing for JSON routes (prompts, etc.)
   app.use(

@@ -32,6 +32,9 @@ model Project {
   // Knowledge Base
   knowledgeRules KnowledgeRule[]
 
+  // Log Records
+  logRecords     LogRecord[]
+
   @@index([workspaceId])
 }
 

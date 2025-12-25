@@ -203,3 +203,54 @@ model Span {
   @@index([promptVersionId])
   @@index([promptVariantId])
 }
+
+// ============================================================
+// OTLP Log Record Model
+// ============================================================
+
+model LogRecord {
+  id                     String   @id @default(cuid())
+  projectId              String
+  project                Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Resource attributes (promoted for filtering)
+  serviceName            String?
+  serviceVersion         String?
+  environment            String?
+  resource               Json?
+
+  // Instrumentation scope
+  scopeName              String?
+  scopeVersion           String?
+
+  // Timing
+  timestamp              DateTime
+  observedTime           DateTime?
+
+  // Severity (OTLP SeverityNumber: 1-24)
+  severityNumber         Int?
+  severityText           String?
+
+  // Body + attributes
+  body                   Json?
+  bodyText               String?   @db.Text
+  attributes             Json?
+  droppedAttributesCount Int?
+
+  // Trace correlation (optional)
+  traceId                String?
+  spanId                 String?
+  flags                  Int?
+
+  // Ingest metadata
+  ingestSource           String?   // "otlp", "collector.filelog", "sdk"
+
+  // Audit
+  createdAt              DateTime  @default(now())
+
+  @@index([projectId, timestamp(sort: Desc)])
+  @@index([projectId, severityNumber])
+  @@index([projectId, serviceName])
+  @@index([projectId, traceId])
+  @@index([timestamp])
+}

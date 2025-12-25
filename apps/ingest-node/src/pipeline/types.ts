@@ -1,82 +1,46 @@
 /**
- * Chain of Responsibility Pipeline Types
+ * Traces Pipeline Types
  *
- * Defines the context and handler interfaces for the OTLP ingestion pipeline.
- * Each handler processes one step and passes to the next handler in the chain.
+ * Extends the base pipeline types for OTLP traces ingestion.
  */
-import type { Request, Response } from "express";
 import type {
   OtlpExportRequest,
   NormalizedTrace,
   NormalizedSpan,
 } from "@cognobserve/api/schemas";
+import type {
+  BasePipelineContext,
+  PipelineError,
+  HandlerResult,
+  PipelineHandler as GenericPipelineHandler,
+} from "./shared/types.js";
+
+// Re-export shared types
+export type { PipelineError, HandlerResult };
 
 /**
- * Pipeline context that flows through all handlers
- * Each handler can read/write to this context
+ * Traces pipeline context that flows through all handlers
  */
-export interface PipelineContext {
-  // Express request/response
-  req: Request;
-  res: Response;
-
-  // Raw request data
-  rawBody: Buffer;
-  contentType: string;
-  contentEncoding: string;
-
-  // After parsing (Phase 4)
+export interface PipelineContext extends BasePipelineContext {
+  // After parsing
   parsedRequest?: OtlpExportRequest;
 
-  // After normalization (Phase 4)
+  // After normalization
   normalizedTraces?: NormalizedTrace[];
   normalizedSpans?: NormalizedSpan[];
 
-  // After validation (Phase 5)
+  // After validation
   validationPassed?: boolean;
 
-  // After auth (Phase 6)
-  projectId?: string;
-  apiKeyId?: string;
-
-  // After persistence (Phase 7)
+  // After persistence
   persistedTraceIds?: string[];
   persistedSpanCount?: number;
-
-  // Error tracking
-  error?: PipelineError;
 }
 
 /**
- * Pipeline error with structured information
+ * Traces pipeline handler interface
  */
-export interface PipelineError {
-  code: string;
-  message: string;
-  httpStatus: number;
-  details?: Record<string, unknown>;
-}
-
-/**
- * Result of handler execution
- */
-export interface HandlerResult {
-  /** Whether to continue to the next handler */
-  continue: boolean;
-  /** Error if handler failed */
-  error?: PipelineError;
-}
-
-/**
- * Base handler interface for Chain of Responsibility
- */
-export interface PipelineHandler {
-  /** Handler name for logging */
-  readonly name: string;
-
-  /** Process the context and optionally pass to next handler */
-  handle(ctx: PipelineContext): Promise<HandlerResult>;
-}
+export type PipelineHandler = GenericPipelineHandler<PipelineContext>;
 
 /**
  * Pipeline configuration

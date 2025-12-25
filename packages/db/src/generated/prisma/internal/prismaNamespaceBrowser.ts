@@ -93,6 +93,7 @@ export const ModelName = {
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
+  LogRecord: 'LogRecord',
   TrackedUser: 'TrackedUser',
   TraceSession: 'TraceSession',
   Workspace: 'Workspace',
@@ -843,6 +844,33 @@ export const SpanScalarFieldEnum = {
 } as const
 
 export type SpanScalarFieldEnum = (typeof SpanScalarFieldEnum)[keyof typeof SpanScalarFieldEnum]
+
+
+export const LogRecordScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  serviceName: 'serviceName',
+  serviceVersion: 'serviceVersion',
+  environment: 'environment',
+  resource: 'resource',
+  scopeName: 'scopeName',
+  scopeVersion: 'scopeVersion',
+  timestamp: 'timestamp',
+  observedTime: 'observedTime',
+  severityNumber: 'severityNumber',
+  severityText: 'severityText',
+  body: 'body',
+  bodyText: 'bodyText',
+  attributes: 'attributes',
+  droppedAttributesCount: 'droppedAttributesCount',
+  traceId: 'traceId',
+  spanId: 'spanId',
+  flags: 'flags',
+  ingestSource: 'ingestSource',
+  createdAt: 'createdAt'
+} as const
+
+export type LogRecordScalarFieldEnum = (typeof LogRecordScalarFieldEnum)[keyof typeof LogRecordScalarFieldEnum]
 
 
 export const TrackedUserScalarFieldEnum = {
