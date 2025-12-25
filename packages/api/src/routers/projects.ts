@@ -11,6 +11,9 @@ export interface ProjectListItem {
   name: string;
   createdAt: string;
   traceCount: number;
+  spanCount: number;
+  logCount: number;
+  lastActivityAt: string | null;
 }
 
 export interface ProjectDetail {
@@ -40,16 +43,36 @@ export const projectsRouter = createRouter({
           name: true,
           createdAt: true,
           _count: {
-            select: { traces: true },
+            select: { traces: true, logRecords: true },
+          },
+          traces: {
+            select: {
+              startTime: true,
+              spanCount: true,
+            },
+            orderBy: { startTime: "desc" },
+            take: 1,
           },
         },
       });
+
+      // Calculate total span counts per project (sum of trace.spanCount)
+      const projectIds = projects.map((p) => p.id);
+      const spanCounts = await prisma.trace.groupBy({
+        by: ["projectId"],
+        where: { projectId: { in: projectIds } },
+        _sum: { spanCount: true },
+      });
+      const spanCountMap = new Map(spanCounts.map((s) => [s.projectId, s._sum.spanCount ?? 0]));
 
       return projects.map((p) => ({
         id: p.id,
         name: p.name,
         createdAt: p.createdAt.toISOString(),
         traceCount: p._count.traces,
+        spanCount: spanCountMap.get(p.id) ?? 0,
+        logCount: p._count.logRecords,
+        lastActivityAt: p.traces[0]?.startTime?.toISOString() ?? null,
       }));
     }),
 
@@ -125,6 +148,9 @@ export const projectsRouter = createRouter({
         name: project.name,
         createdAt: project.createdAt.toISOString(),
         traceCount: 0,
+        spanCount: 0,
+        logCount: 0,
+        lastActivityAt: null,
       };
     }),
 });

@@ -57,6 +57,7 @@ export type {
   WorkspaceMemberItem,
 } from "./routers/workspaces";
 export type { ProjectListItem, ProjectDetail } from "./routers/projects";
+export type { LogListItem, LogDetail } from "./routers/logs";
 // NOTE: TraceListItem, TraceDetail, SpanItem, SpanDetail removed - will be reworked for OTLP-first design
 // NOTE: ProjectAnalytics, WorkspaceAnalytics, etc. removed - will be reworked for OTLP-first design
 export type { SessionWithStats } from "./schemas/sessions";

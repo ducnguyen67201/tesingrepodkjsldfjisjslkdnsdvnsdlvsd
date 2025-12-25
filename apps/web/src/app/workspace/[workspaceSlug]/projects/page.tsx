@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { Plus, FolderKanban } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, FolderKanban, Activity, ScrollText, ChevronDown, Clock, Layers } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -11,6 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -19,25 +25,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
+import { cn } from "@/lib/utils";
 import type { ProjectListItem } from "@cognobserve/api/client";
 
 export default function WorkspaceProjectsPage() {
+  const router = useRouter();
   const { workspaceSlug, workspaceUrl } = useWorkspaceUrl();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
+  // All projects expanded by default
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  const [initialized, setInitialized] = useState(false);
 
   const utils = trpc.useUtils();
 
@@ -45,6 +48,12 @@ export default function WorkspaceProjectsPage() {
     { workspaceSlug: workspaceSlug ?? "" },
     { enabled: !!workspaceSlug }
   );
+
+  // Auto-expand all projects on first load
+  if (projects && !initialized) {
+    setExpandedProjects(new Set(projects.map((p) => p.id)));
+    setInitialized(true);
+  }
 
   const createProject = trpc.projects.create.useMutation({
     onSuccess: () => {
@@ -74,46 +83,152 @@ export default function WorkspaceProjectsPage() {
     if (!open) setNewProjectName("");
   }, []);
 
-  const renderProjectRow = (project: ProjectListItem) => (
-    <TableRow
-      key={project.id}
-      className="cursor-pointer hover:bg-muted/50"
-      onClick={() =>
-        (window.location.href = workspaceUrl(`/projects/${project.id}`))
-      }
-    >
-      <TableCell>
-        <div className="flex items-center gap-3">
-          <div className="rounded-md bg-primary/10 p-2">
-            <FolderKanban className="h-4 w-4 text-primary" />
-          </div>
-          <span className="font-medium">{project.name}</span>
-        </div>
-      </TableCell>
-      <TableCell className="text-muted-foreground">
-        {project.traceCount} {project.traceCount === 1 ? "trace" : "traces"}
-      </TableCell>
-      <TableCell className="text-muted-foreground">
-        {new Date(project.createdAt).toLocaleDateString()}
-      </TableCell>
-    </TableRow>
+  const handleNavigate = useCallback(
+    (projectId: string, tab?: string) => {
+      const url = tab
+        ? workspaceUrl(`/projects/${projectId}?tab=${tab}`)
+        : workspaceUrl(`/projects/${projectId}`);
+      router.push(url);
+    },
+    [router, workspaceUrl]
   );
 
-  const renderSkeletonRow = (index: number) => (
-    <TableRow key={index}>
-      <TableCell>
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-8 w-8 rounded-md" />
-          <Skeleton className="h-4 w-32" />
+  const toggleProject = useCallback((projectId: string) => {
+    setExpandedProjects((prev) => {
+      const next = new Set(prev);
+      if (next.has(projectId)) {
+        next.delete(projectId);
+      } else {
+        next.add(projectId);
+      }
+      return next;
+    });
+  }, []);
+
+  const formatRelativeTime = (dateStr: string | null) => {
+    if (!dateStr) return "No activity";
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  const renderProjectCard = (project: ProjectListItem) => {
+    const isExpanded = expandedProjects.has(project.id);
+
+    return (
+      <Collapsible
+        key={project.id}
+        open={isExpanded}
+        onOpenChange={() => toggleProject(project.id)}
+      >
+        <div className="border-b last:border-b-0">
+          {/* Main Row - 2 Lines */}
+          <CollapsibleTrigger asChild>
+            <div className="flex items-start gap-4 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors">
+              <ChevronDown
+                className={cn(
+                  "h-4 w-4 text-muted-foreground transition-transform mt-1",
+                  !isExpanded && "-rotate-90"
+                )}
+              />
+              <div className="rounded-md bg-primary/10 p-2">
+                <FolderKanban className="h-4 w-4 text-primary" />
+              </div>
+              {/* Left side - Name and metadata */}
+              <div className="flex-1 min-w-0">
+                <div className="font-medium">{project.name}</div>
+                <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Activity className="h-3 w-3" />
+                    {project.traceCount.toLocaleString()} traces
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Layers className="h-3 w-3" />
+                    {project.spanCount.toLocaleString()} spans
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <ScrollText className="h-3 w-3" />
+                    {project.logCount.toLocaleString()} logs
+                  </span>
+                </div>
+              </div>
+              {/* Right side - Last activity and created date */}
+              <div className="text-right shrink-0">
+                <div className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
+                  <Clock className="h-3 w-3" />
+                  {formatRelativeTime(project.lastActivityAt)}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Created {new Date(project.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+          </CollapsibleTrigger>
+
+          {/* Expanded Content */}
+          <CollapsibleContent>
+            <div className="pl-12 pr-4 pb-3 flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 gap-2"
+                onClick={() => handleNavigate(project.id, "traces")}
+              >
+                <Activity className="h-3.5 w-3.5" />
+                Traces
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 gap-2"
+                onClick={() => handleNavigate(project.id, "logs")}
+              >
+                <ScrollText className="h-3.5 w-3.5" />
+                Logs
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 ml-auto"
+                onClick={() => handleNavigate(project.id)}
+              >
+                Open Project →
+              </Button>
+            </div>
+          </CollapsibleContent>
         </div>
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-4 w-16" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-4 w-24" />
-      </TableCell>
-    </TableRow>
+      </Collapsible>
+    );
+  };
+
+  const renderSkeletonCard = (index: number) => (
+    <div key={index} className="border-b last:border-b-0">
+      <div className="flex items-start gap-4 px-4 py-3">
+        <Skeleton className="h-4 w-4 mt-1" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-40" />
+          <div className="flex gap-4">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </div>
+        <div className="text-right space-y-2">
+          <Skeleton className="h-4 w-20 ml-auto" />
+          <Skeleton className="h-3 w-24 ml-auto" />
+        </div>
+      </div>
+    </div>
   );
 
   if (isLoading) {
@@ -129,16 +244,7 @@ export default function WorkspaceProjectsPage() {
           <Skeleton className="h-10 w-32" />
         </div>
         <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Traces</TableHead>
-                <TableHead>Created</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>{[0, 1, 2].map(renderSkeletonRow)}</TableBody>
-          </Table>
+          {[0, 1, 2].map(renderSkeletonCard)}
         </div>
       </div>
     );
@@ -192,16 +298,7 @@ export default function WorkspaceProjectsPage() {
 
       {projects && projects.length > 0 ? (
         <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Traces</TableHead>
-                <TableHead>Created</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>{projects.map(renderProjectRow)}</TableBody>
-          </Table>
+          {projects.map(renderProjectCard)}
         </div>
       ) : (
         <Card>

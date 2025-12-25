@@ -426,6 +426,7 @@ export const ModelName = {
   AlertRCA: 'AlertRCA',
   Trace: 'Trace',
   Span: 'Span',
+  LogRecord: 'LogRecord',
   TrackedUser: 'TrackedUser',
   TraceSession: 'TraceSession',
   Workspace: 'Workspace',
@@ -446,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "promptExperiment" | "promptExperimentVariant" | "alertRCA" | "trace" | "span" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
+    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "promptExperiment" | "promptExperimentVariant" | "alertRCA" | "trace" | "span" | "logRecord" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3558,6 +3559,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LogRecord: {
+      payload: Prisma.$LogRecordPayload<ExtArgs>
+      fields: Prisma.LogRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LogRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LogRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.LogRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LogRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        findMany: {
+          args: Prisma.LogRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>[]
+        }
+        create: {
+          args: Prisma.LogRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        createMany: {
+          args: Prisma.LogRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LogRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.LogRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        update: {
+          args: Prisma.LogRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.LogRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LogRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LogRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.LogRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LogRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.LogRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLogRecord>
+        }
+        groupBy: {
+          args: Prisma.LogRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LogRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LogRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LogRecordCountAggregateOutputType> | number
+        }
+      }
+    }
     TrackedUser: {
       payload: Prisma.$TrackedUserPayload<ExtArgs>
       fields: Prisma.TrackedUserFieldRefs
@@ -4696,6 +4771,33 @@ export const SpanScalarFieldEnum = {
 export type SpanScalarFieldEnum = (typeof SpanScalarFieldEnum)[keyof typeof SpanScalarFieldEnum]
 
 
+export const LogRecordScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  serviceName: 'serviceName',
+  serviceVersion: 'serviceVersion',
+  environment: 'environment',
+  resource: 'resource',
+  scopeName: 'scopeName',
+  scopeVersion: 'scopeVersion',
+  timestamp: 'timestamp',
+  observedTime: 'observedTime',
+  severityNumber: 'severityNumber',
+  severityText: 'severityText',
+  body: 'body',
+  bodyText: 'bodyText',
+  attributes: 'attributes',
+  droppedAttributesCount: 'droppedAttributesCount',
+  traceId: 'traceId',
+  spanId: 'spanId',
+  flags: 'flags',
+  ingestSource: 'ingestSource',
+  createdAt: 'createdAt'
+} as const
+
+export type LogRecordScalarFieldEnum = (typeof LogRecordScalarFieldEnum)[keyof typeof LogRecordScalarFieldEnum]
+
+
 export const TrackedUserScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -5266,6 +5368,7 @@ export type GlobalOmitConfig = {
   alertRCA?: Prisma.AlertRCAOmit
   trace?: Prisma.TraceOmit
   span?: Prisma.SpanOmit
+  logRecord?: Prisma.LogRecordOmit
   trackedUser?: Prisma.TrackedUserOmit
   traceSession?: Prisma.TraceSessionOmit
   workspace?: Prisma.WorkspaceOmit

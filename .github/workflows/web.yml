@@ -10,7 +10,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -25,6 +25,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cognobserve_test
+      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cognobserve_shadow
 
     steps:
       - name: Checkout
@@ -45,12 +46,44 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate:ci
 
-      - name: Run migrations
-        run: pnpm --filter @cognobserve/db prisma migrate deploy
+      - name: Create shadow database
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE cognobserve_shadow;"
 
-      - name: Validate schema is in sync
-        run: pnpm --filter @cognobserve/db prisma migrate diff --from-migrations ./prisma/migrations --to-schema-datamodel ./prisma/schema.prisma --exit-code
-        continue-on-error: false
+      - name: Run migrations
+        run: pnpm --filter @cognobserve/db db:migrate:deploy
+
+      # Schema Drift Detection
+      # Checks if migrations match the Prisma schema (catches missing migrations)
+      # --exit-code returns: 0 = no diff, 1 = error, 2 = diff exists
+      - name: Check schema drift (migrations vs schema)
+        run: |
+          echo "Checking if migrations match the Prisma schema..."
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
+            --from-migrations ./prisma/schema/migrations \
+            --to-schema ./prisma/schema \
+            --exit-code; then
+            echo ""
+            echo "::error::Schema drift detected! Run 'pnpm db:migrate --name <descriptive_name>' locally to create the migration."
+            exit 1
+          fi
+          echo "✓ Migrations match schema"
+
+      # Checks if database matches migrations (catches manual DB changes)
+      - name: Check database drift (database vs migrations)
+        run: |
+          echo "Checking if database state matches applied migrations..."
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
+            --from-config-datasource \
+            --to-migrations ./prisma/schema/migrations \
+            --exit-code; then
+            echo ""
+            echo "::error::Database drift detected! The database state doesn't match the migrations."
+            exit 1
+          fi
+          echo "✓ Database matches migrations"
 
       - name: Type check
         run: pnpm --filter @cognobserve/web --filter @cognobserve/api typecheck

@@ -34,6 +34,7 @@ import { promptExperimentsRouter } from "./prompt-experiments";
 import { knowledgeRouter } from "./knowledge";
 import { extensionsRouter } from "./extensions";
 import { themeRouter } from "./theme";
+import { logsRouter } from "./logs";
 
 /**
  * Main application router.
@@ -360,6 +361,19 @@ export const appRouter = createRouter({
   theme: themeRouter,
 
   /**
+   * Logs Explorer
+   * @see ./logs.ts
+   *
+   * Workspace-level access to ingested OTLP logs.
+   *
+   * - logs.list           - List logs with filters & pagination
+   * - logs.get            - Get log details
+   * - logs.getServices    - Get distinct services for filters
+   * - logs.getSeverityStats - Get severity distribution
+   */
+  logs: logsRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -394,4 +408,5 @@ export {
   knowledgeRouter,
   extensionsRouter,
   themeRouter,
+  logsRouter,
 };

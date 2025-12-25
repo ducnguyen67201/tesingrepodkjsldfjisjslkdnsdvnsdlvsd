@@ -3,20 +3,21 @@
 import Link from "next/link";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { ArrowLeft, Activity, MessagesSquare, Users } from "lucide-react";
+import { ArrowLeft, Activity, MessagesSquare, Users, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
 import { TracesTableV2 } from "@/components/traces";
+import { ProjectLogsTable } from "@/components/logs/project-logs-table";
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
 import { useProjectUserCount } from "@/hooks/project-user-count/use-project-user-count";
 import { Badge } from "@/components/ui/badge";
 
-type ProjectTab = "traces" | "sessions" | "users";
+type ProjectTab = "traces" | "logs" | "sessions" | "users";
 
 export default function ProjectDetailPage() {
   const params = useParams<{ workspaceSlug: string; projectId: string }>();
@@ -124,6 +125,10 @@ export default function ProjectDetailPage() {
             <Activity className="h-3 w-3" />
             Traces
           </TabsTrigger>
+          <TabsTrigger value="logs" className="h-7 gap-1.5 text-xs px-3">
+            <ScrollText className="h-3 w-3" />
+            Logs
+          </TabsTrigger>
           <TabsTrigger value="sessions" className="h-7 gap-1.5 text-xs px-3">
             <MessagesSquare className="h-3 w-3" />
             Sessions
@@ -136,6 +141,13 @@ export default function ProjectDetailPage() {
 
         <TabsContent value="traces" className="mt-2">
           <TracesTableV2
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={projectId}
+          />
+        </TabsContent>
+
+        <TabsContent value="logs" className="mt-2">
+          <ProjectLogsTable
             workspaceSlug={workspaceSlug ?? ""}
             projectId={projectId}
           />

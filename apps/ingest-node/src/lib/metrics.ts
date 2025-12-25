@@ -102,6 +102,50 @@ export const requestErrors = new Counter({
   registers: [registry],
 });
 
+// ============================================================================
+// Logs-specific metrics
+// ============================================================================
+
+/**
+ * Total log ingestion requests counter
+ */
+export const logRequestCounter = new Counter({
+  name: "ingest_logs_total",
+  help: "Total number of log ingestion requests",
+  labelNames: ["status", "content_type"],
+  registers: [registry],
+});
+
+/**
+ * Total log records ingested counter
+ */
+export const logRecordCounter = new Counter({
+  name: "ingest_log_records_total",
+  help: "Total number of log records ingested",
+  labelNames: ["project_id", "severity"],
+  registers: [registry],
+});
+
+/**
+ * Rejected log records counter
+ */
+export const logRejectCounter = new Counter({
+  name: "ingest_log_rejects_total",
+  help: "Total number of rejected log records",
+  labelNames: ["reason"],
+  registers: [registry],
+});
+
+/**
+ * Log payload size histogram
+ */
+export const logPayloadSize = new Histogram({
+  name: "ingest_log_payload_bytes",
+  help: "Log ingestion request payload size in bytes",
+  buckets: [1024, 10240, 102400, 1048576, 10485760],
+  registers: [registry],
+});
+
 /**
  * Export all metrics for easy access
  */
@@ -115,4 +159,9 @@ export const metrics = {
   handlerDuration,
   pipelineDuration,
   requestErrors,
+  // Logs metrics
+  logRequestCounter,
+  logRecordCounter,
+  logRejectCounter,
+  logPayloadSize,
 };

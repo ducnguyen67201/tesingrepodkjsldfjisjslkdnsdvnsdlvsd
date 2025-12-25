@@ -17,13 +17,19 @@ export const env = createEnv({
     // Database
     DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),
 
-    // Limits
+    // Trace Limits
     MAX_PAYLOAD_BYTES: z.coerce.number().default(512 * 1024), // 512KB
     MAX_SPANS_PER_REQUEST: z.coerce.number().default(500),
     MAX_ATTR_PER_SPAN: z.coerce.number().default(64),
     MAX_EVENTS_PER_SPAN: z.coerce.number().default(64),
     MAX_LINKS_PER_SPAN: z.coerce.number().default(32),
     MAX_ATTR_VALUE_LEN: z.coerce.number().default(2048),
+
+    // Log Limits
+    MAX_LOGS_PER_REQUEST: z.coerce.number().default(1000),
+    MAX_ATTR_PER_LOG: z.coerce.number().default(64),
+    MAX_LOG_BODY_LEN: z.coerce.number().default(8192), // 8KB
+    LOG_TIMESTAMP_DRIFT_HOURS: z.coerce.number().default(24),
 
     // Rate limiting
     RATE_LIMIT_RPS: z.coerce.number().default(200),
@@ -49,6 +55,10 @@ export const env = createEnv({
     MAX_EVENTS_PER_SPAN: process.env.MAX_EVENTS_PER_SPAN,
     MAX_LINKS_PER_SPAN: process.env.MAX_LINKS_PER_SPAN,
     MAX_ATTR_VALUE_LEN: process.env.MAX_ATTR_VALUE_LEN,
+    MAX_LOGS_PER_REQUEST: process.env.MAX_LOGS_PER_REQUEST,
+    MAX_ATTR_PER_LOG: process.env.MAX_ATTR_PER_LOG,
+    MAX_LOG_BODY_LEN: process.env.MAX_LOG_BODY_LEN,
+    LOG_TIMESTAMP_DRIFT_HOURS: process.env.LOG_TIMESTAMP_DRIFT_HOURS,
     RATE_LIMIT_RPS: process.env.RATE_LIMIT_RPS,
     RATE_LIMIT_BURST: process.env.RATE_LIMIT_BURST,
     LOG_LEVEL: process.env.LOG_LEVEL,
@@ -76,12 +86,18 @@ export const config = {
     isProd: env.NODE_ENV === "production",
   },
   limits: {
+    // Trace limits
     maxPayloadBytes: env.MAX_PAYLOAD_BYTES,
     maxSpansPerRequest: env.MAX_SPANS_PER_REQUEST,
     maxAttrPerSpan: env.MAX_ATTR_PER_SPAN,
     maxEventsPerSpan: env.MAX_EVENTS_PER_SPAN,
     maxLinksPerSpan: env.MAX_LINKS_PER_SPAN,
     maxAttrValueLen: env.MAX_ATTR_VALUE_LEN,
+    // Log limits
+    maxLogsPerRequest: env.MAX_LOGS_PER_REQUEST,
+    maxAttrPerLog: env.MAX_ATTR_PER_LOG,
+    maxLogBodyLen: env.MAX_LOG_BODY_LEN,
+    logTimestampDriftHours: env.LOG_TIMESTAMP_DRIFT_HOURS,
   },
   rateLimit: {
     rps: env.RATE_LIMIT_RPS,

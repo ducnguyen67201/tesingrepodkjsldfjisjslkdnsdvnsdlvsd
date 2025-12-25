@@ -9,6 +9,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import {
   Table,
   TableBody,
@@ -215,7 +216,6 @@ export function TracesTableV2({
   projectId,
 }: TracesTableV2Props) {
   const searchParams = useSearchParams();
-  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Query input state (separate from filters - only applied on execute)
   const [queryInput, setQueryInput] = useState("");
@@ -350,29 +350,12 @@ export function TracesTableV2({
     [setFilter]
   );
 
-  // Intersection observer for infinite scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const first = entries[0];
-        if (first?.isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  // Shared infinite scroll hook
+  const { observerRef: loadMoreRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    onLoadMore: fetchNextPage,
+  });
 
   // Sidebar component
   const sidebar = (

@@ -228,6 +228,11 @@ export type Trace = Prisma.TraceModel
  */
 export type Span = Prisma.SpanModel
 /**
+ * Model LogRecord
+ * 
+ */
+export type LogRecord = Prisma.LogRecordModel
+/**
  * Model TrackedUser
  * 
  */
