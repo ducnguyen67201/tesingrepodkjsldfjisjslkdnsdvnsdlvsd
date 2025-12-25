@@ -59,7 +59,7 @@ jobs:
           echo "Checking if migrations match the Prisma schema..."
           cd packages/db && pnpm exec prisma migrate diff \
             --from-migrations ./prisma/migrations \
-            --to-schema-datamodel ./prisma/schema \
+            --to-schema ./prisma/schema \
             --exit-code
         continue-on-error: false
 
@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "Checking if database state matches applied migrations..."
           cd packages/db && pnpm exec prisma migrate diff \
-            --from-url "$DATABASE_URL" \
+            --from-config-datasource \
             --to-migrations ./prisma/migrations \
             --exit-code
         continue-on-error: false
@@ -80,7 +80,7 @@ jobs:
           # If this produces output, a migration is needed
           OUTPUT=$(pnpm exec prisma migrate diff \
             --from-migrations ./prisma/migrations \
-            --to-schema-datamodel ./prisma/schema \
+            --to-schema ./prisma/schema \
             --script 2>&1) || true
 
           if [ -n "$OUTPUT" ] && [ "$OUTPUT" != "-- This is an empty migration." ]; then
