@@ -14,8 +14,6 @@ import {
   createVariousBodyTypesLogsRequest,
   createMinimalLogsRequest,
   dateToNanoString,
-  generateTraceId,
-  generateSpanId,
   SEVERITY_NUMBERS,
 } from "../../fixtures/otlp-logs.fixtures.js";
 
