@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useId, useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -26,9 +26,8 @@ function extractVariables(content: PromptTemplate): string[] {
   const variables = new Set<string>();
 
   const extractFromText = (text: string) => {
-    const regex = /\{\{(\w+)\}\}/g;
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(text)) !== null) {
+    const matches = text.matchAll(PLACEHOLDER_REGEX);
+    for (const match of matches) {
       if (match[1]) {
         variables.add(match[1]);
       }
@@ -120,11 +119,7 @@ export function PromptVariableInjector({
     return defaults;
   }, [variableFields]);
 
-  const [values, setValues] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    setValues(initialValues);
-  }, [initialValues]);
+  const [values, setValues] = useState<Record<string, string>>(initialValues);
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,7 +137,7 @@ export function PromptVariableInjector({
   const renderVariableField = useCallback(
     (field: VariableField) => {
       const inputId = `${fieldId}-${field.name}`;
-      const value = values[field.name] ?? field.defaultValue ?? "";
+      const value = values[field.name] ?? "";
       const placeholder = field.description ?? `Enter ${field.name}...`;
 
       return (
