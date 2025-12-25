@@ -6,7 +6,7 @@
 
 export { TracesTableV2 } from "./traces-table-v2";
 export { TraceRow, type TraceListItem } from "./trace-row";
-export { TraceDetailPanel } from "./trace-detail-panel";
+export { TraceDetailPanel, usePrefetchTrace } from "./trace-detail-panel";
 export { SpanTree } from "./span-tree";
 export { TracesEmpty } from "./traces-empty";
 export { TracesSkeleton } from "./traces-skeleton";

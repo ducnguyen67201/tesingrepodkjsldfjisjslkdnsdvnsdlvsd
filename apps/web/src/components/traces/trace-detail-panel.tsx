@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, Hash, AlertCircle, Server, Copy, Check, Calendar } from "lucide-react";
+import { Clock, Hash, AlertCircle, Server, Copy, Check, ChevronDown, RefreshCw } from "lucide-react";
 import { useState, useCallback } from "react";
 import {
   Sheet,
@@ -13,18 +13,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { trpc } from "@/lib/trpc/client";
 import { clipboardToast } from "@/lib/success";
 import { formatDuration } from "@/lib/format";
 import { SpanTree } from "./span-tree";
 import { TraceKnowledgeSection } from "@/components/knowledge/integration";
+import { cn } from "@/lib/utils";
+
+// ------------------------------------------------------------
+// Constants
+// ------------------------------------------------------------
+
+const TRACE_CACHE_TIME_MS = 5 * 60 * 1000; // 5 minutes
 
 // ------------------------------------------------------------
 // Types
@@ -38,16 +43,39 @@ interface TraceDetailPanelProps {
 }
 
 // ------------------------------------------------------------
-// Copy Button Component
+// Prefetch Hook - use on hover to preload trace data
 // ------------------------------------------------------------
 
-function CopyButton({ text, label }: { text: string; label?: string }) {
+export function usePrefetchTrace(workspaceSlug: string, projectId: string) {
+  const utils = trpc.useUtils();
+
+  const prefetch = useCallback(
+    (traceId: string) => {
+      // Prefetch into cache - will be instant when panel opens
+      void utils.traces.get.prefetch(
+        { workspaceSlug, projectId, traceId },
+        { staleTime: TRACE_CACHE_TIME_MS }
+      );
+    },
+    [utils, workspaceSlug, projectId]
+  );
+
+  return prefetch;
+}
+
+// ------------------------------------------------------------
+// Copy Icon Button Component
+// ------------------------------------------------------------
+
+function CopyIconButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = useCallback(async () => {
+  const handleCopy = useCallback(async (e: React.MouseEvent) => {
+    e.stopPropagation();
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      clipboardToast.copied("Trace ID");
       setTimeout(() => setCopied(false), 2000);
     } catch {
       clipboardToast.copyFailed();
@@ -57,55 +85,16 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
   return (
     <Button
       variant="ghost"
-      size="sm"
+      size="icon"
       onClick={handleCopy}
-      className="h-6 px-2 text-xs"
+      className="h-5 w-5 shrink-0"
     >
       {copied ? (
-        <>
-          <Check className="mr-1 h-3 w-3" />
-          Copied
-        </>
+        <Check className="h-3 w-3 text-green-600" />
       ) : (
-        <>
-          <Copy className="mr-1 h-3 w-3" />
-          {label || "Copy"}
-        </>
+        <Copy className="h-3 w-3 text-muted-foreground hover:text-foreground" />
       )}
     </Button>
-  );
-}
-
-// ------------------------------------------------------------
-// Stat Card Component
-// ------------------------------------------------------------
-
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  variant?: "default" | "destructive";
-}
-
-function StatCard({ icon, label, value, variant = "default" }: StatCardProps) {
-  return (
-    <div className="flex items-center gap-3 rounded-lg border p-3">
-      <div className={`rounded-md p-2 ${
-        variant === "destructive"
-          ? "bg-destructive/10 text-destructive"
-          : "bg-muted"
-      }`}>
-        {icon}
-      </div>
-      <div>
-        <p className="text-xs text-muted-foreground">{label}</p>
-        <p className={`text-lg font-semibold ${
-          variant === "destructive" ? "text-destructive" : ""
-        }`}>
-          {value}
-        </p>
-      </div>
-    </div>
   );
 }
 
@@ -119,7 +108,7 @@ export function TraceDetailPanel({
   traceId,
   onClose,
 }: TraceDetailPanelProps) {
-  const { data, isLoading, error } = trpc.traces.get.useQuery(
+  const { data, isLoading, isFetching, error, refetch } = trpc.traces.get.useQuery(
     {
       workspaceSlug,
       projectId,
@@ -127,13 +116,22 @@ export function TraceDetailPanel({
     },
     {
       enabled: !!traceId && !!workspaceSlug && !!projectId,
+      staleTime: TRACE_CACHE_TIME_MS,
+      placeholderData: (prev) => prev, // Keep showing previous data while loading new
     }
   );
 
+  // Show skeleton only on first load (no cached data)
+  const showSkeleton = isLoading && !data;
+
+  const handleRefresh = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <Sheet open={!!traceId} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="w-[700px] sm:max-w-[700px] p-0 flex flex-col">
-        {isLoading && (
+      <SheetContent className="w-[55vw] sm:max-w-[55vw] p-0 flex flex-col">
+        {showSkeleton && (
           <>
             <SheetHeader className="sr-only">
               <SheetTitle>Loading trace details</SheetTitle>
@@ -163,115 +161,84 @@ export function TraceDetailPanel({
 
         {data && (
           <>
-            {/* Header */}
-            <SheetHeader className="px-6 pt-6 pb-4 border-b">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <SheetTitle className="flex items-center gap-2 text-xl">
-                    <Server className="h-5 w-5" />
-                    {data.trace.serviceName}
-                    {data.trace.serviceVersion && (
-                      <Badge variant="secondary" className="font-normal">
-                        v{data.trace.serviceVersion}
-                      </Badge>
-                    )}
-                  </SheetTitle>
-                  <SheetDescription className="flex items-center gap-2">
-                    {data.trace.environment && (
-                      <Badge variant="outline">{data.trace.environment}</Badge>
-                    )}
-                    <span className="text-muted-foreground">
-                      {new Date(data.trace.startTime).toLocaleString()}
-                    </span>
-                  </SheetDescription>
-                </div>
+            {/* Loading indicator for background refresh */}
+            {isFetching && (
+              <div className="h-0.5 bg-primary/20 overflow-hidden">
+                <div className="h-full w-1/3 bg-primary animate-pulse" />
+              </div>
+            )}
+            {/* Compact Header */}
+            <SheetHeader className="px-3 pt-3 pb-2 border-b bg-muted/30">
+              {/* Line 1: Service name + badges + date + refresh */}
+              <div className="flex items-center gap-2">
+                <Server className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <SheetTitle className="text-sm font-semibold truncate">
+                  {data.trace.serviceName}
+                </SheetTitle>
+                {data.trace.serviceVersion && (
+                  <Badge variant="secondary" className="font-mono text-[10px] px-1.5 py-0 shrink-0">
+                    v{data.trace.serviceVersion}
+                  </Badge>
+                )}
+                {data.trace.environment && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 shrink-0">
+                    {data.trace.environment}
+                  </Badge>
+                )}
+                <span className="text-[10px] text-muted-foreground shrink-0">
+                  {new Date(data.trace.startTime).toLocaleString()}
+                </span>
+                {/* Refresh button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleRefresh}
+                  disabled={isFetching}
+                  className="h-6 w-6 ml-auto shrink-0"
+                  title="Refresh trace data"
+                >
+                  <RefreshCw className={cn("h-3.5 w-3.5", isFetching && "animate-spin")} />
+                </Button>
+              </div>
+              <SheetDescription className="sr-only">Trace details</SheetDescription>
+              {/* Line 2: Trace ID + Metrics (left aligned) */}
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                <code className="text-[11px] font-mono text-muted-foreground">
+                  {data.trace.externalTraceId}
+                </code>
+                <CopyIconButton text={data.trace.externalTraceId} />
+                {/* Metrics - next to trace ID */}
+                <Badge variant="outline" className="text-[11px] px-2 py-0.5 font-mono gap-1">
+                  <Clock className="h-3 w-3" />
+                  {formatDuration(data.trace.durationMs)}
+                </Badge>
+                <Badge variant="outline" className="text-[11px] px-2 py-0.5 font-mono gap-1">
+                  <Hash className="h-3 w-3" />
+                  {data.trace.spanCount} spans
+                </Badge>
+                {data.trace.errorCount > 0 && (
+                  <Badge variant="destructive" className="text-[11px] px-2 py-0.5 font-mono gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {data.trace.errorCount} errors
+                  </Badge>
+                )}
               </div>
             </SheetHeader>
 
             {/* Content */}
             <ScrollArea className="flex-1">
-              <div className="p-6 space-y-6">
-                {/* Stats Grid */}
-                <div className="grid grid-cols-3 gap-3">
-                  <StatCard
-                    icon={<Clock className="h-4 w-4" />}
-                    label="Duration"
-                    value={formatDuration(data.trace.durationMs)}
-                  />
-                  <StatCard
-                    icon={<Hash className="h-4 w-4" />}
-                    label="Spans"
-                    value={data.trace.spanCount}
-                  />
-                  <StatCard
-                    icon={<AlertCircle className="h-4 w-4" />}
-                    label="Errors"
-                    value={data.trace.errorCount}
-                    variant={data.trace.errorCount > 0 ? "destructive" : "default"}
-                  />
-                </div>
-
-                {/* Trace ID Card */}
-                <Card>
-                  <CardHeader className="py-3 px-4">
-                    <CardTitle className="text-sm font-medium">Trace ID</CardTitle>
-                  </CardHeader>
-                  <CardContent className="py-0 px-4 pb-3">
-                    <div className="flex items-center justify-between gap-2 rounded-md bg-muted px-3 py-2">
-                      <code className="text-xs font-mono break-all">
-                        {data.trace.externalTraceId}
-                      </code>
-                      <CopyButton text={data.trace.externalTraceId} />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Timestamps */}
-                <Card>
-                  <CardHeader className="py-3 px-4">
-                    <CardTitle className="text-sm font-medium">Timeline</CardTitle>
-                  </CardHeader>
-                  <CardContent className="py-0 px-4 pb-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground flex items-center gap-2">
-                          <Calendar className="h-4 w-4" />
-                          Started
-                        </span>
-                        <span className="font-mono">
-                          {new Date(data.trace.startTime).toLocaleString()}
-                        </span>
-                      </div>
-                      {data.trace.endTime && (
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            Ended
-                          </span>
-                          <span className="font-mono">
-                            {new Date(data.trace.endTime).toLocaleString()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Knowledge Articles */}
-                <TraceKnowledgeSection
+              <div className="p-3 space-y-3">
+                {/* Knowledge Articles - Collapsible */}
+                <TraceKnowledgeCollapsible
                   workspaceSlug={workspaceSlug}
                   traceId={data.trace.id}
                 />
 
-                <Separator />
-
                 {/* Spans Section */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-semibold">
-                      Spans ({data.spans.length})
-                    </h3>
-                  </div>
+                <div className="space-y-1.5">
+                  <h3 className="text-xs font-semibold text-muted-foreground">
+                    Spans ({data.spans.length})
+                  </h3>
                   <SpanTree spans={data.spans} />
                 </div>
               </div>
@@ -284,6 +251,31 @@ export function TraceDetailPanel({
 }
 
 // ------------------------------------------------------------
+// Knowledge Articles Collapsible Wrapper
+// ------------------------------------------------------------
+
+function TraceKnowledgeCollapsible({ workspaceSlug, traceId }: { workspaceSlug: string; traceId: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <CollapsibleTrigger asChild>
+        <button className="flex w-full items-center justify-between rounded border px-2.5 py-1.5 text-[11px] hover:bg-muted/50 transition-colors">
+          <span className="font-medium">Knowledge Articles</span>
+          <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform", isOpen && "rotate-180")} />
+        </button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="pt-2">
+        <TraceKnowledgeSection
+          workspaceSlug={workspaceSlug}
+          traceId={traceId}
+        />
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+// ------------------------------------------------------------
 // Skeleton
 // ------------------------------------------------------------
 
@@ -291,49 +283,36 @@ function TraceDetailSkeleton() {
   return (
     <div className="flex flex-col h-full">
       {/* Header Skeleton */}
-      <div className="px-6 pt-6 pb-4 border-b space-y-3">
-        <div className="flex items-center gap-2">
-          <Skeleton className="h-5 w-5" />
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-5 w-16" />
+      <div className="px-3 pt-3 pb-2 border-b bg-muted/30 space-y-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-12" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-3 w-12" />
+            <Skeleton className="h-3 w-8" />
+          </div>
         </div>
         <div className="flex items-center gap-2">
-          <Skeleton className="h-5 w-20" />
-          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-3 w-6" />
+          <Skeleton className="h-3 w-64" />
+          <Skeleton className="h-3 w-32 ml-auto" />
         </div>
       </div>
 
       {/* Content Skeleton */}
-      <div className="p-6 space-y-6">
-        {/* Stats Grid Skeleton */}
-        <div className="grid grid-cols-3 gap-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-lg border p-3">
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-10 w-10 rounded-md" />
-                <div className="space-y-1.5">
-                  <Skeleton className="h-3 w-16" />
-                  <Skeleton className="h-6 w-12" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Trace ID Skeleton */}
-        <div className="rounded-lg border">
-          <div className="p-4 space-y-2">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-8 w-full" />
-          </div>
-        </div>
+      <div className="p-3 space-y-3">
+        {/* Knowledge collapse skeleton */}
+        <Skeleton className="h-8 w-full" />
 
         {/* Spans Skeleton */}
-        <div className="space-y-3">
-          <Skeleton className="h-5 w-24" />
-          <div className="space-y-2">
+        <div className="space-y-1.5">
+          <Skeleton className="h-4 w-20" />
+          <div className="space-y-1">
             {[1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-12 w-full" />
+              <Skeleton key={i} className="h-10 w-full" />
             ))}
           </div>
         </div>

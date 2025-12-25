@@ -19,7 +19,6 @@ interface WorkspaceBreadcrumbProps {
 /** Page mapping for workspace sections */
 const PAGE_LABELS: Record<string, string> = {
   "/projects": "Projects",
-  "/traces": "Traces",
   "/prompts": "Prompts",
   "/knowledge": "Knowledge Base",
   "/settings": "Settings",

@@ -8,7 +8,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -23,7 +23,7 @@ import { TraceRow } from "./trace-row";
 import { TracesEmpty } from "./traces-empty";
 import { TracesSkeleton } from "./traces-skeleton";
 import { TracesError } from "./traces-error";
-import { TraceDetailPanel } from "./trace-detail-panel";
+import { TraceDetailPanel, usePrefetchTrace } from "./trace-detail-panel";
 import {
   FilterSidebarV2,
   QueryBuilderInput,
@@ -215,8 +215,6 @@ export function TracesTableV2({
   projectId,
 }: TracesTableV2Props) {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Query input state (separate from filters - only applied on execute)
@@ -240,8 +238,17 @@ export function TracesTableV2({
     quickPresets,
   } = useTraceFiltersV2();
 
-  // Selected trace from URL
-  const selectedTraceId = searchParams.get("trace");
+  // Selected trace - use local state to prevent re-renders/scroll reset
+  const [selectedTraceId, setSelectedTraceId] = useState<string | null>(() => {
+    // Initialize from URL if present
+    return searchParams.get("trace");
+  });
+
+  // Prefetch trace data on hover for instant loading
+  const prefetchTrace = usePrefetchTrace(workspaceSlug, projectId);
+
+  // Track which traces have been prefetched to avoid duplicate fetches
+  const prefetchedIdsRef = useRef<Set<string>>(new Set());
 
   // Fetch traces using v2 endpoint
   const {
@@ -280,28 +287,39 @@ export function TracesTableV2({
     }
   }, [isFetching]);
 
+  // Prefetch all trace details when data changes (initial load + infinite scroll)
+  useEffect(() => {
+    if (!data?.pages) return;
+
+    // Get all trace IDs from all pages
+    const allTraces = data.pages.flatMap((page) => page.traces);
+    let delay = 0;
+
+    // Prefetch traces that haven't been prefetched yet
+    for (const trace of allTraces) {
+      if (!prefetchedIdsRef.current.has(trace.id)) {
+        prefetchedIdsRef.current.add(trace.id);
+        // Stagger prefetch to avoid overwhelming the server
+        setTimeout(() => {
+          prefetchTrace(trace.id);
+        }, delay);
+        delay += 100; // 100ms between each prefetch
+      }
+    }
+  }, [data?.pages, prefetchTrace]);
+
   // Flatten pages to traces array
   const traces = data?.pages.flatMap((page) => page.traces) ?? [];
 
-  // Handle trace selection
-  const handleSelectTrace = useCallback(
-    (traceId: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("trace", traceId);
-      router.push(`${pathname}?${params.toString()}`, { scroll: false });
-    },
-    [searchParams, router, pathname]
-  );
+  // Handle trace selection - just update local state, no router navigation
+  const handleSelectTrace = useCallback((traceId: string) => {
+    setSelectedTraceId(traceId);
+  }, []);
 
-  // Handle panel close
+  // Handle panel close - just update local state
   const handleClosePanel = useCallback(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("trace");
-    const newUrl = params.toString()
-      ? `${pathname}?${params.toString()}`
-      : pathname;
-    router.push(newUrl, { scroll: false });
-  }, [searchParams, router, pathname]);
+    setSelectedTraceId(null);
+  }, []);
 
   // Handle filter addition from sidebar
   const handleAddFilter = useCallback(
@@ -484,6 +502,7 @@ export function TracesTableV2({
                     trace={trace}
                     isSelected={trace.id === selectedTraceId}
                     onSelect={handleSelectTrace}
+                    onHover={prefetchTrace}
                   />
                 ))}
               </TableBody>

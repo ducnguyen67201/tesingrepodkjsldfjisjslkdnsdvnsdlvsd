@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import Link from "next/link";
-import { Plus, FolderKanban, Activity, MoreHorizontal } from "lucide-react";
+import { Plus, FolderKanban } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -21,11 +20,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -73,73 +74,46 @@ export default function WorkspaceProjectsPage() {
     if (!open) setNewProjectName("");
   }, []);
 
-  const renderProjectCard = (project: ProjectListItem) => (
-    <Link
+  const renderProjectRow = (project: ProjectListItem) => (
+    <TableRow
       key={project.id}
-      href={workspaceUrl(`/projects/${project.id}`)}
-      className="block"
+      className="cursor-pointer hover:bg-muted/50"
+      onClick={() =>
+        (window.location.href = workspaceUrl(`/projects/${project.id}`))
+      }
     >
-      <Card className="transition-colors hover:bg-muted/50">
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
-          <div className="flex items-center gap-3">
-            <div className="rounded-md bg-primary/10 p-2">
-              <FolderKanban className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <CardTitle className="text-lg">{project.name}</CardTitle>
-              <CardDescription>
-                Created {new Date(project.createdAt).toLocaleDateString()}
-              </CardDescription>
-            </div>
+      <TableCell>
+        <div className="flex items-center gap-3">
+          <div className="rounded-md bg-primary/10 p-2">
+            <FolderKanban className="h-4 w-4 text-primary" />
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = workspaceUrl(
-                    `/projects/${project.id}/settings`
-                  );
-                }}
-              >
-                Settings
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Activity className="h-4 w-4" />
-            <span>
-              {project.traceCount}{" "}
-              {project.traceCount === 1 ? "trace" : "traces"}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+          <span className="font-medium">{project.name}</span>
+        </div>
+      </TableCell>
+      <TableCell className="text-muted-foreground">
+        {project.traceCount} {project.traceCount === 1 ? "trace" : "traces"}
+      </TableCell>
+      <TableCell className="text-muted-foreground">
+        {new Date(project.createdAt).toLocaleDateString()}
+      </TableCell>
+    </TableRow>
   );
 
-  const renderSkeletonCard = (index: number) => (
-    <Card key={index}>
-      <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+  const renderSkeletonRow = (index: number) => (
+    <TableRow key={index}>
+      <TableCell>
         <div className="flex items-center gap-3">
-          <Skeleton className="h-9 w-9 rounded-md" />
-          <div>
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="mt-1 h-4 w-24" />
-          </div>
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <Skeleton className="h-4 w-32" />
         </div>
-      </CardHeader>
-      <CardContent>
-        <Skeleton className="h-4 w-20" />
-      </CardContent>
-    </Card>
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-4 w-16" />
+      </TableCell>
+      <TableCell>
+        <Skeleton className="h-4 w-24" />
+      </TableCell>
+    </TableRow>
   );
 
   if (isLoading) {
@@ -154,8 +128,17 @@ export default function WorkspaceProjectsPage() {
           </div>
           <Skeleton className="h-10 w-32" />
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[0, 1, 2].map(renderSkeletonCard)}
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Traces</TableHead>
+                <TableHead>Created</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>{[0, 1, 2].map(renderSkeletonRow)}</TableBody>
+          </Table>
         </div>
       </div>
     );
@@ -208,8 +191,17 @@ export default function WorkspaceProjectsPage() {
       </div>
 
       {projects && projects.length > 0 ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map(renderProjectCard)}
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Traces</TableHead>
+                <TableHead>Created</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>{projects.map(renderProjectRow)}</TableBody>
+          </Table>
         </div>
       ) : (
         <Card>

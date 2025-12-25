@@ -31,6 +31,7 @@ interface TraceRowProps {
   trace: TraceListItem;
   isSelected: boolean;
   onSelect: (traceId: string) => void;
+  onHover?: (traceId: string) => void;
 }
 
 // ------------------------------------------------------------
@@ -50,10 +51,14 @@ const SPAN_TYPE_COLORS: Record<SpanType, string> = {
 // Component
 // ------------------------------------------------------------
 
-export function TraceRow({ trace, isSelected, onSelect }: TraceRowProps) {
+export function TraceRow({ trace, isSelected, onSelect, onHover }: TraceRowProps) {
   const handleClick = useCallback(() => {
     onSelect(trace.id);
   }, [trace.id, onSelect]);
+
+  const handleMouseEnter = useCallback(() => {
+    onHover?.(trace.id);
+  }, [trace.id, onHover]);
 
   const hasErrors = trace.errorCount > 0;
 
@@ -64,6 +69,7 @@ export function TraceRow({ trace, isSelected, onSelect }: TraceRowProps) {
         isSelected && "bg-muted/50"
       )}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
     >
       {/* Service */}
       <TableCell className="py-1.5">
