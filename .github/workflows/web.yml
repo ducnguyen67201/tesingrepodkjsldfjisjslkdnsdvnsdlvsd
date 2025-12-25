@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "Checking if migrations match the Prisma schema..."
           cd packages/db && pnpm exec prisma migrate diff \
-            --from-migrations ./prisma/migrations \
+            --from-migrations ./prisma/schema/migrations \
             --to-schema ./prisma/schema \
             --exit-code
         continue-on-error: false
@@ -68,7 +68,7 @@ jobs:
           echo "Checking if database state matches applied migrations..."
           cd packages/db && pnpm exec prisma migrate diff \
             --from-config-datasource \
-            --to-migrations ./prisma/migrations \
+            --to-migrations ./prisma/schema/migrations \
             --exit-code
         continue-on-error: false
 
@@ -79,7 +79,7 @@ jobs:
           # Use shadow database to simulate migration creation
           # If this produces output, a migration is needed
           OUTPUT=$(pnpm exec prisma migrate diff \
-            --from-migrations ./prisma/migrations \
+            --from-migrations ./prisma/schema/migrations \
             --to-schema ./prisma/schema \
             --script 2>&1) || true
 
