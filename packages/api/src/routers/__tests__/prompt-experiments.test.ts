@@ -3,6 +3,16 @@ import { TRPCError } from "@trpc/server";
 import { createCallerFactory } from "../../trpc";
 import type { SessionWithWorkspaces } from "../../context";
 
+// Mock Temporal client
+vi.mock("../../lib/temporal", () => ({
+  getTemporalClient: vi.fn().mockResolvedValue({
+    workflow: {
+      start: vi.fn().mockResolvedValue({ workflowId: "test-workflow-id" }),
+    },
+  }),
+  getTaskQueue: vi.fn().mockReturnValue("test-queue"),
+}));
+
 // Mock prisma
 vi.mock("@cognobserve/db", () => ({
   Prisma: {
