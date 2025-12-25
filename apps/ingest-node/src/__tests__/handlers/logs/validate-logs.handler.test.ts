@@ -20,13 +20,13 @@ vi.mock("../../../lib/logger.js", () => ({
   },
 }));
 
-// Mock the config
+// Mock the config with test-friendly limits
 vi.mock("../../../config/env.js", () => ({
   config: {
     limits: {
-      maxLogsPerRequest: 1000,
-      maxAttrPerLog: 64,
-      maxLogBodyLen: 8192,
+      maxLogsPerRequest: 100,
+      maxAttrPerLog: 50,
+      maxLogBodyLen: 10000,
       logTimestampDriftHours: 24,
     },
   },

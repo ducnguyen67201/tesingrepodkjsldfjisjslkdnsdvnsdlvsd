@@ -73,6 +73,31 @@ vi.mock("@cognobserve/shared", async () => {
   };
 });
 
+// Mock the config with test-friendly limits
+vi.mock("../../config/env.js", async () => {
+  const actual = await vi.importActual("../../config/env.js");
+  return {
+    ...actual,
+    config: {
+      ...(actual as { config: object }).config,
+      limits: {
+        // Trace limits
+        maxPayloadBytes: 512 * 1024,
+        maxSpansPerRequest: 500,
+        maxAttrPerSpan: 64,
+        maxEventsPerSpan: 64,
+        maxLinksPerSpan: 32,
+        maxAttrValueLen: 2048,
+        // Log limits - using lower values for faster tests
+        maxLogsPerRequest: 1000,
+        maxAttrPerLog: 64,
+        maxLogBodyLen: 8192,
+        logTimestampDriftHours: 24,
+      },
+    },
+  };
+});
+
 describe("Logs Ingestion Integration Tests", () => {
   let app: Express;
 

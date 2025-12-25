@@ -21,8 +21,11 @@ vi.mock("../../../lib/logger.js", () => ({
   },
 }));
 
-// Mock the database
-const mockCreateMany = vi.fn();
+// Mock the database - use vi.hoisted() to ensure mock is available before vi.mock runs
+const { mockCreateMany } = vi.hoisted(() => ({
+  mockCreateMany: vi.fn(),
+}));
+
 vi.mock("../../../lib/db.js", () => ({
   prisma: {
     logRecord: {

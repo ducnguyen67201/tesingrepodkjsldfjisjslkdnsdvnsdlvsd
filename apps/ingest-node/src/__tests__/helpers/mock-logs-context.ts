@@ -126,25 +126,38 @@ export function createParsedLogsContext(
 
 /**
  * Create a normalized log record for testing
+ * Use 'key in overrides' check to respect explicit undefined values
  */
 export function createNormalizedLogRecord(
   overrides: Partial<NormalizedLogRecord> = {}
 ): NormalizedLogRecord {
   return {
-    projectId: overrides.projectId ?? "",
-    serviceName: overrides.serviceName ?? "test-service",
-    serviceVersion: overrides.serviceVersion ?? "1.0.0",
-    environment: overrides.environment ?? "test",
-    resource: overrides.resource ?? { "service.name": "test-service" },
-    scopeName: overrides.scopeName ?? "test-scope",
-    scopeVersion: overrides.scopeVersion ?? "1.0.0",
+    projectId: "projectId" in overrides ? overrides.projectId! : "",
+    serviceName:
+      "serviceName" in overrides ? overrides.serviceName : "test-service",
+    serviceVersion:
+      "serviceVersion" in overrides ? overrides.serviceVersion : "1.0.0",
+    environment: "environment" in overrides ? overrides.environment : "test",
+    resource:
+      "resource" in overrides
+        ? overrides.resource
+        : { "service.name": "test-service" },
+    scopeName: "scopeName" in overrides ? overrides.scopeName : "test-scope",
+    scopeVersion:
+      "scopeVersion" in overrides ? overrides.scopeVersion : "1.0.0",
     timestamp: overrides.timestamp ?? new Date(),
     observedTime: overrides.observedTime,
-    severityNumber: overrides.severityNumber ?? 9,
-    severityText: overrides.severityText ?? "INFO",
-    body: overrides.body ?? { stringValue: "Test log message" },
-    bodyText: overrides.bodyText ?? "Test log message",
-    attributes: overrides.attributes ?? {},
+    severityNumber:
+      "severityNumber" in overrides ? overrides.severityNumber : 9,
+    severityText:
+      "severityText" in overrides ? overrides.severityText : "INFO",
+    body:
+      "body" in overrides
+        ? overrides.body
+        : { stringValue: "Test log message" },
+    bodyText:
+      "bodyText" in overrides ? overrides.bodyText : "Test log message",
+    attributes: "attributes" in overrides ? overrides.attributes : {},
     droppedAttributesCount: overrides.droppedAttributesCount,
     traceId: overrides.traceId,
     spanId: overrides.spanId,
@@ -168,11 +181,23 @@ export function createNormalizedLogsContext(
 
 /**
  * Create a context after logs authentication
+ * Use 'key in overrides' to respect explicit undefined for normalizedLogs
  */
 export function createAuthenticatedLogsContext(
   overrides: Partial<LogsPipelineContext> = {}
 ): LogsPipelineContext {
-  const ctx = createNormalizedLogsContext(overrides);
+  // Determine normalizedLogs: use override if key exists, otherwise default to one log
+  const normalizedLogs =
+    "normalizedLogs" in overrides
+      ? overrides.normalizedLogs
+      : [createNormalizedLogRecord()];
+
+  const ctx = createMockLogsPipelineContext({
+    ...overrides,
+    parsedRequest: overrides.parsedRequest ?? createBasicLogsRequest(),
+    normalizedLogs,
+  });
+
   ctx.projectId = overrides.projectId ?? "test-project-id";
   ctx.apiKeyId = overrides.apiKeyId ?? "test-api-key-id";
 
