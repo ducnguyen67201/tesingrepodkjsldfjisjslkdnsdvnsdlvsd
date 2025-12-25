@@ -7,7 +7,7 @@
 import { LogTransport } from './log-transport';
 import { getActiveContext } from './context';
 import type { ResolvedConfig } from './types';
-import type { LogLevel, LogData, LogRecord } from './log-types';
+import type { LogLevel, LogData } from './log-types';
 import { SEVERITY_NUMBERS } from './log-types';
 
 /**
