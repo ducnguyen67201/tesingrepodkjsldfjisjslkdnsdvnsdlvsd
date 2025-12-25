@@ -6,9 +6,11 @@
  */
 import { Router, type Request, type Response, type IRouter } from "express";
 import { trace, SpanStatusCode, context } from "@opentelemetry/api";
+import { createChildLogger } from "../lib/logger.js";
 
 const router: IRouter = Router();
 const tracer = trace.getTracer("demo-routes");
+const log = createChildLogger({ route: "quotes" });
 
 interface Quote {
   q: string; // Quote text
@@ -17,6 +19,8 @@ interface Quote {
 }
 
 router.post("/quotes", async (_req: Request, res: Response) => {
+  log.info("Quotes request received");
+
   // Start parent span
   const parentSpan = tracer.startSpan(
     "quotes.fetch",
@@ -25,6 +29,7 @@ router.post("/quotes", async (_req: Request, res: Response) => {
   );
 
   try {
+    log.debug("Fetching quote from zenquotes.io");
     // Child span: Fetch from API
     const fetchSpan = tracer.startSpan(
       "quotes.api_call",
@@ -77,6 +82,11 @@ router.post("/quotes", async (_req: Request, res: Response) => {
     parentSpan.setAttribute("quotes.success", true);
     parentSpan.setStatus({ code: SpanStatusCode.OK });
 
+    log.info(
+      { author: quote.a, wordCount, charCount },
+      "Quote retrieved successfully"
+    );
+
     res.json({
       success: true,
       traceId: parentSpan.spanContext().traceId,
@@ -95,6 +105,8 @@ router.post("/quotes", async (_req: Request, res: Response) => {
       error instanceof Error ? error.message : "Unknown error";
     parentSpan.setStatus({ code: SpanStatusCode.ERROR, message: errorMessage });
     parentSpan.recordException(error as Error);
+
+    log.error({ error: errorMessage }, "Quote fetch failed");
 
     res.status(500).json({
       success: false,
