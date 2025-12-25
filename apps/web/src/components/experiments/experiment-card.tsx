@@ -1,48 +1,23 @@
 "use client";
 
 import { formatDistanceToNow } from "date-fns";
-import {
-  MoreHorizontal,
-  Pencil,
-  Trash2,
-  Archive,
-  Play,
-  Pause,
-  Square,
-  Copy,
-  FlaskConical,
-  BarChart3,
-  Trophy,
-  AlertCircle,
-  Loader2,
-  Clock,
-} from "lucide-react";
+import { Copy, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { useState, useCallback } from "react";
 import { clipboardToast } from "@/lib/success";
+import { getStatusColor, getStatusLabel } from "@/hooks/use-prompt-experiments";
+import { ExperimentCardAnalysisStatus } from "./experiment-card-analysis-status";
+import { ExperimentCardActions } from "./experiment-card-actions";
 import {
-  getStatusColor,
-  getStatusLabel,
-} from "@/hooks/use-prompt-experiments";
+  ExperimentDeleteDialog,
+  ExperimentStopDialog,
+} from "./experiment-card-dialogs";
 import type { ExperimentStatus } from "@cognobserve/api/schemas";
+
+// ============================================================
+// Types
+// ============================================================
 
 interface Variant {
   id: string;
@@ -69,7 +44,6 @@ interface ExperimentCardProps {
   endedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
-  // Analysis fields
   analysisStatus?: AnalysisStatus;
   analysisError?: string | null;
   winnerVariantId?: string | null;
@@ -88,6 +62,10 @@ interface ExperimentCardProps {
   isArchiving: boolean;
   isSelected?: boolean;
 }
+
+// ============================================================
+// Component
+// ============================================================
 
 export function ExperimentCard({
   id,
@@ -121,11 +99,11 @@ export function ExperimentCard({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showStopDialog, setShowStopDialog] = useState(false);
 
-  // Get winner variant name from ID
   const winnerVariant = winnerVariantId
-    ? variants.find((v) => v.id === winnerVariantId)
+    ? variants.find((v) => v.id === winnerVariantId) ?? null
     : null;
 
+  // Event handlers
   const handleCopySlug = useCallback(
     async (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -199,6 +177,7 @@ export function ExperimentCard({
     setShowStopDialog(true);
   }, []);
 
+  // Computed values
   const isActionDisabled =
     isDeleting || isStarting || isPausing || isStopping || isArchiving;
   const canStart = status === "draft" || status === "paused";
@@ -227,7 +206,9 @@ export function ExperimentCard({
               >
                 {name}
               </button>
-              <Badge className={`shrink-0 text-[10px] px-1.5 py-0 ${getStatusColor(status)}`}>
+              <Badge
+                className={`shrink-0 text-[10px] px-1.5 py-0 ${getStatusColor(status)}`}
+              >
                 {getStatusLabel(status)}
               </Badge>
             </div>
@@ -292,50 +273,15 @@ export function ExperimentCard({
 
             {/* Analysis Status */}
             {analysisStatus && status === "running" && (
-              <div className="flex items-center gap-2 mt-3">
-                {analysisStatus === "pending" && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1">
-                    <Clock className="h-3 w-3" />
-                    Analysis pending
-                  </Badge>
-                )}
-                {analysisStatus === "running" && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-blue-600 border-blue-200 bg-blue-50">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Analyzing...
-                  </Badge>
-                )}
-                {analysisStatus === "completed" && winnerVariant && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-green-600 border-green-200 bg-green-50">
-                    <Trophy className="h-3 w-3" />
-                    Winner: Variant {winnerVariant.name}
-                    {winnerConfidence && (
-                      <span className="text-muted-foreground">
-                        ({Math.round(winnerConfidence * 100)}% conf)
-                      </span>
-                    )}
-                  </Badge>
-                )}
-                {analysisStatus === "completed" && !winnerVariant && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1">
-                    No clear winner
-                  </Badge>
-                )}
-                {analysisStatus === "failed" && (
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-red-600 border-red-200 bg-red-50">
-                    <AlertCircle className="h-3 w-3" />
-                    Analysis failed
-                    {analysisError && (
-                      <span title={analysisError} className="cursor-help">
-                        (hover for details)
-                      </span>
-                    )}
-                  </Badge>
-                )}
-              </div>
+              <ExperimentCardAnalysisStatus
+                analysisStatus={analysisStatus}
+                analysisError={analysisError}
+                winnerVariant={winnerVariant}
+                winnerConfidence={winnerConfidence}
+              />
             )}
 
-            {/* Started time / Updated time */}
+            {/* Timestamp */}
             <p className="text-[10px] text-muted-foreground mt-2">
               {startedAt
                 ? `Started ${formatDistanceToNow(new Date(startedAt), { addSuffix: true })}`
@@ -344,138 +290,44 @@ export function ExperimentCard({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-1 shrink-0">
-            {/* Start button - visible when experiment can be started */}
-            {canStart && (
-              <Button
-                variant="default"
-                size="sm"
-                className="h-8 gap-1.5"
-                onClick={handleStart}
-                disabled={isActionDisabled}
-              >
-                <Play className="h-3.5 w-3.5" />
-                {isStarting ? "Starting..." : "Start"}
-              </Button>
-            )}
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={handleViewDetails}>
-                  <BarChart3 className="mr-2 h-4 w-4" />
-                  View Details
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleEdit} disabled={status === "archived"}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleCopySlug}>
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy Slug
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-
-                {canPause && (
-                  <DropdownMenuItem
-                    onClick={handlePause}
-                    disabled={isActionDisabled}
-                  >
-                    <Pause className="mr-2 h-4 w-4" />
-                    {isPausing ? "Pausing..." : "Pause"}
-                  </DropdownMenuItem>
-                )}
-
-                {canStop && (
-                  <DropdownMenuItem
-                    onClick={handleShowStopDialog}
-                    disabled={isActionDisabled}
-                  >
-                    <Square className="mr-2 h-4 w-4" />
-                    Complete
-                  </DropdownMenuItem>
-                )}
-
-                {canArchive && (
-                  <DropdownMenuItem
-                    onClick={handleArchive}
-                    disabled={isActionDisabled}
-                  >
-                    <Archive className="mr-2 h-4 w-4" />
-                    {isArchiving ? "Archiving..." : "Archive"}
-                  </DropdownMenuItem>
-                )}
-
-                {canDelete && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleShowDeleteDialog}
-                      className="text-destructive focus:text-destructive"
-                    >
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <ExperimentCardActions
+            status={status}
+            canStart={canStart}
+            canPause={canPause}
+            canStop={canStop}
+            canArchive={canArchive}
+            canDelete={canDelete}
+            isActionDisabled={isActionDisabled}
+            isStarting={isStarting}
+            isPausing={isPausing}
+            isArchiving={isArchiving}
+            onViewDetails={handleViewDetails}
+            onEdit={handleEdit}
+            onCopySlug={handleCopySlug}
+            onStart={handleStart}
+            onPause={handlePause}
+            onShowStopDialog={handleShowStopDialog}
+            onArchive={handleArchive}
+            onShowDeleteDialog={handleShowDeleteDialog}
+          />
         </div>
       </div>
 
-      {/* Delete confirmation dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Experiment</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete &quot;{name}&quot;? This will
-              permanently delete the experiment and all its data. This action
-              cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isDeleting ? "Deleting..." : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Stop confirmation dialog */}
-      <AlertDialog open={showStopDialog} onOpenChange={setShowStopDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Complete Experiment</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to complete &quot;{name}&quot;? This will
-              stop the experiment and no new assignments will be made. You can
-              still view the results.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleStop} disabled={isStopping}>
-              {isStopping ? "Completing..." : "Complete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Dialogs */}
+      <ExperimentDeleteDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        name={name}
+        onConfirm={handleDelete}
+        isDeleting={isDeleting}
+      />
+      <ExperimentStopDialog
+        open={showStopDialog}
+        onOpenChange={setShowStopDialog}
+        name={name}
+        onConfirm={handleStop}
+        isStopping={isStopping}
+      />
     </>
   );
 }
