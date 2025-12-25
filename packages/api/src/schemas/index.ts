@@ -17,6 +17,7 @@ export * from "./eval";
 export * from "./otlp";
 export * from "./otlp-logs";
 export * from "./filtering";
+export * from "./log-filtering";
 export * from "./prompts";
 export * from "./prompt-experiments";
 export * from "./knowledge";
