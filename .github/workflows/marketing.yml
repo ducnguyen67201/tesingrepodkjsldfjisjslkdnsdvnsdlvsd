@@ -1,11 +1,11 @@
-name: Ingest
+name: Marketing
 
 on:
   workflow_call:
 
 jobs:
-  lint-test:
-    name: Lint & Test
+  ci:
+    name: Type Check → Lint → Build
     runs-on: ubuntu-latest
 
     steps:
@@ -13,9 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -26,20 +24,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: pnpm db:generate:ci
-
       - name: Type check
-        run: pnpm --filter @cognobserve/ingest-node typecheck
-
-      - name: Test
-        run: pnpm --filter @cognobserve/ingest-node test
+        run: pnpm --filter @cognobserve/marketing typecheck
 
       - name: Lint
-        run: pnpm --filter @cognobserve/ingest-node lint
+        run: pnpm --filter @cognobserve/marketing lint
 
-      - name: Build ingest-node
-        run: pnpm --filter @cognobserve/ingest-node build
+      - name: Build
+        run: pnpm --filter @cognobserve/marketing build
 
       - name: Check for uncommitted changes (drift check)
         run: |

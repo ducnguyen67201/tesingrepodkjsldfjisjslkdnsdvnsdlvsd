@@ -35,3 +35,12 @@ jobs:
 
       - name: Lint
         run: pnpm --filter @cognobserve/sdk lint
+
+      - name: Check for uncommitted changes (drift check)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Uncommitted changes detected after build. Please commit all generated files."
+            git status --porcelain
+            git diff
+            exit 1
+          fi

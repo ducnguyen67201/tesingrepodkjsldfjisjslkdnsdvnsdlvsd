@@ -60,3 +60,17 @@ jobs:
 
       - name: Lint
         run: pnpm --filter @cognobserve/web --filter @cognobserve/api lint
+
+      - name: Build
+        run: pnpm --filter @cognobserve/web build
+        env:
+          SKIP_ENV_VALIDATION: "true"
+
+      - name: Check for uncommitted changes (drift check)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Uncommitted changes detected after build. Please commit all generated files."
+            git status --porcelain
+            git diff
+            exit 1
+          fi
