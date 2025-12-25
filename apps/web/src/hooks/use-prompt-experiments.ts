@@ -26,7 +26,19 @@ export function usePromptExperiments({
     error,
   } = trpc.promptExperiments.list.useQuery(
     { workspaceSlug, projectId },
-    { staleTime: 30_000, enabled: !!projectId }
+    {
+      staleTime: 30_000,
+      enabled: !!projectId,
+      // Poll every 5 seconds if any experiment has pending/running analysis
+      refetchInterval: (query) => {
+        const items = query.state.data?.items;
+        const hasActiveAnalysis = items?.some(
+          (exp) =>
+            exp.analysisStatus === "pending" || exp.analysisStatus === "running"
+        );
+        return hasActiveAnalysis ? 5000 : false;
+      },
+    }
   );
 
   // Extract items from paginated response
@@ -214,7 +226,14 @@ export function useExperimentDetail({
     error,
   } = trpc.promptExperiments.get.useQuery(
     { workspaceSlug, experimentId },
-    { enabled: !!workspaceSlug && !!experimentId }
+    {
+      enabled: !!workspaceSlug && !!experimentId,
+      // Poll every 3 seconds when analysis is pending or running
+      refetchInterval: (query) => {
+        const status = query.state.data?.analysisStatus;
+        return status === "pending" || status === "running" ? 3000 : false;
+      },
+    }
   );
 
   // Query analytics

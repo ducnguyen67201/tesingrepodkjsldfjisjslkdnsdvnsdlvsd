@@ -511,3 +511,195 @@ export const VALID_STATUS_TRANSITIONS: Record<ExperimentStatus, ExperimentStatus
   completed: ["archived"],
   archived: [],
 };
+
+// ============================================================
+// Analysis Schemas (Temporal Workflow)
+// ============================================================
+
+/**
+ * Analysis status - lifecycle of the analysis workflow
+ */
+export const AnalysisStatusSchema = z.enum([
+  "pending",
+  "running",
+  "completed",
+  "failed",
+]);
+export type AnalysisStatus = z.infer<typeof AnalysisStatusSchema>;
+
+/**
+ * Extended variant metrics with aggregated span data
+ */
+export const AggregatedVariantMetricsSchema = z.object({
+  variantId: z.string(),
+  variantName: VariantNameSchema,
+  isControl: z.boolean(),
+  promptVersionId: z.string(),
+  promptName: z.string(),
+  promptVersion: z.number(),
+  /** Span counts */
+  totalSpans: z.number(),
+  errorSpans: z.number(),
+  /** Error rate (0-1) */
+  errorRate: z.number(),
+  /** Latency metrics in ms */
+  avgLatencyMs: z.number().nullable(),
+  p50LatencyMs: z.number().nullable(),
+  p95LatencyMs: z.number().nullable(),
+  p99LatencyMs: z.number().nullable(),
+  minLatencyMs: z.number().nullable(),
+  maxLatencyMs: z.number().nullable(),
+  /** Token usage */
+  totalPromptTokens: z.number(),
+  totalCompletionTokens: z.number(),
+  totalTokens: z.number(),
+  avgPromptTokens: z.number().nullable(),
+  avgCompletionTokens: z.number().nullable(),
+  /** Cost metrics */
+  totalCost: z.number(),
+  avgCost: z.number().nullable(),
+});
+export type AggregatedVariantMetrics = z.infer<typeof AggregatedVariantMetricsSchema>;
+
+/**
+ * Regression detected by LLM analysis
+ */
+export const RegressionSchema = z.object({
+  metric: z.string(),
+  severity: z.enum(["low", "medium", "high", "critical"]),
+  description: z.string(),
+  controlValue: z.number().nullable(),
+  treatmentValue: z.number().nullable(),
+  percentageChange: z.number().nullable(),
+});
+export type Regression = z.infer<typeof RegressionSchema>;
+
+/**
+ * LLM comparison analysis result
+ */
+export const LLMComparisonResultSchema = z.object({
+  /** Summary of the analysis */
+  summary: z.string(),
+  /** Winner determination */
+  winner: z.object({
+    variantName: VariantNameSchema.nullable(),
+    variantId: z.string().nullable(),
+    reason: z.string(),
+  }),
+  /** Confidence score 0-1 */
+  confidence: z.number().min(0).max(1),
+  /** Metric-by-metric comparison */
+  metricComparison: z.object({
+    latency: z.object({
+      winner: VariantNameSchema.nullable(),
+      summary: z.string(),
+    }),
+    cost: z.object({
+      winner: VariantNameSchema.nullable(),
+      summary: z.string(),
+    }),
+    errorRate: z.object({
+      winner: VariantNameSchema.nullable(),
+      summary: z.string(),
+    }),
+    tokenEfficiency: z.object({
+      winner: VariantNameSchema.nullable(),
+      summary: z.string(),
+    }),
+  }),
+  /** Detected regressions (treatment vs control) */
+  regressions: z.array(RegressionSchema),
+  /** Recommendations for next steps */
+  recommendations: z.array(z.string()),
+  /** Whether there's sufficient data for analysis */
+  sufficientData: z.boolean(),
+  /** Minimum spans recommendation if insufficient */
+  minimumSpansRecommendation: z.number().optional(),
+});
+export type LLMComparisonResult = z.infer<typeof LLMComparisonResultSchema>;
+
+/**
+ * Full analysis result (stored in DB)
+ */
+export const ExperimentAnalysisResultSchema = z.object({
+  /** When analysis was performed */
+  analyzedAt: z.string(), // ISO date string
+  /** Metrics for each variant */
+  variantMetrics: z.object({
+    A: AggregatedVariantMetricsSchema,
+    B: AggregatedVariantMetricsSchema,
+  }),
+  /** LLM comparison result */
+  comparison: LLMComparisonResultSchema,
+});
+export type ExperimentAnalysisResult = z.infer<typeof ExperimentAnalysisResultSchema>;
+
+/**
+ * Workflow input for experiment analysis
+ */
+export const ExperimentAnalysisWorkflowInputSchema = z.object({
+  experimentId: z.string(),
+  projectId: z.string(),
+});
+export type ExperimentAnalysisWorkflowInput = z.infer<typeof ExperimentAnalysisWorkflowInputSchema>;
+
+/**
+ * Input for triggering analysis
+ */
+export const TriggerAnalysisInputSchema = z.object({
+  workspaceSlug: z.string().min(1),
+  experimentId: z.string().min(1),
+});
+export type TriggerAnalysisInput = z.infer<typeof TriggerAnalysisInputSchema>;
+
+/**
+ * Get analysis status input
+ */
+export const GetAnalysisStatusInputSchema = z.object({
+  workspaceSlug: z.string().min(1),
+  experimentId: z.string().min(1),
+});
+export type GetAnalysisStatusInput = z.infer<typeof GetAnalysisStatusInputSchema>;
+
+/**
+ * Analysis status response
+ */
+export const AnalysisStatusResponseSchema = z.object({
+  experimentId: z.string(),
+  status: AnalysisStatusSchema.nullable(),
+  startedAt: z.date().nullable(),
+  completedAt: z.date().nullable(),
+  error: z.string().nullable(),
+  result: ExperimentAnalysisResultSchema.nullable(),
+  winnerVariantId: z.string().nullable(),
+  winnerConfidence: z.number().nullable(),
+});
+export type AnalysisStatusResponse = z.infer<typeof AnalysisStatusResponseSchema>;
+
+/**
+ * Internal: Update experiment analysis input
+ */
+export const UpdateExperimentAnalysisInputSchema = z.object({
+  experimentId: z.string(),
+  status: AnalysisStatusSchema,
+  result: ExperimentAnalysisResultSchema.optional(),
+  error: z.string().optional(),
+  winnerVariantId: z.string().optional().nullable(),
+  winnerConfidence: z.number().optional().nullable(),
+});
+export type UpdateExperimentAnalysisInput = z.infer<typeof UpdateExperimentAnalysisInputSchema>;
+
+/**
+ * Minimum spans required for meaningful analysis
+ */
+export const MIN_SPANS_FOR_ANALYSIS = 10;
+
+/**
+ * High confidence threshold
+ */
+export const HIGH_CONFIDENCE_THRESHOLD = 0.8;
+
+/**
+ * Low confidence threshold (inconclusive below this)
+ */
+export const LOW_CONFIDENCE_THRESHOLD = 0.5;

@@ -4563,7 +4563,14 @@ export const PromptExperimentScalarFieldEnum = {
   tags: 'tags',
   createdById: 'createdById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  analysisStatus: 'analysisStatus',
+  analysisStartedAt: 'analysisStartedAt',
+  analysisCompletedAt: 'analysisCompletedAt',
+  analysisResult: 'analysisResult',
+  analysisError: 'analysisError',
+  winnerVariantId: 'winnerVariantId',
+  winnerConfidence: 'winnerConfidence'
 } as const
 
 export type PromptExperimentScalarFieldEnum = (typeof PromptExperimentScalarFieldEnum)[keyof typeof PromptExperimentScalarFieldEnum]
@@ -4682,6 +4689,7 @@ export const SpanScalarFieldEnum = {
   promptVariantId: 'promptVariantId',
   promptVariantName: 'promptVariantName',
   assignmentKeyHash: 'assignmentKeyHash',
+  promptVersionId: 'promptVersionId',
   createdAt: 'createdAt'
 } as const
 

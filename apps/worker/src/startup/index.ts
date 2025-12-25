@@ -41,7 +41,7 @@ type WorkflowStarter = (
 ) => Promise<{ started: number; skipped: number }>;
 
 /** Supported workflow types */
-type WorkflowType = "alerts" | "github" | "traces" | "scores" | "evals" | "knowledge";
+type WorkflowType = "alerts" | "github" | "traces" | "scores" | "evals" | "knowledge" | "experiments";
 
 /** Workflow configuration */
 interface WorkflowConfig {
@@ -98,6 +98,12 @@ const WORKFLOW_REGISTRY: Record<WorkflowType, WorkflowConfig> = {
     startOnBoot: false,
     // No starter - triggered by knowledge.publishArticle and knowledge.uploadAttachment
   },
+  experiments: {
+    name: "Experiment Analysis",
+    description: "Event-driven workflows for A/B prompt experiment analysis",
+    startOnBoot: false,
+    // No starter - triggered by experiments.start router
+  },
 };
 
 // ============================================
@@ -131,6 +137,7 @@ export async function startAllWorkflows(): Promise<StartupResult> {
       scores: { started: 0, skipped: 0, errors: [] },
       evals: { started: 0, skipped: 0, errors: [] },
       knowledge: { started: 0, skipped: 0, errors: [] },
+      experiments: { started: 0, skipped: 0, errors: [] },
     },
   };
 

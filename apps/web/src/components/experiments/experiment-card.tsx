@@ -12,6 +12,10 @@ import {
   Copy,
   FlaskConical,
   BarChart3,
+  Trophy,
+  AlertCircle,
+  Loader2,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +54,8 @@ interface Variant {
   version: number;
 }
 
+type AnalysisStatus = "pending" | "running" | "completed" | "failed" | null;
+
 interface ExperimentCardProps {
   id: string;
   name: string;
@@ -63,6 +69,11 @@ interface ExperimentCardProps {
   endedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  // Analysis fields
+  analysisStatus?: AnalysisStatus;
+  analysisError?: string | null;
+  winnerVariantId?: string | null;
+  winnerConfidence?: number | null;
   onEdit: (id: string) => void;
   onDelete: (id: string) => Promise<void>;
   onStart: (id: string) => Promise<void>;
@@ -89,6 +100,10 @@ export function ExperimentCard({
   variants,
   startedAt,
   updatedAt,
+  analysisStatus,
+  analysisError,
+  winnerVariantId,
+  winnerConfidence,
   onEdit,
   onDelete,
   onStart,
@@ -105,6 +120,11 @@ export function ExperimentCard({
 }: ExperimentCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showStopDialog, setShowStopDialog] = useState(false);
+
+  // Get winner variant name from ID
+  const winnerVariant = winnerVariantId
+    ? variants.find((v) => v.id === winnerVariantId)
+    : null;
 
   const handleCopySlug = useCallback(
     async (e: React.MouseEvent) => {
@@ -270,6 +290,51 @@ export function ExperimentCard({
               <span className="text-[10px]">• {allocationPct}% traffic</span>
             </div>
 
+            {/* Analysis Status */}
+            {analysisStatus && status === "running" && (
+              <div className="flex items-center gap-2 mt-3">
+                {analysisStatus === "pending" && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1">
+                    <Clock className="h-3 w-3" />
+                    Analysis pending
+                  </Badge>
+                )}
+                {analysisStatus === "running" && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-blue-600 border-blue-200 bg-blue-50">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Analyzing...
+                  </Badge>
+                )}
+                {analysisStatus === "completed" && winnerVariant && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-green-600 border-green-200 bg-green-50">
+                    <Trophy className="h-3 w-3" />
+                    Winner: Variant {winnerVariant.name}
+                    {winnerConfidence && (
+                      <span className="text-muted-foreground">
+                        ({Math.round(winnerConfidence * 100)}% conf)
+                      </span>
+                    )}
+                  </Badge>
+                )}
+                {analysisStatus === "completed" && !winnerVariant && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1">
+                    No clear winner
+                  </Badge>
+                )}
+                {analysisStatus === "failed" && (
+                  <Badge variant="outline" className="text-[10px] px-1.5 py-0.5 gap-1 text-red-600 border-red-200 bg-red-50">
+                    <AlertCircle className="h-3 w-3" />
+                    Analysis failed
+                    {analysisError && (
+                      <span title={analysisError} className="cursor-help">
+                        (hover for details)
+                      </span>
+                    )}
+                  </Badge>
+                )}
+              </div>
+            )}
+
             {/* Started time / Updated time */}
             <p className="text-[10px] text-muted-foreground mt-2">
               {startedAt
@@ -291,20 +356,6 @@ export function ExperimentCard({
               >
                 <Play className="h-3.5 w-3.5" />
                 {isStarting ? "Starting..." : "Start"}
-              </Button>
-            )}
-
-            {/* Pause button - visible when experiment is running */}
-            {canPause && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 gap-1.5"
-                onClick={handlePause}
-                disabled={isActionDisabled}
-              >
-                <Pause className="h-3.5 w-3.5" />
-                {isPausing ? "Pausing..." : "Pause"}
               </Button>
             )}
 
@@ -333,6 +384,16 @@ export function ExperimentCard({
                   Copy Slug
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+
+                {canPause && (
+                  <DropdownMenuItem
+                    onClick={handlePause}
+                    disabled={isActionDisabled}
+                  >
+                    <Pause className="mr-2 h-4 w-4" />
+                    {isPausing ? "Pausing..." : "Pause"}
+                  </DropdownMenuItem>
+                )}
 
                 {canStop && (
                   <DropdownMenuItem

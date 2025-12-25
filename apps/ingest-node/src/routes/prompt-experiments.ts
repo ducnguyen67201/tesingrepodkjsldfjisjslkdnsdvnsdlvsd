@@ -27,6 +27,16 @@ export const promptExperimentsRouter: RouterType = Router();
 promptExperimentsRouter.use(rateLimitMiddleware);
 
 // ============================================================
+// Constants
+// ============================================================
+
+/** Total basis points for bucketing (0-9999 = 10000 buckets) */
+const TOTAL_BASIS_POINTS = 10000;
+
+/** Multiplier to convert allocation percentage to basis points */
+const ALLOCATION_TO_BASIS_POINTS = 100;
+
+// ============================================================
 // Types & Schemas
 // ============================================================
 
@@ -143,13 +153,13 @@ const hashAssignmentKey = (key: string): string => {
  * Algorithm:
  * 1. Hash(assignmentKey + assignmentSeed) → 32 bytes
  * 2. Take first 4 bytes as unsigned int
- * 3. Mod by 10000 to get bucket (basis points)
+ * 3. Mod by TOTAL_BASIS_POINTS to get bucket (0-9999)
  */
 const computeBucket = (assignmentKey: string, seed: string): number => {
   const hash = crypto.createHash("sha256").update(`${assignmentKey}:${seed}`).digest();
   // Read first 4 bytes as unsigned big-endian integer
   const value = hash.readUInt32BE(0);
-  return value % 10000;
+  return value % TOTAL_BASIS_POINTS;
 };
 
 /**
@@ -279,11 +289,12 @@ promptExperimentsRouter.get("/:slug/resolve", async (req: Request, res: Response
     // Hash assignment key for storage (never store raw)
     const assignmentKeyHash = hashAssignmentKey(assignmentKey);
 
-    // Compute bucket for this user
+    // Compute bucket for this user (0 to TOTAL_BASIS_POINTS - 1)
     const bucket = computeBucket(assignmentKey, experiment.assignmentSeed);
 
     // Check if user is in allocation
-    const allocationThreshold = experiment.allocationPct * 100; // Convert to basis points
+    // allocationPct is 0-100, convert to basis points (0-10000)
+    const allocationThreshold = experiment.allocationPct * ALLOCATION_TO_BASIS_POINTS;
     const inAllocation = bucket < allocationThreshold;
 
     let selectedVariant: { id: string; name: string; isControl: boolean } | null = null;
@@ -298,9 +309,10 @@ promptExperimentsRouter.get("/:slug/resolve", async (req: Request, res: Response
       }
     } else if (inAllocation) {
       // User is in experiment allocation - select variant by weight
-      const mappedBucket = bucket % allocationThreshold; // Re-normalize within allocation
+      // Use original bucket directly for stable assignment regardless of allocation changes
+      // Variant weights are already normalized to TOTAL_BASIS_POINTS (10000)
       selectedVariant = selectVariant(
-        mappedBucket,
+        bucket,
         experiment.variants.map((v) => ({
           id: v.id,
           name: v.name,

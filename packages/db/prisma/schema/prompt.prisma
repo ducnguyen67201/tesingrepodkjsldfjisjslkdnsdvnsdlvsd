@@ -83,11 +83,23 @@ model PromptExperiment {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
+  // ============================================================
+  // Analysis Results (populated by Temporal workflow)
+  // ============================================================
+  analysisStatus      String?    // "pending" | "running" | "completed" | "failed"
+  analysisStartedAt   DateTime?
+  analysisCompletedAt DateTime?
+  analysisResult      Json?      // LLM comparison results { summary, regressions, recommendations }
+  analysisError       String?    // Error message if analysis failed
+  winnerVariantId     String?    // ID of winning variant (or null if inconclusive)
+  winnerConfidence    Float?     // 0-1 confidence score
+
   variants PromptExperimentVariant[]
 
   @@unique([projectId, slug])
   @@index([projectId, status])
   @@index([projectId, createdAt(sort: Desc)])
+  @@index([analysisStatus])
 }
 
 model PromptExperimentVariant {

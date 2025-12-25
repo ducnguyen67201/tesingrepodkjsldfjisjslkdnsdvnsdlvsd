@@ -36,3 +36,6 @@ export { evalPipelineWorkflow } from "./eval.workflow";
 // Knowledge base workflows
 export { knowledgeIndexWorkflow } from "./knowledge-index.workflow";
 export { attachmentExtractWorkflow } from "./attachment-extract.workflow";
+
+// Experiment analysis workflow (A/B testing)
+export { experimentAnalysisWorkflow } from "./experiment-analysis.workflow";

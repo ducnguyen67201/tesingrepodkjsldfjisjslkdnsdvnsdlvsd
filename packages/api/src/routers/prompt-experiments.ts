@@ -8,8 +8,9 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import crypto from "crypto";
-import { prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@cognobserve/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
+import { getTemporalClient, getTaskQueue } from "../lib/temporal";
 import {
   CreateExperimentInputSchema,
   UpdateExperimentInputSchema,
@@ -202,6 +203,11 @@ export const promptExperimentsRouter = createRouter({
             promptSlug: v.promptVersion.prompt.slug,
             version: v.promptVersion.version,
           })),
+          // Analysis fields for card display
+          analysisStatus: exp.analysisStatus as "pending" | "running" | "completed" | "failed" | null,
+          analysisError: exp.analysisError,
+          winnerVariantId: exp.winnerVariantId,
+          winnerConfidence: exp.winnerConfidence,
           createdAt: exp.createdAt,
           updatedAt: exp.updatedAt,
         })),
@@ -258,6 +264,14 @@ export const promptExperimentsRouter = createRouter({
         createdById: experiment.createdById,
         createdAt: experiment.createdAt,
         updatedAt: experiment.updatedAt,
+        // Analysis fields
+        analysisStatus: experiment.analysisStatus as "pending" | "running" | "completed" | "failed" | null,
+        analysisStartedAt: experiment.analysisStartedAt,
+        analysisCompletedAt: experiment.analysisCompletedAt,
+        analysisResult: experiment.analysisResult as Record<string, unknown> | null,
+        analysisError: experiment.analysisError,
+        winnerVariantId: experiment.winnerVariantId,
+        winnerConfidence: experiment.winnerConfidence,
         variants: experiment.variants.map((v) => ({
           id: v.id,
           name: v.name as VariantName,
@@ -448,7 +462,8 @@ export const promptExperimentsRouter = createRouter({
     .input(UpdateVariantWeightsInputSchema)
     .use(workspaceMiddleware)
     .mutation(async ({ ctx, input }) => {
-      const experiment = await verifyExperimentInWorkspace(input.experimentId, ctx.workspace.id);
+      // Verify experiment exists in workspace
+      await verifyExperimentInWorkspace(input.experimentId, ctx.workspace.id);
 
       // Updating weights resets assignment seed to avoid mixed cohorts
       const newSeed = crypto.randomUUID();
@@ -479,7 +494,7 @@ export const promptExperimentsRouter = createRouter({
     }),
 
   /**
-   * Start experiment
+   * Start experiment and trigger analysis workflow
    */
   start: protectedProcedure
     .input(StartExperimentInputSchema)
@@ -494,13 +509,44 @@ export const promptExperimentsRouter = createRouter({
         data: {
           status: "running",
           startedAt: experiment.status === "draft" ? new Date() : undefined,
+          // Reset analysis status when starting
+          analysisStatus: "pending",
+          analysisResult: Prisma.JsonNull,
+          analysisError: null,
+          winnerVariantId: null,
+          winnerConfidence: null,
         },
       });
 
-      console.info("Experiment started", {
-        experimentId: input.experimentId,
-        userId: ctx.session.user.id,
-      });
+      // Trigger analysis workflow
+      const timestamp = Date.now();
+      const workflowId = `experiment-analysis-${input.experimentId}-${timestamp}`;
+
+      try {
+        const client = await getTemporalClient();
+        await client.workflow.start("experimentAnalysisWorkflow", {
+          taskQueue: getTaskQueue(),
+          workflowId,
+          args: [
+            {
+              experimentId: input.experimentId,
+              projectId: experiment.projectId,
+            },
+          ],
+        });
+
+        console.info("Experiment started and analysis workflow triggered", {
+          experimentId: input.experimentId,
+          workflowId,
+          userId: ctx.session.user.id,
+        });
+      } catch (error) {
+        // Log error but don't fail the experiment start
+        console.error("Failed to start analysis workflow", {
+          experimentId: input.experimentId,
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
 
       return { id: updated.id, status: updated.status };
     }),
