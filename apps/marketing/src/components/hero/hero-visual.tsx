@@ -7,7 +7,7 @@ import { COLORS } from "@/lib/colors";
  */
 export function HeroVisual() {
   return (
-    <div className="relative h-full min-h-[400px] flex items-center justify-center">
+    <div className="relative h-full min-h-[400px] flex items-center justify-center overflow-visible">
       {/* Background Glow */}
       <div
         className="absolute inset-0 blur-3xl rounded-full -z-10"
@@ -16,11 +16,12 @@ export function HeroVisual() {
         }}
       />
 
-      {/* Dashboard Mockup */}
-      <DashboardMockup />
-
-      {/* AI Insight Panel - Floating */}
-      <AiInsightPanel />
+      {/* Dashboard Mockup Container */}
+      <div className="relative">
+        <DashboardMockup />
+        {/* AI Insight Panel - Floating on top right */}
+        <AiInsightPanel />
+      </div>
     </div>
   );
 }

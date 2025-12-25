@@ -13,7 +13,7 @@ export function FaqSection() {
   return (
     <section
       id="security"
-      className="py-24 px-6 relative"
+      className="py-24 px-6 sm:px-8 lg:px-12 relative"
       style={{ borderTop: `1px solid ${COLORS.border.light}` }}
     >
       <div className="max-w-3xl mx-auto">

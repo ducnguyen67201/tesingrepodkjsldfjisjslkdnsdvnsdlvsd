@@ -8,14 +8,19 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { env } from "./env";
+
+// ============================================
+// External Links
+// ============================================
+export const CALENDAR_BOOKING_URL = env.CALENDAR_BOOKING_URL;
+
 // ============================================
 // Navigation
 // ============================================
 export const NAV_LINKS = [
-  { label: "Features", href: "#features" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Integrations", href: "#integrations" },
-  { label: "Security", href: "#security" },
+  { label: "Why Us", href: "/" },
+  { label: "Use Cases", href: "/use-cases" },
 ] as const;
 
 // ============================================
@@ -35,7 +40,7 @@ export const FAQS: FAQ[] = [
   {
     question: "How long is data retained?",
     answer:
-      "By default, metric data is retained for 15 months, and traces for 30 days. Custom retention policies can be configured for enterprise plans to meet compliance requirements.",
+      "By default, data is retained for 7 days. Extended retention periods are available on paid plans to meet your compliance and debugging requirements.",
   },
   {
     question: "Can I self-host the collector?",
@@ -56,7 +61,7 @@ export const TRUST_METRICS: TrustMetric[] = [
   { value: "2.5ms", label: "Ingest Latency" },
   { value: "99.99%", label: "Uptime SLA" },
   { value: "100%", label: "Data Ownership" },
-  { value: "SOC2", label: "Compliant" },
+  { value: "SOC2", label: "In Progress" },
 ];
 
 // ============================================
@@ -95,26 +100,21 @@ export const FOOTER_SECTIONS: FooterSection[] = [
     title: "Product",
     links: [
       { label: "Features", href: "#features" },
+      { label: "Use Cases", href: "/use-cases" },
       { label: "Integrations", href: "#integrations" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Changelog", href: "/changelog" },
     ],
   },
   {
-    title: "Resources",
+    title: "Company",
     links: [
-      { label: "Documentation", href: "/docs" },
-      { label: "API Reference", href: "/api" },
-      { label: "Community", href: "/community" },
-      { label: "Blog", href: "/blog" },
+      { label: "About", href: "/" },
+      { label: "Book a Demo", href: "/demo" },
     ],
   },
   {
     title: "Legal",
     links: [
       { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-      { label: "Security", href: "/security" },
     ],
   },
 ];
@@ -135,7 +135,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 // Hero Section
 // ============================================
 export const HERO_BADGES = [
-  { icon: ShieldCheck, label: "SOC2 Type II" },
+  { icon: ShieldCheck, label: "SOC2 Pending" },
   { icon: Zap, label: "< 1% Overhead" },
   { icon: Network, label: "OpenTelemetry" },
 ] as const;

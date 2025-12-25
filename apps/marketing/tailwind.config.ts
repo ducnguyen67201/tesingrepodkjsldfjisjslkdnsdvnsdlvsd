@@ -8,7 +8,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-ibm-plex)", "sans-serif"],
         display: ["var(--font-space-grotesk)", "sans-serif"],
-        mono: ["var(--font-jetbrains)", "monospace"],
+        mono: ["var(--font-noto-mono)", "monospace"],
       },
       colors: {
         marketing: {

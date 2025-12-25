@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Sans, Space_Grotesk, Noto_Sans_Mono } from "next/font/google";
 
 import { MarketingNav } from "@/components/layout/marketing-nav";
 import { MarketingFooter } from "@/components/layout/marketing-footer";
@@ -18,10 +18,10 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const notoSansMono = Noto_Sans_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-jetbrains",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-noto-mono",
 });
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${ibmPlex.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans relative overflow-x-hidden`}
+        className={`${ibmPlex.variable} ${spaceGrotesk.variable} ${notoSansMono.variable} font-sans relative overflow-x-hidden`}
       >
         <BackgroundAmbience />
         <MarketingNav />

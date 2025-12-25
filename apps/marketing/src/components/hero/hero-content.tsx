@@ -37,8 +37,8 @@ export function HeroContent() {
         className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.1] mb-6"
         style={{ color: COLORS.ink.primary }}
       >
-        Observe every <br />
-        <span className="text-gradient-warm">AI call</span> in real time.
+        Traces, logs, metrics. <br />
+        <span className="text-gradient-warm">One platform.</span>
       </h1>
 
       {/* Subheadline */}
@@ -46,12 +46,12 @@ export function HeroContent() {
         className="text-lg max-w-xl mb-8 leading-relaxed font-normal"
         style={{ color: COLORS.ink.secondary }}
       >
-        Production-grade AI observability with{" "}
+        Full-stack observability with native OTLP support.{" "}
         <span className="font-medium" style={{ color: COLORS.ink.primary }}>
-          zero overhead
-        </span>
-        . Get p99 latency insights, distributed tracing, and AI-guided root
-        cause analysis without slowing down your application.
+          Collect traces, logs, and metrics
+        </span>{" "}
+        from AI workloads and traditional services—with AI-powered root cause
+        analysis built in.
       </p>
 
       {/* CTA Buttons */}
