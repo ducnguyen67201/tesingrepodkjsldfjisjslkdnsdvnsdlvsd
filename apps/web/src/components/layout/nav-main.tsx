@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, FolderKanban, FileCode, BookOpen, Settings } from "lucide-react";
+import { LayoutDashboard, FileCode, BookOpen, Settings } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
+import { NavProjects } from "./nav-projects";
 
 interface NavItem {
   title: string;
@@ -28,12 +29,6 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Overview",
     items: [
       { title: "Dashboard", path: "", icon: LayoutDashboard },
-    ],
-  },
-  {
-    label: "Observability",
-    items: [
-      { title: "Projects", path: "/projects", icon: FolderKanban },
     ],
   },
   {
@@ -80,5 +75,21 @@ export function NavMain() {
     </SidebarGroup>
   );
 
-  return <>{NAV_GROUPS.map(renderGroup)}</>;
+  return (
+    <>
+      {/* Overview */}
+      {renderGroup(NAV_GROUPS[0]!)}
+
+      {/* Observability - Projects with expandable sub-items */}
+      <SidebarGroup>
+        <SidebarGroupLabel>Observability</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <NavProjects />
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      {/* Developer Tools & Configuration */}
+      {NAV_GROUPS.slice(1).map(renderGroup)}
+    </>
+  );
 }
