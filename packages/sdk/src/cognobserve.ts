@@ -1,6 +1,7 @@
 import { Trace } from './trace';
 import { Transport } from './transport';
 import { PromptClient } from './prompts';
+import { LoggerClient } from './logger';
 import { resolveConfig, validateConfig } from './config';
 import {
   runWithContext,
@@ -25,6 +26,7 @@ class CognObserveClient {
   private config: ResolvedConfig | null = null;
   private transport: Transport | null = null;
   private _prompts: PromptClient | null = null;
+  private _logger: LoggerClient | null = null;
   private initialized = false;
   private shutdownRegistered = false;
   private _observe: ReturnType<typeof createObserve> | null = null;
@@ -58,6 +60,7 @@ class CognObserveClient {
 
     this.transport = new Transport(this.config);
     this._prompts = new PromptClient(this.config);
+    this._logger = new LoggerClient(this.config);
     this.initialized = true;
 
     // Create observe function with transport callback
@@ -260,9 +263,15 @@ class CognObserveClient {
       console.log('[CognObserve] Shutting down...');
     }
 
-    await this.transport.shutdown();
+    // Shutdown transports in parallel
+    await Promise.all([
+      this.transport.shutdown(),
+      this._logger?.shutdown(),
+    ]);
+
     this.transport = null;
     this._prompts = null;
+    this._logger = null;
     this.config = null;
     this.initialized = false;
     this.globalUser = null;
@@ -379,6 +388,35 @@ class CognObserveClient {
       );
     }
     return this._prompts;
+  }
+
+  /**
+   * Logger client for sending structured logs
+   *
+   * Logs are sent to the ingest service in OTLP format and can be
+   * correlated with traces when called within an observe() context.
+   *
+   * @example
+   * ```typescript
+   * // Basic logging
+   * CognObserve.logs.info('User logged in', { userId: '123' });
+   * CognObserve.logs.error('Payment failed', { orderId: 'abc', reason: 'timeout' });
+   *
+   * // Logs within traces are automatically correlated
+   * await CognObserve.observe('process-order', async () => {
+   *   CognObserve.logs.info('Starting order processing');
+   *   // ... do work
+   *   CognObserve.logs.debug('Order validated', { items: 3 });
+   * });
+   * ```
+   */
+  get logs(): LoggerClient {
+    if (!this._logger) {
+      throw new Error(
+        '[CognObserve] SDK not initialized. Call CognObserve.init() first.'
+      );
+    }
+    return this._logger;
   }
 }
 

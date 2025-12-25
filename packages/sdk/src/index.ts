@@ -5,6 +5,7 @@ export { CognObserve } from './cognobserve';
 export { Trace } from './trace';
 export { Span } from './span';
 export { PromptClient } from './prompts';
+export { LoggerClient } from './logger';
 
 // Types
 export type {
@@ -16,6 +17,9 @@ export type {
   TokenUsage,
   UserInfo,
 } from './types';
+
+// Log types
+export type { LogLevel, LogRecord } from './log-types';
 
 // Observe types
 export type { ObserveOptions } from './observe';

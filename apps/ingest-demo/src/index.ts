@@ -5,6 +5,7 @@
  * 1. OpenTelemetry auto-instrumentation for HTTP/Express
  * 2. Manual span creation with attributes
  * 3. Sending traces to CognObserve ingest service
+ * 4. Pino logging with OTLP log export
  */
 
 // IMPORTANT: Import telemetry FIRST before any other modules
@@ -15,6 +16,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import { config } from "./config/env.js";
+import { logger, flushPendingLogs } from "./lib/logger.js";
 import { weatherRouter } from "./routes/weather.js";
 import { quotesRouter } from "./routes/quotes.js";
 import { jokesRouter } from "./routes/jokes.js";
@@ -53,7 +55,16 @@ app.get("/", (_req, res) => {
 
 // Start server
 const port = config.server.port;
-app.listen(port, () => {
+const server = app.listen(port, () => {
+  logger.info(
+    {
+      port,
+      tracesUrl: config.cognobserve.tracesUrl,
+      logsUrl: `${config.cognobserve.endpoint}/v1/logs`,
+    },
+    "CognObserve Ingest Demo App started"
+  );
+
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
@@ -73,7 +84,21 @@ app.listen(port, () => {
     POST /api/demo/prompt-test/experiment - Test A/B experiment + mock LLM
 
   Traces exporting to:   ${config.cognobserve.tracesUrl}
+  Logs exporting to:     ${config.cognobserve.endpoint}/v1/logs
   `);
 });
+
+// Graceful shutdown
+const shutdown = async (): Promise<void> => {
+  logger.info("Shutting down server...");
+  await flushPendingLogs();
+  server.close(() => {
+    logger.info("Server closed");
+    process.exit(0);
+  });
+};
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 export { app };
