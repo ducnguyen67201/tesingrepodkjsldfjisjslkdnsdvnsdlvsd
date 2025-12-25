@@ -21,7 +21,6 @@ import type * as activities from "../temporal/activities";
 import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
 import type {
   ExperimentAnalysisWorkflowInput,
-  AggregatedVariantMetrics,
   LLMComparisonResult,
 } from "@cognobserve/api/schemas";
 

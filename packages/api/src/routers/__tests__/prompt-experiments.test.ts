@@ -5,6 +5,9 @@ import type { SessionWithWorkspaces } from "../../context";
 
 // Mock prisma
 vi.mock("@cognobserve/db", () => ({
+  Prisma: {
+    JsonNull: null,
+  },
   prisma: {
     project: {
       findFirst: vi.fn(),
