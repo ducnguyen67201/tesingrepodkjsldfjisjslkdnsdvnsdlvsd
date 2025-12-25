@@ -51,22 +51,22 @@ jobs:
           PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE cognobserve_shadow;"
 
       - name: Run migrations
-        run: pnpm --filter @cognobserve/db prisma migrate deploy
+        run: pnpm --filter @cognobserve/db db:migrate:deploy
 
       # Schema Drift Detection using Shadow Database
       - name: Check migration drift (migrations vs schema)
         run: |
           echo "Checking if migrations match the Prisma schema..."
-          pnpm --filter @cognobserve/db prisma migrate diff \
+          cd packages/db && pnpm exec prisma migrate diff \
             --from-migrations ./prisma/migrations \
-            --to-schema-datamodel ./prisma/schema.prisma \
+            --to-schema-datamodel ./prisma/schema \
             --exit-code
         continue-on-error: false
 
       - name: Check database drift (database vs migrations)
         run: |
           echo "Checking if database state matches applied migrations..."
-          pnpm --filter @cognobserve/db prisma migrate diff \
+          cd packages/db && pnpm exec prisma migrate diff \
             --from-url "$DATABASE_URL" \
             --to-migrations ./prisma/migrations \
             --exit-code
@@ -75,11 +75,12 @@ jobs:
       - name: Validate no pending migrations needed
         run: |
           echo "Checking if any new migrations are needed..."
+          cd packages/db
           # Use shadow database to simulate migration creation
           # If this produces output, a migration is needed
-          OUTPUT=$(pnpm --filter @cognobserve/db prisma migrate diff \
+          OUTPUT=$(pnpm exec prisma migrate diff \
             --from-migrations ./prisma/migrations \
-            --to-schema-datamodel ./prisma/schema.prisma \
+            --to-schema-datamodel ./prisma/schema \
             --script 2>&1) || true
 
           if [ -n "$OUTPUT" ] && [ "$OUTPUT" != "-- This is an empty migration." ]; then
