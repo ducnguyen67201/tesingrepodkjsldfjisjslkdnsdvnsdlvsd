@@ -152,7 +152,7 @@ function ChartRenderer({ type, series, display }: ChartRendererProps) {
   }
 
   // Chart widgets
-  return <TimeSeriesChart type={type} series={series} display={display} />;
+  return <TimeSeriesChart type={type} series={series} />;
 }
 
 // ============================================================
