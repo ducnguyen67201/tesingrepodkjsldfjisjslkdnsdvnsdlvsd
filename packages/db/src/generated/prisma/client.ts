@@ -95,6 +95,16 @@ export type ModelPricing = Prisma.ModelPricingModel
  */
 export type CostDailySummary = Prisma.CostDailySummaryModel
 /**
+ * Model Dashboard
+ * 
+ */
+export type Dashboard = Prisma.DashboardModel
+/**
+ * Model DashboardWidget
+ * 
+ */
+export type DashboardWidget = Prisma.DashboardWidgetModel
+/**
  * Model EvalSuite
  * 
  */

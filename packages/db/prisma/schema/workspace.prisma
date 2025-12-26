@@ -33,6 +33,9 @@ model Workspace {
   // Extensions Hub
   extensionInstalls ExtensionInstall[]
 
+  // Observability Dashboards
+  dashboards Dashboard[]
+
   @@index([slug])
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import {
-  Activity,
   LineChart,
   Users,
   Workflow,
@@ -129,14 +129,13 @@ function CentralLogo() {
       }}
     >
       {/* Logo icon */}
-      <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center"
-        style={{
-          background: `linear-gradient(135deg, ${COLORS.accent.yellow} 0%, ${COLORS.accent.yellowStrong} 100%)`,
-        }}
-      >
-        <Activity className="w-4 h-4 text-white" />
-      </div>
+      <Image
+        src="/logo.svg"
+        alt="CognObserve"
+        width={32}
+        height={32}
+        className="rounded-lg"
+      />
       <span
         className="font-bold text-lg"
         style={{ color: COLORS.accent.yellowStrong }}

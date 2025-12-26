@@ -392,3 +392,39 @@ export const rcaToast = {
   promptCopied: () =>
     toast.success("Fix prompt copied", { description: "Paste it into your AI coding assistant." }),
 } as const;
+
+// ============================================================
+// Dashboard Toasts
+// ============================================================
+
+export const dashboardToast = {
+  created: (name: string) =>
+    toast.success("Dashboard Created", { description: `"${name}" is ready.` }),
+
+  updated: (name?: string) =>
+    toast.success("Dashboard Updated", {
+      description: name ? `"${name}" saved.` : "Changes saved.",
+    }),
+
+  deleted: (name?: string) =>
+    toast.success("Dashboard Deleted", {
+      description: name ? `"${name}" removed.` : "Dashboard removed.",
+    }),
+
+  widgetAdded: () =>
+    toast.success("Widget Added", { description: "New widget added to dashboard." }),
+
+  widgetUpdated: () =>
+    toast.success("Widget Updated", { description: "Widget configuration saved." }),
+
+  widgetDeleted: () =>
+    toast.success("Widget Removed", { description: "Widget removed from dashboard." }),
+
+  layoutSaved: () =>
+    toast.success("Layout Saved", { description: "Widget positions updated." }),
+
+  setDefault: (name: string) =>
+    toast.success("Default Dashboard Set", {
+      description: `"${name}" is now the default dashboard.`,
+    }),
+} as const;

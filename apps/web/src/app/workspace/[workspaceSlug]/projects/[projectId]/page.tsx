@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { ArrowLeft, Activity, MessagesSquare, Users, ScrollText } from "lucide-react";
+import { ArrowLeft, Activity, MessagesSquare, Users, ScrollText, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -14,10 +14,11 @@ import { ProjectLogsTable } from "@/components/logs/project-logs-table";
 import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-table";
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
+import { DashboardView } from "@/components/dashboard";
 import { useProjectUserCount } from "@/hooks/project-user-count/use-project-user-count";
 import { Badge } from "@/components/ui/badge";
 
-type ProjectTab = "traces" | "logs" | "sessions" | "users";
+type ProjectTab = "metrics" | "traces" | "logs" | "sessions" | "users";
 
 export default function ProjectDetailPage() {
   const params = useParams<{ workspaceSlug: string; projectId: string }>();
@@ -26,7 +27,7 @@ export default function ProjectDetailPage() {
   const { workspaceSlug, workspaceUrl } = useWorkspaceUrl();
   const projectId = params.projectId;
 
-  const currentTab = (searchParams.get("tab") as ProjectTab) || "traces";
+  const currentTab = (searchParams.get("tab") as ProjectTab) || "metrics";
 
   const { data: project, isLoading: isLoadingProject } =
     trpc.projects.get.useQuery(
@@ -121,6 +122,10 @@ export default function ProjectDetailPage() {
       {/* Tabs */}
       <Tabs value={currentTab} onValueChange={handleTabChange}>
         <TabsList className="h-8">
+          <TabsTrigger value="metrics" className="h-7 gap-1.5 text-xs px-3">
+            <BarChart3 className="h-3 w-3" />
+            Metrics
+          </TabsTrigger>
           <TabsTrigger value="traces" className="h-7 gap-1.5 text-xs px-3">
             <Activity className="h-3 w-3" />
             Traces
@@ -138,6 +143,13 @@ export default function ProjectDetailPage() {
             Users
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="metrics" className="mt-2">
+          <DashboardView
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={projectId}
+          />
+        </TabsContent>
 
         <TabsContent value="traces" className="mt-2">
           <TracesTableV2

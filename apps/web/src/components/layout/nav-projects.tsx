@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -8,6 +8,7 @@ import {
   FolderKanban,
   Activity,
   ScrollText,
+  BarChart3,
   Plus,
 } from "lucide-react";
 import {
@@ -41,6 +42,7 @@ interface ProjectSubItem {
 }
 
 const PROJECT_SUB_ITEMS: ProjectSubItem[] = [
+  { title: "Metrics", tab: "metrics", icon: BarChart3 },
   { title: "Traces", tab: "traces", icon: Activity },
   { title: "Logs", tab: "logs", icon: ScrollText },
 ];
@@ -53,6 +55,7 @@ export function NavProjects() {
     new Set()
   );
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   const isCollapsed = sidebarState === "collapsed" && !isMobile;
 
@@ -81,14 +84,37 @@ export function NavProjects() {
     return pathname?.includes(`/projects/${projectId}`) && pathname?.includes(`tab=${tab}`);
   };
 
-  // Auto-expand active project
-  const activeProjectId = projects?.find((p) => isProjectActive(p.id))?.id;
-  if (activeProjectId && !expandedProjects.has(activeProjectId)) {
-    setExpandedProjects((prev) => new Set(prev).add(activeProjectId));
-  }
+  // Mark component as mounted (client-side only)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Auto-expand active project after mount
+  useEffect(() => {
+    if (!isMounted || !projects) return;
+    const activeProjectId = projects.find((p) => isProjectActive(p.id))?.id;
+    if (activeProjectId && !expandedProjects.has(activeProjectId)) {
+      setExpandedProjects((prev) => new Set(prev).add(activeProjectId));
+    }
+  }, [isMounted, projects, pathname]);
 
   if (!workspaceSlug) {
     return null;
+  }
+
+  // Don't render collapsibles until mounted to avoid hydration mismatch
+  if (!isMounted) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton>
+            <FolderKanban />
+            <span>Projects</span>
+            <ChevronRight className="ml-auto" />
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
   }
 
   // Hover card content for collapsed sidebar
@@ -122,7 +148,7 @@ export function NavProjects() {
         {/* Projects List */}
         {projects?.map((project) => (
           <div key={project.id} className="space-y-0.5">
-            <div className="px-2 py-1 text-sm font-medium text-muted-foreground truncate">
+            <div className="px-2 py-1 text-sm font-semibold truncate">
               {project.name}
             </div>
             {PROJECT_SUB_ITEMS.map((item) => {
@@ -215,7 +241,7 @@ export function NavProjects() {
                         isActive={isProjectActive(project.id)}
                         className="cursor-pointer"
                       >
-                        <span className="truncate">{project.name}</span>
+                        <span className="truncate font-semibold">{project.name}</span>
                         <ChevronRight
                           className={cn(
                             "ml-auto h-3 w-3 transition-transform",

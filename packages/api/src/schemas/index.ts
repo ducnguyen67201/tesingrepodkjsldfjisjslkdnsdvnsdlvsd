@@ -23,3 +23,4 @@ export * from "./prompt-experiments";
 export * from "./knowledge";
 export * from "./extensions";
 export * from "./theme";
+export * from "./dashboard";

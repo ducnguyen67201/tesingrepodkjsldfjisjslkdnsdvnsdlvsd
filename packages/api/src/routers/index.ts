@@ -35,6 +35,7 @@ import { knowledgeRouter } from "./knowledge";
 import { extensionsRouter } from "./extensions";
 import { themeRouter } from "./theme";
 import { logsRouter } from "./logs";
+import { dashboardsRouter, graphsRouter } from "./dashboards";
 
 /**
  * Main application router.
@@ -374,6 +375,36 @@ export const appRouter = createRouter({
   logs: logsRouter,
 
   /**
+   * Observability Dashboards
+   * @see ./dashboards.ts
+   *
+   * Configurable dashboards for metrics visualization.
+   *
+   * - dashboards.list      - List dashboards
+   * - dashboards.get       - Get dashboard with widgets
+   * - dashboards.getDefault - Get default dashboard
+   * - dashboards.create    - Create dashboard
+   * - dashboards.update    - Update dashboard metadata
+   * - dashboards.delete    - Delete dashboard
+   * - dashboards.upsertWidget - Create/update widget
+   * - dashboards.deleteWidget - Delete widget
+   * - dashboards.updateLayout - Batch update widget positions
+   * - dashboards.getPresets - Get labels and options
+   */
+  dashboards: dashboardsRouter,
+
+  /**
+   * Graph Queries
+   * @see ./dashboards.ts
+   *
+   * Execute metric queries for dashboard widgets.
+   *
+   * - graphs.query          - Execute graph query
+   * - graphs.projectSummaries - Get project summaries for overview
+   */
+  graphs: graphsRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -409,4 +440,6 @@ export {
   extensionsRouter,
   themeRouter,
   logsRouter,
+  dashboardsRouter,
+  graphsRouter,
 };

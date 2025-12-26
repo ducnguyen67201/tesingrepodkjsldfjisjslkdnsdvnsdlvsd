@@ -1,0 +1,42 @@
+// ============================================================
+// Observability Dashboard Models
+// ============================================================
+
+model Dashboard {
+  id          String   @id @default(cuid())
+  workspaceId String
+  projectId   String?  // null = workspace-level, set = project-scoped
+  name        String
+  description String?
+  visibility  String   @default("workspace") // "workspace" | "personal"
+  isDefault   Boolean  @default(false)
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy User      @relation("DashboardCreatedBy", fields: [createdById], references: [id])
+  widgets   DashboardWidget[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, projectId])
+}
+
+model DashboardWidget {
+  id          String   @id @default(cuid())
+  dashboardId String
+  title       String
+  type        String   // "line" | "area" | "bar" | "stacked_bar" | "donut" | "single" | "table"
+  query       Json     // GraphQuery schema
+  display     Json     // GraphDisplay schema
+  layout      Json     // { x, y, w, h }
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  dashboard Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  createdBy User      @relation("DashboardWidgetCreatedBy", fields: [createdById], references: [id])
+
+  @@index([dashboardId])
+}

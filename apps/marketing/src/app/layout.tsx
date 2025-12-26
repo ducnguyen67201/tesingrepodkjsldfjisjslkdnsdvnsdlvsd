@@ -35,6 +35,11 @@ export const metadata: Metadata = {
     "OTLP",
     "OpenTelemetry",
   ],
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
