@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { RefreshCw, LayoutDashboard } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useWorkspaceOverview } from "@/hooks/use-workspace-overview";
 import { TimeRangeFilter } from "@/components/dashboard/time-range-filter";
