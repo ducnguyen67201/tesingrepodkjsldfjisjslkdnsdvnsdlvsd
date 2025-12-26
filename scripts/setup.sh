@@ -12,7 +12,7 @@ NC='\033[0m' # No Color
 echo -e "${BLUE}"
 echo "╔═══════════════════════════════════════════════════════════╗"
 echo "║                                                           ║"
-echo "║               CognObserve Setup Script                    ║"
+echo "║               Ducsigr Setup Script                    ║"
 echo "║                                                           ║"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
@@ -52,14 +52,14 @@ docker-compose up -d
 
 # Wait for PostgreSQL to be ready
 echo -e "${YELLOW}Waiting for PostgreSQL to be ready...${NC}"
-until docker exec cognobserve-postgres pg_isready -U cognobserve > /dev/null 2>&1; do
+until docker exec ducsigr-postgres pg_isready -U ducsigr > /dev/null 2>&1; do
     sleep 1
 done
 echo -e "${GREEN}✓ PostgreSQL is ready${NC}"
 
 # Wait for Redis to be ready
 echo -e "${YELLOW}Waiting for Redis to be ready...${NC}"
-until docker exec cognobserve-redis redis-cli ping > /dev/null 2>&1; do
+until docker exec ducsigr-redis redis-cli ping > /dev/null 2>&1; do
     sleep 1
 done
 echo -e "${GREEN}✓ Redis is ready${NC}"

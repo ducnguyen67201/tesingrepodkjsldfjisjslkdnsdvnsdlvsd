@@ -20,7 +20,7 @@ importers:
 
   apps/ingest-demo:
     dependencies:
-      '@cognobserve/sdk':
+      '@ducsigr/sdk':
         specifier: workspace:*
         version: link:../../packages/sdk
       '@opentelemetry/api':
@@ -57,10 +57,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@types/express':
@@ -84,16 +84,16 @@ importers:
 
   apps/ingest-node:
     dependencies:
-      '@cognobserve/api':
+      '@ducsigr/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@cognobserve/db':
+      '@ducsigr/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@cognobserve/proto':
+      '@ducsigr/proto':
         specifier: workspace:*
         version: link:../../packages/proto
-      '@cognobserve/shared':
+      '@ducsigr/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@t3-oss/env-core':
@@ -121,10 +121,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@eslint/js':
@@ -233,16 +233,16 @@ importers:
       '@auth/prisma-adapter':
         specifier: ^2.7.4
         version: 2.11.1(@prisma/client@7.0.1(prisma@7.0.1(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3))(typescript@5.9.3))
-      '@cognobserve/api':
+      '@ducsigr/api':
         specifier: workspace:*
         version: link:../../packages/api
-      '@cognobserve/db':
+      '@ducsigr/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@cognobserve/sdk':
+      '@ducsigr/sdk':
         specifier: workspace:^
         version: link:../../packages/sdk
-      '@cognobserve/shared':
+      '@ducsigr/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@hookform/resolvers':
@@ -405,10 +405,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@eslint/js':
@@ -480,16 +480,16 @@ importers:
 
   apps/worker:
     dependencies:
-      '@cognobserve/api':
+      '@ducsigr/api':
         specifier: workspace:^
         version: link:../../packages/api
-      '@cognobserve/db':
+      '@ducsigr/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@cognobserve/proto':
+      '@ducsigr/proto':
         specifier: workspace:*
         version: link:../../packages/proto
-      '@cognobserve/shared':
+      '@ducsigr/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@octokit/auth-app':
@@ -520,10 +520,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../../packages/config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@eslint/js':
@@ -559,10 +559,10 @@ importers:
 
   packages/api:
     dependencies:
-      '@cognobserve/db':
+      '@ducsigr/db':
         specifier: workspace:*
         version: link:../db
-      '@cognobserve/shared':
+      '@ducsigr/shared':
         specifier: workspace:*
         version: link:../shared
       '@temporalio/client':
@@ -587,10 +587,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       '@types/node':
@@ -653,10 +653,10 @@ importers:
         specifier: ^8.13.0
         version: 8.16.3
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       '@eslint/js':
@@ -687,7 +687,7 @@ importers:
         specifier: ^2.0.0
         version: 2.10.1
     devDependencies:
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
@@ -703,10 +703,10 @@ importers:
         specifier: ^4.0.0
         version: 4.104.0(ws@8.18.3)(zod@3.25.76)
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       '@types/node':
@@ -743,10 +743,10 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13
     devDependencies:
-      '@cognobserve/config-eslint':
+      '@ducsigr/config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
-      '@cognobserve/config-typescript':
+      '@ducsigr/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       '@eslint/js':

@@ -4,7 +4,7 @@
  * Internal types used by RCA activities. Not exported to workflows.
  */
 
-import type { Prisma } from "@cognobserve/db";
+import type { Prisma } from "@ducsigr/db";
 
 /**
  * Row returned from span query with trace info

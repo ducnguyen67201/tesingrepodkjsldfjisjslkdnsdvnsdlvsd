@@ -1,6 +1,6 @@
 # Quickstart
 
-Get CognObserve running in under 5 minutes.
+Get Ducsigr running in under 5 minutes.
 
 ## Prerequisites
 

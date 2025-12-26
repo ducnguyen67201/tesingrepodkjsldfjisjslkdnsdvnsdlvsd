@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { type PromptTemplate, type PromptVariable } from "@cognobserve/api/schemas";
+import { type PromptTemplate, type PromptVariable } from "@ducsigr/api/schemas";
 
 interface PromptVariableInjectorProps {
   content: PromptTemplate;

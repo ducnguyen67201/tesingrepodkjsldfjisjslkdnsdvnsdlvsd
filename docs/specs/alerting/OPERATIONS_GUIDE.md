@@ -1,6 +1,6 @@
 # Alerting System - Operations Guide
 
-This guide covers how to run, configure, and troubleshoot the CognObserve alerting system.
+This guide covers how to run, configure, and troubleshoot the Ducsigr alerting system.
 
 ---
 
@@ -68,20 +68,20 @@ This guide covers how to run, configure, and troubleshoot the CognObserve alerti
 
 ```bash
 # From project root
-pnpm --filter=@cognobserve/worker dev
+pnpm --filter=@ducsigr/worker dev
 ```
 
 ### Expected Output
 
 ```
-Starting CognObserve Worker v0.1.0
+Starting Ducsigr Worker v0.1.0
 Initializing alerting adapters...
 Registered AlertingAdapter: DISCORD
 Gmail adapter not registered: SMTP_USER, SMTP_PASS not configured
 Alerting adapters initialized: DISCORD
 AlertEvaluator started
 AlertEvaluator: Starting evaluation cycle
-Connected to Redis, consuming from cognobserve:traces
+Connected to Redis, consuming from ducsigr:traces
 AlertEvaluator: Found 4 eligible alerts
 AlertEvaluator: Cycle completed in 45ms
 Worker initialized and consuming from queue
@@ -109,7 +109,7 @@ Add these to your `.env` file in the project root:
 
 ```bash
 # Database (required)
-DATABASE_URL="postgresql://cognobserve:cognobserve@localhost:5432/cognobserve"
+DATABASE_URL="postgresql://ducsigr:ducsigr@localhost:5432/ducsigr"
 
 # Redis
 REDIS_URL="redis://localhost:6379"
@@ -161,7 +161,7 @@ Alert triggered for **My Project**
 │ **7.5%**    │ > 5%        │ My Project  │
 └─────────────┴─────────────┴─────────────┘
 
-                    CognObserve Alerting
+                    Ducsigr Alerting
 ```
 
 ---
@@ -254,7 +254,7 @@ This creates mock alerts and history entries for UI testing.
 
 **Solution:** Run from project root to load `.env`:
 ```bash
-pnpm --filter=@cognobserve/worker dev
+pnpm --filter=@ducsigr/worker dev
 ```
 
 ### Gmail Not Working
@@ -296,7 +296,7 @@ SMTP_PASS="your-app-password"
 
 ```bash
 # Watch logs in real-time
-pnpm --filter=@cognobserve/worker dev
+pnpm --filter=@ducsigr/worker dev
 
 # You should see:
 # AlertEvaluator: Starting evaluation cycle

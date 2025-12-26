@@ -3,8 +3,8 @@ import { RegisterForm } from "@/components/auth/register-form";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
 export const metadata = {
-  title: "Sign Up - CognObserve",
-  description: "Create your CognObserve account",
+  title: "Sign Up - Ducsigr",
+  description: "Create your Ducsigr account",
 };
 
 export default function RegisterPage() {
@@ -12,7 +12,7 @@ export default function RegisterPage() {
     <>
       <div className="text-center">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          CognObserve
+          Ducsigr
         </h1>
         <h2 className="mt-2 text-xl text-gray-600">Create your account</h2>
       </div>

@@ -32,7 +32,7 @@ import {
   type ExtensionManifest,
   type ExtensionVisibility,
   type ExtensionType,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

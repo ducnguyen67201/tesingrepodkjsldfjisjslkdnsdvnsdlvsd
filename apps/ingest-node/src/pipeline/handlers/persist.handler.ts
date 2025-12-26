@@ -15,7 +15,7 @@
 import { logger } from "../../lib/logger.js";
 import { metrics } from "../../lib/metrics.js";
 import { prisma, Prisma } from "../../lib/db.js";
-import type { NormalizedTrace, NormalizedSpan } from "@cognobserve/api/schemas";
+import type { NormalizedTrace, NormalizedSpan } from "@ducsigr/api/schemas";
 import type {
   PipelineContext,
   PipelineHandler,

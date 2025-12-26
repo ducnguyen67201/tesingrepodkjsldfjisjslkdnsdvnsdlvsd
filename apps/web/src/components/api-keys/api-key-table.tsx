@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { ApiKeyListItem } from "@cognobserve/api/client";
+import type { ApiKeyListItem } from "@ducsigr/api/client";
 import { toast } from "sonner";
 
 interface ApiKeyTableProps {

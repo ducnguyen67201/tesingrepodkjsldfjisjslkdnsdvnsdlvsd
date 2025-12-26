@@ -23,5 +23,5 @@ export default async function Page({ params }: PageProps) {
 }
 
 export const metadata = {
-  title: "RCA Detail | CognObserve",
+  title: "RCA Detail | Ducsigr",
 };

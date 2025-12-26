@@ -13,7 +13,7 @@ import {
   createLLMCenter,
   getConfig,
   type LLMCenter,
-} from "@cognobserve/shared/llm";
+} from "@ducsigr/shared/llm";
 
 // ============================================
 // Singleton Instance

@@ -1,6 +1,6 @@
 "use client";
 
-import type { WorkspaceListItem } from "@cognobserve/api/client";
+import type { WorkspaceListItem } from "@ducsigr/api/client";
 import {
   Sidebar,
   SidebarContent,

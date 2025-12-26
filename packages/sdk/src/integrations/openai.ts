@@ -1,4 +1,4 @@
-import { CognObserve } from '../cognobserve';
+import { Ducsigr } from '../ducsigr';
 import { getActiveTrace } from '../context';
 import type { Trace } from '../trace';
 import type { Span } from '../span';
@@ -23,7 +23,7 @@ type OpenAIClient = {
  * @example
  * ```typescript
  * import OpenAI from 'openai';
- * import { wrapOpenAI } from '@cognobserve/sdk/integrations';
+ * import { wrapOpenAI } from '@ducsigr/sdk/integrations';
  *
  * const openai = wrapOpenAI(new OpenAI());
  *
@@ -54,7 +54,7 @@ export function wrapOpenAI<T extends OpenAIClient>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-chat`,
       });
       shouldEndTrace = true;
@@ -152,7 +152,7 @@ export function wrapOpenAI<T extends OpenAIClient>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-embedding`,
       });
       shouldEndTrace = true;

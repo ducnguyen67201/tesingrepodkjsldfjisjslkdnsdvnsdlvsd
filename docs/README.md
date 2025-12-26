@@ -1,8 +1,8 @@
-# CognObserve Documentation
+# Ducsigr Documentation
 
 ## Overview
 
-CognObserve is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
+Ducsigr is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
 
 ## Documentation Index
 

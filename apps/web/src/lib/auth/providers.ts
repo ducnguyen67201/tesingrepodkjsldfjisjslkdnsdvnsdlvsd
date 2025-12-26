@@ -2,7 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { compare } from "bcryptjs";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { z } from "zod";
 import { env } from "../env";
 

@@ -756,7 +756,7 @@ export class IntervalScheduler implements IScheduler {
 ```typescript
 // apps/worker/src/jobs/alert-evaluator.ts
 
-import { SEVERITY_DEFAULTS, type AlertSeverity, type AlertState } from "@cognobserve/api/schemas";
+import { SEVERITY_DEFAULTS, type AlertSeverity, type AlertState } from "@ducsigr/api/schemas";
 import type { IAlertStore, ITriggerQueue, IDispatcher, IScheduler } from "../lib/alerting/interfaces";
 
 const MS_PER_MINUTE = 60_000;
@@ -970,7 +970,7 @@ packages/api/src/lib/alerting/
 
 apps/worker/src/
 ├── jobs/
-│   └── alert-evaluator.ts          # Orchestrator (imports from @cognobserve/api)
+│   └── alert-evaluator.ts          # Orchestrator (imports from @ducsigr/api)
 │
 └── index.ts                        # Entry point (DI wiring)
 ```
@@ -1098,9 +1098,9 @@ getPresets: publicProcedure.query(() => ({
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
-import { validateInternalSecret } from "@cognobserve/shared";
-import { AlertingAdapter } from "@cognobserve/api/lib/alerting";
+import { prisma } from "@ducsigr/db";
+import { validateInternalSecret } from "@ducsigr/shared";
+import { AlertingAdapter } from "@ducsigr/api/lib/alerting";
 
 const TriggerBatchSchema = z.object({
   alerts: z.array(z.object({

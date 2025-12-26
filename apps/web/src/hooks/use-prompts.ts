@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { promptToast, showSuccess } from "@/lib/success";
-import { type PromptLabelName } from "@cognobserve/api/schemas";
+import { type PromptLabelName } from "@ducsigr/api/schemas";
 
 interface UsePromptsOptions {
   workspaceSlug: string;

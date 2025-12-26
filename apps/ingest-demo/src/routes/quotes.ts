@@ -43,7 +43,7 @@ router.post("/quotes", async (_req: Request, res: Response) => {
     const response = await fetch("https://zenquotes.io/api/random", {
       headers: {
         Accept: "application/json",
-        "User-Agent": "CognObserve-Demo/1.0",
+        "User-Agent": "Ducsigr-Demo/1.0",
       },
     });
 

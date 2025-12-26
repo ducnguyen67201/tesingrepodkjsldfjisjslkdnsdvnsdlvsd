@@ -601,7 +601,7 @@ export const DEFAULT_MODELS: Record<LLMProvider, string> = {
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import {
   CreateEvaluatorConfigSchema,
@@ -783,7 +783,7 @@ export const evaluatorsRouter = createRouter({
 
       const workflowId = `eval-manual-${input.traceId}-${Date.now()}`;
       await client.workflow.start("evaluationWorkflow", {
-        taskQueue: "cognobserve-tasks",
+        taskQueue: "ducsigr-tasks",
         workflowId,
         args: [{
           traceId: input.traceId,
@@ -811,7 +811,7 @@ export const evaluatorsRouter = createRouter({
 
       const workflowId = `eval-batch-${input.projectId}-${Date.now()}`;
       await client.workflow.start("batchEvaluationWorkflow", {
-        taskQueue: "cognobserve-tasks",
+        taskQueue: "ducsigr-tasks",
         workflowId,
         args: [{
           projectId: input.projectId,
@@ -1123,7 +1123,7 @@ export interface BatchEvaluationResult {
 ```typescript
 // apps/worker/src/temporal/activities/evaluation.activities.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { ApplicationFailure } from "@temporalio/activity";
 import { callLLM, renderPrompt, parseEvalResponse } from "../../lib/llm";
 

@@ -39,7 +39,7 @@
 
 ## 1. Overview
 
-CognObserve is a **general-purpose observability platform** that collects and visualizes traces from any application. While it has first-class support for LLM/AI workloads, it is designed to handle **all types of spans** including logs, function calls, HTTP requests, database queries, and custom operations.
+Ducsigr is a **general-purpose observability platform** that collects and visualizes traces from any application. While it has first-class support for LLM/AI workloads, it is designed to handle **all types of spans** including logs, function calls, HTTP requests, database queries, and custom operations.
 
 ### 1.1 Goals
 
@@ -78,7 +78,7 @@ CognObserve is a **general-purpose observability platform** that collects and vi
 | Component | Status | Location |
 |-----------|--------|----------|
 | Trace/Span DB Schema | Complete | `packages/db/prisma/schema.prisma` |
-| Proto Definitions | Complete | `proto/cognobserve/v1/trace.proto` |
+| Proto Definitions | Complete | `proto/ducsigr/v1/trace.proto` |
 | Ingest Service | Complete | `apps/ingest/` (Go, port 8080) |
 | Worker Processing | Complete | `apps/worker/` (queue → DB) |
 | tRPC Trace Router | Complete | `packages/api/src/routers/traces.ts` |
@@ -144,7 +144,7 @@ model Span {
 
 ### 3.1 Design Philosophy
 
-CognObserve treats **all spans equally** in terms of visualization and hierarchy. The span type determines:
+Ducsigr treats **all spans equally** in terms of visualization and hierarchy. The span type determines:
 - Which **icon** is displayed in the waterfall view
 - Which **detail sections** are shown in the span panel
 - Which **filters** are available
@@ -290,7 +290,7 @@ SDK/Application
        ↓
 POST /v1/traces (Ingest Service, Go, Port 8080)
        ↓
-Redis Queue (cognobserve:traces)
+Redis Queue (ducsigr:traces)
        ↓
 Worker Service (Node.js, processes queue)
        ↓
@@ -1690,7 +1690,7 @@ Option 3 - URL query parameters.
 **Status:** Accepted
 
 **Context:**
-CognObserve needs to support multiple span types beyond LLM calls (LOG, FUNCTION, HTTP, DB, CUSTOM). Options:
+Ducsigr needs to support multiple span types beyond LLM calls (LOG, FUNCTION, HTTP, DB, CUSTOM). Options:
 1. Add `type` enum field to Span model (breaking change)
 2. Infer type from existing fields (no schema change)
 3. Store type in `metadata` JSON field

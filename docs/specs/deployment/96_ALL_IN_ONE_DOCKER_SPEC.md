@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary
 
-Enable CognObserve to be self-hosted with **two deployment options**:
+Enable Ducsigr to be self-hosted with **two deployment options**:
 
 1. **Quick Start (Single Container)** - One `docker run` command, everything included
 2. **Production (Docker Compose)** - Separate containers, scalable, production-ready
@@ -34,15 +34,15 @@ Both options should get users to their first trace in under 5 minutes.
 
 ### 2.1 Quick Start: Single Container
 
-**For:** Developers evaluating CognObserve, demos, local development
+**For:** Developers evaluating Ducsigr, demos, local development
 
 ```bash
 # That's it. One command.
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  ghcr.io/cognobserve/cognobserve:latest
+  -v ducsigr_data:/data \
+  ghcr.io/ducsigr/ducsigr:latest
 
 # Wait ~60 seconds, then open http://localhost:3000
 ```
@@ -51,10 +51,10 @@ docker run -d --name cognobserve \
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
-│   $ docker run ghcr.io/cognobserve/cognobserve:latest                       │
+│   $ docker run ghcr.io/ducsigr/ducsigr:latest                       │
 │                                                                              │
 │   ┌──────────────────────────────────────────────────────────────────────┐  │
-│   │                    cognobserve:latest                                 │  │
+│   │                    ducsigr:latest                                 │  │
 │   │                                                                       │  │
 │   │   ┌─────────────────────────────────────────────────────────────┐    │  │
 │   │   │                      supervisord                             │    │  │
@@ -84,11 +84,11 @@ docker run -d --name cognobserve \
 
 ### 2.2 Production: Docker Compose
 
-**For:** Teams using CognObserve in production, need scalability
+**For:** Teams using Ducsigr in production, need scalability
 
 ```bash
 # 1. Download compose file
-curl -fsSL https://get.cognobserve.dev/docker-compose.yml -o docker-compose.yml
+curl -fsSL https://get.ducsigr.dev/docker-compose.yml -o docker-compose.yml
 
 # 2. Configure (edit .env or export)
 export NEXTAUTH_SECRET=$(openssl rand -base64 32)
@@ -117,7 +117,7 @@ docker compose up -d
 │                         │                                                    │
 │                         ▼                                                    │
 │         ┌───────────────────────────────────┐                               │
-│         │         cognobserve-app           │                               │
+│         │         ducsigr-app           │                               │
 │         │  ┌───────┐ ┌────────┐ ┌────────┐  │                               │
 │         │  │  Web  │ │ Worker │ │ Ingest │  │                               │
 │         │  │ :3000 │ │        │ │ :8080  │  │                               │
@@ -170,7 +170,7 @@ docker compose up -d
 ```dockerfile
 # Dockerfile.quickstart
 #
-# CognObserve Quick Start - Everything in one container
+# Ducsigr Quick Start - Everything in one container
 # Includes: PostgreSQL, Redis, Temporal, Web, Worker, Ingest
 
 # ============================================================
@@ -198,9 +198,9 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm --filter @cognobserve/db db:generate
-RUN pnpm --filter @cognobserve/web build
-RUN pnpm --filter @cognobserve/worker build
+RUN pnpm --filter @ducsigr/db db:generate
+RUN pnpm --filter @ducsigr/web build
+RUN pnpm --filter @ducsigr/worker build
 
 # ============================================================
 # Stage 2: Build Go Ingest Service
@@ -246,7 +246,7 @@ RUN apk add --no-cache \
     tzdata
 
 # Create user
-RUN addgroup -S cognobserve && adduser -S cognobserve -G cognobserve
+RUN addgroup -S ducsigr && adduser -S ducsigr -G ducsigr
 
 # Setup PostgreSQL
 ENV PGDATA=/data/postgresql
@@ -284,7 +284,7 @@ RUN chmod +x /entrypoint.sh /init-postgres.sh
 
 # Create data directories
 RUN mkdir -p /data/secrets /app/logs \
-    && chown -R cognobserve:cognobserve /app /data/secrets /app/logs
+    && chown -R ducsigr:ducsigr /app /data/secrets /app/logs
 
 # Expose ports
 EXPOSE 3000 8080
@@ -304,7 +304,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 ```ini
 ; docker/quickstart/supervisord.conf
 ;
-; All-in-one process manager for CognObserve Quick Start
+; All-in-one process manager for Ducsigr Quick Start
 ; Manages: PostgreSQL, Redis, Temporal, Web, Worker, Ingest
 
 [supervisord]
@@ -422,7 +422,7 @@ priority=300
 #!/bin/bash
 # docker/quickstart/entrypoint.sh
 #
-# CognObserve Quick Start Entrypoint
+# Ducsigr Quick Start Entrypoint
 # Handles: First-run setup, secret generation, database init, migrations
 
 set -e
@@ -436,7 +436,7 @@ echo "║    ██║     ██║   ██║██║   ██║██║�
 echo "║    ╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║                     ║"
 echo "║     ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝                     ║"
 echo "║                                                              ║"
-echo "║              CognObserve Quick Start                         ║"
+echo "║              Ducsigr Quick Start                         ║"
 echo "║                                                              ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
@@ -470,7 +470,7 @@ if [ ! -f "$SECRETS_FILE" ]; then
     POSTGRES_PASSWORD=$(openssl rand -hex 16)
 
     cat > "$SECRETS_FILE" << EOF
-# CognObserve Auto-Generated Secrets
+# Ducsigr Auto-Generated Secrets
 # Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 # WARNING: Do not edit unless you know what you're doing
 
@@ -479,11 +479,11 @@ NEXTAUTH_URL=http://localhost:3000
 INTERNAL_API_SECRET=$INTERNAL_API_SECRET
 JWT_SHARED_SECRET=$JWT_SHARED_SECRET
 POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-DATABASE_URL=postgresql://cognobserve:$POSTGRES_PASSWORD@localhost:5432/cognobserve
+DATABASE_URL=postgresql://ducsigr:$POSTGRES_PASSWORD@localhost:5432/ducsigr
 REDIS_URL=redis://localhost:6379
 TEMPORAL_ADDRESS=localhost:7233
 TEMPORAL_NAMESPACE=default
-TEMPORAL_TASK_QUEUE=cognobserve-tasks
+TEMPORAL_TASK_QUEUE=ducsigr-tasks
 WEB_API_URL=http://localhost:3000
 EOF
 
@@ -527,9 +527,9 @@ EOF
     sleep 3
 
     # Create user and database
-    su postgres -c "psql -c \"CREATE USER cognobserve WITH PASSWORD '$POSTGRES_PASSWORD';\""
-    su postgres -c "psql -c \"CREATE DATABASE cognobserve OWNER cognobserve;\""
-    su postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE cognobserve TO cognobserve;\""
+    su postgres -c "psql -c \"CREATE USER ducsigr WITH PASSWORD '$POSTGRES_PASSWORD';\""
+    su postgres -c "psql -c \"CREATE DATABASE ducsigr OWNER ducsigr;\""
+    su postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ducsigr TO ducsigr;\""
 
     # Stop PostgreSQL (supervisor will start it)
     su postgres -c "pg_ctl -D /data/postgresql stop"
@@ -563,7 +563,7 @@ SUPERVISOR_PID=$!
 echo "  → Waiting for PostgreSQL..."
 MAX_RETRIES=30
 RETRY=0
-until pg_isready -h localhost -p 5432 -U cognobserve -q 2>/dev/null; do
+until pg_isready -h localhost -p 5432 -U ducsigr -q 2>/dev/null; do
     RETRY=$((RETRY + 1))
     if [ $RETRY -ge $MAX_RETRIES ]; then
         echo "ERROR: PostgreSQL failed to start"
@@ -606,7 +606,7 @@ touch "$INIT_MARKER"
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                                                              ║"
-echo "║   CognObserve is ready!                                      ║"
+echo "║   Ducsigr is ready!                                      ║"
 echo "║                                                              ║"
 echo "║   Dashboard:    http://localhost:3000                        ║"
 echo "║   Ingest API:   http://localhost:8080                        ║"
@@ -641,7 +641,7 @@ persistence:
         databaseName: temporal
         connectAddr: localhost:5432
         connectProtocol: tcp
-        user: cognobserve
+        user: ducsigr
         password: ${POSTGRES_PASSWORD}
         maxConns: 20
         maxIdleConns: 20
@@ -651,7 +651,7 @@ persistence:
         databaseName: temporal_visibility
         connectAddr: localhost:5432
         connectProtocol: tcp
-        user: cognobserve
+        user: ducsigr
         password: ${POSTGRES_PASSWORD}
         maxConns: 10
         maxIdleConns: 10
@@ -706,16 +706,16 @@ clusterMetadata:
 ```yaml
 # docker-compose.yml
 #
-# CognObserve Production Deployment
+# Ducsigr Production Deployment
 #
 # Quick Start:
 #   export NEXTAUTH_SECRET=$(openssl rand -base64 32)
 #   export NEXTAUTH_URL="http://localhost:3000"
 #   docker compose up -d
 #
-# Documentation: https://docs.cognobserve.dev/self-hosting
+# Documentation: https://docs.ducsigr.dev/self-hosting
 
-name: cognobserve
+name: ducsigr
 
 services:
   # ============================================================
@@ -723,21 +723,21 @@ services:
   # ============================================================
   postgres:
     image: postgres:16-alpine
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cognobserve
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cognobserve}
-      POSTGRES_DB: cognobserve
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ducsigr}
+      POSTGRES_DB: ducsigr
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cognobserve"]
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     # Uncomment to expose PostgreSQL externally
     # ports:
     #   - "5432:5432"
@@ -747,7 +747,7 @@ services:
   # ============================================================
   redis:
     image: redis:7-alpine
-    container_name: cognobserve-redis
+    container_name: ducsigr-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -758,7 +758,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     # Uncomment to expose Redis externally
     # ports:
     #   - "6379:6379"
@@ -768,13 +768,13 @@ services:
   # ============================================================
   temporal:
     image: temporalio/auto-setup:latest
-    container_name: cognobserve-temporal
+    container_name: ducsigr-temporal
     restart: unless-stopped
     environment:
       - DB=postgresql
       - DB_PORT=5432
-      - POSTGRES_USER=cognobserve
-      - POSTGRES_PWD=${POSTGRES_PASSWORD:-cognobserve}
+      - POSTGRES_USER=ducsigr
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-ducsigr}
       - POSTGRES_SEEDS=postgres
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
       - SKIP_DEFAULT_NAMESPACE_CREATION=false
@@ -790,14 +790,14 @@ services:
       retries: 20
       start_period: 40s
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
 
   # ============================================================
   # Temporal UI (Optional - for debugging)
   # ============================================================
   temporal-ui:
     image: temporalio/ui:latest
-    container_name: cognobserve-temporal-ui
+    container_name: ducsigr-temporal-ui
     restart: unless-stopped
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
@@ -808,16 +808,16 @@ services:
       temporal:
         condition: service_healthy
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     profiles:
       - debug
 
   # ============================================================
-  # CognObserve Application
+  # Ducsigr Application
   # ============================================================
   app:
-    image: ghcr.io/cognobserve/cognobserve-app:${VERSION:-latest}
-    container_name: cognobserve-app
+    image: ghcr.io/ducsigr/ducsigr-app:${VERSION:-latest}
+    container_name: ducsigr-app
     restart: unless-stopped
     ports:
       - "${WEB_PORT:-3000}:3000"
@@ -828,13 +828,13 @@ services:
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
 
       # Database (auto-configured for bundled services)
-      DATABASE_URL: postgresql://cognobserve:${POSTGRES_PASSWORD:-cognobserve}@postgres:5432/cognobserve
+      DATABASE_URL: postgresql://ducsigr:${POSTGRES_PASSWORD:-ducsigr}@postgres:5432/ducsigr
       REDIS_URL: redis://redis:6379
 
       # Temporal
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
-      TEMPORAL_TASK_QUEUE: cognobserve-tasks
+      TEMPORAL_TASK_QUEUE: ducsigr-tasks
 
       # Internal (auto-generated if not set)
       INTERNAL_API_SECRET: ${INTERNAL_API_SECRET:-}
@@ -862,7 +862,7 @@ services:
       retries: 3
       start_period: 60s
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
 
 volumes:
   postgres_data:
@@ -870,7 +870,7 @@ volumes:
   app_secrets:
 
 networks:
-  cognobserve-internal:
+  ducsigr-internal:
     driver: bridge
 ```
 
@@ -879,7 +879,7 @@ networks:
 ```dockerfile
 # Dockerfile.app
 #
-# CognObserve Application Container (Web + Worker + Ingest)
+# Ducsigr Application Container (Web + Worker + Ingest)
 # For use with Docker Compose (separate infra containers)
 
 # ============================================================
@@ -906,9 +906,9 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm --filter @cognobserve/db db:generate
-RUN pnpm --filter @cognobserve/web build
-RUN pnpm --filter @cognobserve/worker build
+RUN pnpm --filter @ducsigr/db db:generate
+RUN pnpm --filter @ducsigr/web build
+RUN pnpm --filter @ducsigr/worker build
 
 # ============================================================
 # Stage 2: Build Go Ingest Service
@@ -928,7 +928,7 @@ FROM node:24-alpine AS runtime
 
 RUN apk add --no-cache supervisor wget openssl netcat-openbsd
 
-RUN addgroup -S cognobserve && adduser -S cognobserve -G cognobserve
+RUN addgroup -S ducsigr && adduser -S ducsigr -G ducsigr
 
 WORKDIR /app
 
@@ -949,9 +949,9 @@ COPY docker/production/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 RUN mkdir -p /app/secrets \
-    && chown -R cognobserve:cognobserve /app
+    && chown -R ducsigr:ducsigr /app
 
-USER cognobserve
+USER ducsigr
 
 EXPOSE 3000 8080
 
@@ -1030,13 +1030,13 @@ environment=PORT="8080"
 #!/bin/sh
 # docker/production/entrypoint.sh
 #
-# CognObserve Production Entrypoint
+# Ducsigr Production Entrypoint
 # Infrastructure is external, just validate and start
 
 set -e
 
 echo "════════════════════════════════════════════════════════════════"
-echo "  CognObserve Production"
+echo "  Ducsigr Production"
 echo "════════════════════════════════════════════════════════════════"
 
 # ============================================================
@@ -1147,7 +1147,7 @@ echo "  ✓ Migrations complete"
 # ============================================================
 echo ""
 echo "════════════════════════════════════════════════════════════════"
-echo "  Starting CognObserve services..."
+echo "  Starting Ducsigr services..."
 echo ""
 echo "  Web:    http://localhost:3000"
 echo "  Ingest: http://localhost:8080"
@@ -1183,7 +1183,7 @@ exec /usr/bin/supervisord -c /etc/supervisord.conf
 |----------|----------|---------|-------------|
 | `NEXTAUTH_SECRET` | **Yes** | - | Session encryption (32+ chars) |
 | `NEXTAUTH_URL` | **Yes** | - | Public URL |
-| `POSTGRES_PASSWORD` | No | `cognobserve` | PostgreSQL password |
+| `POSTGRES_PASSWORD` | No | `ducsigr` | PostgreSQL password |
 | `LOG_LEVEL` | No | `info` | Log verbosity |
 | `RETENTION_DAYS` | No | `30` | Data retention |
 | `ENABLE_REGISTRATION` | No | `true` | Allow signups |
@@ -1201,7 +1201,7 @@ exec /usr/bin/supervisord -c /etc/supervisord.conf
 #### Quick Start
 | Volume | Container Path | Description |
 |--------|----------------|-------------|
-| `cognobserve_data` | `/data` | All persistent data |
+| `ducsigr_data` | `/data` | All persistent data |
 
 #### Production
 | Volume | Container Path | Description |
@@ -1234,7 +1234,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  ORG: cognobserve
+  ORG: ducsigr
 
 jobs:
   build-quickstart:
@@ -1262,7 +1262,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.ORG }}/cognobserve
+          images: ${{ env.REGISTRY }}/${{ env.ORG }}/ducsigr
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -1305,7 +1305,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.ORG }}/cognobserve-app
+          images: ${{ env.REGISTRY }}/${{ env.ORG }}/ducsigr-app
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -1328,8 +1328,8 @@ jobs:
 
 | Image | Purpose | Size (est.) |
 |-------|---------|-------------|
-| `ghcr.io/cognobserve/cognobserve:latest` | Quick Start (all-in-one) | ~1.2GB |
-| `ghcr.io/cognobserve/cognobserve-app:latest` | Production (app only) | ~300MB |
+| `ghcr.io/ducsigr/ducsigr:latest` | Quick Start (all-in-one) | ~1.2GB |
+| `ghcr.io/ducsigr/ducsigr-app:latest` | Production (app only) | ~300MB |
 
 ---
 
@@ -1338,18 +1338,18 @@ jobs:
 ### 7.1 Quick Start README Section
 
 ```markdown
-## Self-Hosting CognObserve
+## Self-Hosting Ducsigr
 
 ### Option 1: Quick Start (Recommended for Evaluation)
 
-Run CognObserve with a single command:
+Run Ducsigr with a single command:
 
 ```bash
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  ghcr.io/cognobserve/cognobserve:latest
+  -v ducsigr_data:/data \
+  ghcr.io/ducsigr/ducsigr:latest
 ```
 
 Wait ~60 seconds, then open http://localhost:3000
@@ -1372,7 +1372,7 @@ For production deployments with better scalability:
 
 ```bash
 # Download compose file
-curl -fsSL https://get.cognobserve.dev/docker-compose.yml -o docker-compose.yml
+curl -fsSL https://get.ducsigr.dev/docker-compose.yml -o docker-compose.yml
 
 # Set required environment variables
 export NEXTAUTH_SECRET=$(openssl rand -base64 32)
@@ -1430,12 +1430,12 @@ curl -X POST http://localhost:8080/v1/traces \
 
 **Quick Start:**
 ```bash
-docker pull ghcr.io/cognobserve/cognobserve:latest
-docker stop cognobserve && docker rm cognobserve
-docker run -d --name cognobserve \
+docker pull ghcr.io/ducsigr/ducsigr:latest
+docker stop ducsigr && docker rm ducsigr
+docker run -d --name ducsigr \
   -p 3000:3000 -p 8080:8080 \
-  -v cognobserve_data:/data \
-  ghcr.io/cognobserve/cognobserve:latest
+  -v ducsigr_data:/data \
+  ghcr.io/ducsigr/ducsigr:latest
 ```
 
 **Production:**
@@ -1450,7 +1450,7 @@ docker compose up -d
 ## 8. File Structure
 
 ```
-CognObserve/
+Ducsigr/
 ├── Dockerfile.quickstart           # All-in-one image (includes infra)
 ├── Dockerfile.app                  # App-only image (for compose)
 ├── docker-compose.yml              # Production compose file
@@ -1519,7 +1519,7 @@ CognObserve/
 ## 10. Definition of Done
 
 ### Quick Start Image
-- [ ] `docker run ghcr.io/cognobserve/cognobserve` works with zero config
+- [ ] `docker run ghcr.io/ducsigr/ducsigr` works with zero config
 - [ ] All secrets auto-generated on first run
 - [ ] Data persists across container restarts
 - [ ] Health endpoint returns healthy status
@@ -1554,16 +1554,16 @@ set -e
 echo "=== Quick Start Integration Test ==="
 
 # Clean up any existing container
-docker rm -f cognobserve-test 2>/dev/null || true
-docker volume rm cognobserve_test_data 2>/dev/null || true
+docker rm -f ducsigr-test 2>/dev/null || true
+docker volume rm ducsigr_test_data 2>/dev/null || true
 
 # Run container
 echo "[1/5] Starting container..."
-docker run -d --name cognobserve-test \
+docker run -d --name ducsigr-test \
   -p 13000:3000 \
   -p 18080:8080 \
-  -v cognobserve_test_data:/data \
-  ghcr.io/cognobserve/cognobserve:latest
+  -v ducsigr_test_data:/data \
+  ghcr.io/ducsigr/ducsigr:latest
 
 # Wait for startup
 echo "[2/5] Waiting for startup (max 120s)..."
@@ -1573,7 +1573,7 @@ until curl -sf http://localhost:13000/api/health > /dev/null 2>&1; do
   RETRY=$((RETRY + 1))
   if [ $RETRY -ge $MAX_RETRY ]; then
     echo "FAILED: Health check timeout"
-    docker logs cognobserve-test
+    docker logs ducsigr-test
     exit 1
   fi
   sleep 2
@@ -1598,8 +1598,8 @@ fi
 
 # Cleanup
 echo "[5/5] Cleaning up..."
-docker rm -f cognobserve-test
-docker volume rm cognobserve_test_data
+docker rm -f ducsigr-test
+docker volume rm ducsigr_test_data
 
 echo "=== All tests passed ==="
 ```
@@ -1615,7 +1615,7 @@ set -e
 echo "=== Production Integration Test ==="
 
 cd /tmp
-rm -rf cognobserve-test && mkdir cognobserve-test && cd cognobserve-test
+rm -rf ducsigr-test && mkdir ducsigr-test && cd ducsigr-test
 
 # Download compose file
 curl -fsSL https://raw.githubusercontent.com/.../docker-compose.yml -o docker-compose.yml
@@ -1632,7 +1632,7 @@ docker compose up -d
 
 # Cleanup
 docker compose down -v
-cd / && rm -rf /tmp/cognobserve-test
+cd / && rm -rf /tmp/ducsigr-test
 
 echo "=== All tests passed ==="
 ```

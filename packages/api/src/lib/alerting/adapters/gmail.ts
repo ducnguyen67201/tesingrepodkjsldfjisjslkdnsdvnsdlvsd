@@ -199,7 +199,7 @@ export class GmailAdapter extends BaseAlertingAdapter {
       </div>
     </div>
     <div class="footer">
-      <p>${payload.rca ? "🤖 AI-Powered Root Cause Analysis by CognObserve" : "This alert was sent by CognObserve"}</p>
+      <p>${payload.rca ? "🤖 AI-Powered Root Cause Analysis by Ducsigr" : "This alert was sent by Ducsigr"}</p>
       <p>Manage your alerts in project settings</p>
     </div>
   </div>
@@ -336,7 +336,7 @@ ${rcaText}
 ${payload.dashboardUrl ? `Dashboard: ${payload.dashboardUrl}` : ""}
 
 ---
-${payload.rca ? "🤖 AI-Powered Root Cause Analysis by CognObserve" : "This alert was sent by CognObserve"}
+${payload.rca ? "🤖 AI-Powered Root Cause Analysis by Ducsigr" : "This alert was sent by Ducsigr"}
     `.trim();
   }
 

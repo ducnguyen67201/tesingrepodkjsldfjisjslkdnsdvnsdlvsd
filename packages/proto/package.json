@@ -1,5 +1,5 @@
 {
-  "name": "@cognobserve/proto",
+  "name": "@ducsigr/proto",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -18,7 +18,7 @@
     "@bufbuild/protobuf": "^2.0.0"
   },
   "devDependencies": {
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "typescript": "^5.7.2"
   }
 }

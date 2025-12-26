@@ -5,7 +5,7 @@
  * Uses temporal proximity, semantic similarity, and file path matching.
  */
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   DEFAULT_LOOKBACK_DAYS,
   MIN_CHUNK_SIMILARITY,
@@ -13,7 +13,7 @@ import {
   MAX_CHUNK_CONTENT_LENGTH,
   extractPathsFromStackTraces,
   buildSearchQuery,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 import { searchProjectCodebase } from "../../search.activities";
 import type {
   CodeCorrelationInput,

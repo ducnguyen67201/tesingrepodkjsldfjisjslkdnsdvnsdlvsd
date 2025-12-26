@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProjectSummaries, useProjectSparklines } from "@/hooks/use-dashboards";
 import { formatNumber, formatLatency } from "@/lib/format";
-import type { DashboardTimeRange } from "@cognobserve/api/schemas";
+import type { DashboardTimeRange } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Constants

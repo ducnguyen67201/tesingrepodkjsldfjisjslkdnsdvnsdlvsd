@@ -1,11 +1,11 @@
 import { NextRequest } from "next/server";
-import { prisma } from "@cognobserve/db";
-import { verifyGitHubSignature } from "@cognobserve/api/lib/github";
+import { prisma } from "@ducsigr/db";
+import { verifyGitHubSignature } from "@ducsigr/api/lib/github";
 import {
   GitHubPushPayloadSchema,
   GitHubPRPayloadSchema,
   type GitHubWebhookEvent,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { env } from "@/lib/env";
 import { startGitHubIndexWorkflow, startEvalWorkflow } from "@/lib/temporal-client";
 import {

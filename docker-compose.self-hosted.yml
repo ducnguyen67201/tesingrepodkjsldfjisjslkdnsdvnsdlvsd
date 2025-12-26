@@ -1,6 +1,6 @@
 # docker-compose.self-hosted.yml
 #
-# CognObserve Self-Hosted Production Deployment
+# Ducsigr Self-Hosted Production Deployment
 #
 # Quick Start:
 #   export NEXTAUTH_SECRET=$(openssl rand -base64 32)
@@ -10,9 +10,9 @@
 # With Temporal UI (for debugging):
 #   docker compose -f docker-compose.self-hosted.yml --profile debug up -d
 #
-# Documentation: https://github.com/cognobserve/cognobserve
+# Documentation: https://github.com/ducsigr/ducsigr
 
-name: cognobserve
+name: ducsigr
 
 services:
   # ============================================================
@@ -20,21 +20,21 @@ services:
   # ============================================================
   postgres:
     image: postgres:16-alpine
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cognobserve
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cognobserve}
-      POSTGRES_DB: cognobserve
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ducsigr}
+      POSTGRES_DB: ducsigr
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cognobserve"]
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
       interval: 5s
       timeout: 5s
       retries: 10
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     # Uncomment to expose PostgreSQL externally
     # ports:
     #   - "5432:5432"
@@ -44,7 +44,7 @@ services:
   # ============================================================
   redis:
     image: redis:7-alpine
-    container_name: cognobserve-redis
+    container_name: ducsigr-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -55,7 +55,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     # Uncomment to expose Redis externally
     # ports:
     #   - "6379:6379"
@@ -65,13 +65,13 @@ services:
   # ============================================================
   temporal:
     image: temporalio/auto-setup:latest
-    container_name: cognobserve-temporal
+    container_name: ducsigr-temporal
     restart: unless-stopped
     environment:
       - DB=postgresql
       - DB_PORT=5432
-      - POSTGRES_USER=cognobserve
-      - POSTGRES_PWD=${POSTGRES_PASSWORD:-cognobserve}
+      - POSTGRES_USER=ducsigr
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-ducsigr}
       - POSTGRES_SEEDS=postgres
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
       - SKIP_DEFAULT_NAMESPACE_CREATION=false
@@ -87,14 +87,14 @@ services:
       retries: 20
       start_period: 40s
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
 
   # ============================================================
   # Temporal UI (Optional - for debugging)
   # ============================================================
   temporal-ui:
     image: temporalio/ui:latest
-    container_name: cognobserve-temporal-ui
+    container_name: ducsigr-temporal-ui
     restart: unless-stopped
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
@@ -105,19 +105,19 @@ services:
       temporal:
         condition: service_healthy
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
     profiles:
       - debug
 
   # ============================================================
-  # CognObserve Application (Web + Worker + Ingest)
+  # Ducsigr Application (Web + Worker + Ingest)
   # ============================================================
   app:
-    image: ghcr.io/cognobserve/cognobserve-app:${VERSION:-latest}
+    image: ghcr.io/ducsigr/ducsigr-app:${VERSION:-latest}
     build:
       context: .
       dockerfile: Dockerfile.app
-    container_name: cognobserve-app
+    container_name: ducsigr-app
     restart: unless-stopped
     ports:
       - "${WEB_PORT:-3000}:3000"
@@ -128,13 +128,13 @@ services:
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
 
       # Database (auto-configured for bundled services)
-      DATABASE_URL: postgresql://cognobserve:${POSTGRES_PASSWORD:-cognobserve}@postgres:5432/cognobserve
+      DATABASE_URL: postgresql://ducsigr:${POSTGRES_PASSWORD:-ducsigr}@postgres:5432/ducsigr
       REDIS_URL: redis://redis:6379
 
       # Temporal
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
-      TEMPORAL_TASK_QUEUE: cognobserve-tasks
+      TEMPORAL_TASK_QUEUE: ducsigr-tasks
 
       # Internal (auto-generated if not set)
       INTERNAL_API_SECRET: ${INTERNAL_API_SECRET:-}
@@ -162,7 +162,7 @@ services:
       retries: 3
       start_period: 60s
     networks:
-      - cognobserve-internal
+      - ducsigr-internal
 
 volumes:
   postgres_data:
@@ -173,5 +173,5 @@ volumes:
     driver: local
 
 networks:
-  cognobserve-internal:
+  ducsigr-internal:
     driver: bridge

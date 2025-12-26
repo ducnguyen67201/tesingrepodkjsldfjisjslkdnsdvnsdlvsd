@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GitCommit, GitPullRequest, ExternalLink } from "lucide-react";
-import type { LLMRCAOutput } from "@cognobserve/api/schemas";
+import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 interface GitHubRepo {
   owner: string;

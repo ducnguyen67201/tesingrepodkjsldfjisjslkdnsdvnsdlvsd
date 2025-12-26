@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { authOptions } from "@/lib/auth/config";
 
 /**

@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useDashboards } from "@/hooks/use-dashboards";
-import type { DashboardVisibility } from "@cognobserve/api/schemas";
+import type { DashboardVisibility } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Types

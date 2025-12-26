@@ -691,7 +691,7 @@ import {
   calculateCombinedScore,
   extractPathsFromStackTraces,
   buildSearchQuery,
-} from "@cognobserve/shared/rca";
+} from "@ducsigr/shared/rca";
 import type {
   CodeCorrelationInput,
   CodeCorrelationOutput,

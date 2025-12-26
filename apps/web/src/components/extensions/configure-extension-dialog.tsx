@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useExtension } from "@/hooks/use-extensions";
-import { EXTENSION_TYPE_LABELS } from "@cognobserve/api/schemas";
+import { EXTENSION_TYPE_LABELS } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

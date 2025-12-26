@@ -18,7 +18,7 @@ import {
   EVAL_TRIGGER_LABELS,
   type EvalRunStatus,
   type EvalTriggerType,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 export interface EvalRunData {
   id: string;

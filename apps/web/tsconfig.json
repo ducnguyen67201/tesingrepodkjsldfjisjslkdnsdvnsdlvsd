@@ -1,5 +1,5 @@
 {
-  "extends": "@cognobserve/config-typescript/nextjs.json",
+  "extends": "@ducsigr/config-typescript/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

@@ -44,7 +44,7 @@ import {
   type AlertType,
   type AlertSeverity,
   type ThresholdPreset,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { SeveritySelector } from "./severity-selector";
 import { ThresholdPresetCards } from "./threshold-preset-cards";
 

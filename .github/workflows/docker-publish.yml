@@ -3,8 +3,8 @@
 # Build and publish Docker images to GitHub Container Registry
 #
 # Publishes two images:
-#   - ghcr.io/cognobserve/cognobserve:latest       (Quick Start - all-in-one)
-#   - ghcr.io/cognobserve/cognobserve-app:latest   (Production - app only)
+#   - ghcr.io/ducsigr/ducsigr:latest       (Quick Start - all-in-one)
+#   - ghcr.io/ducsigr/ducsigr-app:latest   (Production - app only)
 
 name: Build and Publish Docker Images
 
@@ -31,8 +31,8 @@ on:
 env:
   REGISTRY: ghcr.io
   # Update this to your GitHub organization/username
-  IMAGE_NAME_QUICKSTART: ${{ github.repository_owner }}/cognobserve
-  IMAGE_NAME_APP: ${{ github.repository_owner }}/cognobserve-app
+  IMAGE_NAME_QUICKSTART: ${{ github.repository_owner }}/ducsigr
+  IMAGE_NAME_APP: ${{ github.repository_owner }}/ducsigr-app
 
 jobs:
   # ============================================================
@@ -163,10 +163,10 @@ jobs:
 
             ### Quick Start (All-in-One)
             ```bash
-            docker run -d --name cognobserve \
+            docker run -d --name ducsigr \
               -p 3000:3000 \
               -p 8080:8080 \
-              -v cognobserve_data:/data \
+              -v ducsigr_data:/data \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_QUICKSTART }}:${{ github.ref_name }}
             ```
 

@@ -1,12 +1,12 @@
-# CognObserve Architecture
+# Ducsigr Architecture
 
 ## Complete Project Structure
 
 ```
-CognObserve/
+Ducsigr/
 │
 ├── proto/                                 # 🔵 SOURCE OF TRUTH (you edit these)
-│   └── cognobserve/v1/
+│   └── ducsigr/v1/
 │       ├── common.proto                   #    TokenUsage, SpanLevel
 │       ├── trace.proto                    #    Trace, Span, Project, ApiKey
 │       └── ingest.proto                   #    IngestTraceRequest/Response
@@ -25,7 +25,7 @@ CognObserve/
 │   │   └── src/
 │   │       ├── index.ts                   #    Re-exports all
 │   │       └── generated/                 #    ⚡ Auto-generated
-│   │           └── cognobserve/v1/
+│   │           └── ducsigr/v1/
 │   │               ├── common.ts          #    TokenUsage, SpanLevel
 │   │               ├── trace.ts           #    Trace, Span, etc.
 │   │               └── ingest.ts          #    IngestTraceRequest, etc.
@@ -50,7 +50,7 @@ CognObserve/
 │   └── config-eslint/
 │
 ├── apps/
-│   ├── ingest/                            # 🟠 Go Service (github.com/cognobserve/ingest)
+│   ├── ingest/                            # 🟠 Go Service (github.com/ducsigr/ingest)
 │   │   ├── go.mod
 │   │   ├── cmd/ingest/main.go
 │   │   ├── Dockerfile
@@ -62,7 +62,7 @@ CognObserve/
 │   │       ├── queue/
 │   │       ├── server/
 │   │       └── proto/                     # 🟢 GENERATED Go types
-│   │           └── cognobservev1/         #    ⚡ Auto-generated
+│   │           └── ducsigrv1/         #    ⚡ Auto-generated
 │   │               ├── common.pb.go
 │   │               ├── trace.pb.go
 │   │               └── ingest.pb.go
@@ -157,10 +157,10 @@ CognObserve/
 
 | Service | Proto Types | Prisma Types | Shared Utils |
 |---------|-------------|--------------|--------------|
-| **SDK** (external) | `@cognobserve/proto` | - | - |
-| **Ingest** (Go) | `github.com/cognobserve/ingest/internal/proto/cognobservev1` | - | - |
-| **Worker** (TS) | `@cognobserve/proto` | `@cognobserve/db` | `@cognobserve/shared` |
-| **Web** (Next.js) | `@cognobserve/proto` (API) | `@cognobserve/db` | `@cognobserve/shared` |
+| **SDK** (external) | `@ducsigr/proto` | - | - |
+| **Ingest** (Go) | `github.com/ducsigr/ingest/internal/proto/ducsigrv1` | - | - |
+| **Worker** (TS) | `@ducsigr/proto` | `@ducsigr/db` | `@ducsigr/shared` |
+| **Web** (Next.js) | `@ducsigr/proto` (API) | `@ducsigr/db` | `@ducsigr/shared` |
 
 ## Generation Commands
 
@@ -169,7 +169,7 @@ CognObserve/
 make proto
 # Output:
 #   → packages/proto/src/generated/*.ts
-#   → apps/ingest/internal/proto/cognobservev1/*.pb.go
+#   → apps/ingest/internal/proto/ducsigrv1/*.pb.go
 
 # Generate Prisma client
 pnpm db:generate
@@ -183,7 +183,7 @@ pnpm db:generate
 |----------|------|--------------|---------|
 | `proto/*.proto` | Source definitions | You (manual) | buf generate |
 | `packages/proto/src/generated/` | TypeScript proto types | `buf generate` | web, worker, SDK |
-| `apps/ingest/internal/proto/cognobservev1/` | Go proto types | `buf generate` | ingest |
+| `apps/ingest/internal/proto/ducsigrv1/` | Go proto types | `buf generate` | ingest |
 | `node_modules/@prisma/client` | Database types | `prisma generate` | web, worker |
 
 ## Services Overview
@@ -201,15 +201,15 @@ pnpm db:generate
 The Go ingest service uses a clean module path:
 
 ```
-Module: github.com/cognobserve/ingest
+Module: github.com/ducsigr/ingest
 
 Imports:
-├── github.com/cognobserve/ingest/internal/config
-├── github.com/cognobserve/ingest/internal/handler
-├── github.com/cognobserve/ingest/internal/model
-├── github.com/cognobserve/ingest/internal/queue
-├── github.com/cognobserve/ingest/internal/server
-└── github.com/cognobserve/ingest/internal/proto/cognobservev1  (generated)
+├── github.com/ducsigr/ingest/internal/config
+├── github.com/ducsigr/ingest/internal/handler
+├── github.com/ducsigr/ingest/internal/model
+├── github.com/ducsigr/ingest/internal/queue
+├── github.com/ducsigr/ingest/internal/server
+└── github.com/ducsigr/ingest/internal/proto/ducsigrv1  (generated)
 ```
 
 ## UI Filtering Flow (Read Path)

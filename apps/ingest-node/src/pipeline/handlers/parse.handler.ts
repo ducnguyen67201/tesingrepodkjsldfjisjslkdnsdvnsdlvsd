@@ -7,7 +7,7 @@
  * 3. Validating the basic request structure
  */
 import { gunzipSync } from "node:zlib";
-import { OtlpExportRequestSchema } from "@cognobserve/api/schemas";
+import { OtlpExportRequestSchema } from "@ducsigr/api/schemas";
 import { logger } from "../../lib/logger.js";
 import type {
   PipelineContext,

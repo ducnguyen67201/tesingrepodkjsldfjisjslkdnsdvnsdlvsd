@@ -1,4 +1,4 @@
-# CognObserve - Observability Schema Design
+# Ducsigr - Observability Schema Design
 
 > **Status**: Draft
 > **Created**: 2024-01-XX
@@ -24,7 +24,7 @@
 
 ### Purpose
 
-This document defines the complete data model for CognObserve's observability platform. It covers:
+This document defines the complete data model for Ducsigr's observability platform. It covers:
 
 - **LLM Observability**: Tracing, monitoring, and debugging AI/LLM applications
 - **Git Intelligence**: Detecting breaking changes and regressions from code changes

@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Check, ChevronsUpDown, Plus, Building2, User } from "lucide-react";
-import type { WorkspaceListItem } from "@cognobserve/api/client";
+import type { WorkspaceListItem } from "@ducsigr/api/client";
 import {
   DropdownMenu,
   DropdownMenuContent,

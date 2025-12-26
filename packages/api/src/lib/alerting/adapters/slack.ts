@@ -218,9 +218,9 @@ export class SlackAdapter extends BaseAlertingAdapter {
 
     // Footer context
     const getFooterText = (): string => {
-      if (payload.rca) return "🤖 AI-Powered Root Cause Analysis by CognObserve";
-      if (payload.regressionInfo) return "📊 Eval Pipeline Regression Detection by CognObserve";
-      return "Sent by CognObserve Alerting";
+      if (payload.rca) return "🤖 AI-Powered Root Cause Analysis by Ducsigr";
+      if (payload.regressionInfo) return "📊 Eval Pipeline Regression Detection by Ducsigr";
+      return "Sent by Ducsigr Alerting";
     };
 
     blocks.push({

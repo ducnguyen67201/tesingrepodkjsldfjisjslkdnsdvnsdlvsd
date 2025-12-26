@@ -75,10 +75,10 @@ enum IndexStatus {
 
 ```bash
 # Generate migration
-pnpm --filter @cognobserve/db db:migrate:dev --name add_github_indexing
+pnpm --filter @ducsigr/db db:migrate:dev --name add_github_indexing
 
 # Verify migration
-pnpm --filter @cognobserve/db db:generate
+pnpm --filter @ducsigr/db db:generate
 ```
 
 #### Files to Create/Modify

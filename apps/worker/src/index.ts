@@ -1,4 +1,4 @@
-import { APP_NAME, APP_VERSION } from "@cognobserve/shared";
+import { APP_NAME, APP_VERSION } from "@ducsigr/shared";
 
 // Temporal imports
 import {

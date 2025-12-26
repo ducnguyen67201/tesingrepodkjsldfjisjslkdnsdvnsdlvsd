@@ -203,7 +203,7 @@ import {
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { AlertWorkflowInput, AlertWorkflowState } from "../temporal/types";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 
 // ============================================================
 // Activity Proxies
@@ -630,7 +630,7 @@ async function main() {
 
   // Start a test workflow
   const handle = await client.workflow.start("alertEvaluationWorkflow", {
-    taskQueue: "cognobserve-tasks",
+    taskQueue: "ducsigr-tasks",
     workflowId: "longevity-test-alert",
     args: [{
       alertId: "test-longevity",

@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   generateApiKey,
   hashApiKey,
   maskApiKey,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 
 /**

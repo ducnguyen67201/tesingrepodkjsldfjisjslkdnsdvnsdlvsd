@@ -2,7 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Wrench, Zap, Calendar } from "lucide-react";
-import type { LLMRCAOutput } from "@cognobserve/api/schemas";
+import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 interface RCARemediationCardProps {
   remediation: LLMRCAOutput["remediation"];

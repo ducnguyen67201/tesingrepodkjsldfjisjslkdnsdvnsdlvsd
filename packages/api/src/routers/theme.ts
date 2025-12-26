@@ -6,7 +6,7 @@
  */
 
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import {
   createRouter,
   protectedProcedure,

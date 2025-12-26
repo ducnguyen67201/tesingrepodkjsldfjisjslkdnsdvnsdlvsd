@@ -128,7 +128,7 @@ Future enhancement: AST-based parsing can be added later if heuristic approach p
 ### Main Function: `chunkCode`
 
 ```typescript
-import { chunkCode, type CodeChunk } from "@cognobserve/shared";
+import { chunkCode, type CodeChunk } from "@ducsigr/shared";
 
 const chunks: CodeChunk[] = chunkCode({
   content: fileContent,
@@ -148,7 +148,7 @@ import {
   detectLanguage,
   shouldIndexFile,
   generateContentHash,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 
 // Detect language from file path
 detectLanguage("src/utils.ts");  // "typescript"
@@ -339,7 +339,7 @@ The chunking module is used in `apps/worker/src/temporal/activities/github.activ
 import {
   chunkCode as sharedChunkCode,
   shouldIndexFile as sharedShouldIndexFile,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 
 export async function chunkCodeFiles(
   files: FileContent[]

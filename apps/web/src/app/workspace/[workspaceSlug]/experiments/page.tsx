@@ -33,7 +33,7 @@ import {
   ExperimentsPageSkeleton,
   STATUS_FILTERS,
 } from "@/components/experiments";
-import type { ExperimentStatus } from "@cognobserve/api/schemas";
+import type { ExperimentStatus } from "@ducsigr/api/schemas";
 
 export default function WorkspaceExperimentsPage() {
   const searchParams = useSearchParams();

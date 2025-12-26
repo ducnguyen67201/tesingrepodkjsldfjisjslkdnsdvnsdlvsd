@@ -1,17 +1,17 @@
 #!/bin/bash
 # scripts/test-quickstart.sh
 #
-# Integration test for CognObserve Quick Start image
+# Integration test for Ducsigr Quick Start image
 
 set -e
 
 echo "=========================================="
-echo "  CognObserve Quick Start Integration Test"
+echo "  Ducsigr Quick Start Integration Test"
 echo "=========================================="
 echo ""
 
-CONTAINER_NAME="cognobserve-test"
-VOLUME_NAME="cognobserve_test_data"
+CONTAINER_NAME="ducsigr-test"
+VOLUME_NAME="ducsigr_test_data"
 WEB_PORT=13000
 INGEST_PORT=18080
 
@@ -29,7 +29,7 @@ trap cleanup EXIT
 cleanup
 
 echo "[1/6] Building image..."
-docker build -f Dockerfile.quickstart -t cognobserve:test . || {
+docker build -f Dockerfile.quickstart -t ducsigr:test . || {
     echo "FAILED: Build failed"
     exit 1
 }
@@ -41,7 +41,7 @@ docker run -d --name $CONTAINER_NAME \
     -p $WEB_PORT:3000 \
     -p $INGEST_PORT:8080 \
     -v $VOLUME_NAME:/data \
-    cognobserve:test || {
+    ducsigr:test || {
     echo "FAILED: Container failed to start"
     exit 1
 }
@@ -114,6 +114,6 @@ echo "=========================================="
 echo "  All tests passed!"
 echo "=========================================="
 echo ""
-echo "Image: cognobserve:test"
+echo "Image: ducsigr:test"
 echo "Web:   http://localhost:$WEB_PORT"
 echo "Ingest: http://localhost:$INGEST_PORT"

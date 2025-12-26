@@ -10,7 +10,7 @@
 // the OTLP-first ingest-node service.
 // ============================================================
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 
 // NOTE: persistTrace, calculateTraceCosts, and updateCostSummaries
 // activities have been removed. Trace ingestion will be handled

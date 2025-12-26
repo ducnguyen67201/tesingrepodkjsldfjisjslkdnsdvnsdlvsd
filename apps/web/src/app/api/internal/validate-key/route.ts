@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
-import { validateInternalSecret } from "@cognobserve/shared";
+import { prisma } from "@ducsigr/db";
+import { validateInternalSecret } from "@ducsigr/shared";
 import { env } from "@/lib/env";
 import { internalApiError, internalApiSuccess } from "@/lib/api-responses";
 

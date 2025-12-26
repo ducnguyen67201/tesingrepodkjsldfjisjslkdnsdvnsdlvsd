@@ -318,7 +318,7 @@ export async function startGitHubIndexWorkflow(input: {
   const client = await getTemporalClient();
 
   const handle = await client.workflow.start("githubIndexWorkflow", {
-    taskQueue: "cognobserve-worker",
+    taskQueue: "ducsigr-worker",
     workflowId: `github-index-${input.deliveryId}`,
     args: [input],
   });
@@ -335,12 +335,12 @@ export async function startGitHubIndexWorkflow(input: {
 
 ```typescript
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@cognobserve/db";
-import { verifyGitHubSignature } from "@cognobserve/api/lib/github/signature";
+import { prisma } from "@ducsigr/db";
+import { verifyGitHubSignature } from "@ducsigr/api/lib/github/signature";
 import {
   GitHubPushPayloadSchema,
   GitHubPRPayloadSchema,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { env } from "@/lib/env";
 import { startGitHubIndexWorkflow } from "@/lib/temporal-client";
 

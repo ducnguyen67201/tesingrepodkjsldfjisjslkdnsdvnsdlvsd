@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { trpc } from "@/lib/trpc/client";
 import { knowledgeToast } from "@/lib/success";
 import { showError } from "@/lib/errors";
-import type { KnowledgeEntityType } from "@cognobserve/api/schemas";
+import type { KnowledgeEntityType } from "@ducsigr/api/schemas";
 
 interface LinkArticleDialogProps {
   open: boolean;

@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { authOptions } from "@/lib/auth/config";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
@@ -9,7 +9,7 @@ import { ThemeWrapper } from "@/components/theme/theme-wrapper";
 import {
   WorkspaceThemeConfigSchema,
   type WorkspaceThemeConfig,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface WorkspaceLayoutProps {
   children: React.ReactNode;

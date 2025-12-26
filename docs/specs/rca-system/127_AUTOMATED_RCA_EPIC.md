@@ -13,7 +13,7 @@
 
 ### Problem Statement
 
-When alerts fire in CognObserve (error rate spikes, latency degradation, etc.), users currently receive notifications but must manually investigate the root cause. This investigation is time-consuming and requires:
+When alerts fire in Ducsigr (error rate spikes, latency degradation, etc.), users currently receive notifications but must manually investigate the root cause. This investigation is time-consuming and requires:
 
 1. Correlating alert timing with recent deployments
 2. Analyzing trace/span data during the incident window
@@ -393,7 +393,7 @@ model Project {
 
 ### LLM Provider
 - **Choice:** Anthropic Claude (Haiku/Sonnet)
-- **Rationale:** Already integrated in CognObserve, structured output support, cost-effective
+- **Rationale:** Already integrated in Ducsigr, structured output support, cost-effective
 
 ### Code Chunking Strategy
 - **Choice:** AST-based semantic chunking
@@ -433,5 +433,5 @@ model Project {
 - [pgvector Documentation](https://github.com/pgvector/pgvector)
 - [OpenAI Embeddings Guide](https://platform.openai.com/docs/guides/embeddings)
 - [Temporal Workflow Patterns](https://docs.temporal.io/workflows)
-- CognObserve Alerting System: `/docs/specs/alerting/`
-- CognObserve Temporal Migration: `/docs/specs/infrastructure/115_TEMPORAL_MIGRATION_SPEC.md`
+- Ducsigr Alerting System: `/docs/specs/alerting/`
+- Ducsigr Temporal Migration: `/docs/specs/infrastructure/115_TEMPORAL_MIGRATION_SPEC.md`

@@ -20,7 +20,7 @@ let workerInstance: Worker | null = null;
 let connectionInstance: NativeConnection | null = null;
 
 /**
- * Create a Temporal worker configured for CognObserve.
+ * Create a Temporal worker configured for Ducsigr.
  * The worker handles both workflows and activities.
  */
 export async function createTemporalWorker(): Promise<Worker> {

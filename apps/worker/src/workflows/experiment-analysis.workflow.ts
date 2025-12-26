@@ -18,11 +18,11 @@
 
 import { proxyActivities, log } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 import type {
   ExperimentAnalysisWorkflowInput,
   LLMComparisonResult,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // Workflow Output Type

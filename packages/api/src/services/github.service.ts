@@ -1,4 +1,4 @@
-import { prisma, type Prisma } from "@cognobserve/db";
+import { prisma, type Prisma } from "@ducsigr/db";
 import type { StoreGitHubIndexInput } from "../schemas/github";
 
 /**

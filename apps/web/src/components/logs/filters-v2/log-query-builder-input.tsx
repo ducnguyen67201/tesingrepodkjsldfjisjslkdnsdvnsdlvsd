@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useLogFilterAutocomplete } from "@/hooks/use-log-filter-autocomplete";
-import type { LogField } from "@cognobserve/api/schemas";
-import { LogFieldSchema } from "@cognobserve/api/schemas";
+import type { LogField } from "@ducsigr/api/schemas";
+import { LogFieldSchema } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

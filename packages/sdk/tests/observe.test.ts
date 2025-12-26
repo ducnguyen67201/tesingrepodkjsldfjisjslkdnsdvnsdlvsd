@@ -1,21 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { CognObserve } from '../src/cognobserve';
+import { Ducsigr } from '../src/ducsigr';
 
 describe('observe()', () => {
   beforeEach(() => {
     // Initialize with disabled transport to avoid network calls
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   it('should execute the wrapped function and return its result', async () => {
-    const result = await CognObserve.observe('test-operation', async () => {
+    const result = await Ducsigr.observe('test-operation', async () => {
       return { data: 'hello' };
     });
 
@@ -23,7 +23,7 @@ describe('observe()', () => {
   });
 
   it('should work with string name', async () => {
-    const result = await CognObserve.observe('simple-name', async () => {
+    const result = await Ducsigr.observe('simple-name', async () => {
       return 42;
     });
 
@@ -31,7 +31,7 @@ describe('observe()', () => {
   });
 
   it('should work with options object', async () => {
-    const result = await CognObserve.observe(
+    const result = await Ducsigr.observe(
       {
         name: 'options-test',
         type: 'span',
@@ -47,7 +47,7 @@ describe('observe()', () => {
 
   it('should propagate errors', async () => {
     await expect(
-      CognObserve.observe('error-test', async () => {
+      Ducsigr.observe('error-test', async () => {
         throw new Error('Test error');
       })
     ).rejects.toThrow('Test error');
@@ -56,14 +56,14 @@ describe('observe()', () => {
   it('should support nested observe calls', async () => {
     const calls: string[] = [];
 
-    await CognObserve.observe('parent', async () => {
+    await Ducsigr.observe('parent', async () => {
       calls.push('parent-start');
 
-      await CognObserve.observe('child-1', async () => {
+      await Ducsigr.observe('child-1', async () => {
         calls.push('child-1');
       });
 
-      await CognObserve.observe('child-2', async () => {
+      await Ducsigr.observe('child-2', async () => {
         calls.push('child-2');
       });
 
@@ -78,7 +78,7 @@ describe('observe()', () => {
       new Promise((resolve) => setTimeout(resolve, ms));
 
     const start = Date.now();
-    await CognObserve.observe('async-test', async () => {
+    await Ducsigr.observe('async-test', async () => {
       await sleep(50);
     });
     const duration = Date.now() - start;
@@ -99,7 +99,7 @@ describe('observe()', () => {
       },
     };
 
-    const result = await CognObserve.observe(
+    const result = await Ducsigr.observe(
       { name: 'llm-call', type: 'generation' },
       async () => mockLLMResponse
     );
@@ -110,26 +110,26 @@ describe('observe()', () => {
 
 describe('log()', () => {
   beforeEach(() => {
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   it('should log within observe context', async () => {
-    await CognObserve.observe('log-test', async () => {
-      CognObserve.log('Test message', { step: 1 });
-      CognObserve.log('Another message', { step: 2 }, 'WARNING');
+    await Ducsigr.observe('log-test', async () => {
+      Ducsigr.log('Test message', { step: 1 });
+      Ducsigr.log('Another message', { step: 2 }, 'WARNING');
     });
     // No error thrown means success
   });
 
   it('should handle log outside context', () => {
     // Should not throw
-    CognObserve.log('Outside context');
+    Ducsigr.log('Outside context');
   });
 });

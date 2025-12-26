@@ -7,12 +7,12 @@
 
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
-import { validateInternalSecret } from "@cognobserve/shared";
+import { prisma } from "@ducsigr/db";
+import { validateInternalSecret } from "@ducsigr/shared";
 import { env } from "@/lib/env";
-import { AlertingAdapter } from "@cognobserve/api/lib/alerting";
-import { initializeAlertingAdapters } from "@cognobserve/api/lib/alerting/init";
-import { type ChannelProvider } from "@cognobserve/api/schemas";
+import { AlertingAdapter } from "@ducsigr/api/lib/alerting";
+import { initializeAlertingAdapters } from "@ducsigr/api/lib/alerting/init";
+import { type ChannelProvider } from "@ducsigr/api/schemas";
 import { internalApiError, internalApiSuccess } from "@/lib/api-responses";
 
 // Initialize alerting adapters on module load

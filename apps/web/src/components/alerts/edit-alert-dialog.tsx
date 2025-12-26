@@ -43,10 +43,10 @@ import {
   THRESHOLD_PRESETS,
   type AlertType,
   type AlertSeverity,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { SeveritySelector } from "./severity-selector";
 import { ThresholdPresetCards } from "./threshold-preset-cards";
-import type { ThresholdPreset } from "@cognobserve/api/schemas";
+import type { ThresholdPreset } from "@ducsigr/api/schemas";
 
 interface EditAlertDialogProps {
   workspaceSlug: string;

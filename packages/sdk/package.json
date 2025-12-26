@@ -1,7 +1,7 @@
 {
-  "name": "@cognobserve/sdk",
+  "name": "@ducsigr/sdk",
   "version": "0.1.0",
-  "description": "CognObserve SDK for TypeScript - AI Observability",
+  "description": "Ducsigr SDK for TypeScript - AI Observability",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -51,13 +51,13 @@
     "openai",
     "anthropic",
     "monitoring",
-    "cognobserve"
+    "ducsigr"
   ],
-  "author": "CognObserve",
+  "author": "Ducsigr",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cognobserve/cognobserve.git",
+    "url": "https://github.com/ducsigr/ducsigr.git",
     "directory": "packages/sdk"
   },
   "engines": {
@@ -76,8 +76,8 @@
     }
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@types/node": "^22.0.0",
     "eslint": "^9.16.0",
     "tsup": "^8.3.5",

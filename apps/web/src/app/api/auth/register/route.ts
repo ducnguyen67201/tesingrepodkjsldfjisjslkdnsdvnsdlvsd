@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { hash } from "bcryptjs";
-import { prisma } from "@cognobserve/db";
-import { extractDomainFromEmail } from "@cognobserve/api";
+import { prisma } from "@ducsigr/db";
+import { extractDomainFromEmail } from "@ducsigr/api";
 import { z } from "zod";
 import { apiError, apiSuccess, apiServerError } from "@/lib/api-responses";
 

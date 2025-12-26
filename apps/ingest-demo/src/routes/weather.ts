@@ -52,7 +52,7 @@ router.post("/weather", async (req: Request, res: Response) => {
       {
         headers: {
           Accept: "application/json",
-          "User-Agent": "CognObserve-Demo/1.0",
+          "User-Agent": "Ducsigr-Demo/1.0",
         },
       }
     );

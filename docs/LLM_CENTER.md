@@ -1,11 +1,11 @@
 # LLM Center Documentation
 
-> **Centralized LLM processing service for CognObserve.**
+> **Centralized LLM processing service for Ducsigr.**
 > Multi-provider support, smart routing, structured outputs, and usage tracking.
 
 ## Overview
 
-LLM Center is the unified interface for all LLM operations in CognObserve. It abstracts away provider-specific details and provides:
+LLM Center is the unified interface for all LLM operations in Ducsigr. It abstracts away provider-specific details and provides:
 
 - **Multi-provider support**: OpenAI and Anthropic out of the box
 - **Smart routing**: Per-operation routing with automatic fallback chains
@@ -110,7 +110,7 @@ packages/shared/src/llm/
 ### Basic Usage
 
 ```typescript
-import { createLLMCenter, getConfig } from "@cognobserve/shared/llm";
+import { createLLMCenter, getConfig } from "@ducsigr/shared/llm";
 
 // Create instance (uses NODE_ENV to select config)
 const llm = createLLMCenter(getConfig());
@@ -175,7 +175,7 @@ const embedResult = await llm.embed(texts, {
 The `getConfig()` function automatically selects configuration based on `NODE_ENV`:
 
 ```typescript
-import { getConfig, getConfigByName } from "@cognobserve/shared/llm";
+import { getConfig, getConfigByName } from "@ducsigr/shared/llm";
 
 // Auto-select based on NODE_ENV
 const config = getConfig();  // development or production
@@ -216,7 +216,7 @@ Optimized for quality and reliability:
 ### Custom Configuration
 
 ```typescript
-import { defineLLMConfig, createLLMCenter } from "@cognobserve/shared/llm";
+import { defineLLMConfig, createLLMCenter } from "@ducsigr/shared/llm";
 
 const customConfig = defineLLMConfig({
   defaultProvider: "openai",
@@ -311,7 +311,7 @@ Request → Primary Model (retry 1, 2, 3) → Fallback 1 (retry 1, 2, 3) → Fal
 Creates and manages provider instances:
 
 ```typescript
-import { createProviders, getProvider, shutdownProviders } from "@cognobserve/shared/llm";
+import { createProviders, getProvider, shutdownProviders } from "@ducsigr/shared/llm";
 
 const registry = createProviders(config);
 const openai = getProvider(registry, "openai");
@@ -323,7 +323,7 @@ await shutdownProviders(registry);
 Tracks usage events with O(1) statistics:
 
 ```typescript
-import { UsageTracker } from "@cognobserve/shared/llm";
+import { UsageTracker } from "@ducsigr/shared/llm";
 
 const tracker = new UsageTracker({
   enabled: true,
@@ -393,7 +393,7 @@ import {
   AuthenticationError,
   isRetryableError,
   getErrorCode,
-} from "@cognobserve/shared/llm";
+} from "@ducsigr/shared/llm";
 
 // ✅ GOOD - Use centralized errors
 try {
@@ -428,7 +428,7 @@ Use the centralized logger for all LLM-related logging:
 ### Configuration
 
 ```typescript
-import { configureLogger, getLogger } from "@cognobserve/shared/llm";
+import { configureLogger, getLogger } from "@ducsigr/shared/llm";
 
 // Configure at startup (once)
 configureLogger({

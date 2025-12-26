@@ -225,8 +225,8 @@ export interface SearchProjectCodebaseInput {
  */
 
 import OpenAI from "openai";
-import { prisma } from "@cognobserve/db";
-import { searchSimilarChunks, searchSimilarChunksWithPatterns } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
+import { searchSimilarChunks, searchSimilarChunksWithPatterns } from "@ducsigr/db";
 import { env } from "@/lib/env";
 import type {
   SearchCodebaseInput,
@@ -461,7 +461,7 @@ Add search endpoint:
 ```typescript
 import { z } from "zod";
 import OpenAI from "openai";
-import { searchSimilarChunks, searchSimilarChunksWithPatterns } from "@cognobserve/db";
+import { searchSimilarChunks, searchSimilarChunksWithPatterns } from "@ducsigr/db";
 
 // Add to input schemas section:
 const SearchCodebaseSchema = z.object({
@@ -585,12 +585,12 @@ searchCodebase: protectedProcedure
  */
 
 import OpenAI from "openai";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   searchSimilarChunks,
   searchSimilarChunksWithPatterns,
   type SimilarChunk,
-} from "@cognobserve/db";
+} from "@ducsigr/db";
 
 // ============================================
 // Types
@@ -803,7 +803,7 @@ vi.mock("openai", () => ({
 }));
 
 // Mock DB
-vi.mock("@cognobserve/db", () => ({
+vi.mock("@ducsigr/db", () => ({
   prisma: {
     gitHubRepository: {
       findUnique: vi.fn().mockResolvedValue({ id: "repo-1" }),
@@ -871,7 +871,7 @@ describe("searchProjectCodebase", () => {
 
   it("should return empty if no repository", async () => {
     vi.mocked(
-      await import("@cognobserve/db")
+      await import("@ducsigr/db")
     ).prisma.gitHubRepository.findUnique.mockResolvedValueOnce(null);
 
     const result = await searchProjectCodebase({
@@ -890,7 +890,7 @@ describe("searchProjectCodebase", () => {
 
 ```typescript
 import { SearchService } from "../src/services/search.service";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 
 async function main() {
   console.log("Testing vector similarity search...\n");
@@ -958,7 +958,7 @@ main()
 
 ```typescript
 import { SearchService } from "../src/services/search.service";
-import { prisma, countChunksWithEmbeddings } from "@cognobserve/db";
+import { prisma, countChunksWithEmbeddings } from "@ducsigr/db";
 
 async function main() {
   const repo = await prisma.gitHubRepository.findFirst({

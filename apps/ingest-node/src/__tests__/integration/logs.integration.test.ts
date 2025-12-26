@@ -65,8 +65,8 @@ vi.mock("../../lib/db.js", () => ({
 }));
 
 // Mock hashApiKey from shared
-vi.mock("@cognobserve/shared", async () => {
-  const actual = await vi.importActual("@cognobserve/shared");
+vi.mock("@ducsigr/shared", async () => {
+  const actual = await vi.importActual("@ducsigr/shared");
   return {
     ...actual,
     hashApiKey: vi.fn().mockReturnValue("mocked-hash"),

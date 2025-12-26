@@ -1,11 +1,11 @@
 {
-  "name": "@cognobserve/ingest-node",
+  "name": "@ducsigr/ingest-node",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "doppler run -- tsx watch src/index.ts",
-    "dev:local": "DATABASE_URL=postgresql://cognobserve:cognobserve@localhost:5432/cognobserve tsx watch src/index.ts",
+    "dev:local": "DATABASE_URL=postgresql://ducsigr:ducsigr@localhost:5432/ducsigr tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit",
@@ -15,10 +15,10 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@cognobserve/api": "workspace:*",
-    "@cognobserve/db": "workspace:*",
-    "@cognobserve/proto": "workspace:*",
-    "@cognobserve/shared": "workspace:*",
+    "@ducsigr/api": "workspace:*",
+    "@ducsigr/db": "workspace:*",
+    "@ducsigr/proto": "workspace:*",
+    "@ducsigr/shared": "workspace:*",
     "@t3-oss/env-core": "^0.13.8",
     "compression": "^1.7.5",
     "express": "^4.21.2",
@@ -29,8 +29,8 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@eslint/js": "^9.16.0",
     "@types/compression": "^1.7.5",
     "@types/express": "^5.0.1",

@@ -25,13 +25,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Type check
-        run: pnpm --filter @cognobserve/marketing typecheck
+        run: pnpm --filter @ducsigr/marketing typecheck
 
       - name: Lint
-        run: pnpm --filter @cognobserve/marketing lint
+        run: pnpm --filter @ducsigr/marketing lint
 
       - name: Build
-        run: pnpm --filter @cognobserve/marketing build
+        run: pnpm --filter @ducsigr/marketing build
 
       - name: Check for uncommitted changes (drift check)
         run: |

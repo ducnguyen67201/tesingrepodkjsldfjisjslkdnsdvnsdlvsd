@@ -1,5 +1,5 @@
 {
-  "name": "@cognobserve/worker",
+  "name": "@ducsigr/worker",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,10 +13,10 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@cognobserve/api": "workspace:^",
-    "@cognobserve/db": "workspace:*",
-    "@cognobserve/proto": "workspace:*",
-    "@cognobserve/shared": "workspace:*",
+    "@ducsigr/api": "workspace:^",
+    "@ducsigr/db": "workspace:*",
+    "@ducsigr/proto": "workspace:*",
+    "@ducsigr/shared": "workspace:*",
     "@octokit/auth-app": "^6.0.0",
     "@octokit/rest": "^20.0.0",
     "@t3-oss/env-core": "^0.13.8",
@@ -28,8 +28,8 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@eslint/js": "^9.16.0",
     "@types/node": "^22.10.0",
     "eslint": "^9.16.0",

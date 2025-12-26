@@ -357,7 +357,7 @@ export * from "./github";
 Run from project root:
 
 ```bash
-pnpm --filter @cognobserve/db db:migrate:dev --name add_github_indexing
+pnpm --filter @ducsigr/db db:migrate:dev --name add_github_indexing
 ```
 
 ---
@@ -365,7 +365,7 @@ pnpm --filter @cognobserve/db db:migrate:dev --name add_github_indexing
 ### Step 13: Verify Prisma Client Generation
 
 ```bash
-pnpm --filter @cognobserve/db db:generate
+pnpm --filter @ducsigr/db db:generate
 ```
 
 ---
@@ -405,10 +405,10 @@ Per spec requirements:
 
 After implementation:
 
-1. **Migration Test**: Run `pnpm --filter @cognobserve/db db:migrate:dev --name add_github_indexing`
-2. **Client Generation**: Run `pnpm --filter @cognobserve/db db:generate`
+1. **Migration Test**: Run `pnpm --filter @ducsigr/db db:migrate:dev --name add_github_indexing`
+2. **Client Generation**: Run `pnpm --filter @ducsigr/db db:generate`
 3. **Type Check**: Run `pnpm typecheck` - must pass
-4. **Prisma Studio**: Open `pnpm --filter @cognobserve/db db:studio` to verify:
+4. **Prisma Studio**: Open `pnpm --filter @ducsigr/db db:studio` to verify:
    - All 5 new tables created (github_repositories, git_commits, git_pull_requests, code_chunks, alert_rcas)
    - Relations work correctly
    - Indexes visible in table structure

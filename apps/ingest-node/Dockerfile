@@ -23,10 +23,10 @@ COPY packages/api packages/api
 COPY apps/ingest-node apps/ingest-node
 
 # Generate Prisma client
-RUN pnpm --filter @cognobserve/db db:generate
+RUN pnpm --filter @ducsigr/db db:generate
 
 # Build ingest-node
-RUN pnpm --filter @cognobserve/ingest-node build
+RUN pnpm --filter @ducsigr/ingest-node build
 
 # Production stage
 FROM node:24-alpine AS runner

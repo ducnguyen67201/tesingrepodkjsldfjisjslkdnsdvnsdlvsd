@@ -10,14 +10,14 @@
 ## 1. Overview
 
 ### Problem Statement
-Users need to connect their GitHub repositories to CognObserve for automated Root Cause Analysis (RCA). When alerts fire, the system should correlate them with recent code changes by indexing the codebase.
+Users need to connect their GitHub repositories to Ducsigr for automated Root Cause Analysis (RCA). When alerts fire, the system should correlate them with recent code changes by indexing the codebase.
 
 ### Solution
 Build a GitHub App integration that allows users to:
 1. Click "Connect GitHub" in project settings
-2. Get redirected to GitHub to install the CognObserve App
+2. Get redirected to GitHub to install the Ducsigr App
 3. Select which repositories to grant access to
-4. Return to CognObserve where repos are synced and indexing begins automatically
+4. Return to Ducsigr where repos are synced and indexing begins automatically
 
 ### Why GitHub App (not OAuth)
 | Feature | GitHub App | OAuth App |
@@ -112,7 +112,7 @@ enum RepositoryIndexStatus {
 ### New Models
 
 #### GitHubInstallation
-Links a CognObserve project to a GitHub App installation.
+Links a Ducsigr project to a GitHub App installation.
 
 ```prisma
 model GitHubInstallation {
@@ -121,7 +121,7 @@ model GitHubInstallation {
   project         Project                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   installationId  BigInt                   @unique  // GitHub's installation ID
-  accountLogin    String                            // GitHub org/user login (e.g., "cognobserve")
+  accountLogin    String                            // GitHub org/user login (e.g., "ducsigr")
   accountType     String                            // "Organization" or "User"
   status          GitHubInstallationStatus @default(ACTIVE)
 
@@ -145,9 +145,9 @@ model GitHubRepository {
   installation    GitHubInstallation    @relation(fields: [installationId], references: [id], onDelete: Cascade)
 
   githubId        BigInt                @unique  // GitHub's repo ID
-  owner           String                          // e.g., "cognobserve"
+  owner           String                          // e.g., "ducsigr"
   name            String                          // e.g., "web-app"
-  fullName        String                          // e.g., "cognobserve/web-app"
+  fullName        String                          // e.g., "ducsigr/web-app"
   defaultBranch   String                @default("main")
   isPrivate       Boolean               @default(true)
 
@@ -341,7 +341,7 @@ GITHUB_APP_WEBHOOK_SECRET=""
 | `index.ts` | Re-exports |
 
 **Tasks:**
-1. Install dependencies: `pnpm add @octokit/app @octokit/rest --filter @cognobserve/api`
+1. Install dependencies: `pnpm add @octokit/app @octokit/rest --filter @ducsigr/api`
 2. Implement `GitHubAppClient` with methods: `listRepositories`, `getCommit`, `getTree`, `getBlob`
 3. Implement webhook signature verification using HMAC-SHA256
 4. Implement state token generation using JWT
@@ -451,7 +451,7 @@ GITHUB_APP_WEBHOOK_SECRET=""
 
 1. Go to https://github.com/settings/apps/new
 2. Fill in:
-   - **App name:** `CognObserve-Dev` (or your name)
+   - **App name:** `Ducsigr-Dev` (or your name)
    - **Homepage URL:** `http://localhost:3000`
    - **Callback URL:** `http://localhost:3000/api/github/callback`
    - **Setup URL:** `http://localhost:3000/api/github/callback`
@@ -741,8 +741,8 @@ Before deployment, verify:
 ## 9. Dependencies
 
 ```bash
-# Add to @cognobserve/api
-pnpm add @octokit/app @octokit/rest --filter @cognobserve/api
+# Add to @ducsigr/api
+pnpm add @octokit/app @octokit/rest --filter @ducsigr/api
 ```
 
 ---

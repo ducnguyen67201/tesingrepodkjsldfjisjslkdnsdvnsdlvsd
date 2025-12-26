@@ -9,12 +9,12 @@
  */
 
 import { getInternalCaller } from "@/lib/trpc-caller";
-import { getLogger } from "@cognobserve/shared/llm";
+import { getLogger } from "@ducsigr/shared/llm";
 import type {
   RCAReport,
   AlertContext,
   StoreRCAOutput,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 const logger = getLogger();
 

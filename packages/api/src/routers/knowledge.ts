@@ -8,7 +8,7 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import crypto from "crypto";
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import {
   createRouter,
   protectedProcedure,

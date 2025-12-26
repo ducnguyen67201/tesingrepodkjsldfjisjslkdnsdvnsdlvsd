@@ -6,7 +6,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { formatDuration } from "@/lib/format";
-import { type SpanType } from "@cognobserve/api/schemas";
+import { type SpanType } from "@ducsigr/api/schemas";
 
 // ------------------------------------------------------------
 // Types

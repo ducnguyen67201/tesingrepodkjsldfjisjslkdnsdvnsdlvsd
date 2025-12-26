@@ -38,7 +38,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useKnowledgeRules, useRulePreview } from "@/hooks/use-knowledge-rules";
 import { trpc } from "@/lib/trpc/client";
-import type { KnowledgeRuleScope } from "@cognobserve/api/schemas";
+import type { KnowledgeRuleScope } from "@ducsigr/api/schemas";
 
 /** Form schema - all required fields must not use .default() for proper type inference */
 const ruleFormSchema = z

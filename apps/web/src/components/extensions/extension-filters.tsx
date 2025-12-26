@@ -16,7 +16,7 @@ import {
   type ExtensionType,
   EXTENSION_TYPES,
   EXTENSION_TYPE_LABELS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Constants

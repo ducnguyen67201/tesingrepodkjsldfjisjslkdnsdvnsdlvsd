@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/chart";
 import { trpc } from "@/lib/trpc/client";
 import { cn } from "@/lib/utils";
-import type { TimeRange, TraceFilters, CustomDateRange } from "@cognobserve/api/schemas";
+import type { TimeRange, TraceFilters, CustomDateRange } from "@ducsigr/api/schemas";
 
 interface CostSidebarPanelProps {
   workspaceSlug: string;

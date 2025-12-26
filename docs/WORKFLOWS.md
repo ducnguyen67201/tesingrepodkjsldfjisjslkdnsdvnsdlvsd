@@ -5,7 +5,7 @@
 
 ## Overview
 
-CognObserve uses [Temporal](https://temporal.io/) for durable workflow orchestration. All background processing runs as Temporal workflows with activities.
+Ducsigr uses [Temporal](https://temporal.io/) for durable workflow orchestration. All background processing runs as Temporal workflows with activities.
 
 ## Architecture
 

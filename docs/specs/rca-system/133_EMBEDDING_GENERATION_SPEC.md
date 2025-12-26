@@ -515,7 +515,7 @@ export async function storeEmbeddings(
 Add to existing internal router:
 
 ```typescript
-import { setChunkEmbeddings } from "@cognobserve/db";
+import { setChunkEmbeddings } from "@ducsigr/db";
 
 // Add to existing internal router:
 
@@ -584,7 +584,7 @@ import {
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { RepositoryIndexInput, RepositoryIndexResult } from "../temporal/types";
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 
 // ============================================================
 // Activity Configuration

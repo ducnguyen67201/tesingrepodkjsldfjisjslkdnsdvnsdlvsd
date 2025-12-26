@@ -10,7 +10,7 @@ import type {
   GraphQuery,
   GraphDisplay,
   WidgetLayout,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // Types

@@ -12,7 +12,7 @@ import type {
   FilterOperator,
   TraceField,
   SpanField,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Filter Field Metadata
@@ -572,7 +572,7 @@ export interface QuickFilterPreset {
   description: string;
   icon?: string;
   /** Creates the FilterExpression for this preset */
-  createFilter: () => import("@cognobserve/api/schemas").FilterExpression;
+  createFilter: () => import("@ducsigr/api/schemas").FilterExpression;
 }
 
 /**
@@ -669,7 +669,7 @@ export const FILTER_V2_URL_PARAMS = {
  * Compress filter expression for URL (uses short keys)
  */
 export const compressFilterForUrl = (
-  filter: import("@cognobserve/api/schemas").FilterExpression
+  filter: import("@ducsigr/api/schemas").FilterExpression
 ): string => {
   // Use short keys for common properties to reduce URL size
   const shorten = (obj: unknown): unknown => {
@@ -722,7 +722,7 @@ export const compressFilterForUrl = (
  */
 export const decompressFilterFromUrl = (
   encoded: string
-): import("@cognobserve/api/schemas").FilterExpression | null => {
+): import("@ducsigr/api/schemas").FilterExpression | null => {
   try {
     const json = JSON.parse(atob(encoded));
 
@@ -768,7 +768,7 @@ export const decompressFilterFromUrl = (
       return obj;
     };
 
-    return expand(json) as import("@cognobserve/api/schemas").FilterExpression;
+    return expand(json) as import("@ducsigr/api/schemas").FilterExpression;
   } catch {
     return null;
   }

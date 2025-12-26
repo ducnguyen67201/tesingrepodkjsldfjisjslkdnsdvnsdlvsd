@@ -1,7 +1,7 @@
 /**
  * Pino Logger with OTLP Log Transport
  *
- * Creates a pino logger that sends logs to the CognObserve ingest service
+ * Creates a pino logger that sends logs to the Ducsigr ingest service
  * in OTLP-compatible format.
  */
 import pino from "pino";
@@ -148,12 +148,12 @@ async function flushLogs(): Promise<void> {
   const payload = formatOtlpPayload(logs);
 
   try {
-    const response = await fetch(`${config.cognobserve.endpoint}/v1/logs`, {
+    const response = await fetch(`${config.ducsigr.endpoint}/v1/logs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(config.cognobserve.apiKey && {
-          Authorization: `Bearer ${config.cognobserve.apiKey}`,
+        ...(config.ducsigr.apiKey && {
+          Authorization: `Bearer ${config.ducsigr.apiKey}`,
         }),
       },
       body: JSON.stringify(payload),

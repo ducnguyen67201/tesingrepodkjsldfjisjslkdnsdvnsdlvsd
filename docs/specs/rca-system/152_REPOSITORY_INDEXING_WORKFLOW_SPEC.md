@@ -195,7 +195,7 @@ export async function getTemporalClient(): Promise<Client> {
 }
 
 export function getTaskQueue(): string {
-  return process.env.TEMPORAL_TASK_QUEUE || "cognobserve-tasks";
+  return process.env.TEMPORAL_TASK_QUEUE || "ducsigr-tasks";
 }
 ```
 

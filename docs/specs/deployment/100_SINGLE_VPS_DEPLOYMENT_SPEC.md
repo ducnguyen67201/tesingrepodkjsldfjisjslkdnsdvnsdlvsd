@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-Deploy CognObserve (Web, Worker, Ingest) to a single Hetzner VPS with Docker Compose, automated CI/CD via GitHub Actions, and secrets management via Doppler.
+Deploy Ducsigr (Web, Worker, Ingest) to a single Hetzner VPS with Docker Compose, automated CI/CD via GitHub Actions, and secrets management via Doppler.
 
 ### Goals
 
@@ -88,9 +88,9 @@ Deploy CognObserve (Web, Worker, Ingest) to a single Hetzner VPS with Docker Com
 Configure DNS A records pointing to VPS IP:
 
 ```
-A     @                  → <VPS_IP>    # cognobserve.io
-A     api                → <VPS_IP>    # api.cognobserve.io (optional)
-A     ingest             → <VPS_IP>    # ingest.cognobserve.io
+A     @                  → <VPS_IP>    # ducsigr.io
+A     api                → <VPS_IP>    # api.ducsigr.io (optional)
+A     ingest             → <VPS_IP>    # ingest.ducsigr.io
 ```
 
 ### 2.3 Resource Allocation
@@ -120,7 +120,7 @@ A     ingest             → <VPS_IP>    # ingest.cognobserve.io
 ### 3.2 Doppler Project Structure
 
 ```
-cognobserve (Project)
+ducsigr (Project)
 ├── dev          # Local development
 ├── staging      # Staging environment (future)
 └── prod         # Production VPS
@@ -130,14 +130,14 @@ cognobserve (Project)
 
 | Secret | Description | Example |
 |--------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection | `postgresql://user:pass@postgres:5432/cognobserve` |
+| `DATABASE_URL` | PostgreSQL connection | `postgresql://user:pass@postgres:5432/ducsigr` |
 | `REDIS_URL` | Redis connection | `redis://redis:6379` |
 | `NEXTAUTH_SECRET` | NextAuth.js secret | `<random-32-char>` |
-| `NEXTAUTH_URL` | App URL | `https://cognobserve.io` |
+| `NEXTAUTH_URL` | App URL | `https://ducsigr.io` |
 | `GOOGLE_CLIENT_ID` | OAuth (if used) | `xxx.apps.googleusercontent.com` |
 | `GOOGLE_CLIENT_SECRET` | OAuth secret | `GOCSPX-xxx` |
 | `GMAIL_APP_PASSWORD` | Alerting emails | `xxxx xxxx xxxx xxxx` |
-| `GMAIL_FROM_EMAIL` | Sender email | `alerts@cognobserve.io` |
+| `GMAIL_FROM_EMAIL` | Sender email | `alerts@ducsigr.io` |
 
 ### 3.4 Doppler Setup
 
@@ -149,7 +149,7 @@ curl -Ls https://cli.doppler.com/install.sh | sh
 doppler login
 
 # Setup project
-doppler setup --project cognobserve --config prod
+doppler setup --project ducsigr --config prod
 
 # Run any command with secrets injected
 doppler run -- docker compose up -d
@@ -189,16 +189,16 @@ services:
   # ===========================================
   postgres:
     image: postgres:16-alpine
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USER:-cognobserve}
+      POSTGRES_USER: ${DB_USER:-ducsigr}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME:-cognobserve}
+      POSTGRES_DB: ${DB_NAME:-ducsigr}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-cognobserve}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-ducsigr}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -211,7 +211,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: cognobserve-redis
+    container_name: ducsigr-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -235,7 +235,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
-    container_name: cognobserve-web
+    container_name: ducsigr-web
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -261,7 +261,7 @@ services:
     build:
       context: .
       dockerfile: apps/worker/Dockerfile
-    container_name: cognobserve-worker
+    container_name: ducsigr-worker
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -285,7 +285,7 @@ services:
     build:
       context: ./apps/ingest
       dockerfile: Dockerfile
-    container_name: cognobserve-ingest
+    container_name: ducsigr-ingest
     restart: unless-stopped
     environment:
       PORT: "8080"
@@ -306,7 +306,7 @@ services:
   # ===========================================
   caddy:
     image: caddy:2-alpine
-    container_name: cognobserve-caddy
+    container_name: ducsigr-caddy
     restart: unless-stopped
     ports:
       - "80:80"
@@ -341,11 +341,11 @@ networks:
 ```caddyfile
 # Caddyfile
 {
-    email admin@cognobserve.io
+    email admin@ducsigr.io
 }
 
 # Main application
-cognobserve.io {
+ducsigr.io {
     reverse_proxy web:3000
 
     # Security headers
@@ -360,7 +360,7 @@ cognobserve.io {
 }
 
 # Ingest service (separate subdomain for SDK)
-ingest.cognobserve.io {
+ingest.ducsigr.io {
     reverse_proxy ingest:8080
 
     # Higher limits for trace ingestion
@@ -615,13 +615,13 @@ jobs:
 
           # Deploy
           ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
-            cd /opt/cognobserve
+            cd /opt/ducsigr
 
             # Pull latest config
             git pull origin main
 
             # Fetch secrets from Doppler and write to .env
-            doppler secrets download --no-file --format env --project cognobserve --config prod > .env
+            doppler secrets download --no-file --format env --project ducsigr --config prod > .env
 
             # Pull new images
             docker compose -f docker-compose.prod.yml pull
@@ -661,13 +661,13 @@ Configure these in GitHub Repository Settings → Secrets → Actions:
 
 ```bash
 # Generate deploy key (no passphrase for CI)
-ssh-keygen -t ed25519 -f ~/.ssh/cognobserve_deploy -N ""
+ssh-keygen -t ed25519 -f ~/.ssh/ducsigr_deploy -N ""
 
 # Copy public key (add to VPS authorized_keys)
-cat ~/.ssh/cognobserve_deploy.pub
+cat ~/.ssh/ducsigr_deploy.pub
 
 # Copy private key (add to GitHub Secrets as VPS_SSH_KEY)
-cat ~/.ssh/cognobserve_deploy
+cat ~/.ssh/ducsigr_deploy
 ```
 
 ---
@@ -683,7 +683,7 @@ cat ~/.ssh/cognobserve_deploy
 
 set -e
 
-echo "=== CognObserve VPS Setup ==="
+echo "=== Ducsigr VPS Setup ==="
 
 # Update system
 apt update && apt upgrade -y
@@ -710,8 +710,8 @@ chmod 600 /home/deploy/.ssh/authorized_keys
 chown -R deploy:deploy /home/deploy/.ssh
 
 # Create app directory
-mkdir -p /opt/cognobserve
-chown deploy:deploy /opt/cognobserve
+mkdir -p /opt/ducsigr
+chown deploy:deploy /opt/ducsigr
 
 # Configure firewall
 ufw allow 22/tcp   # SSH
@@ -721,15 +721,15 @@ ufw --force enable
 
 # Setup Doppler (as deploy user)
 su - deploy << 'EOF'
-cd /opt/cognobserve
+cd /opt/ducsigr
 doppler login
-doppler setup --project cognobserve --config prod
+doppler setup --project ducsigr --config prod
 EOF
 
 echo "=== Setup Complete ==="
 echo "Next steps:"
-echo "1. Clone repo: git clone https://github.com/YOUR_ORG/cognobserve.git /opt/cognobserve"
-echo "2. Start services: cd /opt/cognobserve && doppler run -- docker compose -f docker-compose.prod.yml up -d"
+echo "1. Clone repo: git clone https://github.com/YOUR_ORG/ducsigr.git /opt/ducsigr"
+echo "2. Start services: cd /opt/ducsigr && doppler run -- docker compose -f docker-compose.prod.yml up -d"
 ```
 
 ### 6.2 Manual Setup Commands
@@ -757,8 +757,8 @@ chmod 700 /home/deploy/.ssh
 chmod 600 /home/deploy/.ssh/authorized_keys
 
 # 6. Create app directory
-mkdir -p /opt/cognobserve
-chown deploy:deploy /opt/cognobserve
+mkdir -p /opt/ducsigr
+chown deploy:deploy /opt/ducsigr
 
 # 7. Configure firewall
 ufw allow 22 && ufw allow 80 && ufw allow 443 && ufw enable
@@ -768,13 +768,13 @@ su - deploy
 
 # 9. Login to Doppler
 doppler login
-doppler setup --project cognobserve --config prod
+doppler setup --project ducsigr --config prod
 
 # 10. Clone repository
-git clone https://github.com/YOUR_ORG/cognobserve.git /opt/cognobserve
+git clone https://github.com/YOUR_ORG/ducsigr.git /opt/ducsigr
 
 # 11. Initial deploy
-cd /opt/cognobserve
+cd /opt/ducsigr
 doppler run -- docker compose -f docker-compose.prod.yml up -d
 ```
 
@@ -787,11 +787,11 @@ doppler run -- docker compose -f docker-compose.prod.yml up -d
 ```bash
 #!/bin/bash
 # scripts/backup.sh
-# Run via cron: 0 3 * * * /opt/cognobserve/scripts/backup.sh
+# Run via cron: 0 3 * * * /opt/ducsigr/scripts/backup.sh
 
 set -e
 
-BACKUP_DIR="/opt/cognobserve/backups"
+BACKUP_DIR="/opt/ducsigr/backups"
 DATE=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=7
 
@@ -800,16 +800,16 @@ mkdir -p $BACKUP_DIR
 
 # Backup PostgreSQL
 echo "Backing up PostgreSQL..."
-docker exec cognobserve-postgres pg_dump -U cognobserve cognobserve | gzip > "$BACKUP_DIR/db_$DATE.sql.gz"
+docker exec ducsigr-postgres pg_dump -U ducsigr ducsigr | gzip > "$BACKUP_DIR/db_$DATE.sql.gz"
 
 # Backup Redis (optional, for persistence)
 echo "Backing up Redis..."
-docker exec cognobserve-redis redis-cli BGSAVE
+docker exec ducsigr-redis redis-cli BGSAVE
 sleep 2
-docker cp cognobserve-redis:/data/dump.rdb "$BACKUP_DIR/redis_$DATE.rdb"
+docker cp ducsigr-redis:/data/dump.rdb "$BACKUP_DIR/redis_$DATE.rdb"
 
 # Upload to cloud storage (optional, requires rclone)
-# rclone copy $BACKUP_DIR remote:cognobserve-backups --max-age 24h
+# rclone copy $BACKUP_DIR remote:ducsigr-backups --max-age 24h
 
 # Cleanup old backups
 find $BACKUP_DIR -mtime +$RETENTION_DAYS -delete
@@ -822,7 +822,7 @@ echo "Backup complete: $DATE"
 ```bash
 # Add to crontab (crontab -e)
 # Daily backup at 3 AM
-0 3 * * * /opt/cognobserve/scripts/backup.sh >> /var/log/cognobserve-backup.log 2>&1
+0 3 * * * /opt/ducsigr/scripts/backup.sh >> /var/log/ducsigr-backup.log 2>&1
 ```
 
 ---
@@ -895,7 +895,7 @@ Use free external monitoring:
 ## 10. File Structure
 
 ```
-CognObserve/
+Ducsigr/
 ├── docker-compose.prod.yml      # NEW: Production compose
 ├── Caddyfile                    # NEW: Reverse proxy config
 ├── apps/

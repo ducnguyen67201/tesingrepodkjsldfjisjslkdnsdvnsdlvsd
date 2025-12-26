@@ -90,7 +90,7 @@ What must this technology do?
 | **Learning curve** | Steeper | Gentler |
 | **Ecosystem** | Smaller, focused | Massive, varied quality |
 
-**CognObserve Pattern:**
+**Ducsigr Pattern:**
 - **Ingest Service (Go):** High-throughput, CPU-intensive validation
 - **Web/Worker (Node.js):** Rapid iteration, rich ecosystem
 
@@ -140,7 +140,7 @@ What must this technology do?
 | **Learning curve** | Medium | Medium | Low |
 | **Ecosystem** | Largest | Growing | Large |
 
-**CognObserve Choice:** Next.js for dashboard (SSR for SEO, Server Actions for simplicity)
+**Ducsigr Choice:** Next.js for dashboard (SSR for SEO, Server Actions for simplicity)
 
 ---
 
@@ -206,7 +206,7 @@ log_statement = 'none'            -- Don't log all queries
 | **AWS RDS** | Reliable, full control | More ops work | Enterprise |
 | **Railway** | Simple deployment | Limited config | Quick deploys |
 
-**CognObserve Default:** Neon for development, managed Postgres (Railway/Render) for production
+**Ducsigr Default:** Neon for development, managed Postgres (Railway/Render) for production
 
 ---
 
@@ -271,7 +271,7 @@ const TTL = {
 | **Kafka** | Event streaming, high scale | 1M/sec | High |
 | **SQS** | AWS native, simple | 100k/sec | Low |
 
-**CognObserve Choice:** Redis Streams (already have Redis, simple, fast)
+**Ducsigr Choice:** Redis Streams (already have Redis, simple, fast)
 
 ### Queue Patterns
 

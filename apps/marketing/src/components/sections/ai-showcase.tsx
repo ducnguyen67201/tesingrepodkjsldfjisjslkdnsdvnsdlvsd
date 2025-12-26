@@ -141,7 +141,7 @@ function AiChatMockup() {
               className="text-sm font-semibold"
               style={{ color: COLORS.ink.primary }}
             >
-              CognObserve AI
+              Ducsigr AI
             </div>
             <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500" />

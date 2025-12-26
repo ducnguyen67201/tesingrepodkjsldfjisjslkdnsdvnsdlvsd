@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { SignJWT } from "jose";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { authOptions } from "@/lib/auth/config";
 import { apiError, apiServerError } from "@/lib/api-responses";
 import {

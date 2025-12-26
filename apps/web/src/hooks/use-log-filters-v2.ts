@@ -13,8 +13,8 @@ import type {
   LogFilterExpression,
   LogField,
   LogFieldPredicate,
-} from "@cognobserve/api/schemas";
-import type { FilterOperator } from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
+import type { FilterOperator } from "@ducsigr/api/schemas";
 import {
   LOG_FILTER_V2_URL_PARAMS,
   compressLogFilterForUrl,

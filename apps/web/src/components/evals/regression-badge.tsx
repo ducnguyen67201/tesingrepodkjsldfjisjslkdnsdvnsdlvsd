@@ -6,7 +6,7 @@ import {
   EVAL_STATUS_LABELS,
   EVAL_STATUS_COLORS,
   type EvalRunStatus,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface RegressionBadgeProps {
   status: EvalRunStatus;

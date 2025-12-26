@@ -1,6 +1,6 @@
 # Workspace Architecture
 
-This document describes the workspace-based multi-tenancy architecture in CognObserve.
+This document describes the workspace-based multi-tenancy architecture in Ducsigr.
 
 ## Data Model
 

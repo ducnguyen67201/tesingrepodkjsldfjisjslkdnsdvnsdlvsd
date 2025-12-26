@@ -5,7 +5,7 @@
  * This file MUST be imported before any routes that use these features.
  */
 
-import { setApiKeyConfig } from "@cognobserve/shared";
+import { setApiKeyConfig } from "@ducsigr/shared";
 import { initializeAlertingAdapters } from "./lib/alerting/init";
 import { initializeExtensionHandlers } from "./lib/extensions/init";
 

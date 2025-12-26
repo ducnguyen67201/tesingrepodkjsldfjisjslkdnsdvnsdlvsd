@@ -8,7 +8,7 @@
  * and calls procedures directly with proper context.
  */
 
-import { appRouter, createCallerFactory } from "@cognobserve/api";
+import { appRouter, createCallerFactory } from "@ducsigr/api";
 import { env } from "./env";
 
 // Create caller factory from the app router

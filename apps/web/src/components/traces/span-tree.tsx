@@ -27,7 +27,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { formatDuration, formatTokens, formatCost } from "@/lib/format";
 import { clipboardToast } from "@/lib/success";
-import { type SpanType } from "@cognobserve/api/schemas";
+import { type SpanType } from "@ducsigr/api/schemas";
 
 // ------------------------------------------------------------
 // Types
@@ -202,7 +202,7 @@ const groupAttributes = (attrs: AttributeMap): AttributeGroups => {
       groups.http[key] = value;
     } else if (key.startsWith("net.") || key.startsWith("network.")) {
       groups.network[key] = value;
-    } else if (key.startsWith("cognobserve.") || !key.includes(".")) {
+    } else if (key.startsWith("ducsigr.") || !key.includes(".")) {
       groups.custom[key] = value;
     } else {
       groups.other[key] = value;
@@ -269,7 +269,7 @@ function AttributeSection({ title, icon: Icon, attributes }: { title: string; ic
 
 function CustomAttributesSummary({ attrs }: { attrs: AttributeMap }) {
   const customAttrs = Object.entries(attrs).filter(
-    ([key]) => key.startsWith("cognobserve.") || !key.includes(".")
+    ([key]) => key.startsWith("ducsigr.") || !key.includes(".")
   );
   if (customAttrs.length === 0) return null;
 
@@ -282,7 +282,7 @@ function CustomAttributesSummary({ attrs }: { attrs: AttributeMap }) {
       <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px] pl-5">
         {customAttrs.map(([key, value]) => (
           <div key={key} className="flex items-center gap-1">
-            <span className="text-muted-foreground">{key.replace("cognobserve.", "")}:</span>
+            <span className="text-muted-foreground">{key.replace("ducsigr.", "")}:</span>
             <span className="font-mono truncate">{formatAttrValue(value)}</span>
           </div>
         ))}

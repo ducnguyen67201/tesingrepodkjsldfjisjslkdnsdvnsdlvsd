@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines best practices for configuring alerts in CognObserve, based on industry standards and observability research.
+This document outlines best practices for configuring alerts in Ducsigr, based on industry standards and observability research.
 
 ## Cooldown Time Recommendations
 

@@ -198,7 +198,7 @@ apps/ingest/
     ├── model/              # Internal domain models
     ├── queue/              # Redis queue producer
     ├── server/             # HTTP server setup
-    └── proto/cognobservev1/ # Generated protobuf types
+    └── proto/ducsigrv1/ # Generated protobuf types
 ```
 
 ### Naming Conventions
@@ -395,11 +395,11 @@ const traces = await prisma.trace.findMany({
 ### Defining Messages
 
 ```protobuf
-// proto/cognobserve/v1/trace.proto
+// proto/ducsigr/v1/trace.proto
 
 syntax = "proto3";
 
-package cognobserve.v1;
+package ducsigr.v1;
 
 message Trace {
   string id = 1;
@@ -420,7 +420,7 @@ make proto
 
 # Verify generated files
 ls packages/proto/src/generated/
-ls apps/ingest/internal/proto/cognobservev1/
+ls apps/ingest/internal/proto/ducsigrv1/
 ```
 
 ---

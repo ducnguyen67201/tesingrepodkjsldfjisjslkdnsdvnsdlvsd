@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { ScrubHandler } from "../../pipeline/handlers/scrub.handler.js";
 import { createNormalizedContext } from "../helpers/mock-context.js";
-import type { NormalizedSpan } from "@cognobserve/api/schemas";
+import type { NormalizedSpan } from "@ducsigr/api/schemas";
 
 describe("ScrubHandler", () => {
   let handler: ScrubHandler;

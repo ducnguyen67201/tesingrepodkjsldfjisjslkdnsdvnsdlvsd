@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { CognObserve } from '../../src/cognobserve';
+import { Ducsigr } from '../../src/ducsigr';
 import { wrapAnthropic } from '../../src/integrations/anthropic';
 
 // Mock Anthropic client
@@ -70,14 +70,14 @@ async function* mockStreamingResponse() {
 
 describe('wrapAnthropic', () => {
   beforeEach(() => {
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   describe('messages.create', () => {
@@ -112,7 +112,7 @@ describe('wrapAnthropic', () => {
       const mockClient = createMockAnthropic();
       const wrapped = wrapAnthropic(mockClient);
 
-      await CognObserve.observe('parent', async () => {
+      await Ducsigr.observe('parent', async () => {
         const response = await wrapped.messages.create({
           model: 'claude-3-5-sonnet-20241022',
           max_tokens: 1024,

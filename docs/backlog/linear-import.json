@@ -140,7 +140,7 @@
     },
     {
       "title": "Install SDK via npm",
-      "description": "As a developer, I can install the SDK via npm so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to npm as @cognobserve/sdk\n- npm install @cognobserve/sdk works\n- TypeScript types included\n- ESM and CJS builds\n- Minimal dependencies\n- Package size < 50KB",
+      "description": "As a developer, I can install the SDK via npm so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to npm as @ducsigr/sdk\n- npm install @ducsigr/sdk works\n- TypeScript types included\n- ESM and CJS builds\n- Minimal dependencies\n- Package size < 50KB",
       "priority": 1,
       "estimate": 2,
       "labels": ["sdk", "npm", "typescript"],
@@ -149,7 +149,7 @@
     },
     {
       "title": "Initialize SDK with API key",
-      "description": "As a developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- CognObserve.init({ apiKey }) configures client\n- Environment variable fallback (COGNOBSERVE_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Graceful handling of missing key",
+      "description": "As a developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- Ducsigr.init({ apiKey }) configures client\n- Environment variable fallback (Ducsigr_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Graceful handling of missing key",
       "priority": 1,
       "estimate": 3,
       "labels": ["sdk", "init", "config"],
@@ -185,7 +185,7 @@
     },
     {
       "title": "Install Python SDK via pip",
-      "description": "As a Python developer, I can install the SDK via pip so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to PyPI as cognobserve\n- pip install cognobserve works\n- Python 3.9+ supported\n- Type hints included (py.typed)\n- Minimal dependencies\n- Works with virtualenv, poetry, conda",
+      "description": "As a Python developer, I can install the SDK via pip so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to PyPI as Ducsigr\n- pip install Ducsigr works\n- Python 3.9+ supported\n- Type hints included (py.typed)\n- Minimal dependencies\n- Works with virtualenv, poetry, conda",
       "priority": 1,
       "estimate": 2,
       "labels": ["sdk", "pip", "python"],
@@ -194,7 +194,7 @@
     },
     {
       "title": "Initialize Python SDK with API key",
-      "description": "As a Python developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- cognobserve.init(api_key=...) configures client\n- Environment variable fallback (COGNOBSERVE_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Context manager support",
+      "description": "As a Python developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- Ducsigr.init(api_key=...) configures client\n- Environment variable fallback (Ducsigr_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Context manager support",
       "priority": 1,
       "estimate": 3,
       "labels": ["sdk", "python", "init"],
@@ -212,7 +212,7 @@
     },
     {
       "title": "Python decorator for tracing",
-      "description": "As a Python developer, I can use decorators for tracing so that instrumentation is clean.\n\n## Acceptance Criteria\n- @cognobserve.trace decorator for functions\n- @cognobserve.span decorator for nested spans\n- Works with sync and async functions\n- Captures function arguments (configurable)\n- Captures return values (configurable)\n- Exception tracking",
+      "description": "As a Python developer, I can use decorators for tracing so that instrumentation is clean.\n\n## Acceptance Criteria\n- @ducsigr.trace decorator for functions\n- @ducsigr.span decorator for nested spans\n- Works with sync and async functions\n- Captures function arguments (configurable)\n- Captures return values (configurable)\n- Exception tracking",
       "priority": 2,
       "estimate": 3,
       "labels": ["sdk", "python", "decorators"],
@@ -239,7 +239,7 @@
     },
     {
       "title": "Auto-trace LangChain",
-      "description": "As a Python developer, I can integrate with LangChain for automatic tracing so that chains and agents are captured.\n\n## Acceptance Criteria\n- CognObserveCallbackHandler for LangChain\n- Traces LLM calls, chains, tools, agents\n- Captures intermediate steps\n- Works with LCEL (LangChain Expression Language)\n- Nested span hierarchy reflects chain structure",
+      "description": "As a Python developer, I can integrate with LangChain for automatic tracing so that chains and agents are captured.\n\n## Acceptance Criteria\n- DucsigrCallbackHandler for LangChain\n- Traces LLM calls, chains, tools, agents\n- Captures intermediate steps\n- Works with LCEL (LangChain Expression Language)\n- Nested span hierarchy reflects chain structure",
       "priority": 2,
       "estimate": 8,
       "labels": ["sdk", "python", "langchain", "auto-instrumentation"],
@@ -248,7 +248,7 @@
     },
     {
       "title": "Auto-trace LlamaIndex",
-      "description": "As a Python developer, I can integrate with LlamaIndex for automatic tracing so that queries are captured.\n\n## Acceptance Criteria\n- CognObserveSpanHandler for LlamaIndex\n- Traces query engines, retrievers, synthesizers\n- Captures retrieved documents\n- Captures LLM calls within index\n- Works with async operations",
+      "description": "As a Python developer, I can integrate with LlamaIndex for automatic tracing so that queries are captured.\n\n## Acceptance Criteria\n- DucsigrSpanHandler for LlamaIndex\n- Traces query engines, retrievers, synthesizers\n- Captures retrieved documents\n- Captures LLM calls within index\n- Works with async operations",
       "priority": 3,
       "estimate": 5,
       "labels": ["sdk", "python", "llamaindex", "auto-instrumentation"],

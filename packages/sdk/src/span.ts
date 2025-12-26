@@ -127,7 +127,7 @@ export class Span {
    */
   end(options?: SpanEndOptions): void {
     if (this._ended) {
-      console.warn(`[CognObserve] Span "${this.name}" already ended`);
+      console.warn(`[Ducsigr] Span "${this.name}" already ended`);
       return;
     }
 

@@ -5,8 +5,8 @@
  */
 
 import { Client } from "@temporalio/client";
-import { prisma } from "@cognobserve/db";
-import { WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { prisma } from "@ducsigr/db";
+import { WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 import type { AlertWorkflowInput } from "@/temporal/types";
 
 /**

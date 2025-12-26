@@ -25,7 +25,7 @@ import {
   RPC_ATTRIBUTE_KEYS,
   EXCEPTION_ATTRIBUTE_KEYS,
   GENAI_EXTENDED_KEYS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { logger } from "../../lib/logger.js";
 import type {
   PipelineContext,

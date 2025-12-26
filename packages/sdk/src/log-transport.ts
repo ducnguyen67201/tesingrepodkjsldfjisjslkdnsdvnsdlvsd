@@ -1,5 +1,5 @@
 /**
- * Log Transport for CognObserve SDK
+ * Log Transport for Ducsigr SDK
  *
  * Handles batching and sending logs to the ingest service in OTLP format.
  * Mirrors the Transport class pattern used for traces.
@@ -36,7 +36,7 @@ export class LogTransport {
     this.flushTimer = setInterval(() => {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Log flush error:', err);
+          console.error('[Ducsigr] Log flush error:', err);
         }
       });
     }, this.config.flushInterval);
@@ -57,7 +57,7 @@ export class LogTransport {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Queued log "${log.level}: ${log.message.substring(0, 50)}...", queue size: ${this.queue.length}`
+        `[Ducsigr] Queued log "${log.level}: ${log.message.substring(0, 50)}...", queue size: ${this.queue.length}`
       );
     }
 
@@ -65,7 +65,7 @@ export class LogTransport {
     if (this.queue.length >= this.config.maxBatchSize) {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Log flush error:', err);
+          console.error('[Ducsigr] Log flush error:', err);
         }
       });
     }
@@ -83,7 +83,7 @@ export class LogTransport {
     const logs = this.queue.splice(0, this.config.maxBatchSize);
 
     if (this.config.debug) {
-      console.log(`[CognObserve] Flushing ${logs.length} log(s)`);
+      console.log(`[Ducsigr] Flushing ${logs.length} log(s)`);
     }
 
     try {
@@ -124,7 +124,7 @@ export class LogTransport {
         const result = (await response.json()) as LogsIngestResponse;
 
         if (this.config.debug) {
-          console.log(`[CognObserve] Sent ${logs.length} log(s)`);
+          console.log(`[Ducsigr] Sent ${logs.length} log(s)`);
         }
 
         return result;
@@ -133,7 +133,7 @@ export class LogTransport {
 
         if (this.config.debug) {
           console.warn(
-            `[CognObserve] Log retry ${attempt + 1}/${this.config.maxRetries}:`,
+            `[Ducsigr] Log retry ${attempt + 1}/${this.config.maxRetries}:`,
             err
           );
         }
@@ -147,7 +147,7 @@ export class LogTransport {
 
     // All retries failed
     console.error(
-      `[CognObserve] Failed to send ${logs.length} log(s) after ${this.config.maxRetries} attempts:`,
+      `[Ducsigr] Failed to send ${logs.length} log(s) after ${this.config.maxRetries} attempts:`,
       lastError
     );
     throw lastError;
@@ -166,14 +166,14 @@ export class LogTransport {
             attributes: [
               {
                 key: 'service.name',
-                value: { stringValue: 'cognobserve-sdk' },
+                value: { stringValue: 'ducsigr-sdk' },
               },
             ],
           },
           scopeLogs: [
             {
               scope: {
-                name: '@cognobserve/sdk',
+                name: '@ducsigr/sdk',
                 version: '0.1.0',
               },
               logRecords: logs.map((log) => ({
@@ -265,7 +265,7 @@ export class LogTransport {
       await this.flush();
     } catch (err) {
       if (this.config.debug) {
-        console.error('[CognObserve] Error during log shutdown flush:', err);
+        console.error('[Ducsigr] Error during log shutdown flush:', err);
       }
     }
   }

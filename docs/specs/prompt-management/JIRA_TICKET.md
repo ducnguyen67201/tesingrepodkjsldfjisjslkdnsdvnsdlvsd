@@ -131,14 +131,14 @@ Expose in ingest-node (same API key auth as `/v1/traces`):
 ### Story 4: SDK Prompt Client
 | Field | Value |
 |-------|-------|
-| **Summary** | [Prompts] Add prompts client to @cognobserve/sdk |
+| **Summary** | [Prompts] Add prompts client to @ducsigr/sdk |
 | **Story Points** | 5 |
 | **Priority** | High |
 
 **Description:**
-Add prompts client to `@cognobserve/sdk`:
+Add prompts client to `@ducsigr/sdk`:
 ```typescript
-const prompt = await CognObserve.prompts.get("movie-critic", {
+const prompt = await Ducsigr.prompts.get("movie-critic", {
   label: "production",
   type: "text",
 });
@@ -153,7 +153,7 @@ Features:
 - Return metadata (promptId, version, label) for trace linkage
 
 **Acceptance Criteria:**
-- [ ] `CognObserve.prompts.get()` implemented
+- [ ] `Ducsigr.prompts.get()` implemented
 - [ ] `prompt.compile()` with variable substitution
 - [ ] Caching with TTL and ETag support
 - [ ] TypeScript types exported

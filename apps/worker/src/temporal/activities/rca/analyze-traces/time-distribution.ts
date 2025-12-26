@@ -4,7 +4,7 @@
  * Functions for calculating time-bucketed distribution of spans.
  */
 
-import { TIME_BUCKET_MINUTES } from "@cognobserve/api/schemas";
+import { TIME_BUCKET_MINUTES } from "@ducsigr/api/schemas";
 import type { TimeDistributionBucket } from "../../../types";
 import type { SpanRow } from "../types";
 

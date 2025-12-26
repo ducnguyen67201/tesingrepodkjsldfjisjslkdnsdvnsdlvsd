@@ -22,12 +22,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGraphQuery } from "@/hooks/use-dashboards";
-import { formatMetricValue } from "@cognobserve/api/schemas";
+import { formatMetricValue } from "@ducsigr/api/schemas";
 import type {
   WidgetType,
   GraphQuery,
   GraphDisplay,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // Chart colors for series
 const CHART_COLORS = ["#eab308", "#3b82f6", "#22c55e", "#ef4444", "#8b5cf6"];

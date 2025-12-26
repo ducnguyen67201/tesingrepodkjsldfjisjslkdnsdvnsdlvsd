@@ -11,11 +11,11 @@
  * - Uses idempotent upsert to avoid duplicates
  */
 
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import { type ExtensionType, type ExtensionPermission } from "../../schemas/extensions";
 
 /** System user email for built-in extensions owner */
-const SYSTEM_USER_EMAIL = "system@cognobserve.internal";
+const SYSTEM_USER_EMAIL = "system@ducsigr.internal";
 
 /**
  * Built-in extension definition
@@ -35,9 +35,9 @@ interface BuiltinExtension {
  */
 const BUILTIN_EXTENSIONS: BuiltinExtension[] = [
   {
-    slug: "cognobserve.theme.default",
+    slug: "ducsigr.theme.default",
     name: "Default Theme",
-    description: "The default CognObserve theme with customizable colors and fonts.",
+    description: "The default Ducsigr theme with customizable colors and fonts.",
     type: "THEME",
     permissions: ["ui:theme"],
     version: "1.0.0",
@@ -84,7 +84,7 @@ async function getOrCreateSystemUser(): Promise<string> {
   const systemUser = await prisma.user.create({
     data: {
       email: SYSTEM_USER_EMAIL,
-      name: "CognObserve System",
+      name: "Ducsigr System",
       // System user has no auth - it's only for ownership records
     },
     select: { id: true },

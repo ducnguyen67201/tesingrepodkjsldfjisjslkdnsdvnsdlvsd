@@ -4,7 +4,7 @@
  * Functions for detecting anomalies from time distribution data.
  */
 
-import { TIME_BUCKET_MINUTES, ANOMALY_THRESHOLDS } from "@cognobserve/api/schemas";
+import { TIME_BUCKET_MINUTES, ANOMALY_THRESHOLDS } from "@ducsigr/api/schemas";
 import type { TimeDistributionBucket, DetectedAnomaly } from "../../../types";
 
 /**

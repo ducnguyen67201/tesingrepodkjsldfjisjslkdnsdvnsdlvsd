@@ -75,7 +75,7 @@ The SDK already supports variable compilation via `prompt.compile()`:
 
 ```typescript
 // Fetch prompt
-const prompt = await CognObserve.prompts.get("movie-critic", {
+const prompt = await Ducsigr.prompts.get("movie-critic", {
   label: "production",
 });
 
@@ -108,7 +108,7 @@ prompt.compile({ movie: "Dune 2" }, { strict: true }); // Throws if rating missi
 
 #### Standalone Utilities
 ```typescript
-import { compilePrompt, extractVariables } from '@cognobserve/sdk';
+import { compilePrompt, extractVariables } from '@ducsigr/sdk';
 
 // Extract variable names from template
 const vars = extractVariables(template); // ["movie", "rating"]

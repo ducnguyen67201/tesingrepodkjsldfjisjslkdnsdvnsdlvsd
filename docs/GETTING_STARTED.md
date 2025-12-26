@@ -40,8 +40,8 @@ docker -v  # Docker version 2x.x.x
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/your-org/cognobserve.git
-cd cognobserve
+git clone https://github.com/your-org/ducsigr.git
+cd ducsigr
 
 # Install all dependencies
 pnpm install
@@ -199,7 +199,7 @@ pnpm build            # Build all TypeScript apps
 ## Project Structure Quick Reference
 
 ```
-CognObserve/
+Ducsigr/
 ├── apps/
 │   ├── web/          # Next.js dashboard (port 3000)
 │   ├── ingest-node/  # OTLP ingestion service (port 8080)

@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
 import { trpc } from "@/lib/trpc/client";
 import { ExtensionsHub } from "@/components/extensions";
 

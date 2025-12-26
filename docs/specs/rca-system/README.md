@@ -21,7 +21,7 @@ This epic introduces an **Automated Root Cause Analysis (RCA) System** that corr
 
 ## Problem Statement
 
-When alerts fire in CognObserve (error rate spikes, latency degradation), users must manually investigate root causes by:
+When alerts fire in Ducsigr (error rate spikes, latency degradation), users must manually investigate root causes by:
 
 1. Correlating alert timing with deployments
 2. Analyzing trace/span data during incidents

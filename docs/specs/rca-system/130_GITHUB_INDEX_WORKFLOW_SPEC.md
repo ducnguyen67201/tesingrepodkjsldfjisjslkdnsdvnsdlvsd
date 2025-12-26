@@ -220,11 +220,11 @@ GITHUB_TOKEN: z.string().optional(),
 **File: `apps/worker/src/temporal/activities/github.activities.ts`**
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   GitHubPushPayloadSchema,
   GitHubPRPayloadSchema,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { createHash } from "crypto";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type {
@@ -362,7 +362,7 @@ async function fetchSingleFile(
 
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
-    "User-Agent": "CognObserve-Indexer",
+    "User-Agent": "Ducsigr-Indexer",
   };
 
   // Use token if available for higher rate limits
@@ -544,7 +544,7 @@ export {
 import { proxyActivities, log, ApplicationFailure } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { GitHubIndexInput, GitHubIndexResult } from "../temporal/types";
-import { GitHubPushPayloadSchema, GitHubPRPayloadSchema } from "@cognobserve/api/schemas";
+import { GitHubPushPayloadSchema, GitHubPRPayloadSchema } from "@ducsigr/api/schemas";
 
 // Activity configuration
 const {

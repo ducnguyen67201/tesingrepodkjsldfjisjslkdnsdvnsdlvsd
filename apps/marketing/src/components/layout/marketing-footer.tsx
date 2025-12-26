@@ -34,7 +34,7 @@ export function MarketingFooter() {
                 <Activity className="w-4 h-4 text-white" />
               </div>
               <span className="font-display font-semibold text-lg text-white">
-                CognObserve
+                Ducsigr
               </span>
             </Link>
             <p className="text-sm text-slate-400 max-w-xs mb-6">
@@ -83,7 +83,7 @@ export function MarketingFooter() {
       <div className="border-t border-slate-800">
         <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-500">
-            &copy; {currentYear} CognObserve Inc. All rights reserved.
+            &copy; {currentYear} Ducsigr Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-xs text-slate-500">
             <Link href="/privacy" className="hover:text-slate-300 transition-colors">

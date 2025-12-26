@@ -1,28 +1,28 @@
 # Project name for Docker Desktop grouping
-name: cognobserve
+name: ducsigr
 
 services:
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cognobserve
-      POSTGRES_PASSWORD: cognobserve
-      POSTGRES_DB: cognobserve
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ducsigr
+      POSTGRES_DB: ducsigr
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cognobserve"]
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: cognobserve-redis
+    container_name: ducsigr-redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -39,15 +39,15 @@ services:
   # ============================================================
   temporal:
     image: temporalio/auto-setup:latest
-    container_name: cognobserve-temporal
+    container_name: ducsigr-temporal
     restart: unless-stopped
     ports:
       - "7233:7233"
     environment:
       - DB=postgres12
       - DB_PORT=5432
-      - POSTGRES_USER=cognobserve
-      - POSTGRES_PWD=cognobserve
+      - POSTGRES_USER=ducsigr
+      - POSTGRES_PWD=ducsigr
       - POSTGRES_SEEDS=postgres
       - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
     volumes:
@@ -64,7 +64,7 @@ services:
 
   temporal-ui:
     image: temporalio/ui:latest
-    container_name: cognobserve-temporal-ui
+    container_name: ducsigr-temporal-ui
     restart: unless-stopped
     ports:
       - "8088:8080"
@@ -81,13 +81,13 @@ services:
   #   build:
   #     context: .
   #     dockerfile: apps/ingest-node/Dockerfile
-  #   container_name: cognobserve-ingest
+  #   container_name: ducsigr-ingest
   #   restart: unless-stopped
   #   ports:
   #     - "8080:8080"
   #   environment:
   #     PORT: "8080"
-  #     DATABASE_URL: "postgresql://cognobserve:cognobserve@postgres:5432/cognobserve"
+  #     DATABASE_URL: "postgresql://ducsigr:ducsigr@postgres:5432/ducsigr"
   #     LOG_LEVEL: "info"
   #   depends_on:
   #     postgres:

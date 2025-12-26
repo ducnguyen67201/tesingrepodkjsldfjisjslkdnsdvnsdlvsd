@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter, type Context } from "@cognobserve/api";
+import { appRouter, type Context } from "@ducsigr/api";
 import { authOptions } from "@/lib/auth/config";
 
 /**

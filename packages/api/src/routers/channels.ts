@@ -5,7 +5,7 @@
  */
 
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import {
   CreateChannelSchema,

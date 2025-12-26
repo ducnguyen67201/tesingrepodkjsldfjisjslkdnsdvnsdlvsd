@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the architecture and implementation plan for adding a theme switcher to the CognObserve application sidebar.
+This document outlines the architecture and implementation plan for adding a theme switcher to the Ducsigr application sidebar.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐

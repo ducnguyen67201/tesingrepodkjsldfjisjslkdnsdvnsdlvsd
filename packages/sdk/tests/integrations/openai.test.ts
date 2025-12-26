@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { CognObserve } from '../../src/cognobserve';
+import { Ducsigr } from '../../src/ducsigr';
 import { wrapOpenAI } from '../../src/integrations/openai';
 
 // Mock OpenAI client
@@ -58,14 +58,14 @@ async function* mockStreamingResponse() {
 
 describe('wrapOpenAI', () => {
   beforeEach(() => {
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   describe('chat.completions.create', () => {
@@ -98,7 +98,7 @@ describe('wrapOpenAI', () => {
       const mockClient = createMockOpenAI();
       const wrapped = wrapOpenAI(mockClient);
 
-      await CognObserve.observe('parent', async () => {
+      await Ducsigr.observe('parent', async () => {
         const response = await wrapped.chat.completions.create({
           model: 'gpt-4',
           messages: [{ role: 'user', content: 'Hello' }],

@@ -1,7 +1,7 @@
 /**
  * SDK Type Design Decision
  * ========================
- * The SDK maintains its own types separate from @cognobserve/proto for:
+ * The SDK maintains its own types separate from @ducsigr/proto for:
  *
  * 1. Developer Experience - Simpler types (e.g., 'DEBUG' vs 'SPAN_LEVEL_DEBUG')
  * 2. Zero Dependencies - No @bufbuild/protobuf required for SDK users
@@ -41,10 +41,10 @@ export interface UserInfo {
 }
 
 /**
- * Configuration options for CognObserve.init()
+ * Configuration options for Ducsigr.init()
  */
-export interface CognObserveConfig {
-  /** API key for authentication (or use COGNOBSERVE_API_KEY env var) */
+export interface DucsigrConfig {
+  /** API key for authentication (or use DUCSIGR_API_KEY env var) */
   apiKey?: string;
   /** Ingest service endpoint */
   endpoint?: string;

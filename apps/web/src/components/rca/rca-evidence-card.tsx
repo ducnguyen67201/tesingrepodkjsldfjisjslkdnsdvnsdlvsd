@@ -3,7 +3,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BarChart3, AlertTriangle, Clock, Layers, FileText, CheckCircle } from "lucide-react";
-import type { LLMRCAOutput } from "@cognobserve/api/schemas";
+import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 interface RCAEvidenceCardProps {
   analysis: LLMRCAOutput;

@@ -3,7 +3,7 @@
 import { AlertTriangle, Clock, CheckCircle, Bell } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { trpc } from "@/lib/trpc/client";
-import { ALERT_TYPE_LABELS, type AlertType } from "@cognobserve/api/schemas";
+import { ALERT_TYPE_LABELS, type AlertType } from "@ducsigr/api/schemas";
 import { formatDistanceToNow } from "date-fns";
 import { RCAActionCell } from "./rca-action-cell";
 

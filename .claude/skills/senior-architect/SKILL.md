@@ -1,11 +1,11 @@
 ---
 name: senior-architect
-description: CognObserve software architect for designing scalable features following strict project conventions. Uses tRPC, Prisma, Zod schemas, Temporal workers, and React/Next.js patterns. Produces structured implementation plans with database, API, tests, and frontend specifications.
+description: Ducsigr software architect for designing scalable features following strict project conventions. Uses tRPC, Prisma, Zod schemas, Temporal workers, and React/Next.js patterns. Produces structured implementation plans with database, API, tests, and frontend specifications.
 ---
 
-# CognObserve Senior Architect
+# Ducsigr Senior Architect
 
-Design features and system architecture following CognObserve's strict conventions. Produce implementation plans that can be executed by specialized agents.
+Design features and system architecture following Ducsigr's strict conventions. Produce implementation plans that can be executed by specialized agents.
 
 ## Quick Reference
 
@@ -22,7 +22,7 @@ Design features and system architecture following CognObserve's strict conventio
 
 ### Project Structure
 ```
-CognObserve/
+Ducsigr/
 ├── apps/
 │   ├── web/                 # Next.js dashboard
 │   │   └── src/
@@ -53,9 +53,9 @@ CognObserve/
 ### 1. Type Flow - Single Source of Truth
 
 ```
-Prisma Schema → @cognobserve/db → Types
+Prisma Schema → @ducsigr/db → Types
                       ↓
-Zod Schemas → @cognobserve/api/schemas → Input/Output Types
+Zod Schemas → @ducsigr/api/schemas → Input/Output Types
                       ↓
 Components import from shared packages (NEVER duplicate)
 ```
@@ -63,8 +63,8 @@ Components import from shared packages (NEVER duplicate)
 **Import Rules:**
 ```typescript
 // ✅ CORRECT
-import { type Project, type Trace } from "@cognobserve/db";
-import { ProjectRoleSchema, type ProjectRole } from "@cognobserve/api/schemas";
+import { type Project, type Trace } from "@ducsigr/db";
+import { ProjectRoleSchema, type ProjectRole } from "@ducsigr/api/schemas";
 
 // ❌ WRONG - Never do these
 import { Project } from "@prisma/client";  // Direct Prisma import
@@ -315,7 +315,7 @@ After outputting the plan, always ask:
 ## Reference Documentation
 
 - `references/architecture_patterns.md` - General architecture patterns
-- `references/cognobserve_conventions.md` - CognObserve-specific patterns
+- `references/ducsigr_conventions.md` - Ducsigr-specific patterns
 - `references/tech_decision_guide.md` - Technology decisions
 - `references/system_design_workflows.md` - Design workflows
 
@@ -327,7 +327,7 @@ After outputting the plan, always ask:
 |--------------|-----------------|
 | Inline functions in JSX | Extract to named handlers |
 | Business logic in routers | Use service layer |
-| Direct Prisma imports | Import from `@cognobserve/db` |
+| Direct Prisma imports | Import from `@ducsigr/db` |
 | Manual type definitions | Infer from Zod schemas |
 | Direct `toast()` calls | Use `@/lib/errors` or `@/lib/success` |
 | Check-then-act DB operations | Use atomic operations |

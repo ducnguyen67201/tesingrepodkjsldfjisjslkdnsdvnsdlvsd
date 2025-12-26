@@ -126,9 +126,9 @@ export interface SocialLink {
 }
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  { name: "Twitter", href: "https://twitter.com/cognobserve", icon: Twitter },
-  { name: "GitHub", href: "https://github.com/cognobserve", icon: Github },
-  { name: "LinkedIn", href: "https://linkedin.com/company/cognobserve", icon: Linkedin },
+  { name: "Twitter", href: "https://twitter.com/ducsigr", icon: Twitter },
+  { name: "GitHub", href: "https://github.com/ducsigr", icon: Github },
+  { name: "LinkedIn", href: "https://linkedin.com/company/ducsigr", icon: Linkedin },
 ];
 
 // ============================================

@@ -28,7 +28,7 @@ export class Transport {
     this.flushTimer = setInterval(() => {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Flush error:', err);
+          console.error('[Ducsigr] Flush error:', err);
         }
       });
     }, this.config.flushInterval);
@@ -49,7 +49,7 @@ export class Transport {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Queued trace "${trace.name}" (${trace.id}), queue size: ${this.queue.length}`
+        `[Ducsigr] Queued trace "${trace.name}" (${trace.id}), queue size: ${this.queue.length}`
       );
     }
 
@@ -57,7 +57,7 @@ export class Transport {
     if (this.queue.length >= this.config.maxBatchSize) {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Flush error:', err);
+          console.error('[Ducsigr] Flush error:', err);
         }
       });
     }
@@ -75,7 +75,7 @@ export class Transport {
     const traces = this.queue.splice(0, this.config.maxBatchSize);
 
     if (this.config.debug) {
-      console.log(`[CognObserve] Flushing ${traces.length} trace(s)`);
+      console.log(`[Ducsigr] Flushing ${traces.length} trace(s)`);
     }
 
     try {
@@ -117,7 +117,7 @@ export class Transport {
 
         if (this.config.debug) {
           console.log(
-            `[CognObserve] Sent trace ${trace.id} with ${trace.spans.length} span(s)`
+            `[Ducsigr] Sent trace ${trace.id} with ${trace.spans.length} span(s)`
           );
         }
 
@@ -127,7 +127,7 @@ export class Transport {
 
         if (this.config.debug) {
           console.warn(
-            `[CognObserve] Retry ${attempt + 1}/${this.config.maxRetries}:`,
+            `[Ducsigr] Retry ${attempt + 1}/${this.config.maxRetries}:`,
             err
           );
         }
@@ -141,7 +141,7 @@ export class Transport {
 
     // All retries failed
     console.error(
-      `[CognObserve] Failed to send trace ${trace.id} after ${this.config.maxRetries} attempts:`,
+      `[Ducsigr] Failed to send trace ${trace.id} after ${this.config.maxRetries} attempts:`,
       lastError
     );
     throw lastError;
@@ -216,7 +216,7 @@ export class Transport {
       await this.flush();
     } catch (err) {
       if (this.config.debug) {
-        console.error('[CognObserve] Error during shutdown flush:', err);
+        console.error('[Ducsigr] Error during shutdown flush:', err);
       }
     }
   }

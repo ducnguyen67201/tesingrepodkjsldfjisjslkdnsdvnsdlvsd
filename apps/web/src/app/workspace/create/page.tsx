@@ -11,7 +11,7 @@ import Link from "next/link";
 import {
   CreateWorkspaceSchema,
   type CreateWorkspaceInput,
-} from "@cognobserve/api/client";
+} from "@ducsigr/api/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,

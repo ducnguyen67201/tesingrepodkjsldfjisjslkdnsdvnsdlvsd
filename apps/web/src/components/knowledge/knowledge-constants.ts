@@ -1,4 +1,4 @@
-import type { ArticleStatus } from "@cognobserve/api/schemas";
+import type { ArticleStatus } from "@ducsigr/api/schemas";
 
 /** Status badge colors */
 export const STATUS_COLORS: Record<ArticleStatus, string> = {

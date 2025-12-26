@@ -2,7 +2,7 @@
 
 ## Overview
 
-This specification outlines the implementation of NextAuth.js (Auth.js v5) for CognObserve's web application, enabling user authentication with bearer token reuse across services.
+This specification outlines the implementation of NextAuth.js (Auth.js v5) for Ducsigr's web application, enabling user authentication with bearer token reuse across services.
 
 **Status:** Draft
 **Version:** 1.0
@@ -430,7 +430,7 @@ Create `apps/web/src/lib/auth/config.ts`:
 ```typescript
 import { NextAuthConfig } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { providers } from "./providers";
 
 export const authConfig: NextAuthConfig = {
@@ -570,7 +570,7 @@ Create `apps/web/src/app/api/auth/register/route.ts`:
 ```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { z } from "zod";
 
 const registerSchema = z.object({
@@ -674,8 +674,8 @@ export async function GET(request: NextRequest) {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("15m")
-    .setIssuer("cognobserve")
-    .setAudience("cognobserve-api")
+    .setIssuer("ducsigr")
+    .setAudience("ducsigr-api")
     .sign(secret);
 
   return NextResponse.json({
@@ -768,13 +768,13 @@ export const config = {
 ### 8.1 JWT Structure
 
 ```typescript
-interface CognObserveJWT {
+interface DucsigrJWT {
   // Standard claims
   sub: string;        // User ID
   iat: number;        // Issued at
   exp: number;        // Expiration
-  iss: string;        // Issuer: "cognobserve"
-  aud: string;        // Audience: "cognobserve-api"
+  iss: string;        // Issuer: "ducsigr"
+  aud: string;        // Audience: "ducsigr-api"
 
   // Custom claims
   email: string;
@@ -808,8 +808,8 @@ export async function verifyToken(
   const secretKey = new TextEncoder().encode(secret);
 
   const { payload } = await jwtVerify(token, secretKey, {
-    issuer: "cognobserve",
-    audience: "cognobserve-api",
+    issuer: "ducsigr",
+    audience: "ducsigr-api",
   });
 
   return payload as TokenPayload;
@@ -1062,8 +1062,8 @@ package server
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/cognobserve/ingest/internal/middleware"
-	"github.com/cognobserve/ingest/internal/handler"
+	"github.com/ducsigr/ingest/internal/middleware"
+	"github.com/ducsigr/ingest/internal/handler"
 )
 
 func (s *Server) setupRoutes() {
@@ -1163,7 +1163,7 @@ Update Ingest service CORS for production:
 
 ```go
 cors.Options{
-    AllowedOrigins:   []string{os.Getenv("WEB_URL")}, // e.g., "https://app.cognobserve.com"
+    AllowedOrigins:   []string{os.Getenv("WEB_URL")}, // e.g., "https://app.ducsigr.com"
     AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
     AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-Project-ID", "X-API-Key"},
     ExposedHeaders:   []string{"Link"},
@@ -1239,7 +1239,7 @@ Create `apps/web/src/lib/auth/__tests__/jwt.test.ts`:
 
 ```typescript
 import { describe, it, expect } from "vitest";
-import { verifyToken, hasProjectAccess } from "@cognobserve/shared/auth/jwt";
+import { verifyToken, hasProjectAccess } from "@ducsigr/shared/auth/jwt";
 
 describe("JWT Verification", () => {
   const secret = "test-secret-with-minimum-32-chars";
@@ -1301,7 +1301,7 @@ Create `apps/web/src/app/api/auth/__tests__/register.test.ts`:
 ```typescript
 import { describe, it, expect, beforeEach } from "vitest";
 import { POST } from "../register/route";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 
 describe("POST /api/auth/register", () => {
   beforeEach(async () => {
@@ -1513,7 +1513,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import { compare } from "bcryptjs";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { z } from "zod";
 
 const loginSchema = z.object({

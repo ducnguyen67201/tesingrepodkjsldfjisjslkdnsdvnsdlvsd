@@ -1,5 +1,5 @@
 /**
- * Log Types for CognObserve SDK
+ * Log Types for Ducsigr SDK
  *
  * Defines types for SDK-side log handling that will be sent to
  * the ingest service in OTLP-compatible format.

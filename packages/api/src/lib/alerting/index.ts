@@ -46,7 +46,7 @@ import { AdapterRegistry } from "./registry";
  *
  * @example
  * ```ts
- * import { AlertingAdapter } from "@cognobserve/api/lib/alerting";
+ * import { AlertingAdapter } from "@ducsigr/api/lib/alerting";
  *
  * // Get adapter by provider
  * const discord = AlertingAdapter("DISCORD");

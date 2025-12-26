@@ -147,8 +147,8 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       timestamp: payload.triggeredAt,
       footer: {
         text: payload.rca
-          ? "CognObserve • AI-Powered Root Cause Analysis"
-          : "CognObserve Alerting",
+          ? "Ducsigr • AI-Powered Root Cause Analysis"
+          : "Ducsigr Alerting",
       },
     };
   }

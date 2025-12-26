@@ -8,7 +8,7 @@
 import { proxyActivities, ApplicationFailure, log } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { ScoreWorkflowInput, ScoreWorkflowResult, ScoreDataType } from "../temporal/types";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 
 // Proxy activities with retry configuration
 const { persistScore, validateScoreConfig } = proxyActivities<typeof activities>({

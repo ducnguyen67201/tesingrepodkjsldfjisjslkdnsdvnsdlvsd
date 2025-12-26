@@ -9,7 +9,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CognObserve - AI Observability Platform",
+  title: "Ducsigr - AI Observability Platform",
   description: "Monitor and observe your AI applications",
   icons: {
     icon: "/logo.svg",

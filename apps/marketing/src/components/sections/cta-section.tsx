@@ -31,7 +31,7 @@ export function CtaSection() {
         </h2>
 
         <p className="text-lg mb-10" style={{ color: COLORS.ink.secondary }}>
-          See how CognObserve can transform your observability stack.
+          See how Ducsigr can transform your observability stack.
         </p>
 
         <Link

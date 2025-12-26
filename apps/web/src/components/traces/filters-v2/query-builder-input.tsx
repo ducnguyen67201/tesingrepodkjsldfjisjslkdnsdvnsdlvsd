@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useFilterAutocomplete } from "@/hooks/use-filter-autocomplete";
-import type { FilterField } from "@cognobserve/api/schemas";
+import type { FilterField } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

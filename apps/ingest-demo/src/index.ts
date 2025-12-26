@@ -4,7 +4,7 @@
  * A simple demo application that demonstrates:
  * 1. OpenTelemetry auto-instrumentation for HTTP/Express
  * 2. Manual span creation with attributes
- * 3. Sending traces to CognObserve ingest service
+ * 3. Sending traces to Ducsigr ingest service
  * 4. Pino logging with OTLP log export
  */
 
@@ -59,16 +59,16 @@ const server = app.listen(port, () => {
   logger.info(
     {
       port,
-      tracesUrl: config.cognobserve.tracesUrl,
-      logsUrl: `${config.cognobserve.endpoint}/v1/logs`,
+      tracesUrl: config.ducsigr.tracesUrl,
+      logsUrl: `${config.ducsigr.endpoint}/v1/logs`,
     },
-    "CognObserve Ingest Demo App started"
+    "Ducsigr Ingest Demo App started"
   );
 
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║              CognObserve Ingest Demo App                  ║
+║              Ducsigr Ingest Demo App                  ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 
@@ -83,8 +83,8 @@ const server = app.listen(port, () => {
     POST /api/demo/prompt-test/single   - Test prompt fetch + mock LLM
     POST /api/demo/prompt-test/experiment - Test A/B experiment + mock LLM
 
-  Traces exporting to:   ${config.cognobserve.tracesUrl}
-  Logs exporting to:     ${config.cognobserve.endpoint}/v1/logs
+  Traces exporting to:   ${config.ducsigr.tracesUrl}
+  Logs exporting to:     ${config.ducsigr.endpoint}/v1/logs
   `);
 });
 

@@ -1,6 +1,6 @@
 # /review - Code Review Command
 
-Use the **code-reviewer** skill to review code changes for CognObserve convention compliance.
+Use the **code-reviewer** skill to review code changes for Ducsigr convention compliance.
 
 ## Instructions
 
@@ -49,7 +49,7 @@ Review the specified files or recent changes for:
 - [ ] Centralized toast usage
 
 ### Shared
-- [ ] Types from @cognobserve/db or @cognobserve/api/schemas
+- [ ] Types from @ducsigr/db or @ducsigr/api/schemas
 - [ ] Zod validation for unknown data
 - [ ] No type assertions (`as`) on external data
 

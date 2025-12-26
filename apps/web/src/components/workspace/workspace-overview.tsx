@@ -8,7 +8,7 @@ import { TimeRangeFilter } from "@/components/dashboard/time-range-filter";
 import { WorkspaceStatsRow } from "./workspace-stats-row";
 import { ProjectCardsGrid } from "./project-cards-grid";
 import { RecentActivityFeed } from "./recent-activity-feed";
-import type { DashboardTimeRange } from "@cognobserve/api/schemas";
+import type { DashboardTimeRange } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Props

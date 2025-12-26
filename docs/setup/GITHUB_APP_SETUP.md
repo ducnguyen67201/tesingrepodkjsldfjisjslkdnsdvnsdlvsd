@@ -1,10 +1,10 @@
 # GitHub App Setup Guide
 
-This guide walks you through setting up a GitHub App for CognObserve's repository indexing feature.
+This guide walks you through setting up a GitHub App for Ducsigr's repository indexing feature.
 
 ## Overview
 
-CognObserve uses a GitHub App to:
+Ducsigr uses a GitHub App to:
 - Connect user workspaces to GitHub accounts/organizations
 - Access repository metadata and contents for code indexing
 - Receive webhook events for push and pull request activities
@@ -12,7 +12,7 @@ CognObserve uses a GitHub App to:
 ## Prerequisites
 
 - A GitHub account
-- Access to CognObserve's environment configuration (Doppler or `.env` file)
+- Access to Ducsigr's environment configuration (Doppler or `.env` file)
 
 ## Step 1: Create a GitHub App
 

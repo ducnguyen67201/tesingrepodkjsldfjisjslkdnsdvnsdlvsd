@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { authOptions } from "@/lib/auth/config";
 import { apiError, apiSuccess, apiServerError } from "@/lib/api-responses";
 

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/collapsible";
 import {
   CHANNEL_PROVIDER_ICONS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface Channel {
   id: string;

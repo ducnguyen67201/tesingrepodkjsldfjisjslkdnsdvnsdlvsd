@@ -31,7 +31,7 @@ export const env = createEnv({
     // Temporal Configuration (required)
     TEMPORAL_ADDRESS: z.string().default("localhost:7233"),
     TEMPORAL_NAMESPACE: z.string().default("default"),
-    TEMPORAL_TASK_QUEUE: z.string().default("cognobserve-tasks"),
+    TEMPORAL_TASK_QUEUE: z.string().default("ducsigr-tasks"),
 
     // GitHub API (optional, for higher rate limits)
     GITHUB_TOKEN: z.string().optional(),

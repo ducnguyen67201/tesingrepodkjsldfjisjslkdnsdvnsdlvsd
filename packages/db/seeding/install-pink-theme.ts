@@ -3,7 +3,7 @@
  * Install Pink Theme to Test Workspace
  *
  * Usage:
- *   pnpm --filter @cognobserve/db tsx seeding/install-pink-theme.ts
+ *   pnpm --filter @ducsigr/db tsx seeding/install-pink-theme.ts
  *
  * This script:
  * 1. Seeds the Pink Sakura theme extension
@@ -23,7 +23,7 @@ dotenv.config({ path: resolve(__dirname, "../../../.env") });
 const { prisma, Prisma } = await import("../src/index.js");
 const { seedExtensions } = await import("./extensions.js");
 
-const PINK_THEME_SLUG = "cognobserve.theme.pink";
+const PINK_THEME_SLUG = "ducsigr.theme.pink";
 const TEST_WORKSPACE_SLUG = "test";
 
 // Pink theme config with CSS variables

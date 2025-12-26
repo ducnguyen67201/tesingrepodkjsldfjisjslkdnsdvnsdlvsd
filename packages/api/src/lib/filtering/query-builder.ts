@@ -7,7 +7,7 @@
  *
  * @see docs/specs/tracing/TRACING_FILTERING_SEARCH_V2_SPEC.md
  */
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import {
   type FilterExpression,
   type TracesListV2Input,

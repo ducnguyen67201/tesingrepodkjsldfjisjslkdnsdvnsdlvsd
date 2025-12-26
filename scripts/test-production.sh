@@ -1,12 +1,12 @@
 #!/bin/bash
 # scripts/test-production.sh
 #
-# Integration test for CognObserve Production (Docker Compose) setup
+# Integration test for Ducsigr Production (Docker Compose) setup
 
 set -e
 
 echo "=========================================="
-echo "  CognObserve Production Integration Test"
+echo "  Ducsigr Production Integration Test"
 echo "=========================================="
 echo ""
 
@@ -51,7 +51,7 @@ while true; do
     RETRY=$((RETRY + 1))
 
     # Check if app container is healthy
-    APP_STATUS=$(docker inspect --format='{{.State.Health.Status}}' cognobserve-app 2>/dev/null || echo "starting")
+    APP_STATUS=$(docker inspect --format='{{.State.Health.Status}}' ducsigr-app 2>/dev/null || echo "starting")
 
     if [ "$APP_STATUS" = "healthy" ]; then
         break

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { trpc } from "@/lib/trpc/client";
-import type { WorkspaceListItem, CreateWorkspaceInput } from "@cognobserve/api/client";
+import type { WorkspaceListItem, CreateWorkspaceInput } from "@ducsigr/api/client";
 
 interface UseWorkspaceReturn {
   workspaces: WorkspaceListItem[];

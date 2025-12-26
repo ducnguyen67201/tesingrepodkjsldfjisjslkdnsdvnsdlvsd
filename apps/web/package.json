@@ -1,5 +1,5 @@
 {
-  "name": "@cognobserve/web",
+  "name": "@ducsigr/web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
-    "@cognobserve/api": "workspace:*",
-    "@cognobserve/db": "workspace:*",
-    "@cognobserve/sdk": "workspace:^",
-    "@cognobserve/shared": "workspace:*",
+    "@ducsigr/api": "workspace:*",
+    "@ducsigr/db": "workspace:*",
+    "@ducsigr/sdk": "workspace:^",
+    "@ducsigr/shared": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
     "@octokit/auth-app": "^6.0.0",
     "@octokit/rest": "^20.0.0",
@@ -74,8 +74,8 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@eslint/js": "^9.16.0",
     "@next/eslint-plugin-next": "^16.0.7",
     "@testing-library/dom": "^10.4.1",

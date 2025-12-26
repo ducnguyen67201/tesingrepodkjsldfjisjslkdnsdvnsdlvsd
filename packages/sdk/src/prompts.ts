@@ -7,7 +7,7 @@
  * @example
  * ```typescript
  * // Get prompt with caching
- * const prompt = await CognObserve.prompts.get("movie-critic", {
+ * const prompt = await Ducsigr.prompts.get("movie-critic", {
  *   label: "production",
  * });
  *
@@ -380,7 +380,7 @@ export class PromptClient {
    */
   async get(slug: string, options: GetPromptOptions = {}): Promise<Prompt> {
     if (this.config.disabled) {
-      throw new Error("[CognObserve] SDK is disabled");
+      throw new Error("[Ducsigr] SDK is disabled");
     }
 
     const cacheKey = this.buildCacheKey(slug, options);
@@ -392,7 +392,7 @@ export class PromptClient {
       const cached = this.cache.get(cacheKey);
       if (cached && !this.isExpired(cached)) {
         if (this.config.debug) {
-          console.log(`[CognObserve] Prompt cache hit: ${slug}`);
+          console.log(`[Ducsigr] Prompt cache hit: ${slug}`);
         }
         return this.wrapPrompt(cached.data);
       }
@@ -419,7 +419,7 @@ export class PromptClient {
     }
 
     if (this.config.debug) {
-      console.log(`[CognObserve] Fetching prompt: ${slug}`);
+      console.log(`[Ducsigr] Fetching prompt: ${slug}`);
     }
 
     // Fetch from API
@@ -430,7 +430,7 @@ export class PromptClient {
       // Update cache expiry and return cached data
       cachedEntry.expiresAt = Date.now() + cacheTTL * 1000;
       if (this.config.debug) {
-        console.log(`[CognObserve] Prompt not modified (304): ${slug}`);
+        console.log(`[Ducsigr] Prompt not modified (304): ${slug}`);
       }
       return this.wrapPrompt(cachedEntry.data);
     }
@@ -483,7 +483,7 @@ export class PromptClient {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Fetched prompt: ${slug} (v${data.version}, ${data.type})`
+        `[Ducsigr] Fetched prompt: ${slug} (v${data.version}, ${data.type})`
       );
     }
 
@@ -520,7 +520,7 @@ export class PromptClient {
     options: GetExperimentOptions
   ): Promise<ExperimentAssignment> {
     if (this.config.disabled) {
-      throw new Error("[CognObserve] SDK is disabled");
+      throw new Error("[Ducsigr] SDK is disabled");
     }
 
     const { assignmentKey, forceVariant, cache: useCache = true, cacheTTL = this.defaultCacheTTL } = options;
@@ -533,7 +533,7 @@ export class PromptClient {
       const cached = this.experimentCache.get(cacheKey);
       if (cached && Date.now() < cached.expiresAt) {
         if (this.config.debug) {
-          console.log(`[CognObserve] Experiment cache hit: ${slug}`);
+          console.log(`[Ducsigr] Experiment cache hit: ${slug}`);
         }
         return this.wrapExperimentAssignment(cached.data);
       }
@@ -547,7 +547,7 @@ export class PromptClient {
     const url = `${this.config.endpoint}/v1/prompt-experiments/${encodeURIComponent(slug)}/resolve?${params.toString()}`;
 
     if (this.config.debug) {
-      console.log(`[CognObserve] Resolving experiment: ${slug}`);
+      console.log(`[Ducsigr] Resolving experiment: ${slug}`);
     }
 
     // Fetch from API
@@ -603,7 +603,7 @@ export class PromptClient {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Experiment resolved: ${slug} → variant ${data.variant.name} (${data.inAllocation ? "in allocation" : "fallback"})`
+        `[Ducsigr] Experiment resolved: ${slug} → variant ${data.variant.name} (${data.inAllocation ? "in allocation" : "fallback"})`
       );
     }
 
@@ -641,7 +641,7 @@ export class PromptClient {
     if (this.config.disabled) return;
 
     if (this.config.debug) {
-      console.log(`[CognObserve] Prefetching ${slugs.length} prompt(s)`);
+      console.log(`[Ducsigr] Prefetching ${slugs.length} prompt(s)`);
     }
 
     await Promise.allSettled(
@@ -678,7 +678,7 @@ export class PromptClient {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Cache cleared${slug ? ` for: ${slug}` : " (all)"}`
+        `[Ducsigr] Cache cleared${slug ? ` for: ${slug}` : " (all)"}`
       );
     }
   }
@@ -736,7 +736,7 @@ export class PromptClient {
  *
  * @example
  * ```typescript
- * import { compilePrompt } from '@cognobserve/sdk';
+ * import { compilePrompt } from '@ducsigr/sdk';
  *
  * const compiled = compilePrompt(
  *   { type: "text", text: "Hello, {{name}}!" },

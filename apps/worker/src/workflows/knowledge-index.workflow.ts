@@ -18,7 +18,7 @@
  */
 
 import { proxyActivities } from "@temporalio/workflow";
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 import type * as activities from "../temporal/activities/knowledge.activities";
 
 // ============================================

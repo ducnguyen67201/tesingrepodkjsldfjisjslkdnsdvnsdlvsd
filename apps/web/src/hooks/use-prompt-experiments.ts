@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { experimentToast } from "@/lib/success";
-import type { ExperimentStatus } from "@cognobserve/api/schemas";
+import type { ExperimentStatus } from "@ducsigr/api/schemas";
 
 interface UsePromptExperimentsOptions {
   workspaceSlug: string;

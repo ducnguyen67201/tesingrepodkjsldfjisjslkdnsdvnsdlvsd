@@ -5,8 +5,8 @@
  * Supports time series aggregations with bucketing.
  */
 
-import { prisma } from "@cognobserve/db";
-import { Prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
+import { Prisma } from "@ducsigr/db";
 import type {
   GraphQuery,
   GraphQueryResult,

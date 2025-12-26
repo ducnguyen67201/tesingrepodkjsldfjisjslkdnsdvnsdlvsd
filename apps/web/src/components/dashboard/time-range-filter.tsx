@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { DashboardTimeRange } from "@cognobserve/api/schemas";
+import type { DashboardTimeRange } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Constants

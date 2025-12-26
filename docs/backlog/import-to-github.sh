@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# CognObserve - Import Issues to GitHub from JSON
+# Ducsigr - Import Issues to GitHub from JSON
 # Prerequisites: gh cli installed and authenticated (gh auth login), jq installed
 # Usage: ./import-to-github.sh <tickets.json>
 
 set -e
 
-REPO="cognobserve/cognobserve"
+REPO="Ducsigr/Ducsigr"
 
 # Check if filename argument provided
 if [ -z "$1" ]; then

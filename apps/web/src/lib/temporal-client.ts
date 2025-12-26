@@ -1,9 +1,9 @@
 import { Client, Connection } from "@temporalio/client";
-import type { GitHubIndexWorkflowInput, EvalWorkflowInput } from "@cognobserve/api/schemas";
+import type { GitHubIndexWorkflowInput, EvalWorkflowInput } from "@ducsigr/api/schemas";
 import { env } from "./env";
 
 // Re-export the types for convenience
-export type { GitHubIndexWorkflowInput, EvalWorkflowInput } from "@cognobserve/api/schemas";
+export type { GitHubIndexWorkflowInput, EvalWorkflowInput } from "@ducsigr/api/schemas";
 
 let _client: Client | null = null;
 let _connection: Connection | null = null;
@@ -39,7 +39,7 @@ export async function startGitHubIndexWorkflow(
   const client = await getTemporalClient();
 
   const handle = await client.workflow.start("githubIndexWorkflow", {
-    taskQueue: "cognobserve-worker",
+    taskQueue: "ducsigr-worker",
     workflowId: `github-index-${input.deliveryId}`,
     args: [input],
   });
@@ -69,7 +69,7 @@ export async function startEvalWorkflow(
   const workflowId = `eval-${input.suiteId}-${triggerSuffix}`;
 
   const handle = await client.workflow.start("evalPipelineWorkflow", {
-    taskQueue: "cognobserve-worker",
+    taskQueue: "ducsigr-worker",
     workflowId,
     args: [input],
   });

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["@cognobserve/config-eslint"],
+  extends: ["@ducsigr/config-eslint"],
   parserOptions: {
     project: "./tsconfig.json",
   },

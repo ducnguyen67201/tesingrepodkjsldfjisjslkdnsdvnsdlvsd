@@ -3,7 +3,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, CheckCircle } from "lucide-react";
-import type { LLMRCAOutput } from "@cognobserve/api/schemas";
+import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 const CATEGORY_CONFIG = {
   CODE_CHANGE: { label: "Code Change", icon: "code", color: "bg-blue-100 text-blue-800" },

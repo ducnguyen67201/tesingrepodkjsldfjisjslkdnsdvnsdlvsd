@@ -6,7 +6,7 @@
  */
 
 import { useMemo } from "react";
-import type { LogField, LogAttributeScope } from "@cognobserve/api/schemas";
+import type { LogField, LogAttributeScope } from "@ducsigr/api/schemas";
 import { trpc } from "@/lib/trpc/client";
 import {
   LOG_FIELD_META,
@@ -222,7 +222,7 @@ interface UseLogFilterStatsOptions {
   /** Time range */
   timeRange: { from: string; to: string };
   /** Current filter to apply */
-  filter?: import("@cognobserve/api/schemas").LogFilterExpression;
+  filter?: import("@ducsigr/api/schemas").LogFilterExpression;
   /** Enable/disable */
   enabled?: boolean;
 }

@@ -25,7 +25,7 @@ Create a Temporal activity that uses the centralized **LLM Center** to synthesiz
 
 ## LLM Center Integration
 
-The activity uses the **centralized LLM Center** (`@cognobserve/shared/llm`) following established patterns:
+The activity uses the **centralized LLM Center** (`@ducsigr/shared/llm`) following established patterns:
 
 ```typescript
 import { getLLM } from "@/lib/llm-manager";
@@ -704,7 +704,7 @@ import {
   LLMRCAOutputSchema,
   TEMPLATE_FALLBACK_CONDITIONS,
   type LLMRCAOutput,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import type {
   RCAGenerationInput,
   RCAReport,

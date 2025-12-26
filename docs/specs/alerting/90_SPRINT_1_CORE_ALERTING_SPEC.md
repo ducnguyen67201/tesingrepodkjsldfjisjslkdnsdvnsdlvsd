@@ -569,7 +569,7 @@ export * from "../../schemas/alerting";
  *
  * @example
  * ```ts
- * import { AlertingAdapter } from "@cognobserve/api/lib/alerting";
+ * import { AlertingAdapter } from "@ducsigr/api/lib/alerting";
  *
  * // Get adapter by provider
  * const discord = AlertingAdapter("DISCORD");
@@ -599,7 +599,7 @@ AlertingAdapter.getProviders = AdapterRegistry.getRegisteredProviders.bind(Adapt
 ```typescript
 // packages/api/src/lib/alerting/metrics-service.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { AlertType } from "../../schemas/alerting";
 
 export interface MetricResult {
@@ -724,13 +724,13 @@ export class MetricsService {
 ```typescript
 // apps/worker/src/jobs/alert-evaluator.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   AlertingAdapter,
   AlertPayload,
   AlertOperator
-} from "@cognobserve/api/lib/alerting";
-import { MetricsService } from "@cognobserve/api/lib/alerting/metrics-service";
+} from "@ducsigr/api/lib/alerting";
+import { MetricsService } from "@ducsigr/api/lib/alerting/metrics-service";
 
 const EVALUATION_INTERVAL_MS = 60_000; // 1 minute
 
@@ -950,10 +950,10 @@ export class AlertEvaluator {
 // apps/worker/src/index.ts (additions)
 
 import { AlertEvaluator } from "./jobs/alert-evaluator";
-import { AdapterRegistry } from "@cognobserve/api/lib/alerting";
+import { AdapterRegistry } from "@ducsigr/api/lib/alerting";
 // Import adapters (from Sprint 2)
-// import { GmailAdapter } from "@cognobserve/api/lib/alerting/adapters/gmail";
-// import { DiscordAdapter } from "@cognobserve/api/lib/alerting/adapters/discord";
+// import { GmailAdapter } from "@ducsigr/api/lib/alerting/adapters/gmail";
+// import { DiscordAdapter } from "@ducsigr/api/lib/alerting/adapters/discord";
 
 async function main() {
   // Register alerting adapters
@@ -983,7 +983,7 @@ async function main() {
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure } from "../trpc";
 import {
   AlertTypeSchema,

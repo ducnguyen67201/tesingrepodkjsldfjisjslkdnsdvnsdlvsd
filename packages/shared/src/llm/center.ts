@@ -44,7 +44,7 @@ import { UsageTracker } from "./usage-tracker";
  *
  * @example
  * ```typescript
- * import { createLLMCenter } from "@cognobserve/shared/llm";
+ * import { createLLMCenter } from "@ducsigr/shared/llm";
  *
  * const llm = createLLMCenter({
  *   defaultProvider: "openai",

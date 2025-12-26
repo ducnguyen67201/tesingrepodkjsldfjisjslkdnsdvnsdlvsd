@@ -1,4 +1,4 @@
-# CognObserve Backlog Import Files
+# Ducsigr Backlog Import Files
 
 This folder contains issue/ticket definitions ready for import into project management tools.
 
@@ -17,7 +17,7 @@ This folder contains issue/ticket definitions ready for import into project mana
 ### Step 1: Create Project
 1. Go to Jira → Projects → Create Project
 2. Choose "Scrum" template
-3. Name: `CognObserve` (Key: `COG`)
+3. Name: `Ducsigr` (Key: `COG`)
 
 ### Step 2: Import Epics First
 1. Go to **Project Settings → System → External System Import**

@@ -9,7 +9,7 @@ import {
   PRESET_LABELS,
   type ThresholdPreset,
   type AlertType,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface ThresholdPresetCardsProps {
   selectedPreset: ThresholdPreset | null;

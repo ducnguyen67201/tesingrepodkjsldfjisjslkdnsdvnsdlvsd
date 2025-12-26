@@ -1,4 +1,4 @@
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import { TRPCError } from "@trpc/server";
 
 // TODO: OTLP-first migration

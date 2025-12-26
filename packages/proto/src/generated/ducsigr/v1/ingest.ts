@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.6.1
 //   protoc               unknown
-// source: cognobserve/v1/ingest.proto
+// source: ducsigr/v1/ingest.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";

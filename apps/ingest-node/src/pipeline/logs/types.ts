@@ -6,7 +6,7 @@
 import type {
   OtlpLogsExportRequest,
   NormalizedLogRecord,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import type {
   BasePipelineContext,
   PipelineError,

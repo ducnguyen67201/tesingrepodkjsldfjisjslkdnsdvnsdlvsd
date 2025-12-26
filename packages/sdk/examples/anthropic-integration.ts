@@ -7,11 +7,11 @@
  * import Anthropic from '@anthropic-ai/sdk';
  * const anthropic = wrapAnthropic(new Anthropic());
  */
-import { CognObserve } from '../src/index';
+import { Ducsigr } from '../src/index';
 import { wrapAnthropic } from '../src/integrations';
 
 // Initialize the SDK
-CognObserve.init({
+Ducsigr.init({
   apiKey: 'co_test_key',
   endpoint: 'http://localhost:8080',
   debug: true,
@@ -180,7 +180,7 @@ async function main() {
 
   // Test 4: Within an observe() context
   console.log('\nTest 4: Within observe() context');
-  await CognObserve.observe('analysis-pipeline', async () => {
+  await Ducsigr.observe('analysis-pipeline', async () => {
     console.log('  Step 1: Loading document');
     await sleep(50);
 
@@ -201,8 +201,8 @@ async function main() {
   console.log('\n=== All tests completed ===\n');
 
   // Flush and shutdown
-  await CognObserve.flush();
-  await CognObserve.shutdown();
+  await Ducsigr.flush();
+  await Ducsigr.shutdown();
 }
 
 function sleep(ms: number): Promise<void> {

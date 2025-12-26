@@ -5,7 +5,7 @@
  * This is the "TODAY" implementation - direct database queries.
  */
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import type { AlertSeverity, AlertState, AlertType, MetricResult } from "../../../schemas/alerting";
 import type {
   IAlertStore,

@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             className="text-lg md:text-xl max-w-2xl mb-12"
             style={{ color: COLORS.ink.secondary }}
           >
-            CognObserve keeps your data using the same standards trusted by
+            Ducsigr keeps your data using the same standards trusted by
             global enterprises. Security isn&apos;t a checkbox—it&apos;s built into
             every line of code.
           </p>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
                   }}
                 >
                   &ldquo;Security isn&apos;t a checkbox, it&apos;s a commitment. Every
-                  line of code at CognObserve is written with trust and security
+                  line of code at Ducsigr is written with trust and security
                   in mind.&rdquo;
                 </blockquote>
 
@@ -127,7 +127,7 @@ export default function PrivacyPage() {
                   className="text-sm font-semibold"
                   style={{ color: COLORS.ink.primary }}
                 >
-                  — The CognObserve Team
+                  — The Ducsigr Team
                 </p>
               </div>
 

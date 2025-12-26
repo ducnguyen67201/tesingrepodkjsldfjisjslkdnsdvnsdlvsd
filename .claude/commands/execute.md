@@ -46,7 +46,7 @@ Use the **executor** agent to implement the approved plan by coordinating multip
     ▼
 ┌─────────────────────────────────────┐
 │ Phase 3: Verify                     │
-│ pnpm --filter @cognobserve/api test │
+│ pnpm --filter @ducsigr/api test │
 │ (must pass before frontend)        │
 └─────────────────────────────────────┘
     │
@@ -97,5 +97,5 @@ If any phase fails:
 
 - **Database first**: Migrations must complete before API work
 - **Tests must pass**: API tests verified before frontend
-- **Convention compliance**: All code follows CognObserve patterns
+- **Convention compliance**: All code follows Ducsigr patterns
 - **Incremental**: Each phase verified before proceeding

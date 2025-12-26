@@ -47,7 +47,7 @@ Create a GitHub integration UI at the **workspace level** where users can connec
 │  ┌─────────────────────────────────────────────────────────────────────────┐ │
 │  │  NAME                                                          STATUS   │ │
 │  ├─────────────────────────────────────────────────────────────────────────┤ │
-│  │  🐙 ducnguyen67201/cognobserve                              ● INDEXING  │ │
+│  │  🐙 ducnguyen67201/ducsigr                              ● INDEXING  │ │
 │  ├─────────────────────────────────────────────────────────────────────────┤ │
 │  │  🐙 ducnguyen67201/my-other-repo                            ✓ ENABLED   │ │
 │  └─────────────────────────────────────────────────────────────────────────┘ │
@@ -91,7 +91,7 @@ Create a GitHub integration UI at the **workspace level** where users can connec
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  🐙 ducnguyen67201/cognobserve                          ● INDEXING    [···] │
+│  🐙 ducnguyen67201/ducsigr                          ● INDEXING    [···] │
 │                                                                              │
 │     └─> Dropdown Menu:                                                       │
 │         ┌────────────────────┐                                              │
@@ -258,7 +258,7 @@ const SETTINGS_NAV_ITEMS: SettingsNavItem[] = [
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createRouter, protectedProcedure } from "../trpc";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 
 export const githubRouter = createRouter({
   /**
@@ -691,7 +691,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { RepositoryRow } from "./repository-row";
-import type { IndexStatus } from "@cognobserve/api/schemas";
+import type { IndexStatus } from "@ducsigr/api/schemas";
 
 interface Repository {
   id: string;
@@ -792,7 +792,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { RepositoryStatusBadge } from "./repository-status-badge";
-import type { IndexStatus } from "@cognobserve/api/schemas";
+import type { IndexStatus } from "@ducsigr/api/schemas";
 
 interface Repository {
   id: string;
@@ -926,7 +926,7 @@ export function RepositoryRow({
 import { CheckCircle, Circle, Loader2, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { IndexStatus } from "@cognobserve/api/schemas";
+import type { IndexStatus } from "@ducsigr/api/schemas";
 
 interface RepositoryStatusBadgeProps {
   enabled: boolean;

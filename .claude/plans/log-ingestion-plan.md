@@ -280,7 +280,7 @@ maxLogBodyLen: env.MAX_LOG_BODY_LEN,
 Add logs-specific types:
 
 ```typescript
-import type { OtlpExportLogsRequest, NormalizedLogRecord } from "@cognobserve/api/schemas";
+import type { OtlpExportLogsRequest, NormalizedLogRecord } from "@ducsigr/api/schemas";
 
 // Add to PipelineContext interface:
 export interface PipelineContext {

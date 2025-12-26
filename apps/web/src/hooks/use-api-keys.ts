@@ -1,7 +1,7 @@
 "use client";
 
 import { trpc } from "@/lib/trpc/client";
-import type { ApiKeyListItem, CreatedApiKey } from "@cognobserve/api/client";
+import type { ApiKeyListItem, CreatedApiKey } from "@ducsigr/api/client";
 
 interface CreateApiKeyInput {
   name: string;

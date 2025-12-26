@@ -1,5 +1,5 @@
 /**
- * Custom hooks for CognObserve web app.
+ * Custom hooks for Ducsigr web app.
  */
 
 export { useWorkspaceUrl } from "./use-workspace-url";

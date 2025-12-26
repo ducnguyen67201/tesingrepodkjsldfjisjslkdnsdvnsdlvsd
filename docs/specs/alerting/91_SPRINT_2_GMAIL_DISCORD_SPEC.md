@@ -204,7 +204,7 @@ export class GmailAdapter extends BaseAlertingAdapter {
       ${payload.dashboardUrl ? `<a href="${payload.dashboardUrl}" class="button">View Dashboard</a>` : ""}
     </div>
     <div class="footer">
-      <p>This alert was sent by CognObserve</p>
+      <p>This alert was sent by Ducsigr</p>
       <p>Manage your alerts in project settings</p>
     </div>
   </div>
@@ -234,7 +234,7 @@ Triggered At: ${new Date(payload.triggeredAt).toLocaleString()}
 ${payload.dashboardUrl ? `View Dashboard: ${payload.dashboardUrl}` : ""}
 
 ---
-This alert was sent by CognObserve
+This alert was sent by Ducsigr
     `.trim();
   }
 
@@ -400,7 +400,7 @@ export class DiscordAdapter extends BaseAlertingAdapter {
       ],
       timestamp: payload.triggeredAt,
       footer: {
-        text: "CognObserve Alerting",
+        text: "Ducsigr Alerting",
       },
     };
   }
@@ -516,7 +516,7 @@ export function getAvailableProviders(): string[] {
 ```typescript
 // apps/worker/src/index.ts
 
-import { initializeAlertingAdapters } from "@cognobserve/api/lib/alerting/init";
+import { initializeAlertingAdapters } from "@ducsigr/api/lib/alerting/init";
 import { AlertEvaluator } from "./jobs/alert-evaluator";
 
 async function main() {
@@ -784,7 +784,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-SMTP_FROM="CognObserve Alerts <your-email@gmail.com>"
+SMTP_FROM="Ducsigr Alerts <your-email@gmail.com>"
 ```
 
 ---

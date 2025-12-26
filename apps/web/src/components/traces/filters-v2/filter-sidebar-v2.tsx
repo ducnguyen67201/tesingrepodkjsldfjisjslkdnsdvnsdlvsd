@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { useFilterStats } from "@/hooks/use-filter-autocomplete";
-import type { FilterField, FilterOperator, TimeRangeInput } from "@cognobserve/api/schemas";
+import type { FilterField, FilterOperator, TimeRangeInput } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

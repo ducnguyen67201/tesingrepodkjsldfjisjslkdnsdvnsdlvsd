@@ -1,5 +1,5 @@
 // API Key constants
-export const API_KEY_PREFIX = "co_sk_";
+export const API_KEY_PREFIX = "ds_sk_";
 
 // Copy feedback duration
 export const COPY_TIMEOUT_MS = 2000;
@@ -10,7 +10,7 @@ export type CodeSnippetLanguage = (typeof CODE_SNIPPET_LANGUAGES)[number];
 
 // Code snippets for quick start
 export const CODE_SNIPPETS: Record<CodeSnippetLanguage, (key: string) => string> = {
-  curl: (key: string) => `curl -X POST https://api.cognobserve.com/v1/traces \\
+  curl: (key: string) => `curl -X POST https://api.ducsigr.com/v1/traces \\
   -H "X-API-Key: ${key}" \\
   -H "Content-Type: application/json" \\
   -d '{"name": "my-trace", "spans": []}'`,
@@ -18,12 +18,12 @@ export const CODE_SNIPPETS: Record<CodeSnippetLanguage, (key: string) => string>
   python: (key: string) => `import requests
 
 response = requests.post(
-    "https://api.cognobserve.com/v1/traces",
+    "https://api.ducsigr.com/v1/traces",
     headers={"X-API-Key": "${key}"},
     json={"name": "my-trace", "spans": []}
 )`,
 
-  nodejs: (key: string) => `const response = await fetch("https://api.cognobserve.com/v1/traces", {
+  nodejs: (key: string) => `const response = await fetch("https://api.ducsigr.com/v1/traces", {
   method: "POST",
   headers: {
     "X-API-Key": "${key}",

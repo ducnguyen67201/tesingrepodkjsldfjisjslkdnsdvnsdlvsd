@@ -1,6 +1,6 @@
 # Ingest Demo App
 
-A simple demo application that demonstrates OpenTelemetry (OTLP) integration with CognObserve's ingest service.
+A simple demo application that demonstrates OpenTelemetry (OTLP) integration with Ducsigr's ingest service.
 
 ## Features
 
@@ -13,8 +13,8 @@ A simple demo application that demonstrates OpenTelemetry (OTLP) integration wit
 ## Prerequisites
 
 - Node.js 20+
-- CognObserve ingest service running (default: http://localhost:8080)
-- API key from your CognObserve project (optional for local development)
+- Ducsigr ingest service running (default: http://localhost:8080)
+- API key from your Ducsigr project (optional for local development)
 
 ## Quick Start
 
@@ -38,7 +38,7 @@ make dev-ingest
 
 ```bash
 # From repository root
-pnpm --filter @cognobserve/ingest-demo dev
+pnpm --filter @ducsigr/ingest-demo dev
 
 # Or from apps/ingest-demo
 cd apps/ingest-demo
@@ -54,8 +54,8 @@ Navigate to http://localhost:3005 and click the buttons to generate traces.
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `3005` | Demo app server port |
-| `COGNOBSERVE_ENDPOINT` | `http://localhost:8080` | Ingest service URL |
-| `COGNOBSERVE_API_KEY` | - | API key for authentication |
+| `DUCSIGR_ENDPOINT` | `http://localhost:8080` | Ingest service URL |
+| `DUCSIGR_API_KEY` | - | API key for authentication |
 | `OTEL_SERVICE_NAME` | `ingest-demo` | Service name for traces |
 
 ## API Endpoints
@@ -134,14 +134,14 @@ SELECT * FROM "Span" ORDER BY "startTime" DESC LIMIT 10;
 
 ### Check Dashboard
 
-Navigate to your CognObserve dashboard to see the traces in the UI.
+Navigate to your Ducsigr dashboard to see the traces in the UI.
 
 ## Troubleshooting
 
 ### No traces appearing
 
 1. Ensure ingest service is running on port 8080
-2. Check `COGNOBSERVE_ENDPOINT` environment variable
+2. Check `DUCSIGR_ENDPOINT` environment variable
 3. Verify API key is correct (if authentication is enabled)
 4. Check ingest service logs for errors
 
@@ -158,8 +158,8 @@ make dev-ingest
 If you see 401 errors, set your API key:
 
 ```bash
-export COGNOBSERVE_API_KEY=your-api-key-here
-pnpm --filter @cognobserve/ingest-demo dev
+export DUCSIGR_API_KEY=your-api-key-here
+pnpm --filter @ducsigr/ingest-demo dev
 ```
 
 ## Development
@@ -167,19 +167,19 @@ pnpm --filter @cognobserve/ingest-demo dev
 ### Build
 
 ```bash
-pnpm --filter @cognobserve/ingest-demo build
+pnpm --filter @ducsigr/ingest-demo build
 ```
 
 ### Run Production Build
 
 ```bash
-pnpm --filter @cognobserve/ingest-demo start
+pnpm --filter @ducsigr/ingest-demo start
 ```
 
 ### Type Check
 
 ```bash
-pnpm --filter @cognobserve/ingest-demo typecheck
+pnpm --filter @ducsigr/ingest-demo typecheck
 ```
 
 ## Architecture
@@ -207,7 +207,7 @@ pnpm --filter @cognobserve/ingest-demo typecheck
                                      │
                                      ▼ OTLP/HTTP
 ┌─────────────────────────────────────────────────────────────────────┐
-│                     CognObserve Ingest Service                      │
+│                     Ducsigr Ingest Service                      │
 │                       (http://localhost:8080)                       │
 │                                                                     │
 │                         POST /v1/traces                             │

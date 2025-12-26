@@ -7,11 +7,11 @@
  * import OpenAI from 'openai';
  * const openai = wrapOpenAI(new OpenAI());
  */
-import { CognObserve } from '../src/index';
+import { Ducsigr } from '../src/index';
 import { wrapOpenAI } from '../src/integrations';
 
 // Initialize the SDK
-CognObserve.init({
+Ducsigr.init({
   apiKey: 'co_test_key',
   endpoint: 'http://localhost:8080',
   debug: true,
@@ -166,7 +166,7 @@ async function main() {
 
   // Test 4: Within an observe() context
   console.log('\nTest 4: Within observe() context');
-  await CognObserve.observe('multi-step-operation', async () => {
+  await Ducsigr.observe('multi-step-operation', async () => {
     console.log('  Step 1: Preparing data');
     await sleep(50);
 
@@ -183,8 +183,8 @@ async function main() {
   console.log('\n=== All tests completed ===\n');
 
   // Flush and shutdown
-  await CognObserve.flush();
-  await CognObserve.shutdown();
+  await Ducsigr.flush();
+  await Ducsigr.shutdown();
 }
 
 function sleep(ms: number): Promise<void> {

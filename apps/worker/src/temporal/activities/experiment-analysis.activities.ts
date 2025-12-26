@@ -12,7 +12,7 @@
 // - storeExperimentAnalysis (tRPC mutation)
 // ============================================================
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import { getLLM } from "@/lib/llm-manager";
 import {
@@ -21,7 +21,7 @@ import {
   type LLMComparisonResult,
   type VariantName,
   MIN_SPANS_FOR_ANALYSIS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import {
   COMPARE_VARIANTS_SYSTEM_PROMPT,
   COMPARE_VARIANTS_PROMPT_CONFIG,

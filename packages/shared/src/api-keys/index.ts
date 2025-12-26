@@ -32,7 +32,7 @@ function requireConfig(): ApiKeyConfig {
  *
  * @example
  * ```ts
- * import { setApiKeyConfig } from "@cognobserve/shared";
+ * import { setApiKeyConfig } from "@ducsigr/shared";
  * import { env } from "@/lib/env";
  *
  * setApiKeyConfig({

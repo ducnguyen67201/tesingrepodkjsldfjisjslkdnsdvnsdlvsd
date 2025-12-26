@@ -6,7 +6,7 @@ import "./src/lib/env";
 const nextConfig: NextConfig = {
   // Required for Docker deployments - creates a standalone build with all dependencies
   output: "standalone",
-  transpilePackages: ["@cognobserve/shared", "@cognobserve/db"],
+  transpilePackages: ["@ducsigr/shared", "@ducsigr/db"],
 };
 
 export default nextConfig;

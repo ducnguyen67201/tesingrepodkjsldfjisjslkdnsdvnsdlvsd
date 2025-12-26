@@ -83,7 +83,7 @@ Rationale:
 co_sk_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 │  │  └── 32 random alphanumeric characters (base62)
 │  └── "sk_" = secret key type
-└── "co_" = CognObserve vendor prefix
+└── "co_" = Ducsigr vendor prefix
 ```
 
 ### 3.1 Properties
@@ -254,7 +254,7 @@ import (
     "net/http"
     "strings"
 
-    "github.com/cognobserve/ingest/internal/config"
+    "github.com/ducsigr/ingest/internal/config"
 )
 
 const (

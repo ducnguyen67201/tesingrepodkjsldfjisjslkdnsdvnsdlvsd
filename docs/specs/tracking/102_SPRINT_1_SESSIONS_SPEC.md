@@ -300,7 +300,7 @@ export type SessionWithStats = z.infer<typeof SessionWithStatsSchema>;
 ### 5.1 Update Proto Definition
 
 ```protobuf
-// proto/cognobserve/v1/ingest.proto
+// proto/ducsigr/v1/ingest.proto
 
 message IngestTraceRequest {
   optional string trace_id = 1;
@@ -345,7 +345,7 @@ type QueueMessage struct {
 ```typescript
 // apps/worker/src/processors/trace.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 
 interface TraceQueueMessage {
   // ... existing fields
@@ -419,7 +419,7 @@ async function processTrace(message: TraceQueueMessage): Promise<void> {
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure } from "../trpc";
 import {
   CreateSessionSchema,
@@ -681,14 +681,14 @@ function traceToIngestRequest(trace: TraceData): IngestRequest {
 
 ```typescript
 // Example 1: Basic session usage
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
-CognObserve.init({ apiKey: 'co_...' });
+Ducsigr.init({ apiKey: 'co_...' });
 
 // All traces in this conversation share the same session
 const sessionId = 'chat-' + Date.now();
 
-await CognObserve.observe({
+await Ducsigr.observe({
   name: 'user-message-1',
   sessionId,
   type: 'generation',
@@ -696,7 +696,7 @@ await CognObserve.observe({
   return openai.chat.completions.create({...});
 });
 
-await CognObserve.observe({
+await Ducsigr.observe({
   name: 'user-message-2',
   sessionId,  // Same session
   type: 'generation',
@@ -706,7 +706,7 @@ await CognObserve.observe({
 
 
 // Example 2: Manual trace with session
-const trace = CognObserve.trace({
+const trace = Ducsigr.trace({
   name: 'multi-turn-chat',
   sessionId: 'session-123',
 });

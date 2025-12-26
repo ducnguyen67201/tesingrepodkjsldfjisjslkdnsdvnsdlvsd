@@ -27,7 +27,7 @@ import type {
   GraphDisplay,
   WidgetType,
   WidgetLayout,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // Types

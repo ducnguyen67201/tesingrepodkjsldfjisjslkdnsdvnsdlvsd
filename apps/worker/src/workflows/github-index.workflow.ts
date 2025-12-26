@@ -15,8 +15,8 @@ import type { GitHubIndexInput, GitHubIndexResult, ChangedFile } from "../tempor
 import {
   GitHubPushPayloadSchema,
   GitHubPRPayloadSchema,
-} from "@cognobserve/api/schemas";
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+} from "@ducsigr/api/schemas";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 
 // ============================================================
 // Activity Configuration
@@ -38,7 +38,7 @@ const {
 // ============================================================
 // Constants (inline to avoid bundling issues)
 // ============================================================
-// NOTE: These constants are intentionally duplicated from @cognobserve/shared
+// NOTE: These constants are intentionally duplicated from @ducsigr/shared
 // to avoid Temporal bundler issues. Workflows run in an isolated sandbox and
 // cannot import non-deterministic code or modules with side effects.
 // Keep in sync with packages/shared/src/chunking/index.ts

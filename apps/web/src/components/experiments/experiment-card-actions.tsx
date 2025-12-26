@@ -19,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { ExperimentStatus } from "@cognobserve/api/schemas";
+import type { ExperimentStatus } from "@ducsigr/api/schemas";
 
 interface ExperimentCardActionsProps {
   status: ExperimentStatus;

@@ -5,7 +5,7 @@ import type {
   DashboardTimeRange,
   WorkspaceStats,
   RecentActivityItem,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // useWorkspaceStats Hook

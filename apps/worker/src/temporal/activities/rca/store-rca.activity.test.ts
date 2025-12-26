@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { RCAReport, AlertContext, StoreRCAOutput } from "@cognobserve/api/schemas";
+import type { RCAReport, AlertContext, StoreRCAOutput } from "@ducsigr/api/schemas";
 import type { StoreRCAActivityInput } from "./store-rca.activity";
 
 // ============================================================
@@ -49,7 +49,7 @@ const validAlertContext: AlertContext = {
   alertHistoryId: "ah_123",
   alertName: "High Error Rate",
   projectId: "proj_789",
-  projectName: "CognObserve",
+  projectName: "Ducsigr",
   alertType: "ERROR_RATE",
   severity: "HIGH",
   currentValue: 0.15,
