@@ -14,3 +14,11 @@ export { useTriggerRCA } from "./use-trigger-rca";
 export { useEvalSuites } from "./use-eval-suites";
 export { useEvalRuns, useEvalRun, useEvalRunStatus } from "./use-eval-runs";
 export { useTriggerEval } from "./use-trigger-eval";
+
+// Observability Dashboards
+export {
+  useDashboards,
+  useDashboard,
+  useGraphQuery,
+  useProjectSummaries,
+} from "./use-dashboards";

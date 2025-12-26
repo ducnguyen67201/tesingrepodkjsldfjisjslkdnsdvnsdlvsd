@@ -8,3 +8,5 @@
 export { GitHubService } from "./github.service";
 export { RCAService } from "./rca.service";
 export { TrackedUserService } from "./trackedUser.service";
+export { DashboardService } from "./dashboard.service";
+export { GraphQueryService } from "./graph-query.service";

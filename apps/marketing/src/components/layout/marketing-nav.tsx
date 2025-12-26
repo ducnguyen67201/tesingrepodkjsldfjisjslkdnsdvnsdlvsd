@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 import { NAV_LINKS } from "@/lib/constants";
 import { COLORS } from "@/lib/colors";
@@ -21,15 +22,13 @@ export function MarketingNav() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{
-              background: `linear-gradient(to bottom right, ${COLORS.accent.yellow}, ${COLORS.accent.yellowStrong})`,
-              boxShadow: "0 2px 8px rgba(246, 196, 83, 0.3)",
-            }}
-          >
-            <Activity className="w-[18px] h-[18px] text-white" />
-          </div>
+          <Image
+            src="/logo.svg"
+            alt="CognObserve"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <span
             className="font-display font-semibold tracking-tight text-lg hidden sm:block"
             style={{ color: COLORS.ink.primary }}

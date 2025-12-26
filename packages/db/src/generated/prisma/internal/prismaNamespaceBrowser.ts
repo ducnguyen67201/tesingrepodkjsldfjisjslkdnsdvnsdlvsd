@@ -62,6 +62,8 @@ export const ModelName = {
   VerificationToken: 'VerificationToken',
   ModelPricing: 'ModelPricing',
   CostDailySummary: 'CostDailySummary',
+  Dashboard: 'Dashboard',
+  DashboardWidget: 'DashboardWidget',
   EvalSuite: 'EvalSuite',
   EvalSuiteKnowledge: 'EvalSuiteKnowledge',
   EvalRun: 'EvalRun',
@@ -279,6 +281,38 @@ export const CostDailySummaryScalarFieldEnum = {
 } as const
 
 export type CostDailySummaryScalarFieldEnum = (typeof CostDailySummaryScalarFieldEnum)[keyof typeof CostDailySummaryScalarFieldEnum]
+
+
+export const DashboardScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  name: 'name',
+  description: 'description',
+  visibility: 'visibility',
+  isDefault: 'isDefault',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DashboardScalarFieldEnum = (typeof DashboardScalarFieldEnum)[keyof typeof DashboardScalarFieldEnum]
+
+
+export const DashboardWidgetScalarFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  title: 'title',
+  type: 'type',
+  query: 'query',
+  display: 'display',
+  layout: 'layout',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DashboardWidgetScalarFieldEnum = (typeof DashboardWidgetScalarFieldEnum)[keyof typeof DashboardWidgetScalarFieldEnum]
 
 
 export const EvalSuiteScalarFieldEnum = {

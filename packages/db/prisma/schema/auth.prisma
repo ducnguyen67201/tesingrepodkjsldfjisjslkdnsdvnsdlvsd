@@ -29,6 +29,10 @@ model User {
   extensionsOwned    Extension[]          @relation("ExtensionOwner")
   extensionsInstalled ExtensionInstall[]   @relation("ExtensionInstalledBy")
   extensionAuditLogs ExtensionAuditLog[]  @relation("ExtensionAuditActor")
+
+  // Observability Dashboards
+  dashboards         Dashboard[]          @relation("DashboardCreatedBy")
+  dashboardWidgets   DashboardWidget[]    @relation("DashboardWidgetCreatedBy")
 }
 
 model Account {

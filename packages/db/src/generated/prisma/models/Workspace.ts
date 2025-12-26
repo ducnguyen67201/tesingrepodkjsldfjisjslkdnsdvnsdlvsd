@@ -202,6 +202,7 @@ export type WorkspaceWhereInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentListRelationFilter
   knowledgeChunks?: Prisma.KnowledgeChunkListRelationFilter
   extensionInstalls?: Prisma.ExtensionInstallListRelationFilter
+  dashboards?: Prisma.DashboardListRelationFilter
 }
 
 export type WorkspaceOrderByWithRelationInput = {
@@ -223,6 +224,7 @@ export type WorkspaceOrderByWithRelationInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentOrderByRelationAggregateInput
   knowledgeChunks?: Prisma.KnowledgeChunkOrderByRelationAggregateInput
   extensionInstalls?: Prisma.ExtensionInstallOrderByRelationAggregateInput
+  dashboards?: Prisma.DashboardOrderByRelationAggregateInput
 }
 
 export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +249,7 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   knowledgeAttachments?: Prisma.KnowledgeAttachmentListRelationFilter
   knowledgeChunks?: Prisma.KnowledgeChunkListRelationFilter
   extensionInstalls?: Prisma.ExtensionInstallListRelationFilter
+  dashboards?: Prisma.DashboardListRelationFilter
 }, "id" | "slug">
 
 export type WorkspaceOrderByWithAggregationInput = {
@@ -292,6 +295,7 @@ export type WorkspaceCreateInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
@@ -313,6 +317,7 @@ export type WorkspaceUncheckedCreateInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUpdateInput = {
@@ -334,6 +339,7 @@ export type WorkspaceUpdateInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
@@ -355,6 +361,7 @@ export type WorkspaceUncheckedUpdateInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
@@ -428,6 +435,20 @@ export type WorkspaceUpdateOneRequiredWithoutNotificationChannelsNestedInput = {
   upsert?: Prisma.WorkspaceUpsertWithoutNotificationChannelsInput
   connect?: Prisma.WorkspaceWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutNotificationChannelsInput, Prisma.WorkspaceUpdateWithoutNotificationChannelsInput>, Prisma.WorkspaceUncheckedUpdateWithoutNotificationChannelsInput>
+}
+
+export type WorkspaceCreateNestedOneWithoutDashboardsInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutDashboardsInput, Prisma.WorkspaceUncheckedCreateWithoutDashboardsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutDashboardsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutDashboardsNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutDashboardsInput, Prisma.WorkspaceUncheckedCreateWithoutDashboardsInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutDashboardsInput
+  upsert?: Prisma.WorkspaceUpsertWithoutDashboardsInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutDashboardsInput, Prisma.WorkspaceUpdateWithoutDashboardsInput>, Prisma.WorkspaceUncheckedUpdateWithoutDashboardsInput>
 }
 
 export type WorkspaceCreateNestedOneWithoutExtensionInstallsInput = {
@@ -602,6 +623,7 @@ export type WorkspaceCreateWithoutNotificationChannelsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutNotificationChannelsInput = {
@@ -622,6 +644,7 @@ export type WorkspaceUncheckedCreateWithoutNotificationChannelsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutNotificationChannelsInput = {
@@ -658,6 +681,7 @@ export type WorkspaceUpdateWithoutNotificationChannelsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutNotificationChannelsInput = {
@@ -670,6 +694,107 @@ export type WorkspaceUncheckedUpdateWithoutNotificationChannelsInput = {
   members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutDashboardsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+  extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutDashboardsInput = {
+  id?: string
+  name: string
+  slug: string
+  isPersonal?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedCreateNestedManyWithoutWorkspaceInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedCreateNestedManyWithoutWorkspaceInput
+  githubInstallation?: Prisma.GitHubInstallationUncheckedCreateNestedOneWithoutWorkspaceInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeRules?: Prisma.KnowledgeRuleUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+  extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutDashboardsInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutDashboardsInput, Prisma.WorkspaceUncheckedCreateWithoutDashboardsInput>
+}
+
+export type WorkspaceUpsertWithoutDashboardsInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutDashboardsInput, Prisma.WorkspaceUncheckedUpdateWithoutDashboardsInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutDashboardsInput, Prisma.WorkspaceUncheckedCreateWithoutDashboardsInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutDashboardsInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutDashboardsInput, Prisma.WorkspaceUncheckedUpdateWithoutDashboardsInput>
+}
+
+export type WorkspaceUpdateWithoutDashboardsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUpdateManyWithoutWorkspaceNestedInput
+  githubInstallation?: Prisma.GitHubInstallationUpdateOneWithoutWorkspaceNestedInput
+  knowledgeGroups?: Prisma.KnowledgeGroupUpdateManyWithoutWorkspaceNestedInput
+  knowledgeArticles?: Prisma.KnowledgeArticleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeRules?: Prisma.KnowledgeRuleUpdateManyWithoutWorkspaceNestedInput
+  knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
+  knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
+  knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+  extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutDashboardsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  isPersonal?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  allowedDomains?: Prisma.AllowedDomainUncheckedUpdateManyWithoutWorkspaceNestedInput
+  notificationChannels?: Prisma.NotificationChannelUncheckedUpdateManyWithoutWorkspaceNestedInput
   githubInstallation?: Prisma.GitHubInstallationUncheckedUpdateOneWithoutWorkspaceNestedInput
   knowledgeGroups?: Prisma.KnowledgeGroupUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeArticles?: Prisma.KnowledgeArticleUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -698,6 +823,7 @@ export type WorkspaceCreateWithoutExtensionInstallsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutExtensionInstallsInput = {
@@ -718,6 +844,7 @@ export type WorkspaceUncheckedCreateWithoutExtensionInstallsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutExtensionInstallsInput = {
@@ -754,6 +881,7 @@ export type WorkspaceUpdateWithoutExtensionInstallsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutExtensionInstallsInput = {
@@ -774,6 +902,7 @@ export type WorkspaceUncheckedUpdateWithoutExtensionInstallsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutGithubInstallationInput = {
@@ -794,6 +923,7 @@ export type WorkspaceCreateWithoutGithubInstallationInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutGithubInstallationInput = {
@@ -814,6 +944,7 @@ export type WorkspaceUncheckedCreateWithoutGithubInstallationInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutGithubInstallationInput = {
@@ -850,6 +981,7 @@ export type WorkspaceUpdateWithoutGithubInstallationInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutGithubInstallationInput = {
@@ -870,6 +1002,7 @@ export type WorkspaceUncheckedUpdateWithoutGithubInstallationInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeGroupsInput = {
@@ -890,6 +1023,7 @@ export type WorkspaceCreateWithoutKnowledgeGroupsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput = {
@@ -910,6 +1044,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeGroupsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeGroupsInput = {
@@ -946,6 +1081,7 @@ export type WorkspaceUpdateWithoutKnowledgeGroupsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput = {
@@ -966,6 +1102,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeGroupsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeArticlesInput = {
@@ -986,6 +1123,7 @@ export type WorkspaceCreateWithoutKnowledgeArticlesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput = {
@@ -1006,6 +1144,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeArticlesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeArticlesInput = {
@@ -1042,6 +1181,7 @@ export type WorkspaceUpdateWithoutKnowledgeArticlesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput = {
@@ -1062,6 +1202,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeArticlesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeRulesInput = {
@@ -1082,6 +1223,7 @@ export type WorkspaceCreateWithoutKnowledgeRulesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeRulesInput = {
@@ -1102,6 +1244,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeRulesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeRulesInput = {
@@ -1138,6 +1281,7 @@ export type WorkspaceUpdateWithoutKnowledgeRulesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput = {
@@ -1158,6 +1302,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeRulesInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeLinksInput = {
@@ -1178,6 +1323,7 @@ export type WorkspaceCreateWithoutKnowledgeLinksInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeLinksInput = {
@@ -1198,6 +1344,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeLinksInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeLinksInput = {
@@ -1234,6 +1381,7 @@ export type WorkspaceUpdateWithoutKnowledgeLinksInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput = {
@@ -1254,6 +1402,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeLinksInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeAttachmentsInput = {
@@ -1274,6 +1423,7 @@ export type WorkspaceCreateWithoutKnowledgeAttachmentsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput = {
@@ -1294,6 +1444,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeAttachmentsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeAttachmentsInput = {
@@ -1330,6 +1481,7 @@ export type WorkspaceUpdateWithoutKnowledgeAttachmentsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput = {
@@ -1350,6 +1502,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeAttachmentsInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutKnowledgeChunksInput = {
@@ -1370,6 +1523,7 @@ export type WorkspaceCreateWithoutKnowledgeChunksInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkCreateNestedManyWithoutWorkspaceInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutKnowledgeChunksInput = {
@@ -1390,6 +1544,7 @@ export type WorkspaceUncheckedCreateWithoutKnowledgeChunksInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutKnowledgeChunksInput = {
@@ -1426,6 +1581,7 @@ export type WorkspaceUpdateWithoutKnowledgeChunksInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUpdateManyWithoutWorkspaceNestedInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput = {
@@ -1446,6 +1602,7 @@ export type WorkspaceUncheckedUpdateWithoutKnowledgeChunksInput = {
   knowledgeLinks?: Prisma.KnowledgeLinkUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutProjectsInput = {
@@ -1466,6 +1623,7 @@ export type WorkspaceCreateWithoutProjectsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutProjectsInput = {
@@ -1486,6 +1644,7 @@ export type WorkspaceUncheckedCreateWithoutProjectsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutProjectsInput = {
@@ -1522,6 +1681,7 @@ export type WorkspaceUpdateWithoutProjectsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
@@ -1542,6 +1702,7 @@ export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutMembersInput = {
@@ -1562,6 +1723,7 @@ export type WorkspaceCreateWithoutMembersInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutMembersInput = {
@@ -1582,6 +1744,7 @@ export type WorkspaceUncheckedCreateWithoutMembersInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutMembersInput = {
@@ -1618,6 +1781,7 @@ export type WorkspaceUpdateWithoutMembersInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutMembersInput = {
@@ -1638,6 +1802,7 @@ export type WorkspaceUncheckedUpdateWithoutMembersInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAllowedDomainsInput = {
@@ -1658,6 +1823,7 @@ export type WorkspaceCreateWithoutAllowedDomainsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
@@ -1678,6 +1844,7 @@ export type WorkspaceUncheckedCreateWithoutAllowedDomainsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedCreateNestedManyWithoutWorkspaceInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedCreateNestedManyWithoutWorkspaceInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedCreateNestedManyWithoutWorkspaceInput
+  dashboards?: Prisma.DashboardUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAllowedDomainsInput = {
@@ -1714,6 +1881,7 @@ export type WorkspaceUpdateWithoutAllowedDomainsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
@@ -1734,6 +1902,7 @@ export type WorkspaceUncheckedUpdateWithoutAllowedDomainsInput = {
   knowledgeAttachments?: Prisma.KnowledgeAttachmentUncheckedUpdateManyWithoutWorkspaceNestedInput
   knowledgeChunks?: Prisma.KnowledgeChunkUncheckedUpdateManyWithoutWorkspaceNestedInput
   extensionInstalls?: Prisma.ExtensionInstallUncheckedUpdateManyWithoutWorkspaceNestedInput
+  dashboards?: Prisma.DashboardUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 
@@ -1753,6 +1922,7 @@ export type WorkspaceCountOutputType = {
   knowledgeAttachments: number
   knowledgeChunks: number
   extensionInstalls: number
+  dashboards: number
 }
 
 export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1767,6 +1937,7 @@ export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensi
   knowledgeAttachments?: boolean | WorkspaceCountOutputTypeCountKnowledgeAttachmentsArgs
   knowledgeChunks?: boolean | WorkspaceCountOutputTypeCountKnowledgeChunksArgs
   extensionInstalls?: boolean | WorkspaceCountOutputTypeCountExtensionInstallsArgs
+  dashboards?: boolean | WorkspaceCountOutputTypeCountDashboardsArgs
 }
 
 /**
@@ -1856,6 +2027,13 @@ export type WorkspaceCountOutputTypeCountExtensionInstallsArgs<ExtArgs extends r
   where?: Prisma.ExtensionInstallWhereInput
 }
 
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountDashboardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DashboardWhereInput
+}
+
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1876,6 +2054,7 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   knowledgeAttachments?: boolean | Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>
   knowledgeChunks?: boolean | Prisma.Workspace$knowledgeChunksArgs<ExtArgs>
   extensionInstalls?: boolean | Prisma.Workspace$extensionInstallsArgs<ExtArgs>
+  dashboards?: boolean | Prisma.Workspace$dashboardsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
@@ -1920,6 +2099,7 @@ export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   knowledgeAttachments?: boolean | Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>
   knowledgeChunks?: boolean | Prisma.Workspace$knowledgeChunksArgs<ExtArgs>
   extensionInstalls?: boolean | Prisma.Workspace$extensionInstallsArgs<ExtArgs>
+  dashboards?: boolean | Prisma.Workspace$dashboardsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1940,6 +2120,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     knowledgeAttachments: Prisma.$KnowledgeAttachmentPayload<ExtArgs>[]
     knowledgeChunks: Prisma.$KnowledgeChunkPayload<ExtArgs>[]
     extensionInstalls: Prisma.$ExtensionInstallPayload<ExtArgs>[]
+    dashboards: Prisma.$DashboardPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2354,6 +2535,7 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
   knowledgeAttachments<T extends Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   knowledgeChunks<T extends Prisma.Workspace$knowledgeChunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$knowledgeChunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KnowledgeChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   extensionInstalls<T extends Prisma.Workspace$extensionInstallsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$extensionInstallsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExtensionInstallPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dashboards<T extends Prisma.Workspace$dashboardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$dashboardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DashboardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3057,6 +3239,30 @@ export type Workspace$extensionInstallsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.ExtensionInstallScalarFieldEnum | Prisma.ExtensionInstallScalarFieldEnum[]
+}
+
+/**
+ * Workspace.dashboards
+ */
+export type Workspace$dashboardsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dashboard
+   */
+  select?: Prisma.DashboardSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dashboard
+   */
+  omit?: Prisma.DashboardOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DashboardInclude<ExtArgs> | null
+  where?: Prisma.DashboardWhereInput
+  orderBy?: Prisma.DashboardOrderByWithRelationInput | Prisma.DashboardOrderByWithRelationInput[]
+  cursor?: Prisma.DashboardWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DashboardScalarFieldEnum | Prisma.DashboardScalarFieldEnum[]
 }
 
 /**

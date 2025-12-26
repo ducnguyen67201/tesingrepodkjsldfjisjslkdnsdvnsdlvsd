@@ -395,6 +395,8 @@ export const ModelName = {
   VerificationToken: 'VerificationToken',
   ModelPricing: 'ModelPricing',
   CostDailySummary: 'CostDailySummary',
+  Dashboard: 'Dashboard',
+  DashboardWidget: 'DashboardWidget',
   EvalSuite: 'EvalSuite',
   EvalSuiteKnowledge: 'EvalSuiteKnowledge',
   EvalRun: 'EvalRun',
@@ -447,7 +449,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "promptExperiment" | "promptExperimentVariant" | "alertRCA" | "trace" | "span" | "logRecord" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
+    modelProps: "alert" | "alertChannel" | "alertHistory" | "notificationChannel" | "alertChannelLink" | "user" | "account" | "session" | "verificationToken" | "modelPricing" | "costDailySummary" | "dashboard" | "dashboardWidget" | "evalSuite" | "evalSuiteKnowledge" | "evalRun" | "extension" | "extensionVersion" | "extensionInstall" | "extensionAuditLog" | "gitHubInstallation" | "gitHubRepository" | "gitCommit" | "gitPullRequest" | "codeChunk" | "knowledgeGroup" | "knowledgeArticle" | "knowledgeArticleVersion" | "knowledgeRule" | "knowledgeLink" | "knowledgeAttachment" | "knowledgeChunk" | "alertRCAKnowledge" | "project" | "projectMember" | "apiKey" | "prompt" | "promptVersion" | "promptLabel" | "promptExperiment" | "promptExperimentVariant" | "alertRCA" | "trace" | "span" | "logRecord" | "trackedUser" | "traceSession" | "workspace" | "workspaceMember" | "allowedDomain"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1262,6 +1264,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CostDailySummaryCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CostDailySummaryCountAggregateOutputType> | number
+        }
+      }
+    }
+    Dashboard: {
+      payload: Prisma.$DashboardPayload<ExtArgs>
+      fields: Prisma.DashboardFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DashboardFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DashboardFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        findFirst: {
+          args: Prisma.DashboardFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DashboardFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        findMany: {
+          args: Prisma.DashboardFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>[]
+        }
+        create: {
+          args: Prisma.DashboardCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        createMany: {
+          args: Prisma.DashboardCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DashboardCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>[]
+        }
+        delete: {
+          args: Prisma.DashboardDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        update: {
+          args: Prisma.DashboardUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        deleteMany: {
+          args: Prisma.DashboardDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DashboardUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DashboardUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>[]
+        }
+        upsert: {
+          args: Prisma.DashboardUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardPayload>
+        }
+        aggregate: {
+          args: Prisma.DashboardAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDashboard>
+        }
+        groupBy: {
+          args: Prisma.DashboardGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DashboardGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DashboardCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DashboardCountAggregateOutputType> | number
+        }
+      }
+    }
+    DashboardWidget: {
+      payload: Prisma.$DashboardWidgetPayload<ExtArgs>
+      fields: Prisma.DashboardWidgetFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DashboardWidgetFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DashboardWidgetFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        findFirst: {
+          args: Prisma.DashboardWidgetFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DashboardWidgetFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        findMany: {
+          args: Prisma.DashboardWidgetFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>[]
+        }
+        create: {
+          args: Prisma.DashboardWidgetCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        createMany: {
+          args: Prisma.DashboardWidgetCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DashboardWidgetCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>[]
+        }
+        delete: {
+          args: Prisma.DashboardWidgetDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        update: {
+          args: Prisma.DashboardWidgetUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        deleteMany: {
+          args: Prisma.DashboardWidgetDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DashboardWidgetUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DashboardWidgetUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>[]
+        }
+        upsert: {
+          args: Prisma.DashboardWidgetUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DashboardWidgetPayload>
+        }
+        aggregate: {
+          args: Prisma.DashboardWidgetAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDashboardWidget>
+        }
+        groupBy: {
+          args: Prisma.DashboardWidgetGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DashboardWidgetGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DashboardWidgetCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DashboardWidgetCountAggregateOutputType> | number
         }
       }
     }
@@ -4206,6 +4356,38 @@ export const CostDailySummaryScalarFieldEnum = {
 export type CostDailySummaryScalarFieldEnum = (typeof CostDailySummaryScalarFieldEnum)[keyof typeof CostDailySummaryScalarFieldEnum]
 
 
+export const DashboardScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  name: 'name',
+  description: 'description',
+  visibility: 'visibility',
+  isDefault: 'isDefault',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DashboardScalarFieldEnum = (typeof DashboardScalarFieldEnum)[keyof typeof DashboardScalarFieldEnum]
+
+
+export const DashboardWidgetScalarFieldEnum = {
+  id: 'id',
+  dashboardId: 'dashboardId',
+  title: 'title',
+  type: 'type',
+  query: 'query',
+  display: 'display',
+  layout: 'layout',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DashboardWidgetScalarFieldEnum = (typeof DashboardWidgetScalarFieldEnum)[keyof typeof DashboardWidgetScalarFieldEnum]
+
+
 export const EvalSuiteScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -5337,6 +5519,8 @@ export type GlobalOmitConfig = {
   verificationToken?: Prisma.VerificationTokenOmit
   modelPricing?: Prisma.ModelPricingOmit
   costDailySummary?: Prisma.CostDailySummaryOmit
+  dashboard?: Prisma.DashboardOmit
+  dashboardWidget?: Prisma.DashboardWidgetOmit
   evalSuite?: Prisma.EvalSuiteOmit
   evalSuiteKnowledge?: Prisma.EvalSuiteKnowledgeOmit
   evalRun?: Prisma.EvalRunOmit
