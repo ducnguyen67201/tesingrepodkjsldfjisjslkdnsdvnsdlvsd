@@ -161,19 +161,7 @@ export const graphsRouter = createRouter({
     .input(GraphQueryInputSchema)
     .use(workspaceMiddleware)
     .query(async ({ input }) => {
-      console.log("[GraphQuery] Executing:", {
-        projectId: input.projectId,
-        source: input.query.source,
-        op: input.query.op,
-        timeRange: input.query.timeRange,
-      });
-      const result = await GraphQueryService.execute(input.projectId, input.query);
-      console.log("[GraphQuery] Result:", {
-        seriesCount: result.series.length,
-        total: result.total,
-        firstSeriesPoints: result.series[0]?.data.length,
-      });
-      return result;
+      return GraphQueryService.execute(input.projectId, input.query);
     }),
 
   /**

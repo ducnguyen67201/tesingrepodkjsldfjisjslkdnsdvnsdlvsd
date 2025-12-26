@@ -20,6 +20,95 @@ import {
   bucketToMs,
 } from "../schemas/dashboard";
 
+// ============================================================
+// Field Allowlists - Prevent SQL Injection
+// ============================================================
+
+/**
+ * Valid column names per source type.
+ * All field names used in SQL queries MUST be validated against these lists.
+ */
+const VALID_FIELDS: Record<"trace" | "span" | "log", readonly string[]> = {
+  trace: [
+    "id",
+    "name",
+    "projectId",
+    "startTime",
+    "endTime",
+    "durationMs",
+    "hasError",
+    "serviceName",
+    "userId",
+    "sessionId",
+    "metadata",
+  ] as const,
+  span: [
+    "id",
+    "name",
+    "traceId",
+    "parentSpanId",
+    "startTime",
+    "endTime",
+    "durationMs",
+    "statusCode",
+    "serviceName",
+    "level",
+    "model",
+    "promptTokens",
+    "completionTokens",
+    "totalTokens",
+    "inputCost",
+    "outputCost",
+    "totalCost",
+    "metadata",
+  ] as const,
+  log: [
+    "id",
+    "projectId",
+    "traceId",
+    "spanId",
+    "timestamp",
+    "severity",
+    "message",
+    "body",
+    "serviceName",
+    "resourceAttributes",
+    "logAttributes",
+  ] as const,
+} as const;
+
+/**
+ * Validate a field name against the allowlist for a source type.
+ * @throws Error if field is not in the allowlist
+ */
+function validateField(
+  field: string,
+  source: "trace" | "span" | "log"
+): string {
+  const allowedFields = VALID_FIELDS[source];
+  if (!allowedFields.includes(field)) {
+    throw new Error(
+      `Invalid field "${field}" for source "${source}". Allowed fields: ${allowedFields.join(", ")}`
+    );
+  }
+  return field;
+}
+
+/**
+ * Validate an array of field names.
+ * @throws Error if any field is not in the allowlist
+ */
+function validateFields(
+  fields: string[],
+  source: "trace" | "span" | "log"
+): string[] {
+  return fields.map((field) => validateField(field, source));
+}
+
+// ============================================================
+// GraphQueryService
+// ============================================================
+
 /**
  * GraphQueryService - Static class for executing graph queries
  */
@@ -65,37 +154,37 @@ export class GraphQueryService {
   ): Promise<GraphQueryResult> {
     const bucketInterval = this.getBucketInterval(bucket);
 
+    // Validate groupBy fields to prevent SQL injection
+    const validatedGroupBy = query.groupBy?.length
+      ? validateFields(query.groupBy, "trace")
+      : [];
+
     // Build WHERE clause
     const whereClause = this.buildTraceWhereClause(projectId, query.filters, from, to);
+
+    // Build groupBy SQL fragments safely
+    const groupBySql = validatedGroupBy.length
+      ? Prisma.sql`, ${Prisma.raw(validatedGroupBy.map((g) => `"${g}"`).join(", "))}`
+      : Prisma.empty;
 
     // Build the aggregation query
     const sql = Prisma.sql`
       SELECT
         DATE_TRUNC(${Prisma.raw(`'${bucketInterval}'`)}, "startTime") as bucket_time,
         ${this.buildAggregation(query.op, query.field || "id", "trace")}
-        ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `"${g}"`).join(", "))}` : Prisma.empty}
+        ${groupBySql}
       FROM "Trace"
       ${whereClause}
-      GROUP BY bucket_time ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `"${g}"`).join(", "))}` : Prisma.empty}
+      GROUP BY bucket_time ${groupBySql}
       ORDER BY bucket_time ASC
       ${query.limit ? Prisma.sql`LIMIT ${query.limit}` : Prisma.empty}
     `;
-
-    console.log("[GraphQueryService] Trace query:", {
-      projectId,
-      bucket,
-      bucketInterval,
-      from: from.toISOString(),
-      to: to.toISOString(),
-    });
 
     const rows = await prisma.$queryRaw<Array<{
       bucket_time: Date;
       value: bigint | number;
       [key: string]: unknown;
     }>>(sql);
-
-    console.log("[GraphQueryService] Trace rows:", rows.length);
 
     // Convert to series format with filled time buckets
     const series = this.convertToSeries(rows, query.groupBy, from, to, bucket);
@@ -126,19 +215,29 @@ export class GraphQueryService {
   ): Promise<GraphQueryResult> {
     const bucketInterval = this.getBucketInterval(bucket);
 
+    // Validate groupBy fields to prevent SQL injection
+    const validatedGroupBy = query.groupBy?.length
+      ? validateFields(query.groupBy, "span")
+      : [];
+
     // Build WHERE clause
     const whereClause = this.buildSpanWhereClause(projectId, query.filters, from, to);
+
+    // Build groupBy SQL fragments safely (with span prefix)
+    const groupBySql = validatedGroupBy.length
+      ? Prisma.sql`, ${Prisma.raw(validatedGroupBy.map((g) => `s."${g}"`).join(", "))}`
+      : Prisma.empty;
 
     // Build the aggregation query
     const sql = Prisma.sql`
       SELECT
         DATE_TRUNC(${Prisma.raw(`'${bucketInterval}'`)}, s."startTime") as bucket_time,
         ${this.buildAggregation(query.op, query.field || "id", "span")}
-        ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `s."${g}"`).join(", "))}` : Prisma.empty}
+        ${groupBySql}
       FROM "Span" s
       INNER JOIN "Trace" t ON s."traceId" = t."id"
       ${whereClause}
-      GROUP BY bucket_time ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `s."${g}"`).join(", "))}` : Prisma.empty}
+      GROUP BY bucket_time ${groupBySql}
       ORDER BY bucket_time ASC
       ${query.limit ? Prisma.sql`LIMIT ${query.limit}` : Prisma.empty}
     `;
@@ -178,18 +277,28 @@ export class GraphQueryService {
   ): Promise<GraphQueryResult> {
     const bucketInterval = this.getBucketInterval(bucket);
 
+    // Validate groupBy fields to prevent SQL injection
+    const validatedGroupBy = query.groupBy?.length
+      ? validateFields(query.groupBy, "log")
+      : [];
+
     // Build WHERE clause
     const whereClause = this.buildLogWhereClause(projectId, query.filters, from, to);
+
+    // Build groupBy SQL fragments safely
+    const groupBySql = validatedGroupBy.length
+      ? Prisma.sql`, ${Prisma.raw(validatedGroupBy.map((g) => `"${g}"`).join(", "))}`
+      : Prisma.empty;
 
     // Build the aggregation query
     const sql = Prisma.sql`
       SELECT
         DATE_TRUNC(${Prisma.raw(`'${bucketInterval}'`)}, "timestamp") as bucket_time,
         ${this.buildAggregation(query.op, query.field || "id", "log")}
-        ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `"${g}"`).join(", "))}` : Prisma.empty}
+        ${groupBySql}
       FROM "LogRecord"
       ${whereClause}
-      GROUP BY bucket_time ${query.groupBy?.length ? Prisma.sql`, ${Prisma.raw(query.groupBy.map(g => `"${g}"`).join(", "))}` : Prisma.empty}
+      GROUP BY bucket_time ${groupBySql}
       ORDER BY bucket_time ASC
       ${query.limit ? Prisma.sql`LIMIT ${query.limit}` : Prisma.empty}
     `;
@@ -259,6 +368,10 @@ export class GraphQueryService {
 
     // Get the actual field to use (with smart defaults)
     const actualField = this.getDefaultField(op, source, field === "id" ? undefined : field);
+
+    // Validate field against allowlist to prevent SQL injection
+    validateField(actualField, source);
+
     const quotedField = `${prefix}"${actualField}"`;
 
     switch (op) {
@@ -308,7 +421,7 @@ export class GraphQueryService {
 
     if (filters?.length) {
       for (const filter of filters) {
-        conditions.push(this.buildFilterCondition(filter, ""));
+        conditions.push(this.buildFilterCondition(filter, "", "trace"));
       }
     }
 
@@ -332,7 +445,7 @@ export class GraphQueryService {
 
     if (filters?.length) {
       for (const filter of filters) {
-        conditions.push(this.buildFilterCondition(filter, "s."));
+        conditions.push(this.buildFilterCondition(filter, "s.", "span"));
       }
     }
 
@@ -356,7 +469,7 @@ export class GraphQueryService {
 
     if (filters?.length) {
       for (const filter of filters) {
-        conditions.push(this.buildFilterCondition(filter, ""));
+        conditions.push(this.buildFilterCondition(filter, "", "log"));
       }
     }
 
@@ -368,8 +481,12 @@ export class GraphQueryService {
    */
   private static buildFilterCondition(
     filter: NonNullable<GraphQuery["filters"]>[number],
-    prefix: string
+    prefix: string,
+    source: "trace" | "span" | "log"
   ): Prisma.Sql {
+    // Validate field against allowlist to prevent SQL injection
+    validateField(filter.field, source);
+
     const quotedField = `${prefix}"${filter.field}"`;
 
     switch (filter.op) {

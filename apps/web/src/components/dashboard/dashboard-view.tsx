@@ -42,14 +42,6 @@ interface Widget {
   layout: unknown;
 }
 
-// Note: Dashboard type is available from the API but using inline types for now
-// interface Dashboard {
-//   id: string;
-//   name: string;
-//   description: string | null;
-//   widgets: Widget[];
-// }
-
 // ============================================================
 // Props
 // ============================================================
@@ -120,9 +112,8 @@ export function DashboardView({
     setActiveDashboardId(id);
   }, []);
 
-  const handleEditWidget = useCallback((widgetId: string) => {
+  const handleEditWidget = useCallback((_widgetId: string) => {
     // TODO: Open widget editor dialog
-    console.log("Edit widget:", widgetId);
   }, []);
 
   const handleDeleteWidget = useCallback(

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import {
+  Activity,
   LineChart,
   Users,
   Workflow,
