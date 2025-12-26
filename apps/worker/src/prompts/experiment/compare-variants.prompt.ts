@@ -6,7 +6,7 @@
  */
 
 import type { PromptConfig } from "../types";
-import type { AggregatedVariantMetrics } from "@cognobserve/api/schemas";
+import type { AggregatedVariantMetrics } from "@ducsigr/api/schemas";
 
 // ============================================
 // Configuration

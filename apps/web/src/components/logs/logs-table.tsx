@@ -22,7 +22,7 @@ import {
   truncateLogBody,
   getSeverityShortLabel,
 } from "@/lib/log-utils";
-import type { LogListItem } from "@cognobserve/api/client";
+import type { LogListItem } from "@ducsigr/api/client";
 
 // Severity badge colors for compact display
 const SEVERITY_COLORS: Record<string, string> = {

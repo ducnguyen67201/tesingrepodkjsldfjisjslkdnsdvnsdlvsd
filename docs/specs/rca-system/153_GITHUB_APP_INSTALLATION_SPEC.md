@@ -9,7 +9,7 @@
 
 ## Overview
 
-Implement the GitHub App OAuth installation flow that allows users to connect their GitHub account to a workspace. This enables CognObserve to access repositories for code indexing.
+Implement the GitHub App OAuth installation flow that allows users to connect their GitHub account to a workspace. This enables Ducsigr to access repositories for code indexing.
 
 ---
 
@@ -35,7 +35,7 @@ Implement the GitHub App OAuth installation flow that allows users to connect th
   │  https://github.com/apps/{app}/install  │
   │                                         │
   │  ┌─────────────────────────────────┐   │
-  │  │  Install CognObserve App        │   │
+  │  │  Install Ducsigr App        │   │
   │  │                                 │   │
   │  │  [Select repositories]         │   │
   │  │  ○ All repositories            │   │
@@ -89,7 +89,7 @@ Implement the GitHub App OAuth installation flow that allows users to connect th
 ```bash
 # GitHub App Configuration
 GITHUB_APP_ID="123456"
-GITHUB_APP_NAME="cognobserve-dev"           # App slug for install URL
+GITHUB_APP_NAME="ducsigr-dev"           # App slug for install URL
 GITHUB_APP_CLIENT_ID="Iv1.abc123..."
 GITHUB_APP_CLIENT_SECRET="secret..."
 GITHUB_APP_PRIVATE_KEY="-----BEGIN RSA..."  # For API authentication
@@ -136,7 +136,7 @@ interface InstallState {
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { SignJWT } from "jose";
 
 const GITHUB_APP_NAME = process.env.GITHUB_APP_NAME;
@@ -225,7 +225,7 @@ export async function GET(request: NextRequest) {
 
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { Octokit } from "@octokit/rest";
 import { createAppAuth } from "@octokit/auth-app";
 
@@ -388,11 +388,11 @@ export async function GET(request: NextRequest) {
 
 1. Create GitHub App at https://github.com/settings/apps/new
 2. Configure:
-   - **App Name:** `cognobserve-dev` (or production name)
-   - **Homepage URL:** `https://cognobserve.com`
-   - **Callback URL:** `https://app.cognobserve.com/api/github/callback`
-   - **Setup URL:** `https://app.cognobserve.com/api/github/callback`
-   - **Webhook URL:** `https://app.cognobserve.com/api/webhooks/github`
+   - **App Name:** `ducsigr-dev` (or production name)
+   - **Homepage URL:** `https://ducsigr.com`
+   - **Callback URL:** `https://app.ducsigr.com/api/github/callback`
+   - **Setup URL:** `https://app.ducsigr.com/api/github/callback`
+   - **Webhook URL:** `https://app.ducsigr.com/api/webhooks/github`
    - **Permissions:**
      - Repository contents: Read
      - Metadata: Read

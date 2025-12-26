@@ -19,8 +19,8 @@
 
 import { proxyActivities, log } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
-import type { EvalPrompt, EvalRunStatus } from "@cognobserve/api/schemas";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import type { EvalPrompt, EvalRunStatus } from "@ducsigr/api/schemas";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 
 // ============================================================
 // Workflow Input Type

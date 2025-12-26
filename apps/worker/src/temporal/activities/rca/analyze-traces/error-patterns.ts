@@ -4,7 +4,7 @@
  * Functions for extracting and grouping error patterns from spans.
  */
 
-import type { Prisma } from "@cognobserve/db";
+import type { Prisma } from "@ducsigr/db";
 import { z } from "zod";
 import type { ErrorPattern } from "../../../types";
 import type { SpanRow } from "../types";

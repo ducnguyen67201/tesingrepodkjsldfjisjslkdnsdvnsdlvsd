@@ -4,7 +4,7 @@
  * This service handles RCA storage operations, called by the internal router.
  */
 
-import { prisma, type Prisma } from "@cognobserve/db";
+import { prisma, type Prisma } from "@ducsigr/db";
 import { TRPCError } from "@trpc/server";
 import type { StoreRCAInput, StoreRCAOutput } from "../schemas/rca";
 

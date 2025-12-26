@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { knowledgeToast } from "@/lib/success";
 import { showError } from "@/lib/errors";
-import type { KnowledgeRuleScope } from "@cognobserve/api/schemas";
+import type { KnowledgeRuleScope } from "@ducsigr/api/schemas";
 
 interface UseKnowledgeRulesOptions {
   workspaceSlug: string;

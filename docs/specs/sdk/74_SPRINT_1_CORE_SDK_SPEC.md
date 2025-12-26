@@ -15,7 +15,7 @@ Build the foundation TypeScript SDK: npm package setup, initialization, and manu
 | Component | Type | Priority |
 |-----------|------|----------|
 | Package setup (ESM + CJS) | Config | P0 |
-| `CognObserve.init()` | Core | P0 |
+| `Ducsigr.init()` | Core | P0 |
 | `startTrace()` / `trace.end()` | Core | P0 |
 | `startSpan()` / `span.end()` | Core | P0 |
 | HTTP transport with batching | Core | P1 |
@@ -34,7 +34,7 @@ packages/sdk/
 ├── tsup.config.ts
 ├── src/
 │   ├── index.ts              # Public exports
-│   ├── cognobserve.ts        # Main class (singleton)
+│   ├── ducsigr.ts        # Main class (singleton)
 │   ├── config.ts             # Configuration types & defaults
 │   ├── client.ts             # Low-level HTTP client
 │   ├── transport.ts          # Batching & retry logic
@@ -46,7 +46,7 @@ packages/sdk/
 │       ├── id.ts             # ID generation
 │       └── time.ts           # Time utilities
 └── tests/
-    ├── cognobserve.test.ts
+    ├── ducsigr.test.ts
     ├── trace.test.ts
     ├── span.test.ts
     └── transport.test.ts
@@ -57,13 +57,13 @@ packages/sdk/
 ```mermaid
 sequenceDiagram
     participant User as User Code
-    participant CO as CognObserve
+    participant CO as Ducsigr
     participant Trace as Trace
     participant Span as Span
     participant Transport as Transport
     participant Ingest as Ingest Service
 
-    User->>CO: CognObserve.init({ apiKey })
+    User->>CO: Ducsigr.init({ apiKey })
     CO->>CO: Store config, create transport
 
     User->>CO: startTrace({ name })
@@ -91,9 +91,9 @@ sequenceDiagram
 ```mermaid
 flowchart TB
     subgraph Public["Public API"]
-        Init["CognObserve.init()"]
-        StartTrace["CognObserve.startTrace()"]
-        GetTrace["CognObserve.getActiveTrace()"]
+        Init["Ducsigr.init()"]
+        StartTrace["Ducsigr.startTrace()"]
+        GetTrace["Ducsigr.getActiveTrace()"]
     end
 
     subgraph Internal["Internal"]
@@ -124,9 +124,9 @@ flowchart TB
 
 ```json
 {
-  "name": "@cognobserve/sdk",
+  "name": "@ducsigr/sdk",
   "version": "0.1.0",
-  "description": "CognObserve SDK for TypeScript - AI Observability",
+  "description": "Ducsigr SDK for TypeScript - AI Observability",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -175,11 +175,11 @@ flowchart TB
     "anthropic",
     "monitoring"
   ],
-  "author": "CognObserve",
+  "author": "Ducsigr",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cognobserve/cognobserve.git",
+    "url": "https://github.com/ducsigr/ducsigr.git",
     "directory": "packages/sdk"
   },
   "engines": {
@@ -231,7 +231,7 @@ export default defineConfig({
 
 ```json
 {
-  "extends": "@cognobserve/typescript-config/base.json",
+  "extends": "@ducsigr/typescript-config/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
@@ -267,7 +267,7 @@ export interface TokenUsage {
 }
 
 // Configuration options
-export interface CognObserveConfig {
+export interface DucsigrConfig {
   apiKey: string;
   endpoint?: string;
   debug?: boolean;
@@ -382,27 +382,27 @@ export interface IngestResponse {
 **File:** `src/config.ts`
 
 ```typescript
-import type { CognObserveConfig, ResolvedConfig } from './types';
+import type { DucsigrConfig, ResolvedConfig } from './types';
 
-const DEFAULT_ENDPOINT = 'https://ingest.cognobserve.com';
+const DEFAULT_ENDPOINT = 'https://ingest.ducsigr.com';
 const DEFAULT_FLUSH_INTERVAL = 5000;
 const DEFAULT_MAX_BATCH_SIZE = 10;
 const DEFAULT_MAX_RETRIES = 3;
 
-export function resolveConfig(config: CognObserveConfig): ResolvedConfig {
-  const apiKey = config.apiKey || process.env.COGNOBSERVE_API_KEY;
+export function resolveConfig(config: DucsigrConfig): ResolvedConfig {
+  const apiKey = config.apiKey || process.env.DUCSIGR_API_KEY;
 
   if (!apiKey && !config.disabled) {
     console.warn(
-      '[CognObserve] No API key provided. Set apiKey in config or COGNOBSERVE_API_KEY env var.'
+      '[Ducsigr] No API key provided. Set apiKey in config or DUCSIGR_API_KEY env var.'
     );
   }
 
   return {
     apiKey: apiKey || '',
-    endpoint: config.endpoint || process.env.COGNOBSERVE_ENDPOINT || DEFAULT_ENDPOINT,
-    debug: config.debug ?? process.env.COGNOBSERVE_DEBUG === 'true',
-    disabled: config.disabled ?? process.env.COGNOBSERVE_DISABLED === 'true',
+    endpoint: config.endpoint || process.env.DUCSIGR_ENDPOINT || DEFAULT_ENDPOINT,
+    debug: config.debug ?? process.env.DUCSIGR_DEBUG === 'true',
+    disabled: config.disabled ?? process.env.DUCSIGR_DISABLED === 'true',
     flushInterval: config.flushInterval ?? DEFAULT_FLUSH_INTERVAL,
     maxBatchSize: config.maxBatchSize ?? DEFAULT_MAX_BATCH_SIZE,
     maxRetries: config.maxRetries ?? DEFAULT_MAX_RETRIES,
@@ -411,11 +411,11 @@ export function resolveConfig(config: CognObserveConfig): ResolvedConfig {
 
 export function validateConfig(config: ResolvedConfig): void {
   if (!config.disabled && !config.apiKey) {
-    throw new Error('[CognObserve] API key is required when SDK is enabled');
+    throw new Error('[Ducsigr] API key is required when SDK is enabled');
   }
 
   if (!config.endpoint.startsWith('http://') && !config.endpoint.startsWith('https://')) {
-    throw new Error('[CognObserve] Endpoint must be a valid URL');
+    throw new Error('[Ducsigr] Endpoint must be a valid URL');
   }
 }
 ```
@@ -522,7 +522,7 @@ export class Span {
 
   end(options?: SpanEndOptions): void {
     if (this._ended) {
-      console.warn(`[CognObserve] Span "${this.name}" already ended`);
+      console.warn(`[Ducsigr] Span "${this.name}" already ended`);
       return;
     }
 
@@ -604,7 +604,7 @@ export class Trace {
 
   startSpan(options: SpanOptions): Span {
     if (this._ended) {
-      throw new Error(`[CognObserve] Cannot start span on ended trace "${this.name}"`);
+      throw new Error(`[Ducsigr] Cannot start span on ended trace "${this.name}"`);
     }
 
     // Auto-set parent to current active span if not specified
@@ -632,14 +632,14 @@ export class Trace {
 
   end(): void {
     if (this._ended) {
-      console.warn(`[CognObserve] Trace "${this.name}" already ended`);
+      console.warn(`[Ducsigr] Trace "${this.name}" already ended`);
       return;
     }
 
     // End any spans that weren't ended
     for (const span of this._spans.values()) {
       if (!span.isEnded) {
-        console.warn(`[CognObserve] Auto-ending span "${span.name}" on trace end`);
+        console.warn(`[Ducsigr] Auto-ending span "${span.name}" on trace end`);
         span.end();
       }
     }
@@ -729,7 +729,7 @@ export class Transport {
     this.flushTimer = setInterval(() => {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Flush error:', err);
+          console.error('[Ducsigr] Flush error:', err);
         }
       });
     }, this.config.flushInterval);
@@ -748,7 +748,7 @@ export class Transport {
     if (this.queue.length >= this.config.maxBatchSize) {
       this.flush().catch((err) => {
         if (this.config.debug) {
-          console.error('[CognObserve] Flush error:', err);
+          console.error('[Ducsigr] Flush error:', err);
         }
       });
     }
@@ -793,7 +793,7 @@ export class Transport {
         const result = (await response.json()) as IngestResponse;
 
         if (this.config.debug) {
-          console.log(`[CognObserve] Sent trace ${trace.id} with ${trace.spans.length} spans`);
+          console.log(`[Ducsigr] Sent trace ${trace.id} with ${trace.spans.length} spans`);
         }
 
         return result;
@@ -801,7 +801,7 @@ export class Transport {
         lastError = err as Error;
 
         if (this.config.debug) {
-          console.warn(`[CognObserve] Retry ${attempt + 1}/${this.config.maxRetries}:`, err);
+          console.warn(`[Ducsigr] Retry ${attempt + 1}/${this.config.maxRetries}:`, err);
         }
 
         // Exponential backoff
@@ -858,25 +858,25 @@ export class Transport {
 }
 ```
 
-### 5.7 Main CognObserve Class
+### 5.7 Main Ducsigr Class
 
-**File:** `src/cognobserve.ts`
+**File:** `src/ducsigr.ts`
 
 ```typescript
 import { Trace } from './trace';
 import { Transport } from './transport';
 import { resolveConfig, validateConfig } from './config';
 import { runWithContext, getActiveTrace, getActiveSpan } from './context';
-import type { CognObserveConfig, ResolvedConfig, TraceOptions, TraceData } from './types';
+import type { DucsigrConfig, ResolvedConfig, TraceOptions, TraceData } from './types';
 
-class CognObserveClient {
+class DucsigrClient {
   private config: ResolvedConfig | null = null;
   private transport: Transport | null = null;
   private initialized = false;
 
-  init(config: CognObserveConfig): void {
+  init(config: DucsigrConfig): void {
     if (this.initialized) {
-      console.warn('[CognObserve] Already initialized. Call shutdown() first to re-initialize.');
+      console.warn('[Ducsigr] Already initialized. Call shutdown() first to re-initialize.');
       return;
     }
 
@@ -887,7 +887,7 @@ class CognObserveClient {
     this.initialized = true;
 
     if (this.config.debug) {
-      console.log('[CognObserve] Initialized', {
+      console.log('[Ducsigr] Initialized', {
         endpoint: this.config.endpoint,
         disabled: this.config.disabled,
       });
@@ -909,7 +909,7 @@ class CognObserveClient {
 
   private ensureInitialized(): void {
     if (!this.initialized) {
-      throw new Error('[CognObserve] SDK not initialized. Call CognObserve.init() first.');
+      throw new Error('[Ducsigr] SDK not initialized. Call Ducsigr.init() first.');
     }
   }
 
@@ -923,7 +923,7 @@ class CognObserveClient {
     const trace = new Trace(options, handleEnd);
 
     if (this.config!.debug) {
-      console.log(`[CognObserve] Started trace "${options.name}" (${trace.id})`);
+      console.log(`[Ducsigr] Started trace "${options.name}" (${trace.id})`);
     }
 
     return trace;
@@ -981,7 +981,7 @@ class CognObserveClient {
     this.initialized = false;
 
     if (this.config?.debug) {
-      console.log('[CognObserve] Shutdown complete');
+      console.log('[Ducsigr] Shutdown complete');
     }
   }
 
@@ -995,7 +995,7 @@ class CognObserveClient {
 }
 
 // Export singleton instance
-export const CognObserve = new CognObserveClient();
+export const Ducsigr = new DucsigrClient();
 ```
 
 ### 5.8 Public Exports
@@ -1004,7 +1004,7 @@ export const CognObserve = new CognObserveClient();
 
 ```typescript
 // Main client
-export { CognObserve } from './cognobserve';
+export { Ducsigr } from './ducsigr';
 
 // Classes (for advanced usage)
 export { Trace } from './trace';
@@ -1012,7 +1012,7 @@ export { Span } from './span';
 
 // Types
 export type {
-  CognObserveConfig,
+  DucsigrConfig,
   TraceOptions,
   SpanOptions,
   SpanEndOptions,
@@ -1031,13 +1031,13 @@ export { getActiveTrace, getActiveSpan, runWithContext } from './context';
 ### 6.1 Basic Initialization
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Initialize with API key
-CognObserve.init({
+Ducsigr.init({
   apiKey: 'co_your_api_key',
   // Optional configuration
-  endpoint: 'https://ingest.cognobserve.com',
+  endpoint: 'https://ingest.ducsigr.com',
   debug: true,
 });
 ```
@@ -1045,10 +1045,10 @@ CognObserve.init({
 ### 6.2 Manual Tracing
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Start a trace
-const trace = CognObserve.startTrace({ name: 'process-user-request' });
+const trace = Ducsigr.startTrace({ name: 'process-user-request' });
 
 // Start a span
 const span = trace.startSpan({ name: 'fetch-user-data' });
@@ -1082,10 +1082,10 @@ trace.end();
 ### 6.3 Using trace() Helper
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Automatically manages trace lifecycle
-const result = await CognObserve.trace(
+const result = await Ducsigr.trace(
   { name: 'chat-completion' },
   async (trace) => {
     const span = trace.startSpan({ name: 'openai-call' });
@@ -1117,7 +1117,7 @@ const result = await CognObserve.trace(
 
 ```
 packages/sdk/tests/
-├── cognobserve.test.ts     # Init, singleton behavior
+├── ducsigr.test.ts     # Init, singleton behavior
 ├── trace.test.ts           # Trace lifecycle
 ├── span.test.ts            # Span methods
 ├── transport.test.ts       # HTTP transport, batching
@@ -1127,9 +1127,9 @@ packages/sdk/tests/
 ### 7.2 Test Checklist
 
 **Unit Tests:**
-- [ ] `CognObserve.init()` sets config correctly
-- [ ] `CognObserve.init()` validates API key
-- [ ] `CognObserve.init()` reads environment variables
+- [ ] `Ducsigr.init()` sets config correctly
+- [ ] `Ducsigr.init()` validates API key
+- [ ] `Ducsigr.init()` reads environment variables
 - [ ] `Trace.startSpan()` creates spans with correct parent
 - [ ] `Span.end()` sets endTime
 - [ ] `Span.setError()` sets level to ERROR
@@ -1149,8 +1149,8 @@ packages/sdk/tests/
 
 - [ ] Package builds with ESM + CJS outputs
 - [ ] TypeScript types included in dist
-- [ ] `CognObserve.init()` works with API key
-- [ ] `CognObserve.init()` reads env vars
+- [ ] `Ducsigr.init()` works with API key
+- [ ] `Ducsigr.init()` reads env vars
 - [ ] `startTrace()` creates trace with ID
 - [ ] `trace.startSpan()` creates nested spans
 - [ ] `span.end()` / `trace.end()` complete lifecycle
@@ -1172,7 +1172,7 @@ packages/sdk/
 ├── [ ] tsup.config.ts
 ├── [ ] src/
 │   ├── [ ] index.ts
-│   ├── [ ] cognobserve.ts
+│   ├── [ ] ducsigr.ts
 │   ├── [ ] config.ts
 │   ├── [ ] trace.ts
 │   ├── [ ] span.ts
@@ -1183,7 +1183,7 @@ packages/sdk/
 │       ├── [ ] id.ts
 │       └── [ ] time.ts
 └── tests/
-    ├── [ ] cognobserve.test.ts
+    ├── [ ] ducsigr.test.ts
     ├── [ ] trace.test.ts
     ├── [ ] span.test.ts
     └── [ ] transport.test.ts

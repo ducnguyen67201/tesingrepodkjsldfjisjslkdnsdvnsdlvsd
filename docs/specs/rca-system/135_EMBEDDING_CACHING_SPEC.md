@@ -536,7 +536,7 @@ export * from "./cache/embedding-cache";
 Update to use cache:
 
 ```typescript
-import { getEmbeddingCache, type EmbeddingCache } from "@cognobserve/shared";
+import { getEmbeddingCache, type EmbeddingCache } from "@ducsigr/shared";
 
 // Add cache instance
 let _cache: EmbeddingCache | null = null;

@@ -30,7 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useArticleDetail } from "@/hooks/use-knowledge";
 import { formatDistanceToNow } from "date-fns";
-import { ARTICLE_STATUS_LABELS } from "@cognobserve/api/schemas";
+import { ARTICLE_STATUS_LABELS } from "@ducsigr/api/schemas";
 import { STATUS_COLORS } from "./knowledge-constants";
 
 /** Version type from the hook */

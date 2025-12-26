@@ -3,7 +3,7 @@ import { usePromptExperiments, useExperimentTags } from "./use-prompt-experiment
 import {
   TOTAL_BASIS_POINTS,
   type AssignmentKeyType,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // Constants

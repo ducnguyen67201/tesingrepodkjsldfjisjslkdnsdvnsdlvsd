@@ -14,17 +14,17 @@ import {
 } from "@opentelemetry/semantic-conventions";
 
 // Read environment variables directly (before env.ts is loaded)
-const COGNOBSERVE_ENDPOINT =
-  process.env.COGNOBSERVE_ENDPOINT || "http://localhost:8080";
-const COGNOBSERVE_API_KEY = process.env.COGNOBSERVE_API_KEY;
+const DUCSIGR_ENDPOINT =
+  process.env.DUCSIGR_ENDPOINT || "http://localhost:8080";
+const DUCSIGR_API_KEY = process.env.DUCSIGR_API_KEY;
 const OTEL_SERVICE_NAME = process.env.OTEL_SERVICE_NAME || "ingest-demo";
 
-// Configure OTLP HTTP exporter to send traces to CognObserve ingest service
+// Configure OTLP HTTP exporter to send traces to Ducsigr ingest service
 const traceExporter = new OTLPTraceExporter({
-  url: `${COGNOBSERVE_ENDPOINT}/v1/traces`,
-  headers: COGNOBSERVE_API_KEY
+  url: `${DUCSIGR_ENDPOINT}/v1/traces`,
+  headers: DUCSIGR_API_KEY
     ? {
-        "x-api-key": COGNOBSERVE_API_KEY,
+        "x-api-key": DUCSIGR_API_KEY,
       }
     : undefined,
 });
@@ -68,7 +68,7 @@ sdk.start();
 console.log(
   `[telemetry] OpenTelemetry initialized for service: ${OTEL_SERVICE_NAME}`
 );
-console.log(`[telemetry] Exporting traces to: ${COGNOBSERVE_ENDPOINT}/v1/traces`);
+console.log(`[telemetry] Exporting traces to: ${DUCSIGR_ENDPOINT}/v1/traces`);
 
 // Graceful shutdown
 const shutdown = async () => {

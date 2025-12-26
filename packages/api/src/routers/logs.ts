@@ -9,7 +9,7 @@
  */
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import { LogFilterService } from "../services/log-filter.service";
 import {

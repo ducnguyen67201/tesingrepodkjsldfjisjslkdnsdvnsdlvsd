@@ -8,9 +8,9 @@
  */
 
 import crypto from "crypto";
-import { prisma } from "@cognobserve/db";
-import type { EmbedResult } from "@cognobserve/shared/llm";
-import { getEmbeddingCache, type EmbeddingCache } from "@cognobserve/shared/cache";
+import { prisma } from "@ducsigr/db";
+import type { EmbedResult } from "@ducsigr/shared/llm";
+import { getEmbeddingCache, type EmbeddingCache } from "@ducsigr/shared/cache";
 import { getLLM } from "@/lib/llm-manager";
 import { getInternalCaller } from "@/lib/trpc-caller";
 

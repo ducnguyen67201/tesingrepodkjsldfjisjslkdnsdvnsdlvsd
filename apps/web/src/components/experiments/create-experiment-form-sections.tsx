@@ -15,7 +15,7 @@ import { PromptVersionSelector } from "./prompt-version-selector";
 import {
   ASSIGNMENT_KEY_LABELS,
   type AssignmentKeyType,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================
 // Basic Info Section

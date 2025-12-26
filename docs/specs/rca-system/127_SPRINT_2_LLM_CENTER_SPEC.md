@@ -306,8 +306,8 @@ export function getConfig() {
 ### Usage with Config
 
 ```typescript
-import { createLLMCenter } from "@cognobserve/shared";
-import { getConfig } from "@cognobserve/shared/llm/configs";
+import { createLLMCenter } from "@ducsigr/shared";
+import { getConfig } from "@ducsigr/shared/llm/configs";
 
 // Create LLMCenter with routing config
 const llm = createLLMCenter(getConfig());
@@ -1659,7 +1659,7 @@ export * from "./llm";
 ### Basic Embedding Generation
 
 ```typescript
-import { createLLMCenter } from "@cognobserve/shared";
+import { createLLMCenter } from "@ducsigr/shared";
 
 const llm = createLLMCenter({
   defaultProvider: "openai",
@@ -1677,7 +1677,7 @@ console.log(result.usage); // { totalTokens: 10, estimatedCost: 0.0000002 }
 
 ```typescript
 import { z } from "zod";
-import { createLLMCenter } from "@cognobserve/shared";
+import { createLLMCenter } from "@ducsigr/shared";
 
 const llm = createLLMCenter({
   defaultProvider: "openai",
@@ -1705,7 +1705,7 @@ console.log(result.data.confidence); // 0.95
 ### Multi-Provider Chat
 
 ```typescript
-import { createLLMCenter } from "@cognobserve/shared";
+import { createLLMCenter } from "@ducsigr/shared";
 
 const llm = createLLMCenter({
   defaultProvider: "openai",
@@ -1794,4 +1794,4 @@ const anthropicResult = await llm.chat(
 - [ ] Rate limiting prevents API abuse
 - [ ] Retry logic handles transient failures
 - [ ] All methods are fully typed
-- [ ] Exported from `@cognobserve/shared`
+- [ ] Exported from `@ducsigr/shared`

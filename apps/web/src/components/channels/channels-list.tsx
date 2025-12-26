@@ -9,11 +9,11 @@ import {
   XCircle,
   Loader2,
 } from "lucide-react";
-import type { ChannelProvider } from "@cognobserve/db";
+import type { ChannelProvider } from "@ducsigr/db";
 import {
   CHANNEL_PROVIDER_LABELS,
   CHANNEL_PROVIDER_ICONS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { showError } from "@/lib/errors";
 import { showSuccess, showDeleted } from "@/lib/success";
 import { trpc } from "@/lib/trpc/client";

@@ -201,7 +201,7 @@ exporters:
   otlphttp:
     endpoint: http://ingest-node:8080/v1/logs
     headers:
-      x-api-key: ${COGNOBSERVE_API_KEY}
+      x-api-key: ${DUCSIGR_API_KEY}
 
 service:
   pipelines:

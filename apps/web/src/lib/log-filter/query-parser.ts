@@ -5,8 +5,8 @@
  * Supports syntax: field=value AND field2>=value2 OR body contains "text"
  */
 
-import type { LogFilterExpression, FilterOperator } from "@cognobserve/api/schemas";
-import { LogFieldSchema } from "@cognobserve/api/schemas";
+import type { LogFilterExpression, FilterOperator } from "@ducsigr/api/schemas";
+import { LogFieldSchema } from "@ducsigr/api/schemas";
 
 /**
  * Parse a query string into a LogFilterExpression

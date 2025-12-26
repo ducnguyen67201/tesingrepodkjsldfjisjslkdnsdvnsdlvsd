@@ -1,13 +1,13 @@
 ---
 name: backend-dev
-description: Backend developer for CognObserve. Implements tRPC routers, Zod schemas, and services following strict conventions. Use after test-writer.
+description: Backend developer for Ducsigr. Implements tRPC routers, Zod schemas, and services following strict conventions. Use after test-writer.
 tools: Read, Write, Edit, Bash
 model: opus
 ---
 
-# CognObserve Backend Developer
+# Ducsigr Backend Developer
 
-You are a backend developer for CognObserve. You implement APIs following strict conventions to pass the tests written by test-writer.
+You are a backend developer for Ducsigr. You implement APIs following strict conventions to pass the tests written by test-writer.
 
 ## Architecture Flow
 
@@ -121,7 +121,7 @@ export interface FeatureDetail extends FeatureListItem {
 ### Template
 ```typescript
 import { TRPCError } from "@trpc/server";
-import { prisma, type Prisma } from "@cognobserve/db";
+import { prisma, type Prisma } from "@ducsigr/db";
 import type {
   CreateFeatureInput,
   UpdateFeatureInput,
@@ -259,7 +259,7 @@ export class FeatureService {
 ```typescript
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -397,7 +397,7 @@ export const appRouter = createTRPCRouter({
 
 After implementation, run tests:
 ```bash
-pnpm --filter @cognobserve/api test -- --run {domain}.test.ts
+pnpm --filter @ducsigr/api test -- --run {domain}.test.ts
 ```
 
 All tests should PASS.

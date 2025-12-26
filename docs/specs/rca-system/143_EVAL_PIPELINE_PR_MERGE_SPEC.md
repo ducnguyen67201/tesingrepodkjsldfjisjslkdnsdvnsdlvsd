@@ -71,7 +71,7 @@ After code changes are merged, performance regressions may not be detected until
 │                          EVAL PIPELINE ARCHITECTURE                         │
 └─────────────────────────────────────────────────────────────────────────────┘
 
-   GitHub                    CognObserve                    External
+   GitHub                    Ducsigr                    External
    ──────                    ──────────                    ────────
 
 ┌─────────┐                ┌─────────────────┐
@@ -351,7 +351,7 @@ export type RegressionDetail = z.infer<typeof RegressionDetailSchema>;
 ```typescript
 // apps/web/src/app/api/webhooks/github/route.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getTemporalClient } from "@/lib/temporal";
 
 // Add to existing webhook handler
@@ -381,7 +381,7 @@ async function handlePullRequestEvent(payload: PullRequestEvent): Promise<void> 
   });
 
   if (!repo) {
-    console.log(`[GitHub Webhook] Repository not found in CognObserve`);
+    console.log(`[GitHub Webhook] Repository not found in Ducsigr`);
     return;
   }
 
@@ -523,7 +523,7 @@ import {
 } from "@temporalio/workflow";
 import type { EvalActivities } from "../temporal/activities/eval.activities";
 import type { EvalWorkflowInput, EvalWorkflowOutput } from "../temporal/types";
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 
 const {
   getEvalSuite,
@@ -676,9 +676,9 @@ export async function evalPipelineWorkflow(
 ```typescript
 // apps/worker/src/temporal/activities/eval.activities.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
-import type { EvalPrompt, PromptResult, EvalExpected } from "@cognobserve/api/schemas";
+import type { EvalPrompt, PromptResult, EvalExpected } from "@ducsigr/api/schemas";
 
 interface RunEvalPromptsInput {
   runId: string;
@@ -1259,7 +1259,7 @@ async sendRegression(config: unknown, payload: RegressionAlertPayload): Promise<
     fields,
     timestamp: payload.triggeredAt,
     footer: {
-      text: "CognObserve Eval Pipeline",
+      text: "Ducsigr Eval Pipeline",
     },
   };
 
@@ -1567,10 +1567,10 @@ describe("GitHub webhook - PR merge", () => {
 │ (baseline: 1.2s → actual: 1.74s)   (baseline: 1% → actual: 2.5%)│
 │                                                                 │
 │ 🔗 View Details                                                 │
-│ [Open Eval Results](https://app.cognobserve.io/...)             │
+│ [Open Eval Results](https://app.ducsigr.io/...)             │
 │                                                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│ CognObserve Eval Pipeline                    Dec 14, 3:45 PM    │
+│ Ducsigr Eval Pipeline                    Dec 14, 3:45 PM    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 

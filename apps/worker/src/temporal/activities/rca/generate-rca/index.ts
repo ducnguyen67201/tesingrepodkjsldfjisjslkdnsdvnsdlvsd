@@ -6,7 +6,7 @@
  */
 
 import { getLLM } from "../../../../lib/llm-manager";
-import { getLogger } from "@cognobserve/shared/llm";
+import { getLogger } from "@ducsigr/shared/llm";
 import {
   RCA_SYSTEM_PROMPT,
   RCA_PROMPT_CONFIG,
@@ -15,7 +15,7 @@ import {
 import {
   LLMRCAOutputSchema,
   type LLMRCAOutput,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import type { RCAGenerationInput, RCAReport } from "../../../types";
 import { getModelForSeverity } from "./model-selection";
 import { shouldUseTemplate, generateTemplateRCA } from "./template";

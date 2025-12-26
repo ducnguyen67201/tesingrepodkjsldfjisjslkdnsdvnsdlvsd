@@ -17,7 +17,7 @@ import {
   type ExtensionPermission,
   ExtensionManifestSchema,
   EXTENSION_TYPE_LABELS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

@@ -9,7 +9,7 @@ import type {
   OtlpLogRecord,
   OtlpAnyValue,
   NormalizedLogRecord,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { logger } from "../../lib/logger.js";
 import type {
   LogsPipelineContext,

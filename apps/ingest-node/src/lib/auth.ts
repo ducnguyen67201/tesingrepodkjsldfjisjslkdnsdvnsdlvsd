@@ -8,7 +8,7 @@ import type { Request } from "express";
 import { prisma } from "./db.js";
 import { logger } from "./logger.js";
 import { metrics } from "./metrics.js";
-import { hashApiKey } from "@cognobserve/shared";
+import { hashApiKey } from "@ducsigr/shared";
 
 /**
  * Validated API key result

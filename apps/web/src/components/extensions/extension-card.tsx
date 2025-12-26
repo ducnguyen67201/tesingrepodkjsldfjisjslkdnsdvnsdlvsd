@@ -43,7 +43,7 @@ import { cn } from "@/lib/utils";
 import {
   type ExtensionType,
   EXTENSION_TYPE_LABELS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Constants

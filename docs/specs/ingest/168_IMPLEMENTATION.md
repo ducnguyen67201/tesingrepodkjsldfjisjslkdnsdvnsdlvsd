@@ -1,6 +1,6 @@
 # Trace Ingestion Upgrade – Implementation Playbook (Enterprise-Ready)
 
-This document is the implementation guide for upgrading CognObserve ingestion to OTLP-first, multi-tenant, and enterprise-ready. It expands on the high-level spec in `docs/specs/ingest/README.md`.
+This document is the implementation guide for upgrading Ducsigr ingestion to OTLP-first, multi-tenant, and enterprise-ready. It expands on the high-level spec in `docs/specs/ingest/README.md`.
 
 ## Objectives
 - Accept OTLP/HTTP (protobuf + JSON) and legacy JSON with shared validation.

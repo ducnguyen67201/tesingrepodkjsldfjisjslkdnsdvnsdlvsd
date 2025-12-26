@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/images/banner.png" alt="CognObserve Banner" width="100%"/>
+<img src="docs/images/banner.png" alt="Ducsigr Banner" width="100%"/>
 
 <h3>Open Source LLM Observability Platform</h3>
 
@@ -11,25 +11,25 @@ to debug and improve your LLM application.
 
 <br/>
 
-**[Cloud](https://cognobserve.com)** · **[Self Host](#-self-hosting)** · **[Demo](https://demo.cognobserve.com)**
+**[Cloud](https://ducsigr.com)** · **[Self Host](#-self-hosting)** · **[Demo](https://demo.ducsigr.com)**
 
-[Docs](https://docs.cognobserve.com) · [Report Bug](https://github.com/cognobserve/cognobserve/issues) · [Feature Request](https://github.com/cognobserve/cognobserve/issues) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
+[Docs](https://docs.ducsigr.com) · [Report Bug](https://github.com/ducsigr/ducsigr/issues) · [Feature Request](https://github.com/ducsigr/ducsigr/issues) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
 <br/>
 
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org/)
-[![Discord](https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/cognobserve)
-[![Twitter Follow](https://img.shields.io/twitter/follow/cognobserve?style=social)](https://twitter.com/cognobserve)
+[![Discord](https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ducsigr)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ducsigr?style=social)](https://twitter.com/ducsigr)
 
 </div>
 
 ---
 
-CognObserve is an **open source LLM observability** platform. It helps teams collaboratively **develop, monitor, evaluate, and debug** AI applications. CognObserve can be **self-hosted in minutes** and is designed for production workloads.
+Ducsigr is an **open source LLM observability** platform. It helps teams collaboratively **develop, monitor, evaluate, and debug** AI applications. Ducsigr can be **self-hosted in minutes** and is designed for production workloads.
 
 <div align="center">
-<img src="docs/images/demo.gif" alt="CognObserve Demo" width="90%"/>
+<img src="docs/images/demo.gif" alt="Ducsigr Demo" width="90%"/>
 </div>
 
 ---
@@ -84,15 +84,15 @@ to each variant while tracking usage, latency, cost, and error rate.
 
 ## 📦 Self Hosting
 
-CognObserve can be self-hosted using Docker Compose:
+Ducsigr can be self-hosted using Docker Compose:
 
 ```bash
-git clone https://github.com/cognobserve/cognobserve.git
-cd cognobserve
+git clone https://github.com/ducsigr/ducsigr.git
+cd ducsigr
 docker compose up -d
 ```
 
-For detailed deployment options, see the [Self Hosting Guide](https://docs.cognobserve.com/self-hosting).
+For detailed deployment options, see the [Self Hosting Guide](https://docs.ducsigr.com/self-hosting).
 
 ---
 
@@ -100,22 +100,22 @@ For detailed deployment options, see the [Self Hosting Guide](https://docs.cogno
 
 | Integration | Supports | Description |
 |-------------|----------|-------------|
-| [SDK](https://docs.cognobserve.com/sdk) | JS/TS | Manual instrumentation using the SDK for full flexibility |
-| [OpenAI](https://docs.cognobserve.com/integrations/openai) | JS/TS | Automated instrumentation using drop-in replacement |
-| [Anthropic](https://docs.cognobserve.com/integrations/anthropic) | JS/TS | Automated instrumentation for Claude models |
-| [LangChain](https://docs.cognobserve.com/integrations/langchain) | JS/TS | Callback handler for LangChain applications |
-| [Vercel AI SDK](https://docs.cognobserve.com/integrations/vercel-ai) | JS/TS | Integration for Vercel AI SDK applications |
-| [OpenTelemetry](https://docs.cognobserve.com/integrations/otel) | Any | Native OTLP support for any language |
-| [API](https://docs.cognobserve.com/api) | Any | Directly call the public API. OpenAPI spec available |
+| [SDK](https://docs.ducsigr.com/sdk) | JS/TS | Manual instrumentation using the SDK for full flexibility |
+| [OpenAI](https://docs.ducsigr.com/integrations/openai) | JS/TS | Automated instrumentation using drop-in replacement |
+| [Anthropic](https://docs.ducsigr.com/integrations/anthropic) | JS/TS | Automated instrumentation for Claude models |
+| [LangChain](https://docs.ducsigr.com/integrations/langchain) | JS/TS | Callback handler for LangChain applications |
+| [Vercel AI SDK](https://docs.ducsigr.com/integrations/vercel-ai) | JS/TS | Integration for Vercel AI SDK applications |
+| [OpenTelemetry](https://docs.ducsigr.com/integrations/otel) | Any | Native OTLP support for any language |
+| [API](https://docs.ducsigr.com/api) | Any | Directly call the public API. OpenAPI spec available |
 
 ---
 
 ## 📚 Resources
 
-- [Documentation](https://docs.cognobserve.com)
-- [API Reference](https://docs.cognobserve.com/api)
-- [Blog](https://cognobserve.com/blog)
-- [Discord Community](https://discord.gg/cognobserve)
+- [Documentation](https://docs.ducsigr.com)
+- [API Reference](https://docs.ducsigr.com/api)
+- [Blog](https://ducsigr.com/blog)
+- [Discord Community](https://discord.gg/ducsigr)
 
 ---
 
@@ -135,7 +135,7 @@ For detailed deployment options, see the [Self Hosting Guide](https://docs.cogno
 </tr>
 </table>
 
-**Duc Nguyen** — Just a guy who loves building software and shipping things that actually work. Was addicted to coffee, had to downgrade to tea (the betrayal 🍵). When not shipping code, I'm climbing rocks 🧗 — as hardcore as I ship. Built CognObserve because debugging LLMs shouldn't feel like bouldering with no pads.
+**Duc Nguyen** — Just a guy who loves building software and shipping things that actually work. Was addicted to coffee, had to downgrade to tea (the betrayal 🍵). When not shipping code, I'm climbing rocks 🧗 — as hardcore as I ship. Built Ducsigr because debugging LLMs shouldn't feel like bouldering with no pads.
 
 [GitHub](https://github.com/ducnguyen67201) · [LinkedIn](https://www.linkedin.com/in/ducnguyen6721/)
 

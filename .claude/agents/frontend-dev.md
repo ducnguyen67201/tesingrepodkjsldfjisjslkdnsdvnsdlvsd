@@ -1,13 +1,13 @@
 ---
 name: frontend-dev
-description: Frontend developer for CognObserve. Implements React hooks and components following strict conventions. Use after backend API exists.
+description: Frontend developer for Ducsigr. Implements React hooks and components following strict conventions. Use after backend API exists.
 tools: Read, Write, Edit, Bash
 model: opus
 ---
 
-# CognObserve Frontend Developer
+# Ducsigr Frontend Developer
 
-You are a frontend developer for CognObserve. You implement React components and hooks following strict conventions.
+You are a frontend developer for Ducsigr. You implement React components and hooks following strict conventions.
 
 ## Architecture Flow
 
@@ -35,7 +35,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import { showError } from "@/lib/errors";
 import { featureToast } from "@/lib/success";
-import type { CreateFeatureInput, UpdateFeatureInput } from "@cognobserve/api/schemas";
+import type { CreateFeatureInput, UpdateFeatureInput } from "@ducsigr/api/schemas";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // RETURN TYPE INTERFACE
@@ -181,7 +181,7 @@ import { FeatureTable } from "./feature-table";
 import { FeatureEmptyState } from "./feature-empty-state";
 import { CreateFeatureDialog } from "./create-feature-dialog";
 import { DeleteFeatureDialog } from "./delete-feature-dialog";
-import type { FeatureListItem } from "@cognobserve/api/schemas";
+import type { FeatureListItem } from "@ducsigr/api/schemas";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // PROPS
@@ -356,7 +356,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FEATURE_TYPES, FEATURE_TYPE_LABELS } from "@cognobserve/api/schemas";
+import { FEATURE_TYPES, FEATURE_TYPE_LABELS } from "@ducsigr/api/schemas";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // PROPS
@@ -523,7 +523,7 @@ export const featureToast = {
 ### DO
 - Extract ALL handlers to named functions
 - Use `useCallback` for handlers passed to children
-- Import types from `@cognobserve/api/schemas`
+- Import types from `@ducsigr/api/schemas`
 - Use shadcn/ui components
 - Use centralized toasts (`@/lib/success`, `@/lib/errors`)
 - Keep files < 150 lines

@@ -359,7 +359,7 @@ export type UserAnalytics = z.infer<typeof UserAnalyticsSchema>;
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure } from "../trpc";
 import { UserListFiltersSchema } from "../schemas/user";
 
@@ -915,11 +915,11 @@ function traceToIngestRequest(trace: TraceData): IngestRequest {
 
 ```typescript
 // Example 1: Simple user ID
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
-CognObserve.init({ apiKey: 'co_...' });
+Ducsigr.init({ apiKey: 'co_...' });
 
-await CognObserve.observe({
+await Ducsigr.observe({
   name: 'chat-completion',
   userId: 'user-123',           // Just the ID
   sessionId: 'session-456',
@@ -930,7 +930,7 @@ await CognObserve.observe({
 
 
 // Example 2: Full user info
-await CognObserve.observe({
+await Ducsigr.observe({
   name: 'chat-completion',
   user: {
     id: 'user-123',
@@ -947,15 +947,15 @@ await CognObserve.observe({
 
 
 // Example 3: Setting user globally
-CognObserve.setUser({
+Ducsigr.setUser({
   id: 'user-123',
   name: 'John Doe',
   email: 'john@acme.com',
 });
 
 // All subsequent traces will include this user
-await CognObserve.observe('action-1', async () => { ... });
-await CognObserve.observe('action-2', async () => { ... });
+await Ducsigr.observe('action-1', async () => { ... });
+await Ducsigr.observe('action-2', async () => { ... });
 ```
 
 ---
@@ -965,7 +965,7 @@ await CognObserve.observe('action-2', async () => { ... });
 ### 8.1 Update Proto Definition
 
 ```protobuf
-// proto/cognobserve/v1/ingest.proto
+// proto/ducsigr/v1/ingest.proto
 
 message IngestTraceRequest {
   optional string trace_id = 1;
@@ -1033,7 +1033,7 @@ packages/
 │   └── src/
 │       ├── types.ts                  # MODIFY: Add user types
 │       ├── transport.ts              # MODIFY: Send user info
-│       └── cognobserve.ts            # MODIFY: Add setUser()
+│       └── ducsigr.ts            # MODIFY: Add setUser()
 │
 apps/
 ├── ingest/

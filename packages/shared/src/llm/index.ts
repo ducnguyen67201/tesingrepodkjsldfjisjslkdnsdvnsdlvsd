@@ -1,11 +1,11 @@
 /**
  * LLM Center - Public Exports
  *
- * Centralized LLM processing service for CognObserve.
+ * Centralized LLM processing service for Ducsigr.
  *
  * @example
  * ```typescript
- * import { createLLMCenter, getConfig } from "@cognobserve/shared/llm";
+ * import { createLLMCenter, getConfig } from "@ducsigr/shared/llm";
  *
  * const llm = createLLMCenter(getConfig());
  *

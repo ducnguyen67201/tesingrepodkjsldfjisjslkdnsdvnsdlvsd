@@ -1,13 +1,13 @@
 #!/bin/sh
 # docker/production/entrypoint.sh
 #
-# CognObserve Production Entrypoint
+# Ducsigr Production Entrypoint
 # Infrastructure is external (Docker Compose), just validate and start
 
 set -e
 
 echo "================================================================"
-echo "  CognObserve Production                                        "
+echo "  Ducsigr Production                                        "
 echo "================================================================"
 
 # ============================================================
@@ -124,7 +124,7 @@ echo "  [OK] Migrations complete"
 # ============================================================
 echo ""
 echo "================================================================"
-echo "  Starting CognObserve services...                              "
+echo "  Starting Ducsigr services...                              "
 echo ""
 echo "  Web:    http://localhost:3000                                 "
 echo "  Ingest: http://localhost:8080                                 "

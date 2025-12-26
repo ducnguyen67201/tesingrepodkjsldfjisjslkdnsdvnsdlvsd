@@ -1,6 +1,6 @@
 # Engineering Specification: RCA Storage and Schema
 
-**Issue:** [#139](https://github.com/ducnguyen67201/CognObserve/issues/139) - [RCA Sprint 3] RCA storage and schema
+**Issue:** [#139](https://github.com/ducnguyen67201/Ducsigr/issues/139) - [RCA Sprint 3] RCA storage and schema
 **Sprint:** 3 - RCA Engine
 **Story Points:** 2
 **Priority:** P0
@@ -358,7 +358,7 @@ interface StoreRCAOutput {
 
 ```typescript
 import { getInternalCaller } from "@/lib/trpc-caller";
-import type { RCAReport, AlertContext } from "@cognobserve/api/schemas";
+import type { RCAReport, AlertContext } from "@ducsigr/api/schemas";
 
 export interface StoreRCAInput {
   alertHistoryId: string;
@@ -744,8 +744,8 @@ console.log(
 
 | Package | Used For |
 |---------|----------|
-| `@cognobserve/db` | Prisma client, AlertRCA type |
-| `@cognobserve/api/schemas` | RCAReportSchema, AlertContextSchema |
+| `@ducsigr/db` | Prisma client, AlertRCA type |
+| `@ducsigr/api/schemas` | RCAReportSchema, AlertContextSchema |
 
 ### 12.2 External Dependencies
 
@@ -835,7 +835,7 @@ export type StoreRCAInput = z.infer<typeof StoreRCAInputSchema>;
     "alertHistoryId": "ah_cm1234567890",
     "alertName": "High Error Rate - Auth Service",
     "projectId": "proj_789",
-    "projectName": "CognObserve",
+    "projectName": "Ducsigr",
     "alertType": "ERROR_RATE",
     "severity": "HIGH",
     "currentValue": 0.15,

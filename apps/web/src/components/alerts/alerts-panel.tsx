@@ -58,7 +58,7 @@ import {
   type AlertType,
   type AlertState,
   type AlertSeverity,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface AlertsPanelProps {
   workspaceSlug: string;

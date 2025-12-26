@@ -25,16 +25,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Type check
-        run: pnpm --filter @cognobserve/sdk typecheck
+        run: pnpm --filter @ducsigr/sdk typecheck
 
       - name: Build
-        run: pnpm --filter @cognobserve/sdk build
+        run: pnpm --filter @ducsigr/sdk build
 
       - name: Test
-        run: pnpm --filter @cognobserve/sdk test:run
+        run: pnpm --filter @ducsigr/sdk test:run
 
       - name: Lint
-        run: pnpm --filter @cognobserve/sdk lint
+        run: pnpm --filter @ducsigr/sdk lint
 
       - name: Check for uncommitted changes (drift check)
         run: |

@@ -5,8 +5,8 @@
  * Note: OTLP-first schema - uses serviceName instead of trace.name
  */
 
-import { prisma } from "@cognobserve/db";
-import { MAX_SPANS_TO_ANALYZE } from "@cognobserve/api/schemas";
+import { prisma } from "@ducsigr/db";
+import { MAX_SPANS_TO_ANALYZE } from "@ducsigr/api/schemas";
 import type { SpanRow } from "../types";
 
 /**

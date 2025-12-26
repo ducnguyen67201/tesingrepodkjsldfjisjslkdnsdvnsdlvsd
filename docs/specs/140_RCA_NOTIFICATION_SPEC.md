@@ -1,6 +1,6 @@
 # Engineering Specification: RCA in Alert Notifications
 
-**Issue:** [#140](https://github.com/ducnguyen67201/CognObserve/issues/140)
+**Issue:** [#140](https://github.com/ducnguyen67201/Ducsigr/issues/140)
 **Epic:** Automated RCA System (#127)
 **Sprint:** 4
 **Priority:** P0
@@ -435,8 +435,8 @@ private buildEmbed(payload: AlertPayload): DiscordEmbed {
     timestamp: payload.triggeredAt,
     footer: {
       text: payload.rca
-        ? "CognObserve • AI-Powered Root Cause Analysis"
-        : "CognObserve Alerting",
+        ? "Ducsigr • AI-Powered Root Cause Analysis"
+        : "Ducsigr Alerting",
     },
   };
 }
@@ -543,7 +543,7 @@ private buildEmailHtml(payload: AlertPayload): string {
       </div>
     </div>
     <div class="footer">
-      <p>${payload.rca ? "🤖 AI-Powered Root Cause Analysis by CognObserve" : "This alert was sent by CognObserve"}</p>
+      <p>${payload.rca ? "🤖 AI-Powered Root Cause Analysis by Ducsigr" : "This alert was sent by Ducsigr"}</p>
       <p>Manage your alerts in project settings</p>
     </div>
   </div>
@@ -654,7 +654,7 @@ ${rcaText}
 ${payload.dashboardUrl ? `Dashboard: ${payload.dashboardUrl}` : ""}
 
 ---
-${payload.rca ? "🤖 AI-Powered Root Cause Analysis by CognObserve" : "This alert was sent by CognObserve"}
+${payload.rca ? "🤖 AI-Powered Root Cause Analysis by Ducsigr" : "This alert was sent by Ducsigr"}
   `.trim();
 }
 ```
@@ -865,8 +865,8 @@ export class SlackAdapter extends BaseAlertingAdapter {
         {
           type: "mrkdwn",
           text: payload.rca
-            ? "🤖 AI-Powered Root Cause Analysis by CognObserve"
-            : "Sent by CognObserve Alerting",
+            ? "🤖 AI-Powered Root Cause Analysis by Ducsigr"
+            : "Sent by Ducsigr Alerting",
         },
       ],
     });
@@ -1467,9 +1467,9 @@ Localized notification templates based on user preferences.
 │ 3. Add integration test for auth edge cases                      │
 │                                                                  │
 │ 📊 Full Analysis                                                 │
-│ [View Complete RCA](https://app.cognobserve.io/...)              │
+│ [View Complete RCA](https://app.ducsigr.io/...)              │
 ├─────────────────────────────────────────────────────────────────┤
-│ 🤖 AI-Powered Root Cause Analysis by CognObserve                │
+│ 🤖 AI-Powered Root Cause Analysis by Ducsigr                │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1501,7 +1501,7 @@ Localized notification templates based on user preferences.
 ├─────────────────────────────────────────────────────────────────┤
 │ [📊 View Full RCA]  [📈 Dashboard]                               │
 ├─────────────────────────────────────────────────────────────────┤
-│ 🤖 AI-Powered Root Cause Analysis by CognObserve                │
+│ 🤖 AI-Powered Root Cause Analysis by Ducsigr                │
 └─────────────────────────────────────────────────────────────────┘
 ```
 

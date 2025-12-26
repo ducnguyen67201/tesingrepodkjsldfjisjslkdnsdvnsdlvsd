@@ -11,7 +11,7 @@ import {
 } from './context';
 import { createObserve, type ObserveOptions } from './observe';
 import type {
-  CognObserveConfig,
+  DucsigrConfig,
   ResolvedConfig,
   TraceOptions,
   TraceData,
@@ -20,9 +20,9 @@ import type {
 } from './types';
 
 /**
- * Main CognObserve client class
+ * Main Ducsigr client class
  */
-class CognObserveClient {
+class DucsigrClient {
   private config: ResolvedConfig | null = null;
   private transport: Transport | null = null;
   private _prompts: PromptClient | null = null;
@@ -33,20 +33,20 @@ class CognObserveClient {
   private globalUser: UserInfo | null = null;
 
   /**
-   * Initialize the CognObserve SDK
+   * Initialize the Ducsigr SDK
    *
    * @example
    * ```typescript
-   * CognObserve.init({
+   * Ducsigr.init({
    *   apiKey: 'co_your_api_key',
    *   debug: true,
    * });
    * ```
    */
-  init(config: CognObserveConfig): void {
+  init(config: DucsigrConfig): void {
     if (this.initialized) {
       console.warn(
-        '[CognObserve] Already initialized. Call shutdown() first to re-initialize.'
+        '[Ducsigr] Already initialized. Call shutdown() first to re-initialize.'
       );
       return;
     }
@@ -70,7 +70,7 @@ class CognObserveClient {
     this._observe = createObserve(handleTraceEnd, this.config.debug);
 
     if (this.config.debug) {
-      console.log('[CognObserve] Initialized', {
+      console.log('[Ducsigr] Initialized', {
         endpoint: this.config.endpoint,
         disabled: this.config.disabled,
       });
@@ -85,7 +85,7 @@ class CognObserveClient {
    *
    * @example
    * ```typescript
-   * CognObserve.setUser({
+   * Ducsigr.setUser({
    *   id: 'user-123',
    *   name: 'John Doe',
    *   email: 'john@example.com',
@@ -97,9 +97,9 @@ class CognObserveClient {
 
     if (this.config?.debug) {
       if (user) {
-        console.log(`[CognObserve] Set global user: ${user.id}`);
+        console.log(`[Ducsigr] Set global user: ${user.id}`);
       } else {
-        console.log('[CognObserve] Cleared global user');
+        console.log('[Ducsigr] Cleared global user');
       }
     }
   }
@@ -119,7 +119,7 @@ class CognObserveClient {
 
     const shutdown = () => {
       this.shutdown().catch((err) => {
-        console.error('[CognObserve] Shutdown error:', err);
+        console.error('[Ducsigr] Shutdown error:', err);
       });
     };
 
@@ -142,7 +142,7 @@ class CognObserveClient {
   private ensureInitialized(): void {
     if (!this.initialized) {
       throw new Error(
-        '[CognObserve] SDK not initialized. Call CognObserve.init() first.'
+        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
       );
     }
   }
@@ -152,7 +152,7 @@ class CognObserveClient {
    *
    * @example
    * ```typescript
-   * const trace = CognObserve.startTrace({ name: 'my-operation' });
+   * const trace = Ducsigr.startTrace({ name: 'my-operation' });
    * const span = trace.startSpan({ name: 'sub-operation' });
    * // ... do work
    * span.end();
@@ -179,7 +179,7 @@ class CognObserveClient {
 
     if (this.config!.debug) {
       console.log(
-        `[CognObserve] Started trace "${options.name}" (${trace.id})`
+        `[Ducsigr] Started trace "${options.name}" (${trace.id})`
       );
     }
 
@@ -191,7 +191,7 @@ class CognObserveClient {
    *
    * @example
    * ```typescript
-   * const result = await CognObserve.trace(
+   * const result = await Ducsigr.trace(
    *   { name: 'my-operation' },
    *   async (trace) => {
    *     const span = trace.startSpan({ name: 'step-1' });
@@ -260,7 +260,7 @@ class CognObserveClient {
     const debug = this.config?.debug ?? false;
 
     if (debug) {
-      console.log('[CognObserve] Shutting down...');
+      console.log('[Ducsigr] Shutting down...');
     }
 
     // Shutdown transports in parallel
@@ -277,7 +277,7 @@ class CognObserveClient {
     this.globalUser = null;
 
     if (debug) {
-      console.log('[CognObserve] Shutdown complete');
+      console.log('[Ducsigr] Shutdown complete');
     }
   }
 
@@ -287,12 +287,12 @@ class CognObserveClient {
    * @example
    * ```typescript
    * // Simple usage
-   * const result = await CognObserve.observe('fetch-user', async () => {
+   * const result = await Ducsigr.observe('fetch-user', async () => {
    *   return db.query('SELECT * FROM users');
    * });
    *
    * // For LLM calls (auto-extracts tokens)
-   * const response = await CognObserve.observe({
+   * const response = await Ducsigr.observe({
    *   name: 'openai-call',
    *   type: 'generation',
    * }, async () => {
@@ -300,9 +300,9 @@ class CognObserveClient {
    * });
    *
    * // Auto-nesting works automatically
-   * await CognObserve.observe('parent', async () => {
-   *   await CognObserve.observe('child-1', async () => { ... });
-   *   await CognObserve.observe('child-2', async () => { ... });
+   * await Ducsigr.observe('parent', async () => {
+   *   await Ducsigr.observe('child-1', async () => { ... });
+   *   await Ducsigr.observe('child-2', async () => { ... });
    * });
    * ```
    */
@@ -319,8 +319,8 @@ class CognObserveClient {
    *
    * @example
    * ```typescript
-   * CognObserve.log('User logged in', { userId: '123' });
-   * CognObserve.log('Payment failed', { error: 'timeout' }, 'ERROR');
+   * Ducsigr.log('User logged in', { userId: '123' });
+   * Ducsigr.log('Payment failed', { error: 'timeout' }, 'ERROR');
    * ```
    */
   log(
@@ -332,7 +332,7 @@ class CognObserveClient {
     if (!context) {
       if (this.config?.debug) {
         console.warn(
-          '[CognObserve] log() called outside of observe() context, creating standalone trace'
+          '[Ducsigr] log() called outside of observe() context, creating standalone trace'
         );
       }
       // Create a standalone trace for the log
@@ -374,7 +374,7 @@ class CognObserveClient {
    *
    * @example
    * ```typescript
-   * const prompt = await CognObserve.prompts.get("movie-critic", {
+   * const prompt = await Ducsigr.prompts.get("movie-critic", {
    *   label: "production",
    * });
    *
@@ -384,7 +384,7 @@ class CognObserveClient {
   get prompts(): PromptClient {
     if (!this._prompts) {
       throw new Error(
-        '[CognObserve] SDK not initialized. Call CognObserve.init() first.'
+        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
       );
     }
     return this._prompts;
@@ -399,21 +399,21 @@ class CognObserveClient {
    * @example
    * ```typescript
    * // Basic logging
-   * CognObserve.logs.info('User logged in', { userId: '123' });
-   * CognObserve.logs.error('Payment failed', { orderId: 'abc', reason: 'timeout' });
+   * Ducsigr.logs.info('User logged in', { userId: '123' });
+   * Ducsigr.logs.error('Payment failed', { orderId: 'abc', reason: 'timeout' });
    *
    * // Logs within traces are automatically correlated
-   * await CognObserve.observe('process-order', async () => {
-   *   CognObserve.logs.info('Starting order processing');
+   * await Ducsigr.observe('process-order', async () => {
+   *   Ducsigr.logs.info('Starting order processing');
    *   // ... do work
-   *   CognObserve.logs.debug('Order validated', { items: 3 });
+   *   Ducsigr.logs.debug('Order validated', { items: 3 });
    * });
    * ```
    */
   get logs(): LoggerClient {
     if (!this._logger) {
       throw new Error(
-        '[CognObserve] SDK not initialized. Call CognObserve.init() first.'
+        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
       );
     }
     return this._logger;
@@ -421,4 +421,4 @@ class CognObserveClient {
 }
 
 // Export singleton instance
-export const CognObserve = new CognObserveClient();
+export const Ducsigr = new DucsigrClient();

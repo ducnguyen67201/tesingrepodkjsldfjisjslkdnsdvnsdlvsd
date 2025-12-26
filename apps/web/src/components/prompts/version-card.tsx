@@ -29,7 +29,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState, useCallback } from "react";
-import { type PromptTemplate, type PromptVariable } from "@cognobserve/api/schemas";
+import { type PromptTemplate, type PromptVariable } from "@ducsigr/api/schemas";
 import { PromptVariableInjector } from "./prompt-variable-injector";
 
 interface VersionCardProps {

@@ -177,7 +177,7 @@ export function ImportPromptsDialog({
         <DialogHeader>
           <DialogTitle>Import Prompts</DialogTitle>
           <DialogDescription>
-            Import prompts from a JSON file. Supports CognObserve export format.
+            Import prompts from a JSON file. Supports Ducsigr export format.
           </DialogDescription>
         </DialogHeader>
 

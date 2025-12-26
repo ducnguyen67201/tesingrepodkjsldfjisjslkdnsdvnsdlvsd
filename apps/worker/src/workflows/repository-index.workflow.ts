@@ -24,7 +24,7 @@ import {
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { RepositoryIndexInput, RepositoryIndexResult, EmbeddingChunk } from "../temporal/types";
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 
 // ============================================================
 // Activity Configuration
@@ -61,7 +61,7 @@ const {
 // ============================================================
 // Constants (inline to avoid bundling issues)
 // ============================================================
-// NOTE: Duplicated from @cognobserve/shared for Temporal sandbox isolation.
+// NOTE: Duplicated from @ducsigr/shared for Temporal sandbox isolation.
 // Keep in sync with packages/shared/src/chunking/index.ts
 
 const INDEXABLE_EXTENSIONS = [

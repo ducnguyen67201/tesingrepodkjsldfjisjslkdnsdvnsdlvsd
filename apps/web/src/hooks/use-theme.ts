@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { showSuccess } from "@/lib/success";
-import type { WorkspaceThemeConfig } from "@cognobserve/api/schemas";
+import type { WorkspaceThemeConfig } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Theme Toasts

@@ -12,7 +12,7 @@ import {
   type WorkspaceThemeConfig,
   DEFAULT_CSS_VARS,
   DEFAULT_DARK_CSS_VARS,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

@@ -2,7 +2,7 @@
  * Prompt Test Route
  *
  * Demonstrates prompt management and A/B testing integration.
- * Fetches prompts from CognObserve platform, compiles them, and
+ * Fetches prompts from Ducsigr platform, compiles them, and
  * runs mock LLM calls with proper tracing.
  *
  * Endpoints:
@@ -12,7 +12,7 @@
 import { Router, type Request, type Response, type IRouter } from "express";
 import { trace, SpanStatusCode, context } from "@opentelemetry/api";
 import { z } from "zod";
-import { CognObserve } from "@cognobserve/sdk";
+import { Ducsigr } from "@ducsigr/sdk";
 import { config } from "../config/env.js";
 
 const router: IRouter = Router();
@@ -72,12 +72,12 @@ let sdkInitialized = false;
 
 const ensureSDKInitialized = () => {
   if (!sdkInitialized) {
-    if (!config.cognobserve.apiKey) {
-      throw new Error("COGNOBSERVE_API_KEY is required for prompt testing");
+    if (!config.ducsigr.apiKey) {
+      throw new Error("DUCSIGR_API_KEY is required for prompt testing");
     }
-    CognObserve.init({
-      apiKey: config.cognobserve.apiKey,
-      endpoint: config.cognobserve.endpoint,
+    Ducsigr.init({
+      apiKey: config.ducsigr.apiKey,
+      endpoint: config.ducsigr.endpoint,
       debug: config.server.isDev,
     });
     sdkInitialized = true;
@@ -121,18 +121,18 @@ router.post("/prompt-test/single", async (req: Request, res: Response) => {
 
     // Fetch prompt from platform
     parentSpan.addEvent("fetching_prompt", { slug: promptSlug });
-    const prompt = await CognObserve.prompts.get(promptSlug, {
+    const prompt = await Ducsigr.prompts.get(promptSlug, {
       label,
       version,
       cache: true,
     });
 
     // Add prompt metadata to span
-    parentSpan.setAttribute("cognobserve.prompt_version_id", prompt.id);
-    parentSpan.setAttribute("cognobserve.prompt_slug", prompt.slug);
-    parentSpan.setAttribute("cognobserve.prompt_version", prompt.version);
-    parentSpan.setAttribute("cognobserve.prompt_type", prompt.type);
-    parentSpan.setAttribute("cognobserve.prompt_name", prompt.name);
+    parentSpan.setAttribute("ducsigr.prompt_version_id", prompt.id);
+    parentSpan.setAttribute("ducsigr.prompt_slug", prompt.slug);
+    parentSpan.setAttribute("ducsigr.prompt_version", prompt.version);
+    parentSpan.setAttribute("ducsigr.prompt_type", prompt.type);
+    parentSpan.setAttribute("ducsigr.prompt_name", prompt.name);
 
     // Compile prompt with variables
     parentSpan.addEvent("compiling_prompt");
@@ -249,7 +249,7 @@ router.post("/prompt-test/experiment", async (req: Request, res: Response) => {
 
     // Resolve experiment assignment
     parentSpan.addEvent("resolving_experiment", { slug: experimentSlug });
-    const assignment = await CognObserve.prompts.getExperiment(experimentSlug, {
+    const assignment = await Ducsigr.prompts.getExperiment(experimentSlug, {
       assignmentKey,
       forceVariant,
       cache: true,
@@ -258,19 +258,19 @@ router.post("/prompt-test/experiment", async (req: Request, res: Response) => {
     const { experiment, variant, inAllocation, prompt, traceMetadata } = assignment;
 
     // Add experiment metadata to span (critical for A/B analysis)
-    parentSpan.setAttribute("cognobserve.prompt_experiment_id", traceMetadata.promptExperimentId);
-    parentSpan.setAttribute("cognobserve.prompt_experiment_slug", traceMetadata.promptExperimentSlug);
-    parentSpan.setAttribute("cognobserve.prompt_variant_id", traceMetadata.promptVariantId);
-    parentSpan.setAttribute("cognobserve.prompt_variant_name", traceMetadata.promptVariantName);
-    parentSpan.setAttribute("cognobserve.assignment_key_hash", traceMetadata.assignmentKeyHash);
-    parentSpan.setAttribute("cognobserve.in_allocation", inAllocation);
+    parentSpan.setAttribute("ducsigr.prompt_experiment_id", traceMetadata.promptExperimentId);
+    parentSpan.setAttribute("ducsigr.prompt_experiment_slug", traceMetadata.promptExperimentSlug);
+    parentSpan.setAttribute("ducsigr.prompt_variant_id", traceMetadata.promptVariantId);
+    parentSpan.setAttribute("ducsigr.prompt_variant_name", traceMetadata.promptVariantName);
+    parentSpan.setAttribute("ducsigr.assignment_key_hash", traceMetadata.assignmentKeyHash);
+    parentSpan.setAttribute("ducsigr.in_allocation", inAllocation);
 
     // Add prompt metadata
-    parentSpan.setAttribute("cognobserve.prompt_version_id", prompt.id);
-    parentSpan.setAttribute("cognobserve.prompt_slug", prompt.slug);
-    parentSpan.setAttribute("cognobserve.prompt_version", prompt.version);
-    parentSpan.setAttribute("cognobserve.prompt_type", prompt.type);
-    parentSpan.setAttribute("cognobserve.prompt_name", prompt.name);
+    parentSpan.setAttribute("ducsigr.prompt_version_id", prompt.id);
+    parentSpan.setAttribute("ducsigr.prompt_slug", prompt.slug);
+    parentSpan.setAttribute("ducsigr.prompt_version", prompt.version);
+    parentSpan.setAttribute("ducsigr.prompt_type", prompt.type);
+    parentSpan.setAttribute("ducsigr.prompt_name", prompt.name);
 
     // Compile prompt with variables
     parentSpan.addEvent("compiling_prompt");
@@ -295,7 +295,7 @@ router.post("/prompt-test/experiment", async (req: Request, res: Response) => {
     llmSpan.setAttribute("llm.model.provider", "mock");
 
     // Also add variant ID to the LLM span for direct correlation
-    llmSpan.setAttribute("cognobserve.prompt_variant_id", traceMetadata.promptVariantId);
+    llmSpan.setAttribute("ducsigr.prompt_variant_id", traceMetadata.promptVariantId);
 
     // Simulate LLM call
     const inputTokens = countTokens(compiledContent);

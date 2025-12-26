@@ -7,7 +7,7 @@ Last updated: 2025-XX-XX
 ## 1. Problem Statement
 
 Teams want to compare two prompts side-by-side and run controlled A/B tests to
-prove improvements. Today, CognObserve has a prompt registry and runtime
+prove improvements. Today, Ducsigr has a prompt registry and runtime
 retrieval, but no way to select two prompts for comparison or route live traffic
 between variants. We also want to extend performance analysis later using ingest
 data and RCA outcomes.
@@ -170,7 +170,7 @@ return the existing prompt response shape.
 Extend `packages/sdk/src/prompts.ts`:
 
 ```ts
-const assignment = await CognObserve.prompts.getExperiment("checkout-copy", {
+const assignment = await Ducsigr.prompts.getExperiment("checkout-copy", {
   assignmentKey: userId,
   cacheTTL: 60,
 });

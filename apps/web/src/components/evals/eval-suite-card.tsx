@@ -40,7 +40,7 @@ import { BaselineIndicator } from "./baseline-indicator";
 import { TriggerEvalButton } from "./trigger-eval-button";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
-import type { EvalRunStatus } from "@cognobserve/api/schemas";
+import type { EvalRunStatus } from "@ducsigr/api/schemas";
 
 interface LastRun {
   id: string;

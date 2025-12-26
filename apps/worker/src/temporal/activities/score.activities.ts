@@ -7,7 +7,7 @@
 // TODO(Issue #104): Implement when Score/ScoreConfig models are added
 // ============================================================
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type { ScoreWorkflowInput, ScoreValidationResult, ScoreDataType } from "../types";
 

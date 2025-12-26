@@ -59,7 +59,7 @@ flowchart TB
         API["External API<br/>Custom Pipelines"]
     end
 
-    subgraph CognObserve["CognObserve Platform"]
+    subgraph Ducsigr["Ducsigr Platform"]
         INGEST["Score Ingestion<br/>Validation + Config Check"]
         DB[(PostgreSQL<br/>Scores Table)]
         AGG["Aggregation Engine<br/>Time-series + Dashboards"]
@@ -559,7 +559,7 @@ export type StandardScoreName = z.infer<typeof StandardScoreNameSchema>;
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, ScoreDataType, ScoreSource, Prisma } from "@cognobserve/db";
+import { prisma, ScoreDataType, ScoreSource, Prisma } from "@ducsigr/db";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import {
   CreateScoreSchema,
@@ -1052,9 +1052,9 @@ export interface ScoreOptions extends ScoreInput {
 ### 7.2 SDK Methods
 
 ```typescript
-// packages/sdk/src/cognobserve.ts
+// packages/sdk/src/ducsigr.ts
 
-// Add to CognObserveClient class
+// Add to DucsigrClient class
 
 /**
  * Score a trace or span
@@ -1062,23 +1062,23 @@ export interface ScoreOptions extends ScoreInput {
  * @example
  * ```typescript
  * // Score current trace
- * CognObserve.score({ name: 'relevance', value: 0.95 });
+ * Ducsigr.score({ name: 'relevance', value: 0.95 });
  *
  * // Score with comment
- * CognObserve.score({
+ * Ducsigr.score({
  *   name: 'quality',
  *   value: 0.8,
  *   comment: 'Good response but slightly verbose',
  * });
  *
  * // Categorical score
- * CognObserve.score({ name: 'sentiment', value: 'positive' });
+ * Ducsigr.score({ name: 'sentiment', value: 'positive' });
  *
  * // Boolean score (thumbs up/down)
- * CognObserve.score({ name: 'thumbs', value: true });
+ * Ducsigr.score({ name: 'thumbs', value: true });
  *
  * // Score specific trace
- * CognObserve.score({
+ * Ducsigr.score({
  *   traceId: 'trace-123',
  *   name: 'accuracy',
  *   value: 0.92,
@@ -1104,7 +1104,7 @@ score(options: ScoreOptions): void {
 
   if (!traceId && !spanId && !options.sessionId && !options.userId) {
     if (this.config?.debug) {
-      console.warn('[CognObserve] score() called without target. Provide traceId, spanId, sessionId, or userId.');
+      console.warn('[Ducsigr] score() called without target. Provide traceId, spanId, sessionId, or userId.');
     }
     return;
   }
@@ -1123,7 +1123,7 @@ score(options: ScoreOptions): void {
   });
 
   if (this.config?.debug) {
-    console.log(`[CognObserve] Score "${options.name}": ${options.value}`);
+    console.log(`[Ducsigr] Score "${options.name}": ${options.value}`);
   }
 }
 
@@ -1191,7 +1191,7 @@ private async sendScores(scores: ScoreRequest[]): Promise<void> {
   });
 
   if (!response.ok) {
-    console.error(`[CognObserve] Failed to send scores: ${response.status}`);
+    console.error(`[Ducsigr] Failed to send scores: ${response.status}`);
   }
 }
 ```

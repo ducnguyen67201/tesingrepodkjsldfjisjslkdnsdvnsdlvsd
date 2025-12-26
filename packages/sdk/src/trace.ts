@@ -57,7 +57,7 @@ export class Trace {
   startSpan(options: SpanOptions): Span {
     if (this._ended) {
       throw new Error(
-        `[CognObserve] Cannot start span on ended trace "${this.name}"`
+        `[Ducsigr] Cannot start span on ended trace "${this.name}"`
       );
     }
 
@@ -94,7 +94,7 @@ export class Trace {
    */
   end(): void {
     if (this._ended) {
-      console.warn(`[CognObserve] Trace "${this.name}" already ended`);
+      console.warn(`[Ducsigr] Trace "${this.name}" already ended`);
       return;
     }
 
@@ -102,7 +102,7 @@ export class Trace {
     for (const span of this._spans.values()) {
       if (!span.isEnded) {
         console.warn(
-          `[CognObserve] Auto-ending span "${span.name}" on trace end`
+          `[Ducsigr] Auto-ending span "${span.name}" on trace end`
         );
         span.end();
       }

@@ -4,7 +4,7 @@
  * Service for looking up model pricing and calculating costs.
  */
 
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 
 type Decimal = Prisma.Decimal;
 const Decimal = Prisma.Decimal;

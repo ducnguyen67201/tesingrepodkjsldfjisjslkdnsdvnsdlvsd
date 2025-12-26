@@ -1,5 +1,5 @@
 /**
- * Logger Client for CognObserve SDK
+ * Logger Client for Ducsigr SDK
  *
  * Provides structured logging that integrates with traces and spans.
  * Logs are sent to the ingest service in OTLP format.
@@ -69,8 +69,8 @@ export class LoggerClient {
    *
    * @example
    * ```typescript
-   * CognObserve.logs.log('INFO', 'User logged in', { userId: '123' });
-   * CognObserve.logs.log('ERROR', 'Payment failed', { orderId: 'abc', reason: 'timeout' });
+   * Ducsigr.logs.log('INFO', 'User logged in', { userId: '123' });
+   * Ducsigr.logs.log('ERROR', 'Payment failed', { orderId: 'abc', reason: 'timeout' });
    * ```
    */
   log(
@@ -85,7 +85,7 @@ export class LoggerClient {
 
     if (this.config.debug) {
       console.log(
-        `[CognObserve] Log: ${level} - ${message}`,
+        `[Ducsigr] Log: ${level} - ${message}`,
         attributes ?? ''
       );
     }

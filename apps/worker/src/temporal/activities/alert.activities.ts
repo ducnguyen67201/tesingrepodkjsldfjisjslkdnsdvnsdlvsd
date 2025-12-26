@@ -5,8 +5,8 @@
 // All mutations go through tRPC internal procedures.
 // ============================================================
 
-import { prisma } from "@cognobserve/db";
-import { SEVERITY_DEFAULTS } from "@cognobserve/api/schemas";
+import { prisma } from "@ducsigr/db";
+import { SEVERITY_DEFAULTS } from "@ducsigr/api/schemas";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type { AlertEvaluationResult, AlertStateTransition } from "../types";
 

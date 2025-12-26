@@ -60,7 +60,7 @@ Use this checklist for every PR. Skip sections that don't apply.
 ### Structure
 - [ ] Follows standard Go project layout
 - [ ] Internal packages in `internal/`
-- [ ] Proto imports use `pb "github.com/cognobserve/ingest/internal/proto/cognobservev1"`
+- [ ] Proto imports use `pb "github.com/ducsigr/ingest/internal/proto/ducsigrv1"`
 
 ### Error Handling
 - [ ] Errors wrapped with context: `fmt.Errorf("doing x: %w", err)`

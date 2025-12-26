@@ -5,7 +5,7 @@
  */
 import type { Request, Response } from "express";
 import type { LogsPipelineContext } from "../../pipeline/logs/types.js";
-import type { NormalizedLogRecord } from "@cognobserve/api/schemas";
+import type { NormalizedLogRecord } from "@ducsigr/api/schemas";
 import {
   toLogsJsonBuffer,
   createBasicLogsRequest,

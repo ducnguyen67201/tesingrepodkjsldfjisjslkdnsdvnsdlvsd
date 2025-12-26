@@ -56,7 +56,7 @@ const SEEDS: Record<string, { name: string; description: string; fn: () => Promi
 
 function printUsage() {
   console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("  CognObserve Database Seeding Tool");
+  console.log("  Ducsigr Database Seeding Tool");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
   console.log("Usage:");
   console.log("  pnpm db:seed              Run all seeds");

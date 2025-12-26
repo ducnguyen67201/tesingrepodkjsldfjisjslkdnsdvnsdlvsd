@@ -1,7 +1,7 @@
 import { CheckCircle, Circle, Loader2, XCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { IndexStatus } from "@cognobserve/api/schemas";
+import type { IndexStatus } from "@ducsigr/api/schemas";
 
 interface RepositoryStatusBadgeProps {
   enabled: boolean;

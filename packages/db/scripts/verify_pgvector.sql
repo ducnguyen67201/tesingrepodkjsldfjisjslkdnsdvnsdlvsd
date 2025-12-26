@@ -1,5 +1,5 @@
 -- Verify pgvector setup
--- Run with: docker exec -it cognobserve-postgres psql -U cognobserve -d cognobserve -f /path/to/verify_pgvector.sql
+-- Run with: docker exec -it ducsigr-postgres psql -U ducsigr -d ducsigr -f /path/to/verify_pgvector.sql
 -- Or copy/paste into psql
 
 DO $$

@@ -5,7 +5,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RCACopyFixPrompt } from "./rca-copy-fix-prompt";
-import type { LLMRCAOutput } from "@cognobserve/api/schemas";
+import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 interface RCAHeaderProps {
   alert: {

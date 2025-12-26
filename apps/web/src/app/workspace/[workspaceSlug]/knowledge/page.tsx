@@ -23,7 +23,7 @@ import { useKnowledge } from "@/hooks/use-knowledge";
 import {
   ARTICLE_STATUS_LABELS,
   type ArticleStatus,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import {
   CreateArticleDialog,
   CreateGroupDialog,

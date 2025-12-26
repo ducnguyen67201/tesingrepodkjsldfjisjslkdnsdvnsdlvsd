@@ -570,11 +570,11 @@ Changes lost on next generation. Conflicts. Confusion.
 
 ```bash
 # BAD - Directly editing generated proto files
-apps/ingest/internal/proto/cognobservev1/trace.pb.go  # Generated!
+apps/ingest/internal/proto/ducsigrv1/trace.pb.go  # Generated!
 packages/proto/src/generated/trace_pb.ts              # Generated!
 
 # GOOD - Edit source, regenerate
-proto/cognobserve/v1/trace.proto  # Edit this
+proto/ducsigr/v1/trace.proto  # Edit this
 make proto                        # Regenerates all
 ```
 

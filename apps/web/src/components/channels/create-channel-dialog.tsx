@@ -9,7 +9,7 @@ import {
   CHANNEL_PROVIDER_LABELS,
   CHANNEL_PROVIDER_ICONS,
   type ChannelProvider,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import { showError } from "@/lib/errors";
 import { showSuccess } from "@/lib/success";
 import { trpc } from "@/lib/trpc/client";

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useCallback, useMemo, type ReactNode } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import type { TraceFilters, TimeRange, SpanType, SpanLevel, CustomDateRange } from "@cognobserve/api/schemas";
+import type { TraceFilters, TimeRange, SpanType, SpanLevel, CustomDateRange } from "@ducsigr/api/schemas";
 import {
   SpanTypeSchema,
   SpanLevelSchema,
@@ -10,7 +10,7 @@ import {
   FILTER_PARAM_KEYS,
   hasActiveFilters,
   countActiveFilters,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface ProjectFilterContextValue {
   /** All filters including timeRange */

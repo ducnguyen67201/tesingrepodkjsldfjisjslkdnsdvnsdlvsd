@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This spec outlines improvements to CognObserve's tracing system to enable better filtering, session/user tracking UI, metadata search, and structured trace collection. The goal is to match industry-leading LLM observability platforms while maintaining our unique architecture.
+This spec outlines improvements to Ducsigr's tracing system to enable better filtering, session/user tracking UI, metadata search, and structured trace collection. The goal is to match industry-leading LLM observability platforms while maintaining our unique architecture.
 
 ---
 
@@ -544,7 +544,7 @@ export async function handleOTLPTraces(req: Request, res: Response) {
 }
 
 function convertOTLPTrace(resourceSpan: OtelResourceSpans): TraceWorkflowInput {
-  // Map OTLP attributes to CognObserve fields
+  // Map OTLP attributes to Ducsigr fields
   // - service.name → trace.name
   // - span attributes → span.metadata
   // - span kind → spanType
@@ -556,7 +556,7 @@ function convertOTLPTrace(resourceSpan: OtelResourceSpans): TraceWorkflowInput {
 
 Follow [OpenTelemetry Semantic Conventions](https://opentelemetry.io/docs/specs/semconv/) for attribute naming:
 
-| OTel Attribute | CognObserve Field |
+| OTel Attribute | Ducsigr Field |
 |----------------|-------------------|
 | `service.name` | `trace.name` |
 | `http.method` | `span.httpMethod` |
@@ -602,11 +602,11 @@ function extractTraceContext(req: Request): TraceContext | null {
 
 ```typescript
 // JavaScript/TypeScript SDK
-import { CognObserve } from "@cognobserve/sdk";
+import { Ducsigr } from "@ducsigr/sdk";
 
-const co = new CognObserve({
+const co = new Ducsigr({
   apiKey: "co_...",
-  baseUrl: "https://api.cognobserve.com",
+  baseUrl: "https://api.ducsigr.com",
 });
 
 // Start a trace with session and user context
@@ -645,9 +645,9 @@ trace.end();
 ### Python SDK
 
 ```python
-from cognobserve import CognObserve
+from ducsigr import Ducsigr
 
-co = CognObserve(api_key="co_...")
+co = Ducsigr(api_key="co_...")
 
 # Context manager for automatic trace lifecycle
 with co.trace(
@@ -780,7 +780,7 @@ CREATE TRIGGER trace_search_trigger
 
 ### Feature Matrix
 
-| Feature | CognObserve (Current) | CognObserve (Target) | Industry Standard |
+| Feature | Ducsigr (Current) | Ducsigr (Target) | Industry Standard |
 |---------|----------------------|---------------------|-------------------|
 | Trace collection | ✅ Native SDK | ✅ + OTLP | ✅ Multiple |
 | Session tracking | ✅ API only | ✅ Full UI | ✅ Full UI |
@@ -795,7 +795,7 @@ CREATE TRIGGER trace_search_trigger
 
 ### Data Model Comparison
 
-| Concept | CognObserve | OpenTelemetry | Industry Standard |
+| Concept | Ducsigr | OpenTelemetry | Industry Standard |
 |---------|-------------|---------------|-------------------|
 | Trace | `Trace` model | `Trace` | `Trace` |
 | Span | `Span` model | `Span` | `Span`/`Generation` |

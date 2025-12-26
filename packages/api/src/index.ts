@@ -2,9 +2,9 @@
 import "./init";
 
 /**
- * @cognobserve/api
+ * @ducsigr/api
  *
- * Centralized tRPC API package for CognObserve.
+ * Centralized tRPC API package for Ducsigr.
  *
  * Usage (Frontend):
  * ```ts
@@ -20,7 +20,7 @@ import "./init";
  *
  * Usage (Backend - creating new routes):
  * ```ts
- * import { createRouter, protectedProcedure } from "@cognobserve/api";
+ * import { createRouter, protectedProcedure } from "@ducsigr/api";
  *
  * export const myRouter = createRouter({
  *   myAction: protectedProcedure

@@ -1,12 +1,12 @@
 /**
- * Client-safe exports from @cognobserve/api
+ * Client-safe exports from @ducsigr/api
  *
  * This module exports only Zod schemas and types that are safe
  * to import in client-side code ("use client" components).
  *
  * Usage:
  * ```ts
- * import { CreateWorkspaceSchema, type CreateWorkspaceInput } from "@cognobserve/api/client";
+ * import { CreateWorkspaceSchema, type CreateWorkspaceInput } from "@ducsigr/api/client";
  * ```
  */
 

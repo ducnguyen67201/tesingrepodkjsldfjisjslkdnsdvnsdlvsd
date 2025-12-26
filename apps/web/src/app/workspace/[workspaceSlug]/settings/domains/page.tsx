@@ -13,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import { z } from "zod";
-import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
 import { showError } from "@/lib/errors";
 import { showSuccess, showDeleted } from "@/lib/success";
 import { trpc } from "@/lib/trpc/client";

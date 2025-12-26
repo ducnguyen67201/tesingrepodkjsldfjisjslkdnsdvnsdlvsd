@@ -11,12 +11,12 @@ import {
   prisma,
   searchSimilarChunks,
   searchSimilarChunksWithPatterns,
-} from "@cognobserve/db";
+} from "@ducsigr/db";
 import {
   createLLMCenter,
   getConfig,
   type LLMCenter,
-} from "@cognobserve/shared/llm";
+} from "@ducsigr/shared/llm";
 import {
   createRouter,
   protectedProcedure,

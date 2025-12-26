@@ -1,10 +1,10 @@
 # Dockerfile.app
 #
-# CognObserve Application Container (Web + Worker + Ingest)
+# Ducsigr Application Container (Web + Worker + Ingest)
 # For use with Docker Compose (separate infrastructure containers)
 #
 # Usage:
-#   docker build -f Dockerfile.app -t cognobserve-app:latest .
+#   docker build -f Dockerfile.app -t ducsigr-app:latest .
 #   docker compose up -d
 
 # ============================================================
@@ -37,11 +37,11 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Generate Prisma client
-RUN pnpm --filter @cognobserve/db db:generate
+RUN pnpm --filter @ducsigr/db db:generate
 
 # Build shared packages first
-RUN pnpm --filter @cognobserve/shared build
-RUN pnpm --filter @cognobserve/api build
+RUN pnpm --filter @ducsigr/shared build
+RUN pnpm --filter @ducsigr/api build
 
 # Build Web (Next.js with standalone output)
 # Provide dummy env vars for build time - actual values are set at runtime
@@ -51,13 +51,13 @@ ENV INTERNAL_API_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV NEXTAUTH_URL="http://localhost:3000"
 ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 
-RUN pnpm --filter @cognobserve/web build
+RUN pnpm --filter @ducsigr/web build
 
 # Build Worker
-RUN pnpm --filter @cognobserve/worker build
+RUN pnpm --filter @ducsigr/worker build
 
 # Build Ingest Node
-RUN pnpm --filter @cognobserve/ingest-node build
+RUN pnpm --filter @ducsigr/ingest-node build
 
 # ============================================================
 # Stage 2: Production Runtime
@@ -73,7 +73,7 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 # Create non-root user
-RUN addgroup -S cognobserve && adduser -S cognobserve -G cognobserve
+RUN addgroup -S ducsigr && adduser -S ducsigr -G ducsigr
 
 WORKDIR /app
 
@@ -93,10 +93,10 @@ RUN chmod +x /entrypoint.sh
 
 # Create directories
 RUN mkdir -p /app/secrets \
-    && chown -R cognobserve:cognobserve /app
+    && chown -R ducsigr:ducsigr /app
 
 # Switch to non-root user
-USER cognobserve
+USER ducsigr
 
 # Expose ports
 # 3000 - Web Dashboard & API

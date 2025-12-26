@@ -1,6 +1,6 @@
 // Application constants
 
-export const APP_NAME = "CognObserve";
+export const APP_NAME = "Ducsigr";
 export const APP_VERSION = "0.1.0";
 
 // Pagination
@@ -9,9 +9,9 @@ export const MAX_PAGE_SIZE = 100;
 
 // Redis queue keys
 export const QUEUE_KEYS = {
-  TRACES: "cognobserve:traces",
-  SPANS: "cognobserve:spans",
-  DEAD_LETTER: "cognobserve:dlq",
+  TRACES: "ducsigr:traces",
+  SPANS: "ducsigr:spans",
+  DEAD_LETTER: "ducsigr:dlq",
 } as const;
 
 // HTTP Headers
@@ -28,7 +28,7 @@ export const HEADERS = {
 export const TEMPORAL = {
   DEFAULT_ADDRESS: "localhost:7233",
   DEFAULT_NAMESPACE: "default",
-  DEFAULT_TASK_QUEUE: "cognobserve-tasks",
+  DEFAULT_TASK_QUEUE: "ducsigr-tasks",
   WORKFLOWS: {
     TRACE: "traceWorkflow",
     SCORE: "scoreWorkflow",

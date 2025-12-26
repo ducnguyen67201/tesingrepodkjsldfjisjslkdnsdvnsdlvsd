@@ -30,16 +30,16 @@ jobs:
         run: pnpm db:generate:ci
 
       - name: Type check
-        run: pnpm --filter @cognobserve/ingest-node typecheck
+        run: pnpm --filter @ducsigr/ingest-node typecheck
 
       - name: Test
-        run: pnpm --filter @cognobserve/ingest-node test
+        run: pnpm --filter @ducsigr/ingest-node test
 
       - name: Lint
-        run: pnpm --filter @cognobserve/ingest-node lint
+        run: pnpm --filter @ducsigr/ingest-node lint
 
       - name: Build ingest-node
-        run: pnpm --filter @cognobserve/ingest-node build
+        run: pnpm --filter @ducsigr/ingest-node build
 
       - name: Check for uncommitted changes (drift check)
         run: |

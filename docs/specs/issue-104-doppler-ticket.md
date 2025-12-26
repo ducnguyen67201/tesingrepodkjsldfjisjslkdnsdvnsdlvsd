@@ -23,7 +23,7 @@ As a **developer**, I want to **use Doppler for centralized secret management** 
 
 ### Background
 
-Currently, CognObserve uses `.env` files for secret management which presents security and operational challenges:
+Currently, Ducsigr uses `.env` files for secret management which presents security and operational challenges:
 - Secrets stored in plaintext locally
 - Manual synchronization across developer machines
 - No audit trail for secret access
@@ -57,10 +57,10 @@ Full engineering spec: `docs/specs/issue-104-doppler-secret-management.md`
 
 ### AC1: Doppler Project Setup
 - [ ] Doppler workspace created with project structure:
-  - `cognobserve-shared` (DATABASE_URL, JWT secrets, TEMPORAL_*)
-  - `cognobserve-web` (NextAuth, OAuth credentials)
-  - `cognobserve-ingest` (PORT, WEB_API_URL)
-  - `cognobserve-worker` (worker-specific configs)
+  - `ducsigr-shared` (DATABASE_URL, JWT secrets, TEMPORAL_*)
+  - `ducsigr-web` (NextAuth, OAuth credentials)
+  - `ducsigr-ingest` (PORT, WEB_API_URL)
+  - `ducsigr-worker` (worker-specific configs)
 - [ ] Environments configured: `dev`, `stg`, `prd` for each project
 - [ ] All secrets from `.env.example` populated in Doppler
 

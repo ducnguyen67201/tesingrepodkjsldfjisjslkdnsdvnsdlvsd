@@ -1,6 +1,6 @@
 # Trace Visualization - Engineering Specs
 
-**EPIC:** [#3 - Trace Visualization](https://github.com/ducnguyen67201/CognObserve/issues/3)
+**EPIC:** [#3 - Trace Visualization](https://github.com/ducnguyen67201/Ducsigr/issues/3)
 
 ---
 
@@ -8,10 +8,10 @@
 
 | Sprint | Issue | Spec | Focus | Points |
 |--------|-------|------|-------|--------|
-| 1 | [#70](https://github.com/ducnguyen67201/CognObserve/issues/70) | [SPRINT_1_INFRASTRUCTURE_SPEC.md](./SPRINT_1_INFRASTRUCTURE_SPEC.md) | Infrastructure + Traces List | 8 |
-| 2 | [#71](https://github.com/ducnguyen67201/CognObserve/issues/71) | [SPRINT_2_WATERFALL_SPEC.md](./SPRINT_2_WATERFALL_SPEC.md) | Waterfall + Detail Panel | 13 |
-| 3 | [#72](https://github.com/ducnguyen67201/CognObserve/issues/72) | [SPRINT_3_FILTERING_SPEC.md](./SPRINT_3_FILTERING_SPEC.md) | Filtering + Polish | 8 |
-| Backlog | [#73](https://github.com/ducnguyen67201/CognObserve/issues/73) | [SPRINT_4_PERFORMANCE_SPEC.md](./SPRINT_4_PERFORMANCE_SPEC.md) | Performance | 5 |
+| 1 | [#70](https://github.com/ducnguyen67201/Ducsigr/issues/70) | [SPRINT_1_INFRASTRUCTURE_SPEC.md](./SPRINT_1_INFRASTRUCTURE_SPEC.md) | Infrastructure + Traces List | 8 |
+| 2 | [#71](https://github.com/ducnguyen67201/Ducsigr/issues/71) | [SPRINT_2_WATERFALL_SPEC.md](./SPRINT_2_WATERFALL_SPEC.md) | Waterfall + Detail Panel | 13 |
+| 3 | [#72](https://github.com/ducnguyen67201/Ducsigr/issues/72) | [SPRINT_3_FILTERING_SPEC.md](./SPRINT_3_FILTERING_SPEC.md) | Filtering + Polish | 8 |
+| Backlog | [#73](https://github.com/ducnguyen67201/Ducsigr/issues/73) | [SPRINT_4_PERFORMANCE_SPEC.md](./SPRINT_4_PERFORMANCE_SPEC.md) | Performance | 5 |
 
 **Total MVP: 29 points** (Sprints 1-3)
 

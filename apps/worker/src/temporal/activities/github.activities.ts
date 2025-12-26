@@ -8,12 +8,12 @@
  */
 
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
-import { GitHubPushPayloadSchema } from "@cognobserve/api/schemas";
+import { prisma } from "@ducsigr/db";
+import { GitHubPushPayloadSchema } from "@ducsigr/api/schemas";
 import {
   chunkCode as sharedChunkCode,
   shouldIndexFile as sharedShouldIndexFile,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import { env } from "@/lib/env";
 import type {
@@ -161,7 +161,7 @@ async function fetchSingleFile(
 
   const headers: Record<string, string> = {
     Accept: "application/vnd.github.v3+json",
-    "User-Agent": "CognObserve-Indexer",
+    "User-Agent": "Ducsigr-Indexer",
   };
 
   // Use token if available for higher rate limits

@@ -4,7 +4,7 @@
  * Service for calculating metrics used in alert evaluation.
  */
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import type { AlertType, MetricResult } from "../../schemas/alerting";
 
 /**

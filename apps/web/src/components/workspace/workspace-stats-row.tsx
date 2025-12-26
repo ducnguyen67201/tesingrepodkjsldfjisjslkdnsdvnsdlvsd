@@ -12,7 +12,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber, formatLatency } from "@/lib/format";
-import type { WorkspaceStats, StatTrend } from "@cognobserve/api/schemas";
+import type { WorkspaceStats, StatTrend } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Constants

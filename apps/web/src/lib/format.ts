@@ -105,4 +105,4 @@ export const formatRelativeTime = (date: Date): string => {
 };
 
 // Re-export formatFileSize from shared utils
-export { formatFileSize } from "@cognobserve/shared";
+export { formatFileSize } from "@ducsigr/shared";

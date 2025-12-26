@@ -1,15 +1,15 @@
-# @cognobserve/sdk
+# @ducsigr/sdk
 
-Official TypeScript SDK for [CognObserve](https://github.com/cognobserve) - AI Platform Monitoring & Observability.
+Official TypeScript SDK for [Ducsigr](https://github.com/ducsigr) - AI Platform Monitoring & Observability.
 
 ## Installation
 
 ```bash
-npm install @cognobserve/sdk
+npm install @ducsigr/sdk
 # or
-pnpm add @cognobserve/sdk
+pnpm add @ducsigr/sdk
 # or
-yarn add @cognobserve/sdk
+yarn add @ducsigr/sdk
 ```
 
 ## Quick Start
@@ -17,10 +17,10 @@ yarn add @cognobserve/sdk
 ### 1. Initialize the SDK
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY,
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY,
 });
 ```
 
@@ -29,15 +29,15 @@ CognObserve.init({
 The `observe()` wrapper is the simplest way to trace your code:
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Trace any async function
-const result = await CognObserve.observe('fetch-users', async () => {
+const result = await Ducsigr.observe('fetch-users', async () => {
   return db.query('SELECT * FROM users');
 });
 
 // For LLM calls, use type: 'generation' to auto-extract tokens
-const response = await CognObserve.observe({
+const response = await Ducsigr.observe({
   name: 'openai-call',
   type: 'generation',
 }, async () => {
@@ -48,9 +48,9 @@ const response = await CognObserve.observe({
 });
 
 // Auto-nesting works automatically
-await CognObserve.observe('parent-operation', async () => {
-  await CognObserve.observe('child-1', async () => { /* ... */ });
-  await CognObserve.observe('child-2', async () => { /* ... */ });
+await Ducsigr.observe('parent-operation', async () => {
+  await Ducsigr.observe('child-1', async () => { /* ... */ });
+  await Ducsigr.observe('child-2', async () => { /* ... */ });
 });
 ```
 
@@ -58,10 +58,10 @@ await CognObserve.observe('parent-operation', async () => {
 
 ```typescript
 import OpenAI from 'openai';
-import { CognObserve } from '@cognobserve/sdk';
-import { wrapOpenAI } from '@cognobserve/sdk/integrations';
+import { Ducsigr } from '@ducsigr/sdk';
+import { wrapOpenAI } from '@ducsigr/sdk/integrations';
 
-CognObserve.init({ apiKey: process.env.COGNOBSERVE_API_KEY });
+Ducsigr.init({ apiKey: process.env.DUCSIGR_API_KEY });
 
 const openai = wrapOpenAI(new OpenAI());
 
@@ -76,10 +76,10 @@ const response = await openai.chat.completions.create({
 
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
-import { CognObserve } from '@cognobserve/sdk';
-import { wrapAnthropic } from '@cognobserve/sdk/integrations';
+import { Ducsigr } from '@ducsigr/sdk';
+import { wrapAnthropic } from '@ducsigr/sdk/integrations';
 
-CognObserve.init({ apiKey: process.env.COGNOBSERVE_API_KEY });
+Ducsigr.init({ apiKey: process.env.DUCSIGR_API_KEY });
 
 const anthropic = wrapAnthropic(new Anthropic());
 
@@ -93,17 +93,17 @@ const response = await anthropic.messages.create({
 
 ## API Reference
 
-### CognObserve.init(config)
+### Ducsigr.init(config)
 
 Initialize the SDK. Must be called before any other methods.
 
 ```typescript
-CognObserve.init({
+Ducsigr.init({
   // Required
   apiKey: 'co_...',
 
   // Optional
-  endpoint: 'https://ingest.cognobserve.com', // Custom endpoint
+  endpoint: 'https://ingest.ducsigr.com', // Custom endpoint
   debug: false,                                // Enable debug logging
   disabled: false,                             // Disable SDK entirely
   flushInterval: 5000,                         // Batch flush interval (ms)
@@ -112,18 +112,18 @@ CognObserve.init({
 });
 ```
 
-### CognObserve.observe(name | options, fn)
+### Ducsigr.observe(name | options, fn)
 
 Trace an async function with automatic span creation.
 
 ```typescript
 // Simple usage with just a name
-const result = await CognObserve.observe('my-operation', async () => {
+const result = await Ducsigr.observe('my-operation', async () => {
   return doSomething();
 });
 
 // With options
-const result = await CognObserve.observe({
+const result = await Ducsigr.observe({
   name: 'llm-call',
   type: 'generation',        // 'generation' | 'span' (default: 'span')
   metadata: { key: 'value' },
@@ -136,31 +136,31 @@ const result = await CognObserve.observe({
 });
 ```
 
-### CognObserve.log(message, data?, level?)
+### Ducsigr.log(message, data?, level?)
 
 Log a message within an active trace context.
 
 ```typescript
-await CognObserve.observe('my-operation', async () => {
-  CognObserve.log('Starting process', { step: 1 });
+await Ducsigr.observe('my-operation', async () => {
+  Ducsigr.log('Starting process', { step: 1 });
 
   // ... do work ...
 
-  CognObserve.log('Process complete', { step: 2 });
+  Ducsigr.log('Process complete', { step: 2 });
 });
 
 // With log level
-CognObserve.log('Error occurred', { error: 'timeout' }, 'ERROR');
+Ducsigr.log('Error occurred', { error: 'timeout' }, 'ERROR');
 ```
 
 Log levels: `'DEBUG'` | `'DEFAULT'` | `'WARNING'` | `'ERROR'`
 
-### CognObserve.startTrace(options)
+### Ducsigr.startTrace(options)
 
 Start a trace for manual instrumentation.
 
 ```typescript
-const trace = CognObserve.startTrace({
+const trace = Ducsigr.startTrace({
   name: 'my-operation',
   metadata: { environment: 'production' },
 });
@@ -174,12 +174,12 @@ span.end();
 trace.end();
 ```
 
-### CognObserve.trace(options, fn)
+### Ducsigr.trace(options, fn)
 
 Run a function within a trace context.
 
 ```typescript
-const result = await CognObserve.trace(
+const result = await Ducsigr.trace(
   { name: 'my-operation' },
   async (trace) => {
     const span = trace.startSpan({ name: 'sub-operation' });
@@ -190,20 +190,20 @@ const result = await CognObserve.trace(
 );
 ```
 
-### CognObserve.flush()
+### Ducsigr.flush()
 
 Flush all pending traces to the server.
 
 ```typescript
-await CognObserve.flush();
+await Ducsigr.flush();
 ```
 
-### CognObserve.shutdown()
+### Ducsigr.shutdown()
 
 Gracefully shutdown the SDK, flushing pending data.
 
 ```typescript
-await CognObserve.shutdown();
+await Ducsigr.shutdown();
 ```
 
 ## Span API
@@ -285,17 +285,17 @@ for await (const event of stream) {
 
 | Variable | Description |
 |----------|-------------|
-| `COGNOBSERVE_API_KEY` | API key (fallback if not in config) |
-| `COGNOBSERVE_ENDPOINT` | Custom ingest endpoint |
-| `COGNOBSERVE_DEBUG` | Enable debug mode (`true`/`false`) |
-| `COGNOBSERVE_DISABLED` | Disable SDK (`true`/`false`) |
+| `DUCSIGR_API_KEY` | API key (fallback if not in config) |
+| `DUCSIGR_ENDPOINT` | Custom ingest endpoint |
+| `DUCSIGR_DEBUG` | Enable debug mode (`true`/`false`) |
+| `DUCSIGR_DISABLED` | Disable SDK (`true`/`false`) |
 
 ## Async Context Propagation
 
 The SDK automatically propagates trace context through async operations using Node.js AsyncLocalStorage:
 
 ```typescript
-import { CognObserve, getActiveTrace, getActiveSpan } from '@cognobserve/sdk';
+import { Ducsigr, getActiveTrace, getActiveSpan } from '@ducsigr/sdk';
 
 async function innerOperation() {
   // Access the active trace from anywhere in the call stack
@@ -312,7 +312,7 @@ async function innerOperation() {
   }
 }
 
-await CognObserve.observe('outer-operation', async () => {
+await Ducsigr.observe('outer-operation', async () => {
   await innerOperation(); // Context is automatically available
 });
 ```
@@ -323,16 +323,16 @@ Full TypeScript support with exported types:
 
 ```typescript
 import type {
-  CognObserveConfig,
+  DucsigrConfig,
   TraceOptions,
   SpanOptions,
   SpanEndOptions,
   SpanLevel,
   TokenUsage,
   ObserveOptions,
-} from '@cognobserve/sdk';
+} from '@ducsigr/sdk';
 
-import type { WrapperOptions } from '@cognobserve/sdk/integrations';
+import type { WrapperOptions } from '@ducsigr/sdk/integrations';
 ```
 
 ## LLM Token Extraction

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { PromptVariableInjector } from "../prompt-variable-injector";
-import type { PromptTemplate, PromptVariable } from "@cognobserve/api/schemas";
+import type { PromptTemplate, PromptVariable } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Test Data Fixtures

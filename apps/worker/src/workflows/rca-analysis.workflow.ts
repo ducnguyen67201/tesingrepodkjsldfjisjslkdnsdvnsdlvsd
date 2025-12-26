@@ -24,7 +24,7 @@ import type {
   RCAReport,
 } from "../temporal/types";
 import type { RetrieveKnowledgeContextOutput } from "../temporal/activities/knowledge.activities";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 
 // ============================================================
 // Workflow Input Type

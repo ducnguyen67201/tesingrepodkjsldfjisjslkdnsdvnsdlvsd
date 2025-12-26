@@ -10,8 +10,8 @@
 import type {
   LogField,
   LogFilterExpression,
-} from "@cognobserve/api/schemas";
-import type { FilterOperator } from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
+import type { FilterOperator } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Filter Field Metadata

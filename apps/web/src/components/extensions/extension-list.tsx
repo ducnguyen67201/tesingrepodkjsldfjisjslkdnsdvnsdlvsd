@@ -4,7 +4,7 @@ import { memo, useCallback } from "react";
 import { Puzzle } from "lucide-react";
 import { ExtensionCard } from "./extension-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { type ExtensionType } from "@cognobserve/api/schemas";
+import { type ExtensionType } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

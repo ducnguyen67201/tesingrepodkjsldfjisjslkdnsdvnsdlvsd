@@ -5,7 +5,7 @@
  */
 
 import { z } from "zod";
-import { formatFileSize } from "@cognobserve/shared";
+import { formatFileSize } from "@ducsigr/shared";
 
 // ============================================================
 // Enums

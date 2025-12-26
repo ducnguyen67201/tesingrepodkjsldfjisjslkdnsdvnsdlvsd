@@ -30,7 +30,7 @@ import {
   type SeverityFilterValue,
 } from "@/lib/log-utils";
 import { cn } from "@/lib/utils";
-import type { LogFilterExpression } from "@cognobserve/api/schemas";
+import type { LogFilterExpression } from "@ducsigr/api/schemas";
 
 interface ProjectLogsTableProps {
   workspaceSlug: string;

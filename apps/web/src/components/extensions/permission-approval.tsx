@@ -8,7 +8,7 @@ import {
   type ExtensionPermission,
   PERMISSION_LABELS,
   PERMISSION_RISK,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Constants

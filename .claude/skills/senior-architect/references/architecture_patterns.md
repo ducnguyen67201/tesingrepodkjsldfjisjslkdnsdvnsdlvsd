@@ -24,7 +24,7 @@ app/
 │   │   └── events/     # Domain events
 │   ├── billing/
 │   ├── projects/
-│   └── traces/         # CognObserve specific
+│   └── traces/         # Ducsigr specific
 ├── shared/
 │   ├── middleware/
 │   ├── errors/

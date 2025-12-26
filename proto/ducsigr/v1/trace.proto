@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package cognobserve.v1;
+package ducsigr.v1;
 
-option go_package = "github.com/cognobserve/ingest/internal/proto/cognobservev1";
+option go_package = "github.com/ducsigr/ingest/internal/proto/duscigrv1";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
-import "cognobserve/v1/common.proto";
+import "ducsigr/v1/common.proto";
 
 // Trace represents a single request/operation flow
 message Trace {

@@ -52,23 +52,23 @@ jobs:
           file: ./Dockerfile.quickstart
           push: false
           load: true
-          tags: cognobserve:quickstart-test
+          tags: ducsigr:quickstart-test
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Test container starts
         run: |
           # Start container
-          docker run -d --name cognobserve-test \
+          docker run -d --name ducsigr-test \
             -p 3000:3000 \
             -p 8080:8080 \
-            cognobserve:quickstart-test
+            ducsigr:quickstart-test
 
           # Wait for services to start (max 120 seconds)
           echo "Waiting for services to start..."
           SERVICES_STARTED=false
           for i in {1..60}; do
-            if docker exec cognobserve-test supervisorctl status 2>/dev/null | grep -q "RUNNING"; then
+            if docker exec ducsigr-test supervisorctl status 2>/dev/null | grep -q "RUNNING"; then
               echo "Services are starting..."
               SERVICES_STARTED=true
               break
@@ -78,7 +78,7 @@ jobs:
 
           if [ "$SERVICES_STARTED" = false ]; then
             echo "ERROR: Services failed to start within timeout"
-            docker logs cognobserve-test 2>&1 | tail -50
+            docker logs ducsigr-test 2>&1 | tail -50
             exit 1
           fi
 
@@ -98,9 +98,9 @@ jobs:
           if [ "$INGEST_HEALTHY" = false ]; then
             echo "ERROR: Ingest service failed to become healthy"
             echo "=== Container logs ==="
-            docker logs cognobserve-test 2>&1 | tail -100
+            docker logs ducsigr-test 2>&1 | tail -100
             echo "=== Supervisor status ==="
-            docker exec cognobserve-test supervisorctl status 2>/dev/null || true
+            docker exec ducsigr-test supervisorctl status 2>/dev/null || true
             exit 1
           fi
 
@@ -108,18 +108,18 @@ jobs:
           curl -s http://localhost:8080/health
 
           # Check container health status
-          docker inspect cognobserve-test --format='{{.State.Health.Status}}'
+          docker inspect ducsigr-test --format='{{.State.Health.Status}}'
 
       - name: Show container logs on failure
         if: failure()
         run: |
-          docker logs cognobserve-test 2>&1 | tail -100
+          docker logs ducsigr-test 2>&1 | tail -100
 
       - name: Cleanup
         if: always()
         run: |
-          docker stop cognobserve-test 2>/dev/null || true
-          docker rm cognobserve-test 2>/dev/null || true
+          docker stop ducsigr-test 2>/dev/null || true
+          docker rm ducsigr-test 2>/dev/null || true
 
   # ============================================================
   # Build App Image (Production)
@@ -142,7 +142,7 @@ jobs:
           context: .
           file: ./Dockerfile.app
           push: false
-          tags: cognobserve-app:test
+          tags: ducsigr-app:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

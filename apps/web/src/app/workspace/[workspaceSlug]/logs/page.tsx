@@ -26,7 +26,7 @@ import {
   LogFilterChips,
   LogFilterPills,
 } from "@/components/logs/filters-v2";
-import type { LogFilterExpression } from "@cognobserve/api/schemas";
+import type { LogFilterExpression } from "@ducsigr/api/schemas";
 
 // Sidebar filter component
 function LogsFilterSidebar({

@@ -1,22 +1,22 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { CognObserve } from '../src/cognobserve';
+import { Ducsigr } from '../src/ducsigr';
 import { Trace } from '../src/trace';
 
 describe('Trace', () => {
   beforeEach(() => {
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   describe('startTrace()', () => {
     it('should create a trace with name', () => {
-      const trace = CognObserve.startTrace({ name: 'test-trace' });
+      const trace = Ducsigr.startTrace({ name: 'test-trace' });
 
       expect(trace).toBeInstanceOf(Trace);
       expect(trace.name).toBe('test-trace');
@@ -25,7 +25,7 @@ describe('Trace', () => {
     });
 
     it('should accept custom trace ID', () => {
-      const trace = CognObserve.startTrace({
+      const trace = Ducsigr.startTrace({
         name: 'custom-id-trace',
         id: 'custom-trace-123',
       });
@@ -34,7 +34,7 @@ describe('Trace', () => {
     });
 
     it('should accept metadata', () => {
-      const trace = CognObserve.startTrace({
+      const trace = Ducsigr.startTrace({
         name: 'metadata-trace',
         metadata: { environment: 'test', version: '1.0.0' },
       });
@@ -47,7 +47,7 @@ describe('Trace', () => {
     it('should run function within trace context', async () => {
       let traceReceived: Trace | undefined;
 
-      const result = await CognObserve.trace(
+      const result = await Ducsigr.trace(
         { name: 'context-trace' },
         async (trace) => {
           traceReceived = trace;
@@ -62,7 +62,7 @@ describe('Trace', () => {
     it('should auto-end trace on completion', async () => {
       const endSpy = vi.fn();
 
-      await CognObserve.trace({ name: 'auto-end-trace' }, async (trace) => {
+      await Ducsigr.trace({ name: 'auto-end-trace' }, async (trace) => {
         const originalEnd = trace.end.bind(trace);
         trace.end = () => {
           endSpy();
@@ -75,7 +75,7 @@ describe('Trace', () => {
     });
 
     it('should handle sync functions', () => {
-      const result = CognObserve.trace({ name: 'sync-trace' }, (trace) => {
+      const result = Ducsigr.trace({ name: 'sync-trace' }, (trace) => {
         return 'sync-result';
       });
 
@@ -86,18 +86,18 @@ describe('Trace', () => {
 
 describe('Span', () => {
   beforeEach(() => {
-    CognObserve.init({
+    Ducsigr.init({
       apiKey: 'test_key',
       disabled: true,
     });
   });
 
   afterEach(async () => {
-    await CognObserve.shutdown();
+    await Ducsigr.shutdown();
   });
 
   it('should create spans within a trace', () => {
-    const trace = CognObserve.startTrace({ name: 'span-test' });
+    const trace = Ducsigr.startTrace({ name: 'span-test' });
     const span = trace.startSpan({ name: 'child-span' });
 
     expect(span).toBeDefined();
@@ -109,7 +109,7 @@ describe('Span', () => {
   });
 
   it('should set input and output', () => {
-    const trace = CognObserve.startTrace({ name: 'io-test' });
+    const trace = Ducsigr.startTrace({ name: 'io-test' });
     const span = trace.startSpan({ name: 'io-span' });
 
     span.setInput({ query: 'SELECT * FROM users' });
@@ -120,7 +120,7 @@ describe('Span', () => {
   });
 
   it('should set model info', () => {
-    const trace = CognObserve.startTrace({ name: 'model-test' });
+    const trace = Ducsigr.startTrace({ name: 'model-test' });
     const span = trace.startSpan({ name: 'model-span' });
 
     span.setModel('gpt-4', { temperature: 0.7, max_tokens: 1000 });
@@ -130,7 +130,7 @@ describe('Span', () => {
   });
 
   it('should set usage', () => {
-    const trace = CognObserve.startTrace({ name: 'usage-test' });
+    const trace = Ducsigr.startTrace({ name: 'usage-test' });
     const span = trace.startSpan({ name: 'usage-span' });
 
     span.setUsage({
@@ -144,7 +144,7 @@ describe('Span', () => {
   });
 
   it('should set error', () => {
-    const trace = CognObserve.startTrace({ name: 'error-test' });
+    const trace = Ducsigr.startTrace({ name: 'error-test' });
     const span = trace.startSpan({ name: 'error-span' });
 
     span.setError('Something went wrong');
@@ -154,7 +154,7 @@ describe('Span', () => {
   });
 
   it('should set level', () => {
-    const trace = CognObserve.startTrace({ name: 'level-test' });
+    const trace = Ducsigr.startTrace({ name: 'level-test' });
     const span = trace.startSpan({ name: 'level-span' });
 
     span.setLevel('WARNING');
@@ -164,7 +164,7 @@ describe('Span', () => {
   });
 
   it('should support nested spans', () => {
-    const trace = CognObserve.startTrace({ name: 'nested-test' });
+    const trace = Ducsigr.startTrace({ name: 'nested-test' });
 
     const parent = trace.startSpan({ name: 'parent' });
     const child = trace.startSpan({ name: 'child', parentSpanId: parent.id });
@@ -182,7 +182,7 @@ describe('Span', () => {
   });
 
   it('should calculate duration on end', async () => {
-    const trace = CognObserve.startTrace({ name: 'duration-test' });
+    const trace = Ducsigr.startTrace({ name: 'duration-test' });
     const span = trace.startSpan({ name: 'duration-span' });
 
     await new Promise((r) => setTimeout(r, 50));

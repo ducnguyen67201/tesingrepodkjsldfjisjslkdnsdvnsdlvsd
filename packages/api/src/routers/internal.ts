@@ -10,7 +10,7 @@
 
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma, Prisma, setChunkEmbeddings, setKnowledgeChunkEmbeddings } from "@cognobserve/db";
+import { prisma, Prisma, setChunkEmbeddings, setKnowledgeChunkEmbeddings } from "@ducsigr/db";
 import { createRouter, publicProcedure, middleware } from "../trpc";
 import {
   SEVERITY_DEFAULTS,
@@ -984,7 +984,7 @@ export const internalRouter = createRouter({
       const { workspaceId, embedding, limit, minSimilarity } = input;
 
       // Dynamic import to avoid circular dependencies
-      const { searchKnowledgeChunks: searchChunks } = await import("@cognobserve/db");
+      const { searchKnowledgeChunks: searchChunks } = await import("@ducsigr/db");
       const chunks = await searchChunks(
         workspaceId,
         embedding,

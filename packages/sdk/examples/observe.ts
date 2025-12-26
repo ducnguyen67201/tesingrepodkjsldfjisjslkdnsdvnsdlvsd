@@ -3,10 +3,10 @@
  *
  * Run with: npx tsx examples/observe.ts
  */
-import { CognObserve } from '../src/index';
+import { Ducsigr } from '../src/index';
 
 // Initialize the SDK
-CognObserve.init({
+Ducsigr.init({
   apiKey: 'co_test_key',
   endpoint: 'http://localhost:8080',
   debug: true,
@@ -53,7 +53,7 @@ async function main() {
 
   // Test 1: Simple observe
   console.log('Test 1: Simple observe()');
-  const result1 = await CognObserve.observe('fetch-data', async () => {
+  const result1 = await Ducsigr.observe('fetch-data', async () => {
     await sleep(50);
     return { users: ['alice', 'bob'] };
   });
@@ -61,7 +61,7 @@ async function main() {
 
   // Test 2: observe() with LLM (auto-extracts tokens)
   console.log('\nTest 2: observe() with type="generation" (OpenAI format)');
-  const result2 = await CognObserve.observe(
+  const result2 = await Ducsigr.observe(
     {
       name: 'openai-call',
       type: 'generation',
@@ -76,7 +76,7 @@ async function main() {
 
   // Test 3: observe() with Anthropic format
   console.log('\nTest 3: observe() with type="generation" (Anthropic format)');
-  const result3 = await CognObserve.observe(
+  const result3 = await Ducsigr.observe(
     {
       name: 'anthropic-call',
       type: 'generation',
@@ -91,18 +91,18 @@ async function main() {
 
   // Test 4: Auto-nesting
   console.log('\nTest 4: Auto-nesting');
-  await CognObserve.observe('parent-operation', async () => {
+  await Ducsigr.observe('parent-operation', async () => {
     console.log('  Inside parent');
 
-    await CognObserve.observe('child-1', async () => {
+    await Ducsigr.observe('child-1', async () => {
       console.log('    Inside child-1');
       await sleep(30);
     });
 
-    await CognObserve.observe('child-2', async () => {
+    await Ducsigr.observe('child-2', async () => {
       console.log('    Inside child-2');
 
-      await CognObserve.observe('grandchild', async () => {
+      await Ducsigr.observe('grandchild', async () => {
         console.log('      Inside grandchild');
         await sleep(20);
       });
@@ -111,19 +111,19 @@ async function main() {
 
   // Test 5: Logging
   console.log('\nTest 5: Logging within observe()');
-  await CognObserve.observe('operation-with-logs', async () => {
-    CognObserve.log('Starting operation', { step: 1 });
+  await Ducsigr.observe('operation-with-logs', async () => {
+    Ducsigr.log('Starting operation', { step: 1 });
     await sleep(50);
-    CognObserve.log('Operation in progress', { step: 2 });
+    Ducsigr.log('Operation in progress', { step: 2 });
     await sleep(50);
-    CognObserve.log('Operation complete', { step: 3 });
+    Ducsigr.log('Operation complete', { step: 3 });
     return 'done';
   });
 
   // Test 6: Error handling
   console.log('\nTest 6: Error handling');
   try {
-    await CognObserve.observe('failing-operation', async () => {
+    await Ducsigr.observe('failing-operation', async () => {
       await sleep(30);
       throw new Error('Something went wrong!');
     });
@@ -134,8 +134,8 @@ async function main() {
   console.log('\n=== All tests completed ===\n');
 
   // Flush and shutdown
-  await CognObserve.flush();
-  await CognObserve.shutdown();
+  await Ducsigr.flush();
+  await Ducsigr.shutdown();
 }
 
 function sleep(ms: number): Promise<void> {

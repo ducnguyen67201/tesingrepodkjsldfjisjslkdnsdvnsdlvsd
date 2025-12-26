@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary
 
-Enable CognObserve to be self-hosted by the open-source community with minimal configuration. Users should be able to run the entire platform with a single `docker compose up` command.
+Enable Ducsigr to be self-hosted by the open-source community with minimal configuration. Users should be able to run the entire platform with a single `docker compose up` command.
 
 ### Success Criteria
 
@@ -80,7 +80,7 @@ Enable CognObserve to be self-hosted by the open-source community with minimal c
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │              cognobserve/cognobserve:latest                     │   │
+│   │              ducsigr/ducsigr:latest                     │   │
 │   │  ┌───────────────────────────────────────────────────────────┐  │   │
 │   │  │                    Process Manager                        │  │   │
 │   │  │                    (supervisord)                          │  │   │
@@ -146,7 +146,7 @@ Enable CognObserve to be self-hosted by the open-source community with minimal c
 import { z } from "zod";
 
 /**
- * Complete configuration schema for CognObserve
+ * Complete configuration schema for Ducsigr
  * All self-hosters configure via these environment variables
  */
 export const ConfigSchema = z.object({
@@ -269,12 +269,12 @@ export const DEFAULT_VALUES: Partial<Config> = {
 ```typescript
 // apps/web/src/lib/config.ts
 
-import { loadConfig, REQUIRED_ENV_VARS } from "@cognobserve/shared/config";
+import { loadConfig, REQUIRED_ENV_VARS } from "@ducsigr/shared/config";
 
 export const config = loadConfig();
 
 // Log configuration summary (without secrets)
-console.log("📋 CognObserve Configuration:");
+console.log("📋 Ducsigr Configuration:");
 console.log(`   Port: ${config.PORT}`);
 console.log(`   Ingest Port: ${config.INGEST_PORT}`);
 console.log(`   Log Level: ${config.LOG_LEVEL}`);
@@ -339,7 +339,7 @@ export async function checkDatabaseConnection(): Promise<boolean> {
 
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
-    const { runMigrations, checkDatabaseConnection } = await import("@cognobserve/db/migrate");
+    const { runMigrations, checkDatabaseConnection } = await import("@ducsigr/db/migrate");
 
     // Check database connection
     const connected = await checkDatabaseConnection();
@@ -362,7 +362,7 @@ export async function register() {
 
 ```dockerfile
 # Dockerfile.all-in-one
-# Single container running all CognObserve services
+# Single container running all Ducsigr services
 
 # ============================================================
 # Stage 1: Build all services
@@ -412,8 +412,8 @@ FROM node:24-alpine AS runner
 RUN apk add --no-cache supervisor
 
 # Create non-root user
-RUN addgroup --system --gid 1001 cognobserve && \
-    adduser --system --uid 1001 cognobserve
+RUN addgroup --system --gid 1001 ducsigr && \
+    adduser --system --uid 1001 ducsigr
 
 WORKDIR /app
 
@@ -434,9 +434,9 @@ COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set ownership
-RUN chown -R cognobserve:cognobserve /app
+RUN chown -R ducsigr:ducsigr /app
 
-USER cognobserve
+USER ducsigr
 
 # Expose ports
 EXPOSE 3000 8080
@@ -455,7 +455,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 ; docker/supervisord.conf
 [supervisord]
 nodaemon=true
-user=cognobserve
+user=ducsigr
 logfile=/dev/stdout
 logfile_maxbytes=0
 pidfile=/tmp/supervisord.pid
@@ -502,7 +502,7 @@ environment=PORT="8080"
 
 set -e
 
-echo "🚀 Starting CognObserve..."
+echo "🚀 Starting Ducsigr..."
 
 # ============================================================
 # 1. Validate required environment variables
@@ -566,7 +566,7 @@ exec supervisord -c /etc/supervisord.conf
 ```yaml
 # docker-compose.self-hosted.yml
 #
-# CognObserve Self-Hosted Setup
+# Ducsigr Self-Hosted Setup
 #
 # Quick Start:
 #   1. Copy this file
@@ -585,18 +585,18 @@ version: "3.8"
 
 services:
   # ============================================================
-  # CognObserve Application (All-in-One)
+  # Ducsigr Application (All-in-One)
   # ============================================================
-  cognobserve:
-    image: ghcr.io/cognobserve/cognobserve:latest
-    container_name: cognobserve
+  ducsigr:
+    image: ghcr.io/ducsigr/ducsigr:latest
+    container_name: ducsigr
     restart: unless-stopped
     ports:
       - "3000:3000"   # Web UI
       - "8080:8080"   # Ingest API (for SDKs)
     environment:
       # Required
-      DATABASE_URL: postgresql://cognobserve:cognobserve@postgres:5432/cognobserve
+      DATABASE_URL: postgresql://ducsigr:ducsigr@postgres:5432/ducsigr
       REDIS_URL: redis://redis:6379
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Please set NEXTAUTH_SECRET}
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
@@ -623,16 +623,16 @@ services:
   # ============================================================
   postgres:
     image: postgres:16-alpine
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: cognobserve
-      POSTGRES_PASSWORD: cognobserve
-      POSTGRES_DB: cognobserve
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ducsigr
+      POSTGRES_DB: ducsigr
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cognobserve"]
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -645,7 +645,7 @@ services:
   # ============================================================
   redis:
     image: redis:7-alpine
-    container_name: cognobserve-redis
+    container_name: ducsigr-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
     volumes:
@@ -672,7 +672,7 @@ volumes:
 #
 #   caddy:
 #     image: caddy:2-alpine
-#     container_name: cognobserve-caddy
+#     container_name: ducsigr-caddy
 #     restart: unless-stopped
 #     ports:
 #       - "80:80"
@@ -681,7 +681,7 @@ volumes:
 #       - ./Caddyfile:/etc/caddy/Caddyfile:ro
 #       - caddy_data:/data
 #     depends_on:
-#       - cognobserve
+#       - ducsigr
 #
 # volumes:
 #   caddy_data:
@@ -692,7 +692,7 @@ volumes:
 ```typescript
 // apps/web/src/app/api/health/route.ts
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { redis } from "@/lib/redis";
 import { NextResponse } from "next/server";
 
@@ -778,7 +778,7 @@ export async function GET() {
 ### 4.1 Quick Start Guide (README Section)
 
 ```markdown
-## Self-Hosting CognObserve
+## Self-Hosting Ducsigr
 
 ### Quick Start (Docker Compose)
 
@@ -795,9 +795,9 @@ export async function GET() {
    EOF
    ```
 
-3. **Start CognObserve:**
+3. **Start Ducsigr:**
    ```bash
-   curl -O https://raw.githubusercontent.com/cognobserve/cognobserve/main/docker-compose.self-hosted.yml
+   curl -O https://raw.githubusercontent.com/ducsigr/ducsigr/main/docker-compose.self-hosted.yml
    docker compose -f docker-compose.self-hosted.yml up -d
    ```
 
@@ -807,12 +807,12 @@ export async function GET() {
 5. **Start sending traces:**
    ```bash
    # Install SDK
-   npm install @cognobserve/sdk
+   npm install @ducsigr/sdk
 
    # Initialize in your app
-   import { CognObserve } from '@cognobserve/sdk';
+   import { Ducsigr } from '@ducsigr/sdk';
 
-   const observe = new CognObserve({
+   const observe = new Ducsigr({
      apiKey: 'your-api-key',
      endpoint: 'http://localhost:8080',
    });
@@ -858,10 +858,10 @@ For production deployments with HTTPS, see our [Production Guide](./docs/self-ho
 │                                                                         │
 │   Step 3: Install SDK                                                   │
 │   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │  npm install @cognobserve/sdk                                   │   │
+│   │  npm install @ducsigr/sdk                                   │   │
 │   │                                                                 │   │
-│   │  import { CognObserve } from '@cognobserve/sdk';               │   │
-│   │  const observe = new CognObserve({                              │   │
+│   │  import { Ducsigr } from '@ducsigr/sdk';               │   │
+│   │  const observe = new Ducsigr({                              │   │
 │   │    apiKey: 'co_live_xxxxxxxxxxxxxxxxxxxx',                     │   │
 │   │    endpoint: 'http://localhost:8080',                          │   │
 │   │  });                                                            │   │
@@ -875,7 +875,7 @@ For production deployments with HTTPS, see our [Production Guide](./docs/self-ho
 ## 5. File Structure
 
 ```
-CognObserve/
+Ducsigr/
 ├── docker-compose.self-hosted.yml    # NEW: Self-hosted compose
 ├── Dockerfile.all-in-one             # NEW: All-in-one image
 ├── docker/
@@ -956,7 +956,7 @@ set -e
 echo "🧪 Testing Docker image..."
 
 # Build image
-docker build -f Dockerfile.all-in-one -t cognobserve:test .
+docker build -f Dockerfile.all-in-one -t ducsigr:test .
 
 # Start test environment
 docker compose -f docker-compose.test.yml up -d
@@ -997,7 +997,7 @@ docker compose -f docker-compose.test.yml down -v
 
 Self-hosted observability platforms typically provide:
 
-| Feature | CognObserve | Industry Standard |
+| Feature | Ducsigr | Industry Standard |
 |---------|-------------|-------------------|
 | Docker Compose | ✅ | ✅ Required |
 | All-in-one image | ✅ (planned) | ✅ Common |

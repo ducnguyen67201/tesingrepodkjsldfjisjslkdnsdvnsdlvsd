@@ -25,8 +25,8 @@ export async function GET() {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("15m")
-    .setIssuer("cognobserve")
-    .setAudience("cognobserve-api")
+    .setIssuer("ducsigr")
+    .setAudience("ducsigr-api")
     .sign(secret);
 
   return NextResponse.json({

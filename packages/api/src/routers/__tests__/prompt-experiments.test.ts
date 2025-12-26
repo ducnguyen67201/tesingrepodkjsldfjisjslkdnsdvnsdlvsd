@@ -14,7 +14,7 @@ vi.mock("../../lib/temporal", () => ({
 }));
 
 // Mock prisma
-vi.mock("@cognobserve/db", () => ({
+vi.mock("@ducsigr/db", () => ({
   Prisma: {
     JsonNull: null,
   },
@@ -58,7 +58,7 @@ vi.mock("@cognobserve/db", () => ({
 }));
 
 // Import after mocks
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { promptExperimentsRouter } from "../prompt-experiments";
 
 // ============================================================

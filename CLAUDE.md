@@ -1,7 +1,7 @@
-# CognObserve - Claude Code Context
+# Ducsigr - Claude Code Context
 
 ## Project Overview
-CognObserve is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
+Ducsigr is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
 
 ## Tech Stack
 - **Monorepo**: pnpm 9.15 workspaces + Turborepo 2.5
@@ -17,9 +17,9 @@ CognObserve is an AI Platform Monitoring & Observability system. It provides tra
 
 ## Project Structure
 ```
-CognObserve/
+Ducsigr/
 ├── proto/                       # Protobuf definitions (source of truth)
-│   └── cognobserve/v1/
+│   └── ducsigr/v1/
 │       ├── common.proto         # Shared types (TokenUsage, SpanLevel)
 │       ├── trace.proto          # Trace, Span, Project, ApiKey
 │       └── ingest.proto         # Ingestion API messages
@@ -105,7 +105,7 @@ make dev-ingest
 make build
 
 # Build ingest Docker image
-docker build -f apps/ingest-node/Dockerfile -t cognobserve-ingest .
+docker build -f apps/ingest-node/Dockerfile -t ducsigr-ingest .
 ```
 
 ## Architecture
@@ -197,7 +197,7 @@ The worker uses Temporal for durable workflow orchestration. **Temporal activiti
 └─────────────────────────────────────────────────────────────────────┘
 
   ┌──────────────────┐         ┌──────────────────┐
-  │  Temporal Worker │         │   @cognobserve/api│
+  │  Temporal Worker │         │   @ducsigr/api│
   │                  │         │                  │
   │  ┌────────────┐  │  tRPC   │  ┌────────────┐  │
   │  │  Activity  │──┼────────▶│  │ internal.  │  │
@@ -228,7 +228,7 @@ The worker has a tRPC caller that can directly invoke internal procedures:
 
 ```typescript
 // apps/worker/src/lib/trpc-caller.ts
-import { appRouter, createCallerFactory } from "@cognobserve/api";
+import { appRouter, createCallerFactory } from "@ducsigr/api";
 import { env } from "./env";
 
 const createCaller = createCallerFactory(appRouter);
@@ -468,10 +468,10 @@ Plan → Schema Changes → Migration → Unit Tests → API Implementation → 
 pnpm test
 
 # Run tests for specific package
-pnpm --filter @cognobserve/api test
+pnpm --filter @ducsigr/api test
 
 # Run tests in watch mode
-pnpm --filter @cognobserve/api test -- --watch
+pnpm --filter @ducsigr/api test -- --watch
 ```
 
 ## LLM Center (CRITICAL)
@@ -503,8 +503,8 @@ await llm.complete(prompt, { schema });       // Structured output
 | Rule | Description |
 |------|-------------|
 | **Single Entry Point** | Always use `getLLM()` - never import SDKs directly |
-| **Centralized Errors** | Use `LLMError` subclasses from `@cognobserve/shared/llm` |
-| **Centralized Logging** | Use `getLogger()` from `@cognobserve/shared/llm` |
+| **Centralized Errors** | Use `LLMError` subclasses from `@ducsigr/shared/llm` |
+| **Centralized Logging** | Use `getLogger()` from `@ducsigr/shared/llm` |
 | **Update Docs** | Update `docs/LLM_CENTER.md` when adding features |
 
 ### Key Files
@@ -565,7 +565,7 @@ export const ERROR_MESSAGES = {
 - **Store schemas in `packages/api/src/schemas/`** - Centralized location for shared types
 - **Never hardcode constants for enums/unions** - Define as Zod schema, derive constants from it
 - **Export both schema and inferred type** - `export const MySchema = z.enum([...]); export type My = z.infer<typeof MySchema>;`
-- **Client components**: Import from `@cognobserve/api/schemas` (NOT `@cognobserve/api`) to avoid server-side deps
+- **Client components**: Import from `@ducsigr/api/schemas` (NOT `@ducsigr/api`) to avoid server-side deps
 
 ```typescript
 // BAD - Hardcoded constants without schema
@@ -589,7 +589,7 @@ export const isValidRole = (role: string): role is ProjectRole => {
 };
 
 // Client component usage (avoids server-side deps)
-import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
 ```
 
 ### Zod for Runtime Validation (CRITICAL - MANDATORY)
@@ -1165,7 +1165,7 @@ if result.RowsAffected == 0 { return ErrNotFound }
           │                                    │
           ▼                                    ▼
 ┌──────────────────────┐              ┌──────────────────────┐
-│  @cognobserve/proto  │              │   @cognobserve/db    │
+│  @ducsigr/proto  │              │   @ducsigr/db    │
 │  (Generated TS/Go)   │              │  (Prisma Client)     │
 └──────────────────────┘              └──────────────────────┘
           │                                    │
@@ -1173,13 +1173,13 @@ if result.RowsAffected == 0 { return ErrNotFound }
           │         │                          │
           ▼         ▼                          ▼
 ┌──────────────────────┐              ┌──────────────────────┐
-│  @cognobserve/api    │              │     apps/web         │
+│  @ducsigr/api    │              │     apps/web         │
 │  (tRPC + Schemas)    │──────────────│   (Next.js App)      │
 └──────────────────────┘              └──────────────────────┘
           │
           ▼
 ┌──────────────────────┐
-│ @cognobserve/api/    │  ← Client-safe imports (no server deps)
+│ @ducsigr/api/    │  ← Client-safe imports (no server deps)
 │     schemas          │
 └──────────────────────┘
 
@@ -1198,21 +1198,21 @@ interface Project {
 import { Project } from "@prisma/client";  // Direct Prisma import
 
 // ✅ GOOD - Use shared packages
-import { type Project, type Trace, type Span } from "@cognobserve/db";
-import { type ProjectRole, ProjectRoleSchema } from "@cognobserve/api/schemas";
-import { type IngestRequest } from "@cognobserve/proto";
+import { type Project, type Trace, type Span } from "@ducsigr/db";
+import { type ProjectRole, ProjectRoleSchema } from "@ducsigr/api/schemas";
+import { type IngestRequest } from "@ducsigr/proto";
 ```
 
 **Available shared packages:**
 | Package | Purpose | Example Imports |
 |---------|---------|-----------------|
-| `@cognobserve/db` | Database types & Prisma client | `Project`, `Trace`, `Span`, `ApiKey`, `prisma` |
-| `@cognobserve/api/schemas` | Zod schemas & derived types (client-safe) | `ProjectRoleSchema`, `AlertTypeSchema` |
-| `@cognobserve/api` | tRPC routers & server utilities | `appRouter`, `createContext` |
-| `@cognobserve/proto` | Protobuf-generated types | `IngestRequest`, `TokenUsage` |
-| `@cognobserve/shared` | Cross-app utilities & constants | `ACTIVITY_RETRY`, `APP_NAME`, `chunkCodeFiles` |
-| `@cognobserve/shared/llm` | LLM Center (OpenAI wrapper) | `createLLMCenter`, `getLLM` |
-| `@cognobserve/shared/cache` | Redis cache (embeddings) | `getEmbeddingCache`, `closeRedis` |
+| `@ducsigr/db` | Database types & Prisma client | `Project`, `Trace`, `Span`, `ApiKey`, `prisma` |
+| `@ducsigr/api/schemas` | Zod schemas & derived types (client-safe) | `ProjectRoleSchema`, `AlertTypeSchema` |
+| `@ducsigr/api` | tRPC routers & server utilities | `appRouter`, `createContext` |
+| `@ducsigr/proto` | Protobuf-generated types | `IngestRequest`, `TokenUsage` |
+| `@ducsigr/shared` | Cross-app utilities & constants | `ACTIVITY_RETRY`, `APP_NAME`, `chunkCodeFiles` |
+| `@ducsigr/shared/llm` | LLM Center (OpenAI wrapper) | `createLLMCenter`, `getLLM` |
+| `@ducsigr/shared/cache` | Redis cache (embeddings) | `getEmbeddingCache`, `closeRedis` |
 
 **⚠️ CRITICAL: Temporal Workflow Imports**
 
@@ -1220,17 +1220,17 @@ Temporal workflows are sandboxed and cannot use non-deterministic modules (OpenA
 
 ```typescript
 // ❌ BAD - Pulls OpenAI into workflow bundle (breaks determinism)
-import { createLLMCenter } from "@cognobserve/shared";  // Main index re-exports LLM
+import { createLLMCenter } from "@ducsigr/shared";  // Main index re-exports LLM
 
 // ✅ GOOD - Import only constants from main package
-import { ACTIVITY_RETRY } from "@cognobserve/shared";
+import { ACTIVITY_RETRY } from "@ducsigr/shared";
 
 // ✅ GOOD - Import LLM/Cache in ACTIVITIES only (not workflows)
-import { getLLM } from "@cognobserve/shared/llm";           // Activities only
-import { getEmbeddingCache } from "@cognobserve/shared/cache"; // Activities only
+import { getLLM } from "@ducsigr/shared/llm";           // Activities only
+import { getEmbeddingCache } from "@ducsigr/shared/cache"; // Activities only
 ```
 
-The main `@cognobserve/shared` index only exports deterministic utilities (constants, pure functions). LLM and Cache are only available via sub-path imports to prevent accidental inclusion in workflow bundles.
+The main `@ducsigr/shared` index only exports deterministic utilities (constants, pure functions). LLM and Cache are only available via sub-path imports to prevent accidental inclusion in workflow bundles.
 
 ### Frontend Architecture
 
@@ -1462,7 +1462,7 @@ export const projectRouter = router({
 });
 
 // services/project.service.ts
-import { type PrismaClient, type Project, type User } from "@cognobserve/db";
+import { type PrismaClient, type Project, type User } from "@ducsigr/db";
 import { type CreateProjectInput } from "../schemas/project";
 import { AppError } from "../errors/app-error";
 
@@ -1585,20 +1585,20 @@ Before submitting code, verify:
 **Frontend:**
 - [ ] Components are < 150 lines
 - [ ] Business logic is in hooks, not components
-- [ ] Using shared types from `@cognobserve/db` or `@cognobserve/api/schemas`
+- [ ] Using shared types from `@ducsigr/db` or `@ducsigr/api/schemas`
 - [ ] Domain-specific components are in domain folders
 - [ ] No direct `toast()` calls - using `@/lib/errors` and `@/lib/success`
 
 **Backend:**
 - [ ] Routers are thin (< 20 lines per procedure)
 - [ ] Business logic is in service files
-- [ ] Using shared types from `@cognobserve/db`
+- [ ] Using shared types from `@ducsigr/db`
 - [ ] Schemas are in `schemas/` directory
 - [ ] Errors use `AppError` with proper codes
 
 **Shared:**
 - [ ] No type duplication across packages
-- [ ] Types flow: `proto/*.proto` → `@cognobserve/proto` → `@cognobserve/db` → apps
+- [ ] Types flow: `proto/*.proto` → `@ducsigr/proto` → `@ducsigr/db` → apps
 - [ ] Zod schemas are source of truth for input validation
 
 ## UI Components (shadcn/ui)
@@ -1852,7 +1852,7 @@ When adding new response methods:
 ## Quick Reference for Claude
 
 ### Key Locations
-- **Proto definitions**: `proto/cognobserve/v1/` → run `make proto` after edits
+- **Proto definitions**: `proto/ducsigr/v1/` → run `make proto` after edits
 - **Database schema**: `packages/db/prisma/schema.prisma`
 - **Ingest service**: `apps/ingest-node/` (Express, OTLP ingestion)
 - **Full documentation**: `/docs` folder
@@ -1860,7 +1860,7 @@ When adding new response methods:
 ### Critical Rules (MUST Follow)
 | Rule | What to Do | What NOT to Do |
 |------|-----------|----------------|
-| **Types** | Import from `@cognobserve/db`, `@cognobserve/api/schemas`, `@cognobserve/proto` | Duplicate types, import from `@prisma/client` |
+| **Types** | Import from `@ducsigr/db`, `@ducsigr/api/schemas`, `@ducsigr/proto` | Duplicate types, import from `@prisma/client` |
 | **Unknown Data** | Use Zod `safeParse()` for API responses, JSON parsing | Type assertions (`as`), manual type checking |
 | **Toasts** | Use `@/lib/errors` and `@/lib/success` | Import `toast` from "sonner" directly |
 | **API Responses** | Use `@/lib/api-responses` and `@/lib/webhook-responses` | Use `NextResponse.json()` directly |
@@ -1883,7 +1883,7 @@ When adding new response methods:
 - Use "industry standard" or "industry best practices"
 - Use "similar platforms" or "comparable solutions"
 - Use "common patterns" or "typical implementations"
-- Focus on CognObserve's own features and roadmap
+- Focus on Ducsigr's own features and roadmap
 
 ```markdown
 # ❌ BAD

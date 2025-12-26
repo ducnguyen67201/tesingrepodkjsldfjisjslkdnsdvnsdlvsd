@@ -31,7 +31,7 @@ import {
   FilterChips,
   QuickFilterChips,
 } from "./filters-v2";
-import type { FilterField, FilterOperator, FilterExpression } from "@cognobserve/api/schemas";
+import type { FilterField, FilterOperator, FilterExpression } from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

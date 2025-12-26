@@ -1,12 +1,12 @@
 /**
- * Basic example demonstrating the CognObserve SDK
+ * Basic example demonstrating the Ducsigr SDK
  *
  * Run with: npx tsx examples/basic.ts
  */
-import { CognObserve } from '../src/index';
+import { Ducsigr } from '../src/index';
 
 // Initialize the SDK
-CognObserve.init({
+Ducsigr.init({
   apiKey: 'co_test_key', // Use your actual API key
   endpoint: 'http://localhost:8080', // Local ingest service
   debug: true,
@@ -16,7 +16,7 @@ async function main() {
   console.log('Starting trace...\n');
 
   // Create a trace
-  const trace = CognObserve.startTrace({
+  const trace = Ducsigr.startTrace({
     name: 'example-trace',
     metadata: { environment: 'development' },
   });
@@ -54,8 +54,8 @@ async function main() {
   console.log(`Spans: ${trace.spanCount}`);
 
   // Flush and shutdown
-  await CognObserve.flush();
-  await CognObserve.shutdown();
+  await Ducsigr.flush();
+  await Ducsigr.shutdown();
 }
 
 function sleep(ms: number): Promise<void> {

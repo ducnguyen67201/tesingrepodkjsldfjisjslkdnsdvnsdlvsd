@@ -5,7 +5,7 @@ tools: Read, Glob, Grep, Task, Bash, Edit, Write
 model: opus
 ---
 
-# CognObserve Executor
+# Ducsigr Executor
 
 You orchestrate feature implementation by **spawning specialized agents in parallel**.
 
@@ -74,7 +74,7 @@ Task 2 - Backend Developer:
   2. packages/api/src/services/{domain}.service.ts - Business logic
   3. packages/api/src/routers/{domain}.ts - Thin router
 
-  Follow CognObserve conventions:
+  Follow Ducsigr conventions:
   - Zod schemas as source of truth
   - Static class methods in service
   - Router < 20 lines per procedure
@@ -91,7 +91,7 @@ Task 2 - Backend Developer:
 After both agents complete:
 
 ```bash
-pnpm --filter @cognobserve/api test
+pnpm --filter @ducsigr/api test
 ```
 
 If tests fail, spawn backend-dev again to fix.
@@ -166,7 +166,7 @@ I'm spawning test-writer and backend-dev agents in parallel:
 ### Test Writer Prompt
 
 ```
-You are test-writer for CognObserve.
+You are test-writer for Ducsigr.
 
 ## Task
 Write comprehensive vitest tests for the {domain} router.
@@ -179,7 +179,7 @@ packages/api/src/routers/__tests__/{domain}.test.ts
 
 ## Pattern to Follow
 1. Mock Prisma before imports:
-   vi.mock("@cognobserve/db", () => ({ prisma: { ... } }))
+   vi.mock("@ducsigr/db", () => ({ prisma: { ... } }))
 
 2. Create fixtures with MOCK_ prefix
 
@@ -200,10 +200,10 @@ packages/api/src/routers/__tests__/extensions.test.ts
 ### Backend Developer Prompt
 
 ```
-You are backend-dev for CognObserve.
+You are backend-dev for Ducsigr.
 
 ## Task
-Implement the {domain} API following CognObserve conventions.
+Implement the {domain} API following Ducsigr conventions.
 
 ## Files to Create
 
@@ -233,7 +233,7 @@ Implement the {domain} API following CognObserve conventions.
 ### Frontend Developer Prompt
 
 ```
-You are frontend-dev for CognObserve.
+You are frontend-dev for Ducsigr.
 
 ## Task
 Implement the {domain} frontend following conventions.

@@ -1,6 +1,6 @@
-# Self-Hosting CognObserve
+# Self-Hosting Ducsigr
 
-CognObserve can be self-hosted with two deployment options:
+Ducsigr can be self-hosted with two deployment options:
 
 1. **Quick Start** - Single container, zero configuration
 2. **Production** - Docker Compose with separate services
@@ -9,7 +9,7 @@ CognObserve can be self-hosted with two deployment options:
 
 ## Quick Start (Recommended for Evaluation)
 
-Get CognObserve running locally in under 2 minutes.
+Get Ducsigr running locally in under 2 minutes.
 
 ### Prerequisites
 
@@ -21,23 +21,23 @@ Get CognObserve running locally in under 2 minutes.
 
 ```bash
 # Clone the repository
-git clone https://github.com/cognobserve/cognobserve.git
-cd cognobserve
+git clone https://github.com/ducsigr/ducsigr.git
+cd ducsigr
 
 # Build the quickstart image
-docker build -f Dockerfile.quickstart -t cognobserve:quickstart .
+docker build -f Dockerfile.quickstart -t ducsigr:quickstart .
 ```
 
 > **Note:** The build takes 5-10 minutes on first run.
 
-### Step 2: Run CognObserve
+### Step 2: Run Ducsigr
 
 ```bash
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  cognobserve:quickstart
+  -v ducsigr_data:/data \
+  ducsigr:quickstart
 ```
 
 ### Step 3: Wait for Startup
@@ -51,7 +51,7 @@ The container needs about 60 seconds to initialize:
 Check the logs:
 
 ```bash
-docker logs -f cognobserve
+docker logs -f ducsigr
 ```
 
 You'll see this when ready:
@@ -59,7 +59,7 @@ You'll see this when ready:
 ```
 ========================================================
 
-   CognObserve is ready!
+   Ducsigr is ready!
 
    Dashboard:    http://localhost:3000
    Ingest API:   http://localhost:8080
@@ -98,12 +98,12 @@ Open http://localhost:3000 in your browser.
 Example with custom URL:
 
 ```bash
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
+  -v ducsigr_data:/data \
   -e NEXTAUTH_URL="https://observe.example.com" \
-  cognobserve:quickstart
+  ducsigr:quickstart
 ```
 
 ---
@@ -144,9 +144,9 @@ curl -X POST http://localhost:8080/v1/traces \
 ### Using Python SDK
 
 ```python
-from cognobserve import CognObserve
+from ducsigr import Ducsigr
 
-client = CognObserve(
+client = Ducsigr(
     api_key="YOUR_API_KEY",
     project_id="YOUR_PROJECT_ID",
     host="http://localhost:8080"
@@ -190,7 +190,7 @@ The worker connects to the same PostgreSQL, Redis, and Temporal services.
 ### Check Container Health
 
 ```bash
-docker inspect cognobserve --format='{{.State.Health.Status}}'
+docker inspect ducsigr --format='{{.State.Health.Status}}'
 # Expected: healthy
 ```
 
@@ -204,7 +204,7 @@ curl http://localhost:8080/health
 ### Check Services Status
 
 ```bash
-docker exec cognobserve supervisorctl status
+docker exec ducsigr supervisorctl status
 ```
 
 Expected output:
@@ -238,18 +238,18 @@ Your data persists across container restarts as long as you use the same volume.
 
 ```bash
 # Stop and remove container (keeps data)
-docker stop cognobserve && docker rm cognobserve
+docker stop ducsigr && docker rm ducsigr
 
 # Pull latest code and rebuild
 git pull
-docker build -f Dockerfile.quickstart -t cognobserve:quickstart .
+docker build -f Dockerfile.quickstart -t ducsigr:quickstart .
 
 # Restart with same volume
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  cognobserve:quickstart
+  -v ducsigr_data:/data \
+  ducsigr:quickstart
 ```
 
 ---
@@ -260,40 +260,40 @@ docker run -d --name cognobserve \
 
 ```bash
 # Stop container
-docker stop cognobserve
+docker stop ducsigr
 
 # Backup the entire data volume
 docker run --rm \
-  -v cognobserve_data:/data \
+  -v ducsigr_data:/data \
   -v $(pwd):/backup \
-  alpine tar czf /backup/cognobserve-backup-$(date +%Y%m%d).tar.gz /data
+  alpine tar czf /backup/ducsigr-backup-$(date +%Y%m%d).tar.gz /data
 
 # Restart
-docker start cognobserve
+docker start ducsigr
 ```
 
 ### Restore
 
 ```bash
 # Stop and remove container
-docker stop cognobserve && docker rm cognobserve
+docker stop ducsigr && docker rm ducsigr
 
 # Remove old volume
-docker volume rm cognobserve_data
+docker volume rm ducsigr_data
 
 # Create new volume and restore
-docker volume create cognobserve_data
+docker volume create ducsigr_data
 docker run --rm \
-  -v cognobserve_data:/data \
+  -v ducsigr_data:/data \
   -v $(pwd):/backup \
-  alpine tar xzf /backup/cognobserve-backup-YYYYMMDD.tar.gz -C /
+  alpine tar xzf /backup/ducsigr-backup-YYYYMMDD.tar.gz -C /
 
 # Start container
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  cognobserve:quickstart
+  -v ducsigr_data:/data \
+  ducsigr:quickstart
 ```
 
 ---
@@ -305,7 +305,7 @@ docker run -d --name cognobserve \
 Check logs for errors:
 
 ```bash
-docker logs cognobserve
+docker logs ducsigr
 ```
 
 Common issues:
@@ -318,13 +318,13 @@ Common issues:
 Check individual service status:
 
 ```bash
-docker exec cognobserve supervisorctl status
+docker exec ducsigr supervisorctl status
 ```
 
 Restart a specific service:
 
 ```bash
-docker exec cognobserve supervisorctl restart application:web
+docker exec ducsigr supervisorctl restart application:web
 ```
 
 ### Database connection issues
@@ -332,28 +332,28 @@ docker exec cognobserve supervisorctl restart application:web
 Check PostgreSQL is running:
 
 ```bash
-docker exec cognobserve pg_isready -h localhost -U cognobserve
+docker exec ducsigr pg_isready -h localhost -U ducsigr
 ```
 
 ### View generated secrets
 
 ```bash
-docker exec cognobserve cat /data/secrets/.env
+docker exec ducsigr cat /data/secrets/.env
 ```
 
 ### Reset everything
 
 ```bash
 # Remove container and all data
-docker stop cognobserve && docker rm cognobserve
-docker volume rm cognobserve_data
+docker stop ducsigr && docker rm ducsigr
+docker volume rm ducsigr_data
 
 # Start fresh
-docker run -d --name cognobserve \
+docker run -d --name ducsigr \
   -p 3000:3000 \
   -p 8080:8080 \
-  -v cognobserve_data:/data \
-  cognobserve:quickstart
+  -v ducsigr_data:/data \
+  ducsigr:quickstart
 ```
 
 ---
@@ -364,7 +364,7 @@ docker run -d --name cognobserve \
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              cognobserve:quickstart                     │
+│              ducsigr:quickstart                     │
 │  ┌─────────────────────────────────────────────────┐   │
 │  │               supervisord                        │   │
 │  └─────────────────────────────────────────────────┘   │
@@ -396,4 +396,4 @@ For production deployments with separate services, horizontal scaling, and high 
 
 ## Support
 
-- GitHub Issues: https://github.com/cognobserve/cognobserve/issues
+- GitHub Issues: https://github.com/ducsigr/ducsigr/issues

@@ -6,7 +6,7 @@
 
 import { prisma, Prisma } from "../src/index.js";
 
-const SYSTEM_USER_EMAIL = "system@cognobserve.internal";
+const SYSTEM_USER_EMAIL = "system@ducsigr.internal";
 
 interface ExtensionSeed {
   slug: string;
@@ -20,18 +20,18 @@ interface ExtensionSeed {
 
 const EXTENSIONS: ExtensionSeed[] = [
   {
-    slug: "cognobserve.theme.default",
+    slug: "ducsigr.theme.default",
     name: "Default Theme",
-    description: "The default CognObserve theme with customizable colors and fonts.",
+    description: "The default Ducsigr theme with customizable colors and fonts.",
     type: "THEME",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.theme.default",
+      id: "ducsigr.theme.default",
       name: "Default Theme",
       version: "1.0.0",
       type: "THEME",
-      description: "The default CognObserve theme.",
+      description: "The default Ducsigr theme.",
       permissions: ["ui:theme"],
       configSchema: {
         type: "object",
@@ -49,14 +49,14 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
-    slug: "cognobserve.theme.dark-mode",
+    slug: "ducsigr.theme.dark-mode",
     name: "Dark Mode Enhanced",
     description: "Enhanced dark theme optimized for low-light environments with high contrast options.",
     type: "THEME",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.theme.dark-mode",
+      id: "ducsigr.theme.dark-mode",
       name: "Dark Mode Enhanced",
       version: "1.0.0",
       type: "THEME",
@@ -72,14 +72,14 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
-    slug: "cognobserve.theme.pink",
+    slug: "ducsigr.theme.pink",
     name: "Pink Sakura",
     description: "A vibrant pink theme inspired by cherry blossoms.",
     type: "THEME",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.theme.pink",
+      id: "ducsigr.theme.pink",
       name: "Pink Sakura",
       version: "1.0.0",
       type: "THEME",
@@ -94,14 +94,14 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
-    slug: "cognobserve.ingestion.pii-scrubber",
+    slug: "ducsigr.ingestion.pii-scrubber",
     name: "PII Scrubber",
     description: "Automatically detects and redacts personally identifiable information from traces.",
     type: "INGESTION",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.ingestion.pii-scrubber",
+      id: "ducsigr.ingestion.pii-scrubber",
       name: "PII Scrubber",
       version: "1.0.0",
       type: "INGESTION",
@@ -122,14 +122,14 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
-    slug: "cognobserve.ingestion.cost-enricher",
+    slug: "ducsigr.ingestion.cost-enricher",
     name: "Cost Enricher",
     description: "Automatically calculates and adds cost metadata to LLM spans based on model pricing.",
     type: "INGESTION",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.ingestion.cost-enricher",
+      id: "ducsigr.ingestion.cost-enricher",
       name: "Cost Enricher",
       version: "1.0.0",
       type: "INGESTION",
@@ -148,14 +148,14 @@ const EXTENSIONS: ExtensionSeed[] = [
     },
   },
   {
-    slug: "cognobserve.ingestion.latency-tagger",
+    slug: "ducsigr.ingestion.latency-tagger",
     name: "Latency Tagger",
     description: "Tags spans with latency categories (fast, normal, slow, critical) for easier filtering.",
     type: "INGESTION",
     visibility: "PUBLIC",
     version: "1.0.0",
     manifest: {
-      id: "cognobserve.ingestion.latency-tagger",
+      id: "ducsigr.ingestion.latency-tagger",
       name: "Latency Tagger",
       version: "1.0.0",
       type: "INGESTION",
@@ -192,7 +192,7 @@ async function getOrCreateSystemUser(): Promise<string> {
   const user = await prisma.user.create({
     data: {
       email: SYSTEM_USER_EMAIL,
-      name: "CognObserve System",
+      name: "Ducsigr System",
     },
     select: { id: true },
   });

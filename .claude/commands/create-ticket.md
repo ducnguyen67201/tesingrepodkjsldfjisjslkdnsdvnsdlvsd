@@ -138,7 +138,7 @@ Write comprehensive tests for {domain} API (TDD approach)
 
 ## Run Tests
 ```bash
-pnpm --filter @cognobserve/api test -- --run {domain}.test.ts
+pnpm --filter @ducsigr/api test -- --run {domain}.test.ts
 ```
 EOF
 )" \

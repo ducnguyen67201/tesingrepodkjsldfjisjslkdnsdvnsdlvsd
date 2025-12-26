@@ -3,7 +3,7 @@
  *
  * Sample OTLP payloads for testing the ingestion pipeline.
  */
-import type { OtlpExportRequest } from "@cognobserve/api/schemas";
+import type { OtlpExportRequest } from "@ducsigr/api/schemas";
 
 /**
  * Generate a random hex string of given length

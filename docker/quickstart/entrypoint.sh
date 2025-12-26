@@ -1,7 +1,7 @@
 #!/bin/bash
 # docker/quickstart/entrypoint.sh
 #
-# CognObserve Quick Start Entrypoint
+# Ducsigr Quick Start Entrypoint
 # Handles: First-run setup, secret generation, database init, migrations
 
 set -e
@@ -15,7 +15,7 @@ echo "  ██║     ██║   ██║██║   ██║██║╚█�
 echo "  ╚██████╗╚██████╔╝╚██████╔╝██║ ╚████║                 "
 echo "   ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝                 "
 echo "                                                        "
-echo "            CognObserve Quick Start                     "
+echo "            Ducsigr Quick Start                     "
 echo "                                                        "
 echo "========================================================"
 echo ""
@@ -49,7 +49,7 @@ if [ ! -f "$SECRETS_FILE" ]; then
     POSTGRES_PASSWORD=$(openssl rand -hex 16)
 
     cat > "$SECRETS_FILE" << EOF
-# CognObserve Auto-Generated Secrets
+# Ducsigr Auto-Generated Secrets
 # Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 # WARNING: Do not edit unless you know what you're doing
 
@@ -58,11 +58,11 @@ NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
 INTERNAL_API_SECRET=$INTERNAL_API_SECRET
 JWT_SHARED_SECRET=$JWT_SHARED_SECRET
 POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-DATABASE_URL=postgresql://cognobserve:$POSTGRES_PASSWORD@localhost:5432/cognobserve
+DATABASE_URL=postgresql://ducsigr:$POSTGRES_PASSWORD@localhost:5432/ducsigr
 REDIS_URL=redis://localhost:6379
 TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS:-localhost:7233}
 TEMPORAL_NAMESPACE=${TEMPORAL_NAMESPACE:-default}
-TEMPORAL_TASK_QUEUE=${TEMPORAL_TASK_QUEUE:-cognobserve-tasks}
+TEMPORAL_TASK_QUEUE=${TEMPORAL_TASK_QUEUE:-ducsigr-tasks}
 WEB_API_URL=http://localhost:3000
 EOF
 
@@ -106,9 +106,9 @@ EOF
     sleep 3
 
     # Create user and database
-    su postgres -c "psql -c \"CREATE USER cognobserve WITH PASSWORD '$POSTGRES_PASSWORD';\""
-    su postgres -c "psql -c \"CREATE DATABASE cognobserve OWNER cognobserve;\""
-    su postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE cognobserve TO cognobserve;\""
+    su postgres -c "psql -c \"CREATE USER ducsigr WITH PASSWORD '$POSTGRES_PASSWORD';\""
+    su postgres -c "psql -c \"CREATE DATABASE ducsigr OWNER ducsigr;\""
+    su postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ducsigr TO ducsigr;\""
 
     # Stop PostgreSQL (supervisor will start it)
     su postgres -c "pg_ctl -D /data/postgresql stop"
@@ -144,7 +144,7 @@ SUPERVISOR_PID=$!
 echo "  -> Waiting for PostgreSQL..."
 MAX_RETRIES=30
 RETRY=0
-until pg_isready -h localhost -p 5432 -U cognobserve -q 2>/dev/null; do
+until pg_isready -h localhost -p 5432 -U ducsigr -q 2>/dev/null; do
     RETRY=$((RETRY + 1))
     if [ $RETRY -ge $MAX_RETRIES ]; then
         echo "ERROR: PostgreSQL failed to start"
@@ -206,7 +206,7 @@ touch "$INIT_MARKER"
 echo ""
 echo "========================================================"
 echo "                                                        "
-echo "   CognObserve is ready!                                "
+echo "   Ducsigr is ready!                                "
 echo "                                                        "
 echo "   Dashboard:    http://localhost:3000                  "
 echo "   Ingest API:   http://localhost:8080                  "

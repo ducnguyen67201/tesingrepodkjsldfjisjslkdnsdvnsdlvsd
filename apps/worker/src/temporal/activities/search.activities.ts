@@ -13,7 +13,7 @@ import {
   prisma,
   searchSimilarChunks,
   searchSimilarChunksWithPatterns,
-} from "@cognobserve/db";
+} from "@ducsigr/db";
 import type {
   SearchCodebaseInput,
   SearchCodebaseOutput,

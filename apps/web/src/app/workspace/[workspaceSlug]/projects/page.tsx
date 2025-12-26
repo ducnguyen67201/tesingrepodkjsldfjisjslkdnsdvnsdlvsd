@@ -31,7 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { trpc } from "@/lib/trpc/client";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
 import { cn } from "@/lib/utils";
-import type { ProjectListItem } from "@cognobserve/api/client";
+import type { ProjectListItem } from "@ducsigr/api/client";
 
 export default function WorkspaceProjectsPage() {
   const router = useRouter();

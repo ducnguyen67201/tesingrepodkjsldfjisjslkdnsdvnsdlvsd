@@ -1,4 +1,4 @@
-import type { IndexStatus } from "@cognobserve/api/schemas";
+import type { IndexStatus } from "@ducsigr/api/schemas";
 
 export type { IndexStatus };
 

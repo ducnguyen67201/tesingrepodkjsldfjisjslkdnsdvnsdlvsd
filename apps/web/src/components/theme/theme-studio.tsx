@@ -25,7 +25,7 @@ import {
   type AllowedFont,
   DEFAULT_CSS_VARS,
   DEFAULT_THEME,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

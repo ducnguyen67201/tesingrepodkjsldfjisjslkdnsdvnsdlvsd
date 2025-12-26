@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-Migrate the CognObserve worker from Redis-based queue processing (LPUSH/BRPOP) to Temporal workflow orchestration. This provides better reliability, visibility, retry handling, and support for long-running tasks like LLM evaluations.
+Migrate the Ducsigr worker from Redis-based queue processing (LPUSH/BRPOP) to Temporal workflow orchestration. This provides better reliability, visibility, retry handling, and support for long-running tasks like LLM evaluations.
 
 ---
 
@@ -98,7 +98,7 @@ services:
 
   temporal:
     image: temporalio/auto-setup:1.24
-    container_name: cognobserve-temporal
+    container_name: ducsigr-temporal
     ports:
       - "7233:7233"
     environment:
@@ -113,7 +113,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - cognobserve-network
+      - ducsigr-network
     healthcheck:
       test: ["CMD", "tctl", "cluster", "health"]
       interval: 10s
@@ -122,7 +122,7 @@ services:
 
   temporal-ui:
     image: temporalio/ui:2.26
-    container_name: cognobserve-temporal-ui
+    container_name: ducsigr-temporal-ui
     ports:
       - "8088:8080"
     environment:
@@ -131,17 +131,17 @@ services:
     depends_on:
       - temporal
     networks:
-      - cognobserve-network
+      - ducsigr-network
 
   temporal-admin-tools:
     image: temporalio/admin-tools:1.24
-    container_name: cognobserve-temporal-admin
+    container_name: ducsigr-temporal-admin
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
     depends_on:
       - temporal
     networks:
-      - cognobserve-network
+      - ducsigr-network
     stdin_open: true
     tty: true
 ```
@@ -160,8 +160,8 @@ system.forceSearchAttributesCacheRefreshOnRead:
 ```bash
 # .env additions
 TEMPORAL_ADDRESS=localhost:7233
-TEMPORAL_NAMESPACE=cognobserve
-TEMPORAL_TASK_QUEUE=cognobserve-tasks
+TEMPORAL_NAMESPACE=ducsigr
+TEMPORAL_TASK_QUEUE=ducsigr-tasks
 ```
 
 ---
@@ -231,8 +231,8 @@ export async function createWorker(): Promise<Worker> {
 
 ```typescript
 // apps/worker/src/temporal/activities/trace.activities.ts
-import { prisma } from "@cognobserve/db";
-import { calculateSpanCost } from "@cognobserve/api/lib/cost";
+import { prisma } from "@ducsigr/db";
+import { calculateSpanCost } from "@ducsigr/api/lib/cost";
 
 export interface PersistTraceInput {
   id: string;

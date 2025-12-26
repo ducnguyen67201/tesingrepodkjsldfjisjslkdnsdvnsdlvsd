@@ -1,4 +1,4 @@
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { NextResponse } from "next/server";
 
 interface ServiceHealth {

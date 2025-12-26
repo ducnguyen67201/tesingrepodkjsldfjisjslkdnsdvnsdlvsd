@@ -9,13 +9,13 @@
 
 ## 1. Executive Summary
 
-This specification defines a simple Node.js demo application that demonstrates CognObserve's observability capabilities. The app makes real HTTP API calls, integrates with OpenTelemetry (OTLP) for automatic instrumentation, and uses the `@cognobserve/sdk` to send traces to the ingest service.
+This specification defines a simple Node.js demo application that demonstrates Ducsigr's observability capabilities. The app makes real HTTP API calls, integrates with OpenTelemetry (OTLP) for automatic instrumentation, and uses the `@ducsigr/sdk` to send traces to the ingest service.
 
 ### Goals
 
 1. **Demonstrate Real Data Flow** - Show traces from external API calls (weather, quotes, jokes APIs)
 2. **OpenTelemetry Integration** - Native OTLP instrumentation with auto-propagation
-3. **CognObserve SDK Usage** - Manual tracing with `@cognobserve/sdk` for LLM-style spans
+3. **Ducsigr SDK Usage** - Manual tracing with `@ducsigr/sdk` for LLM-style spans
 4. **End-to-End Visibility** - Traces flow: Demo App → Ingest Service → PostgreSQL → Web Dashboard
 
 ### Non-Goals
@@ -170,7 +170,7 @@ apps/ingest-demo/
 
 ```json
 {
-  "name": "@cognobserve/ingest-demo",
+  "name": "@ducsigr/ingest-demo",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -180,7 +180,7 @@ apps/ingest-demo/
   },
   "dependencies": {
     "express": "^4.21.0",
-    "@cognobserve/sdk": "workspace:*",
+    "@ducsigr/sdk": "workspace:*",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.50.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
@@ -200,10 +200,10 @@ apps/ingest-demo/
 
 ```bash
 # Required
-COGNOBSERVE_API_KEY=co_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+DUCSIGR_API_KEY=co_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Optional (defaults shown)
-COGNOBSERVE_ENDPOINT=http://localhost:8080
+DUCSIGR_ENDPOINT=http://localhost:8080
 PORT=3005
 OTEL_SERVICE_NAME=ingest-demo
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:8080
@@ -242,7 +242,7 @@ const resource = new Resource({
 });
 
 const traceExporter = new OTLPTraceExporter({
-  url: `${config.cognobserveEndpoint}/v1/traces`,
+  url: `${config.ducsigrEndpoint}/v1/traces`,
   headers: {
     'Authorization': `Bearer ${config.apiKey}`,
   },
@@ -276,7 +276,7 @@ export function initTelemetry(): void {
 }
 ```
 
-### 5.2 CognObserve SDK Usage (`src/routes/llm-mock.ts`)
+### 5.2 Ducsigr SDK Usage (`src/routes/llm-mock.ts`)
 
 ```typescript
 /**
@@ -288,7 +288,7 @@ export function initTelemetry(): void {
  * - Input/output capture
  */
 import { Router } from 'express';
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 export const llmRouter = Router();
 
@@ -296,7 +296,7 @@ llmRouter.post('/mock-llm', async (req, res) => {
   const { prompt = 'Hello, how are you?' } = req.body;
 
   // Create a trace for the LLM operation
-  const trace = CognObserve.startTrace({
+  const trace = Ducsigr.startTrace({
     name: 'llm.chat.completion',
     metadata: {
       source: 'ingest-demo',
@@ -356,7 +356,7 @@ llmRouter.post('/mock-llm', async (req, res) => {
 
     // End trace and flush
     trace.end();
-    await CognObserve.flush();
+    await Ducsigr.flush();
 
     res.json({
       success: true,
@@ -370,7 +370,7 @@ llmRouter.post('/mock-llm', async (req, res) => {
 
   } catch (error) {
     trace.end();
-    await CognObserve.flush();
+    await Ducsigr.flush();
 
     res.status(500).json({
       success: false,
@@ -492,7 +492,7 @@ weatherRouter.get('/weather', async (req, res) => {
 /**
  * Ingest Demo Server
  *
- * Simple Express server demonstrating CognObserve tracing
+ * Simple Express server demonstrating Ducsigr tracing
  */
 import express from 'express';
 import path from 'path';
@@ -502,7 +502,7 @@ import { fileURLToPath } from 'url';
 import { initTelemetry } from './telemetry.js';
 initTelemetry();
 
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 import { config } from './config.js';
 import { weatherRouter } from './routes/weather.js';
 import { quotesRouter } from './routes/quotes.js';
@@ -511,10 +511,10 @@ import { llmRouter } from './routes/llm-mock.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Initialize CognObserve SDK
-CognObserve.init({
+// Initialize Ducsigr SDK
+Ducsigr.init({
   apiKey: config.apiKey,
-  endpoint: config.cognobserveEndpoint,
+  endpoint: config.ducsigrEndpoint,
   debug: config.environment === 'development',
 });
 
@@ -538,14 +538,14 @@ app.use('/api/llm', llmRouter);
 // Start server
 app.listen(config.port, () => {
   console.log(`[Server] Ingest Demo running on http://localhost:${config.port}`);
-  console.log(`[Server] Sending traces to ${config.cognobserveEndpoint}`);
+  console.log(`[Server] Sending traces to ${config.ducsigrEndpoint}`);
 });
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
   console.log('[Server] Shutting down...');
-  await CognObserve.flush();
-  await CognObserve.shutdown();
+  await Ducsigr.flush();
+  await Ducsigr.shutdown();
   process.exit(0);
 });
 ```
@@ -558,7 +558,7 @@ process.on('SIGINT', async () => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CognObserve Ingest Demo</title>
+  <title>Ducsigr Ingest Demo</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -608,7 +608,7 @@ process.on('SIGINT', async () => {
   </style>
 </head>
 <body>
-  <h1>CognObserve Ingest Demo</h1>
+  <h1>Ducsigr Ingest Demo</h1>
   <p>Click buttons to generate traces that are sent to the ingest service.</p>
 
   <div class="card">
@@ -627,7 +627,7 @@ process.on('SIGINT', async () => {
 
   <div class="card">
     <h2>LLM Mock (SDK Manual Tracing)</h2>
-    <p>Simulates an LLM call with token usage tracking via @cognobserve/sdk.</p>
+    <p>Simulates an LLM call with token usage tracking via @ducsigr/sdk.</p>
     <button onclick="callLLM()">Call Mock LLM</button>
   </div>
 
@@ -797,8 +797,8 @@ cd apps/ingest-demo
 pnpm install
 
 # Set environment variables
-export COGNOBSERVE_API_KEY=co_your_api_key_here
-export COGNOBSERVE_ENDPOINT=http://localhost:8080
+export DUCSIGR_API_KEY=co_your_api_key_here
+export DUCSIGR_ENDPOINT=http://localhost:8080
 
 # Start in development mode
 pnpm dev
@@ -853,7 +853,7 @@ pnpm dev
 
 ## 11. Related Documentation
 
-- [CognObserve SDK Documentation](../../../packages/sdk/README.md)
+- [Ducsigr SDK Documentation](../../../packages/sdk/README.md)
 - [Ingest Service Spec](./168_INGEST_NODE_POSTGRES_SPEC.md)
-- [OTLP Proto Definitions](../../../proto/cognobserve/v1/)
+- [OTLP Proto Definitions](../../../proto/ducsigr/v1/)
 - [Quickstart Guide](../../QUICKSTART.md)

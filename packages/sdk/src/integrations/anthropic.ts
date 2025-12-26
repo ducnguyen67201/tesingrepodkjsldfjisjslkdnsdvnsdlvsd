@@ -1,4 +1,4 @@
-import { CognObserve } from '../cognobserve';
+import { Ducsigr } from '../ducsigr';
 import { getActiveTrace } from '../context';
 import type { Trace } from '../trace';
 import type { Span } from '../span';
@@ -19,7 +19,7 @@ type AnthropicClient = {
  * @example
  * ```typescript
  * import Anthropic from '@anthropic-ai/sdk';
- * import { wrapAnthropic } from '@cognobserve/sdk/integrations';
+ * import { wrapAnthropic } from '@ducsigr/sdk/integrations';
  *
  * const anthropic = wrapAnthropic(new Anthropic());
  *
@@ -48,7 +48,7 @@ export function wrapAnthropic<T extends AnthropicClient>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-messages`,
       });
       shouldEndTrace = true;
@@ -138,7 +138,7 @@ export function wrapAnthropic<T extends AnthropicClient>(
       let shouldEndTrace = false;
 
       if (!trace && opts.createTrace) {
-        trace = CognObserve.startTrace({
+        trace = Ducsigr.startTrace({
           name: `${opts.tracePrefix}-messages-stream`,
         });
         shouldEndTrace = true;

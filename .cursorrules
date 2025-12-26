@@ -1,7 +1,7 @@
-# CognObserve - Claude Code Context
+# Ducsigr - Claude Code Context
 
 ## Project Overview
-CognObserve is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
+Ducsigr is an AI Platform Monitoring & Observability system. It provides tracing, monitoring, and analytics for AI/LLM applications.
 
 ## Tech Stack
 - **Monorepo**: pnpm 9.15 workspaces + Turborepo 2.5
@@ -16,16 +16,16 @@ CognObserve is an AI Platform Monitoring & Observability system. It provides tra
 
 ## Project Structure
 ```
-CognObserve/
+Ducsigr/
 ├── proto/                       # Protobuf definitions (source of truth)
-│   └── cognobserve/v1/
+│   └── Ducsigr/v1/
 │       ├── common.proto         # Shared types (TokenUsage, SpanLevel)
 │       ├── trace.proto          # Trace, Span, Project, ApiKey
 │       └── ingest.proto         # Ingestion API messages
 ├── apps/
 │   ├── web/                     # Next.js dashboard & API
 │   │   └── src/app/
-│   ├── ingest/                  # Go ingestion service (github.com/cognobserve/ingest)
+│   ├── ingest/                  # Go ingestion service (github.com/Ducsigr/ingest)
 │   │   ├── cmd/ingest/          # Entry point
 │   │   └── internal/
 │   │       ├── config/          # Configuration
@@ -33,7 +33,7 @@ CognObserve/
 │   │       ├── model/           # Internal models
 │   │       ├── queue/           # Redis queue producer
 │   │       ├── server/          # HTTP server setup
-│   │       └── proto/cognobservev1/  # Generated Go types
+│   │       └── proto/Ducsigrv1/  # Generated Go types
 │   └── worker/                  # Background job processing
 ├── packages/
 │   ├── proto/                   # Generated TypeScript types
@@ -211,7 +211,7 @@ export const ERROR_MESSAGES = {
 - **Store schemas in `packages/api/src/schemas/`** - Centralized location for shared types
 - **Never hardcode constants for enums/unions** - Define as Zod schema, derive constants from it
 - **Export both schema and inferred type** - `export const MySchema = z.enum([...]); export type My = z.infer<typeof MySchema>;`
-- **Client components**: Import from `@cognobserve/api/schemas` (NOT `@cognobserve/api`) to avoid server-side deps
+- **Client components**: Import from `@Ducsigr/api/schemas` (NOT `@Ducsigr/api`) to avoid server-side deps
 
 ```typescript
 // BAD - Hardcoded constants without schema
@@ -235,7 +235,7 @@ export const isValidRole = (role: string): role is ProjectRole => {
 };
 
 // Client component usage (avoids server-side deps)
-import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+import { WORKSPACE_ADMIN_ROLES } from "@Ducsigr/api/schemas";
 ```
 
 ### Zod for Runtime Validation (CRITICAL)
@@ -687,7 +687,7 @@ if result.RowsAffected == 0 { return ErrNotFound }
           │                                    │
           ▼                                    ▼
 ┌──────────────────────┐              ┌──────────────────────┐
-│  @cognobserve/proto  │              │   @cognobserve/db    │
+│  @Ducsigr/proto  │              │   @Ducsigr/db    │
 │  (Generated TS/Go)   │              │  (Prisma Client)     │
 └──────────────────────┘              └──────────────────────┘
           │                                    │
@@ -695,13 +695,13 @@ if result.RowsAffected == 0 { return ErrNotFound }
           │         │                          │
           ▼         ▼                          ▼
 ┌──────────────────────┐              ┌──────────────────────┐
-│  @cognobserve/api    │              │     apps/web         │
+│  @Ducsigr/api    │              │     apps/web         │
 │  (tRPC + Schemas)    │──────────────│   (Next.js App)      │
 └──────────────────────┘              └──────────────────────┘
           │
           ▼
 ┌──────────────────────┐
-│ @cognobserve/api/    │  ← Client-safe imports (no server deps)
+│ @Ducsigr/api/    │  ← Client-safe imports (no server deps)
 │     schemas          │
 └──────────────────────┘
 
@@ -720,19 +720,19 @@ interface Project {
 import { Project } from "@prisma/client";  // Direct Prisma import
 
 // ✅ GOOD - Use shared packages
-import { type Project, type Trace, type Span } from "@cognobserve/db";
-import { type ProjectRole, ProjectRoleSchema } from "@cognobserve/api/schemas";
-import { type IngestRequest } from "@cognobserve/proto";
+import { type Project, type Trace, type Span } from "@Ducsigr/db";
+import { type ProjectRole, ProjectRoleSchema } from "@Ducsigr/api/schemas";
+import { type IngestRequest } from "@Ducsigr/proto";
 ```
 
 **Available shared packages:**
 | Package | Purpose | Example Imports |
 |---------|---------|-----------------|
-| `@cognobserve/db` | Database types & Prisma client | `Project`, `Trace`, `Span`, `ApiKey`, `prisma` |
-| `@cognobserve/api/schemas` | Zod schemas & derived types (client-safe) | `ProjectRoleSchema`, `AlertTypeSchema` |
-| `@cognobserve/api` | tRPC routers & server utilities | `appRouter`, `createContext` |
-| `@cognobserve/proto` | Protobuf-generated types | `IngestRequest`, `TokenUsage` |
-| `@cognobserve/shared` | Cross-app utilities | `formatDuration`, `parseError` |
+| `@Ducsigr/db` | Database types & Prisma client | `Project`, `Trace`, `Span`, `ApiKey`, `prisma` |
+| `@Ducsigr/api/schemas` | Zod schemas & derived types (client-safe) | `ProjectRoleSchema`, `AlertTypeSchema` |
+| `@Ducsigr/api` | tRPC routers & server utilities | `appRouter`, `createContext` |
+| `@Ducsigr/proto` | Protobuf-generated types | `IngestRequest`, `TokenUsage` |
+| `@Ducsigr/shared` | Cross-app utilities | `formatDuration`, `parseError` |
 
 ### Frontend Architecture
 
@@ -964,7 +964,7 @@ export const projectRouter = router({
 });
 
 // services/project.service.ts
-import { type PrismaClient, type Project, type User } from "@cognobserve/db";
+import { type PrismaClient, type Project, type User } from "@Ducsigr/db";
 import { type CreateProjectInput } from "../schemas/project";
 import { AppError } from "../errors/app-error";
 
@@ -1087,20 +1087,20 @@ Before submitting code, verify:
 **Frontend:**
 - [ ] Components are < 150 lines
 - [ ] Business logic is in hooks, not components
-- [ ] Using shared types from `@cognobserve/db` or `@cognobserve/api/schemas`
+- [ ] Using shared types from `@Ducsigr/db` or `@Ducsigr/api/schemas`
 - [ ] Domain-specific components are in domain folders
 - [ ] No direct `toast()` calls - using `@/lib/errors` and `@/lib/success`
 
 **Backend:**
 - [ ] Routers are thin (< 20 lines per procedure)
 - [ ] Business logic is in service files
-- [ ] Using shared types from `@cognobserve/db`
+- [ ] Using shared types from `@Ducsigr/db`
 - [ ] Schemas are in `schemas/` directory
 - [ ] Errors use `AppError` with proper codes
 
 **Shared:**
 - [ ] No type duplication across packages
-- [ ] Types flow: `proto/*.proto` → `@cognobserve/proto` → `@cognobserve/db` → apps
+- [ ] Types flow: `proto/*.proto` → `@Ducsigr/proto` → `@Ducsigr/db` → apps
 - [ ] Zod schemas are source of truth for input validation
 
 ## UI Components (shadcn/ui)
@@ -1322,15 +1322,15 @@ const handleCopy = async (text: string) => {
 ## Quick Reference for Claude
 
 ### Key Locations
-- **Proto definitions**: `proto/cognobserve/v1/` → run `make proto` after edits
+- **Proto definitions**: `proto/Ducsigr/v1/` → run `make proto` after edits
 - **Database schema**: `packages/db/prisma/schema.prisma`
-- **Go ingest service**: `apps/ingest/` (chi router, module: `github.com/cognobserve/ingest`)
+- **Go ingest service**: `apps/ingest/` (chi router, module: `github.com/Ducsigr/ingest`)
 - **Full documentation**: `/docs` folder
 
 ### Critical Rules (MUST Follow)
 | Rule | What to Do | What NOT to Do |
 |------|-----------|----------------|
-| **Types** | Import from `@cognobserve/db`, `@cognobserve/api/schemas`, `@cognobserve/proto` | Duplicate types, import from `@prisma/client` |
+| **Types** | Import from `@Ducsigr/db`, `@Ducsigr/api/schemas`, `@Ducsigr/proto` | Duplicate types, import from `@prisma/client` |
 | **Unknown Data** | Use Zod `safeParse()` for API responses, JSON parsing | Type assertions (`as`), manual type checking |
 | **Toasts** | Use `@/lib/errors` and `@/lib/success` | Import `toast` from "sonner" directly |
 | **UI** | Use shadcn/ui from `@/components/ui/` | Write custom CSS for standard elements |
@@ -1349,7 +1349,7 @@ const handleCopy = async (text: string) => {
 - Use "industry standard" or "industry best practices"
 - Use "similar platforms" or "comparable solutions"
 - Use "common patterns" or "typical implementations"
-- Focus on CognObserve's own features and roadmap
+- Focus on Ducsigr's own features and roadmap
 
 ```markdown
 # ❌ BAD
@@ -1370,5 +1370,5 @@ pnpm dlx shadcn@latest add <component>  # Run from apps/web/
 
 ### Go Imports
 ```go
-import pb "github.com/cognobserve/ingest/internal/proto/cognobservev1"
+import pb "github.com/Ducsigr/ingest/internal/proto/Ducsigrv1"
 ```

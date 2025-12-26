@@ -8,7 +8,7 @@ import {
   type ExtensionType,
   type ExtensionPermission,
   type ExtensionVisibility,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // ============================================================================
 // Types

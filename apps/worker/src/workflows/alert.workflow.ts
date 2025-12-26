@@ -22,7 +22,7 @@ import {
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
 import type { AlertWorkflowInput, AlertWorkflowState } from "../temporal/types";
-import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@cognobserve/shared";
+import { ACTIVITY_RETRY, WORKFLOW_TIMEOUTS } from "@ducsigr/shared";
 import { rcaAnalysisWorkflow, type RCAAnalysisWorkflowInput } from "./rca-analysis.workflow";
 
 // ============================================================

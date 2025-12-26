@@ -143,7 +143,7 @@ export function useLogSeverityStats(workspaceSlug: string, projectId?: string) {
 // V2 Hooks - Advanced Filtering with LogFilterExpression
 // ============================================================================
 
-import type { LogFilterExpression } from "@cognobserve/api/schemas";
+import type { LogFilterExpression } from "@ducsigr/api/schemas";
 
 export interface LogFiltersV2 {
   filter?: LogFilterExpression;

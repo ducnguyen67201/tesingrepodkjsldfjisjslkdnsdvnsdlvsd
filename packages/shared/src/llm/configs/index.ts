@@ -18,8 +18,8 @@ export { productionConfig } from "./production";
  *
  * @example
  * ```typescript
- * import { getConfig } from "@cognobserve/shared/llm/configs";
- * import { createLLMCenter } from "@cognobserve/shared/llm";
+ * import { getConfig } from "@ducsigr/shared/llm/configs";
+ * import { createLLMCenter } from "@ducsigr/shared/llm";
  *
  * const llm = createLLMCenter(getConfig());
  * ```

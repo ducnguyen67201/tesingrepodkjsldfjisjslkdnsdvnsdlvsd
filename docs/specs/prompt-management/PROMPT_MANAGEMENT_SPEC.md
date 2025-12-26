@@ -161,10 +161,10 @@ Optional:
 
 ## 9. SDK API Design
 
-Add a prompts client to `@cognobserve/sdk`:
+Add a prompts client to `@ducsigr/sdk`:
 
 ```ts
-const prompt = await CognObserve.prompts.get("movie-critic", {
+const prompt = await Ducsigr.prompts.get("movie-critic", {
   label: "production",
   type: "text",
 });

@@ -36,7 +36,7 @@ router.post("/jokes", async (_req: Request, res: Response) => {
     const response = await fetch("https://icanhazdadjoke.com/", {
       headers: {
         Accept: "application/json",
-        "User-Agent": "CognObserve-Demo/1.0",
+        "User-Agent": "Ducsigr-Demo/1.0",
       },
     });
 

@@ -1,6 +1,6 @@
 # Type System
 
-CognObserve uses two type systems that serve different purposes:
+Ducsigr uses two type systems that serve different purposes:
 
 ## Overview
 
@@ -40,7 +40,7 @@ CognObserve uses two type systems that serve different purposes:
 ### Source Files
 
 ```
-proto/cognobserve/v1/
+proto/ducsigr/v1/
 ├── common.proto     # Shared types: TokenUsage, SpanLevel
 ├── trace.proto      # Core types: Trace, Span, Project, ApiKey
 └── ingest.proto     # API types: IngestTraceRequest/Response
@@ -71,7 +71,7 @@ export interface IngestTraceRequest {
 }
 ```
 
-**Go** (`apps/ingest/internal/proto/cognobservev1/`):
+**Go** (`apps/ingest/internal/proto/ducsigrv1/`):
 ```go
 // Auto-generated - do not edit
 type Trace struct {
@@ -87,7 +87,7 @@ type Trace struct {
 
 **TypeScript (SDK/Worker)**:
 ```typescript
-import { IngestTraceRequest, Trace } from "@cognobserve/proto";
+import { IngestTraceRequest, Trace } from "@ducsigr/proto";
 
 const request: IngestTraceRequest = {
   name: "my-trace",
@@ -97,7 +97,7 @@ const request: IngestTraceRequest = {
 
 **Go (Ingest)**:
 ```go
-import pb "github.com/cognobserve/ingest/internal/proto/cognobservev1"
+import pb "github.com/ducsigr/ingest/internal/proto/ducsigrv1"
 
 trace := &pb.Trace{
     Id:   "123",
@@ -110,17 +110,17 @@ trace := &pb.Trace{
 The Go ingest service uses a clean module path for shorter imports:
 
 ```go
-// Module: github.com/cognobserve/ingest
+// Module: github.com/ducsigr/ingest
 
 // Internal packages
-import "github.com/cognobserve/ingest/internal/config"
-import "github.com/cognobserve/ingest/internal/handler"
-import "github.com/cognobserve/ingest/internal/model"
-import "github.com/cognobserve/ingest/internal/queue"
-import "github.com/cognobserve/ingest/internal/server"
+import "github.com/ducsigr/ingest/internal/config"
+import "github.com/ducsigr/ingest/internal/handler"
+import "github.com/ducsigr/ingest/internal/model"
+import "github.com/ducsigr/ingest/internal/queue"
+import "github.com/ducsigr/ingest/internal/server"
 
 // Generated proto types
-import pb "github.com/cognobserve/ingest/internal/proto/cognobservev1"
+import pb "github.com/ducsigr/ingest/internal/proto/ducsigrv1"
 ```
 
 ## Prisma
@@ -171,7 +171,7 @@ export type Prisma.TraceCreateInput = {
 ### Usage
 
 ```typescript
-import { prisma, Trace, Prisma } from "@cognobserve/db";
+import { prisma, Trace, Prisma } from "@ducsigr/db";
 
 // Query with full type safety
 const traces: Trace[] = await prisma.trace.findMany({
@@ -230,7 +230,7 @@ function convertTrace(data: QueueTraceData): Prisma.TraceCreateInput {
 
 ```bash
 # 1. Edit proto file
-vim proto/cognobserve/v1/trace.proto
+vim proto/ducsigr/v1/trace.proto
 
 # 2. Regenerate
 make proto
@@ -272,6 +272,6 @@ export interface Trace { ... }  // ❌ Redundant, will drift
 **Good:**
 ```typescript
 // Import from generated sources
-import { Trace } from "@cognobserve/proto";      // ✅ API types
-import { Trace } from "@cognobserve/db";         // ✅ DB types
+import { Trace } from "@ducsigr/proto";      // ✅ API types
+import { Trace } from "@ducsigr/db";         // ✅ DB types
 ```

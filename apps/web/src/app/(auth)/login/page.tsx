@@ -14,15 +14,15 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata = {
-  title: "Sign In - CognObserve",
-  description: "Sign in to your CognObserve account",
+  title: "Sign In - Ducsigr",
+  description: "Sign in to your Ducsigr account",
 };
 
 export default function LoginPage() {
   return (
     <Card>
       <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold">CognObserve</CardTitle>
+        <CardTitle className="text-2xl font-bold">Ducsigr</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

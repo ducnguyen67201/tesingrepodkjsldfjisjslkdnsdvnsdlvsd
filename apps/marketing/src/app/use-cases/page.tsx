@@ -549,7 +549,7 @@ export default function UseCasesPage() {
             style={{ color: COLORS.ink.secondary }}
           >
             Whether you&apos;re building AI applications, scaling microservices, or
-            managing event-driven systems—CognObserve gives you the visibility you need.
+            managing event-driven systems—Ducsigr gives you the visibility you need.
           </p>
 
           {/* Quick links */}
@@ -610,7 +610,7 @@ export default function UseCasesPage() {
               className="font-display text-3xl md:text-4xl font-bold mb-4"
               style={{ color: COLORS.ink.primary }}
             >
-              Why teams choose CognObserve
+              Why teams choose Ducsigr
             </h2>
             <p className="text-lg" style={{ color: COLORS.ink.secondary }}>
               Everything you need to ship with confidence
@@ -661,7 +661,7 @@ export default function UseCasesPage() {
               className="text-lg mb-8 max-w-xl mx-auto"
               style={{ color: COLORS.ink.secondary }}
             >
-              Book a personalized demo and discover how CognObserve can transform
+              Book a personalized demo and discover how Ducsigr can transform
               your observability stack.
             </p>
 

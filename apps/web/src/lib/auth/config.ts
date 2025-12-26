@@ -1,8 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
-import { prisma } from "@cognobserve/db";
-import { extractDomainFromEmail } from "@cognobserve/api";
+import { prisma } from "@ducsigr/db";
+import { extractDomainFromEmail } from "@ducsigr/api";
 import { providers } from "./providers";
 import { env } from "../env";
 

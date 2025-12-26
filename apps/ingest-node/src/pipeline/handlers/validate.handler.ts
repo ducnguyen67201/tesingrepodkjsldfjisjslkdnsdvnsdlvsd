@@ -15,7 +15,7 @@ import type {
   HandlerResult,
 } from "../types.js";
 import { PipelineErrorCodes } from "../types.js";
-import type { NormalizedSpan } from "@cognobserve/api/schemas";
+import type { NormalizedSpan } from "@ducsigr/api/schemas";
 
 /** Validation error details */
 interface ValidationError {

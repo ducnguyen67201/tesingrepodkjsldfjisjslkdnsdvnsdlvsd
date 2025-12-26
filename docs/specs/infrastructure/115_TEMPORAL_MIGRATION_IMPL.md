@@ -24,7 +24,7 @@
 
 ## 1. Overview
 
-Migrate the CognObserve worker from Redis-based queue processing (LPUSH/BRPOP) to Temporal workflow orchestration for better reliability, visibility, retry handling, and long-running task support.
+Migrate the Ducsigr worker from Redis-based queue processing (LPUSH/BRPOP) to Temporal workflow orchestration for better reliability, visibility, retry handling, and long-running task support.
 
 ### Current vs Target Architecture
 
@@ -158,7 +158,7 @@ services:
 
   temporal:
     image: temporalio/auto-setup:1.24
-    container_name: cognobserve-temporal
+    container_name: ducsigr-temporal
     ports:
       - "7233:7233"
     environment:
@@ -174,7 +174,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - cognobserve-network
+      - ducsigr-network
     healthcheck:
       test: ["CMD", "tctl", "cluster", "health"]
       interval: 10s
@@ -183,7 +183,7 @@ services:
 
   temporal-ui:
     image: temporalio/ui:2.26
-    container_name: cognobserve-temporal-ui
+    container_name: ducsigr-temporal-ui
     ports:
       - "8088:8080"
     environment:
@@ -192,7 +192,7 @@ services:
     depends_on:
       - temporal
     networks:
-      - cognobserve-network
+      - ducsigr-network
 ```
 
 ### 3.2 Temporal Config
@@ -216,8 +216,8 @@ frontend.enableClientVersionCheck:
 ```bash
 # Temporal Configuration
 TEMPORAL_ADDRESS=localhost:7233
-TEMPORAL_NAMESPACE=cognobserve
-TEMPORAL_TASK_QUEUE=cognobserve-tasks
+TEMPORAL_NAMESPACE=ducsigr
+TEMPORAL_TASK_QUEUE=ducsigr-tasks
 USE_TEMPORAL_WORKFLOWS=false
 ```
 
@@ -247,8 +247,8 @@ Add Temporal configuration to existing schema:
 ```typescript
 // Add to server schema
 TEMPORAL_ADDRESS: z.string().default("localhost:7233"),
-TEMPORAL_NAMESPACE: z.string().default("cognobserve"),
-TEMPORAL_TASK_QUEUE: z.string().default("cognobserve-tasks"),
+TEMPORAL_NAMESPACE: z.string().default("ducsigr"),
+TEMPORAL_TASK_QUEUE: z.string().default("ducsigr-tasks"),
 USE_TEMPORAL_WORKFLOWS: z
   .string()
   .transform((val) => val === "true")
@@ -268,8 +268,8 @@ USE_TEMPORAL_WORKFLOWS: process.env.USE_TEMPORAL_WORKFLOWS,
 ```typescript
 export const TEMPORAL = {
   DEFAULT_ADDRESS: "localhost:7233",
-  DEFAULT_NAMESPACE: "cognobserve",
-  DEFAULT_TASK_QUEUE: "cognobserve-tasks",
+  DEFAULT_NAMESPACE: "ducsigr",
+  DEFAULT_TASK_QUEUE: "ducsigr-tasks",
   WORKFLOWS: {
     TRACE: "traceWorkflow",
     SCORE: "scoreWorkflow",
@@ -301,8 +301,8 @@ export const WORKFLOW_TIMEOUTS = {
 ```go
 // Add to Config struct
 TemporalAddress      string `env:"TEMPORAL_ADDRESS" envDefault:"localhost:7233"`
-TemporalNamespace    string `env:"TEMPORAL_NAMESPACE" envDefault:"cognobserve"`
-TemporalTaskQueue    string `env:"TEMPORAL_TASK_QUEUE" envDefault:"cognobserve-tasks"`
+TemporalNamespace    string `env:"TEMPORAL_NAMESPACE" envDefault:"ducsigr"`
+TemporalTaskQueue    string `env:"TEMPORAL_TASK_QUEUE" envDefault:"ducsigr-tasks"`
 UseTemporalWorkflows bool   `env:"USE_TEMPORAL_WORKFLOWS" envDefault:"false"`
 ```
 
@@ -528,7 +528,7 @@ export * from "./activities";
 > **NOTE:** Activities are READ-ONLY for database. All mutations go through tRPC internal procedures.
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type { TraceWorkflowInput } from "../types";
 
@@ -641,7 +641,7 @@ export async function getTraceDetails(traceId: string): Promise<{
 > **NOTE:** Activities are READ-ONLY for database. All mutations go through tRPC internal procedures.
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 import type { ScoreWorkflowInput } from "../types";
 
@@ -689,9 +689,9 @@ export async function getScoreConfig(configId: string) {
 > **NOTE:** Activities are READ-ONLY for database. All mutations go through tRPC internal procedures.
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
-import { getMetric } from "@cognobserve/api/lib/alerting";
+import { getMetric } from "@ducsigr/api/lib/alerting";
 import type { AlertEvaluationResult, AlertStateTransition } from "../types";
 
 /**
@@ -1143,8 +1143,8 @@ import { resolve } from "path";
 
 config({ path: resolve(__dirname, "../../../.env") });
 
-import { prisma } from "@cognobserve/db";
-import { QUEUE_KEYS } from "@cognobserve/shared";
+import { prisma } from "@ducsigr/db";
+import { QUEUE_KEYS } from "@ducsigr/shared";
 import { env } from "./lib/env";
 import { QueueConsumer } from "./queue/consumer";
 import { TraceProcessor } from "./processors/trace";
@@ -1154,7 +1154,7 @@ import {
   MemoryTriggerQueue,
   SimpleDispatcher,
   IntervalScheduler,
-} from "@cognobserve/api/lib/alerting";
+} from "@ducsigr/api/lib/alerting";
 import {
   runTemporalWorker,
   shutdownTemporalWorker,
@@ -1164,7 +1164,7 @@ import {
 
 async function main() {
   console.log("========================================");
-  console.log("       CognObserve Worker Starting      ");
+  console.log("       Ducsigr Worker Starting      ");
   console.log("========================================");
   console.log(`Mode: ${isTemporalEnabled() ? "🚀 Temporal" : "📦 Redis Queue"}`);
   console.log(`Environment: ${env.NODE_ENV}`);

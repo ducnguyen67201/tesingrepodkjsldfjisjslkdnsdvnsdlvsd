@@ -15,7 +15,7 @@ import {
   SEVERITY_DEFAULTS,
   SEVERITY_LABELS,
   type AlertSeverity,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 interface SeveritySelectorProps {
   value: AlertSeverity;

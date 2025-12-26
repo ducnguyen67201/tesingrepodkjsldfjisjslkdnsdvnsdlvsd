@@ -129,7 +129,7 @@ export function createObserve(
 
     if (debug) {
       console.log(
-        `[CognObserve] observe("${spanName}") started, parent=${parentSpanId ?? 'root'}`
+        `[Ducsigr] observe("${spanName}") started, parent=${parentSpanId ?? 'root'}`
       );
     }
 
@@ -176,7 +176,7 @@ export function createObserve(
 
       if (debug) {
         console.log(
-          `[CognObserve] observe("${spanName}") completed in ${span.duration}ms`
+          `[Ducsigr] observe("${spanName}") completed in ${span.duration}ms`
         );
       }
 
@@ -194,7 +194,7 @@ export function createObserve(
       }
 
       if (debug) {
-        console.log(`[CognObserve] observe("${spanName}") failed: ${errorMessage}`);
+        console.log(`[Ducsigr] observe("${spanName}") failed: ${errorMessage}`);
       }
 
       throw error;

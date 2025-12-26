@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   createRouter,
   protectedProcedure,

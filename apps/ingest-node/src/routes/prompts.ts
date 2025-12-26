@@ -17,11 +17,11 @@ import { z } from "zod";
 import { prisma } from "../lib/db.js";
 import { logger } from "../lib/logger.js";
 import { rateLimitMiddleware } from "../middleware/rate-limit.js";
-import { hashApiKey } from "@cognobserve/shared";
+import { hashApiKey } from "@ducsigr/shared";
 import {
   type PromptLabelName,
   DEFAULT_FETCH_LABEL,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 export const promptsRouter: RouterType = Router();
 

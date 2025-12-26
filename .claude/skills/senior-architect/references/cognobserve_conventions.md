@@ -1,8 +1,8 @@
-# CognObserve Conventions Reference
+# Ducsigr Conventions Reference
 
 ## Overview
 
-This document contains all CognObserve-specific patterns and conventions. These are strictly enforced across the codebase.
+This document contains all Ducsigr-specific patterns and conventions. These are strictly enforced across the codebase.
 
 ---
 
@@ -80,7 +80,7 @@ Routers are thin - all business logic goes in services:
 // packages/api/src/routers/{domain}.ts
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -148,7 +148,7 @@ export const extensionsRouter = createTRPCRouter({
 ```typescript
 // packages/api/src/services/{domain}.service.ts
 import { TRPCError } from "@trpc/server";
-import { prisma, type Prisma } from "@cognobserve/db";
+import { prisma, type Prisma } from "@ducsigr/db";
 import type { CreateExtensionInput } from "../schemas/extensions";
 
 export class ExtensionService {
@@ -225,7 +225,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import { showError } from "@/lib/errors";
 import { extensionToast } from "@/lib/success";
-import type { CreateExtensionInput } from "@cognobserve/api/schemas";
+import type { CreateExtensionInput } from "@ducsigr/api/schemas";
 
 // Define return type interface
 interface UseExtensions {
@@ -395,7 +395,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { EXTENSION_TYPES, EXTENSION_TYPE_LABELS } from "@cognobserve/api/schemas";
+import { EXTENSION_TYPES, EXTENSION_TYPE_LABELS } from "@ducsigr/api/schemas";
 
 interface CreateExtensionDialogProps {
   open: boolean;
@@ -531,7 +531,7 @@ import { TRPCError } from "@trpc/server";
 import { createCallerFactory } from "../../trpc";
 
 // Mock BEFORE imports
-vi.mock("@cognobserve/db", () => ({
+vi.mock("@ducsigr/db", () => ({
   prisma: {
     extension: {
       findMany: vi.fn(),
@@ -544,7 +544,7 @@ vi.mock("@cognobserve/db", () => ({
   },
 }));
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { extensionsRouter } from "../extensions";
 
 // Fixtures
@@ -619,7 +619,7 @@ describe("extensionsRouter", () => {
 
 ```typescript
 // apps/worker/src/temporal/activities/{domain}.activities.ts
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 
 // ✅ READ operations are allowed
@@ -686,19 +686,19 @@ pnpm db:migrate --name add_user_preferences
 
 | Import | Source |
 |--------|--------|
-| Database types | `import { type Project } from "@cognobserve/db"` |
-| Prisma client | `import { prisma } from "@cognobserve/db"` |
-| Zod schemas | `import { ProjectRoleSchema } from "@cognobserve/api/schemas"` |
-| tRPC routers | `import { appRouter } from "@cognobserve/api"` |
-| Shared utilities | `import { ACTIVITY_RETRY } from "@cognobserve/shared"` |
-| LLM (activities only) | `import { getLLM } from "@cognobserve/shared/llm"` |
+| Database types | `import { type Project } from "@ducsigr/db"` |
+| Prisma client | `import { prisma } from "@ducsigr/db"` |
+| Zod schemas | `import { ProjectRoleSchema } from "@ducsigr/api/schemas"` |
+| tRPC routers | `import { appRouter } from "@ducsigr/api"` |
+| Shared utilities | `import { ACTIVITY_RETRY } from "@ducsigr/shared"` |
+| LLM (activities only) | `import { getLLM } from "@ducsigr/shared/llm"` |
 
 ### Frontend Client-Safe Imports
 
 ```typescript
 // For client components (avoid server-side deps)
-import { EXTENSION_TYPES, ExtensionTypeSchema } from "@cognobserve/api/schemas";
+import { EXTENSION_TYPES, ExtensionTypeSchema } from "@ducsigr/api/schemas";
 
 // NOT from main package
-// import { ... } from "@cognobserve/api";  // Has server deps
+// import { ... } from "@ducsigr/api";  // Has server deps
 ```

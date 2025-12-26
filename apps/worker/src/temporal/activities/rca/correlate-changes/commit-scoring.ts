@@ -4,7 +4,7 @@
  * Functions for scoring commits based on correlation signals.
  */
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   MIN_CORRELATION_SCORE,
   MAX_COMMITS_TO_ANALYZE,
@@ -14,7 +14,7 @@ import {
   calculatePathMatchScore,
   calculateCombinedScore,
   CORRELATION_WEIGHTS,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 import type { CorrelatedCommit, RelevantCodeChunk } from "../../../types";
 
 /**

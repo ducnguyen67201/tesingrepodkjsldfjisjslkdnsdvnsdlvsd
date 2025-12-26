@@ -30,7 +30,7 @@ Before making changes, read these files to understand current state:
 
 - Match existing formatting and structure
 - Use concrete code examples (BAD/GOOD pattern)
-- Keep it actionable and specific to CognObserve stack
+- Keep it actionable and specific to Ducsigr stack
 - Reference project conventions from CLAUDE.md when relevant
 - Be concise - no fluff
 

@@ -1,5 +1,5 @@
 {
-  "extends": "@cognobserve/config-typescript/base.json",
+  "extends": "@ducsigr/config-typescript/base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src"

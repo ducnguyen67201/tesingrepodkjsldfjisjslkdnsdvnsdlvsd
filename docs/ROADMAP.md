@@ -1,4 +1,4 @@
-# CognObserve Roadmap & Future Architecture
+# Ducsigr Roadmap & Future Architecture
 
 ## Current Architecture (Phase 1 - MVP)
 
@@ -171,7 +171,7 @@ queue:
     url: "redis://localhost:6379"
   redpanda:
     brokers: ["localhost:9092"]
-    topic: "cognobserve.traces"
+    topic: "ducsigr.traces"
 ```
 
 ---

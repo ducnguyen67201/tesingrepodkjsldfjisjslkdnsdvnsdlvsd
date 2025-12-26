@@ -4,7 +4,7 @@
  * Business logic for workspace overview dashboard - aggregated stats and activity feed.
  */
 
-import { prisma, Prisma } from "@cognobserve/db";
+import { prisma, Prisma } from "@ducsigr/db";
 import { timeRangeToDateRange } from "../schemas/dashboard";
 import type {
   GetWorkspaceStatsInput,

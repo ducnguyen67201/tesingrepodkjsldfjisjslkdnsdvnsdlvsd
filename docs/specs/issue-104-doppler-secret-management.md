@@ -29,7 +29,7 @@
 
 ### 1.1 Problem Statement
 
-Currently, CognObserve uses `.env` files for secret management:
+Currently, Ducsigr uses `.env` files for secret management:
 - Secrets are stored in plaintext in `.env` files
 - Developers must manually sync secrets across machines
 - No audit trail for secret access or changes
@@ -150,7 +150,7 @@ TEMPORAL_TASK_QUEUE
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        DOPPLER DASHBOARD                                │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
-│  │  cognobserve│  │  cognobserve│  │  cognobserve│  │  cognobserve│    │
+│  │  ducsigr│  │  ducsigr│  │  ducsigr│  │  ducsigr│    │
 │  │  -web       │  │  -ingest    │  │  -worker    │  │  -shared    │    │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘    │
 │         │                │                │                │           │
@@ -205,8 +205,8 @@ TEMPORAL_TASK_QUEUE
 - Each service's `env.ts` validates only the variables it needs
 
 ```
-Doppler Workspace: cognobserve
-└── cognobserve            # Single project with ALL secrets
+Doppler Workspace: ducsigr
+└── ducsigr            # Single project with ALL secrets
     ├── dev                # Local development
     ├── stg                # Staging environment
     └── prd                # Production environment
@@ -214,7 +214,7 @@ Doppler Workspace: cognobserve
 
 ### 4.2 All Secrets in Single Project
 
-All secrets go into the `cognobserve` project. Each service reads only what it needs:
+All secrets go into the `ducsigr` project. Each service reads only what it needs:
 
 | Secret | Used By | Required |
 |--------|---------|----------|
@@ -322,7 +322,7 @@ setup:
     "db:generate": "doppler run -- turbo db:generate",
     "db:generate:ci": "turbo db:generate",
     "db:push": "doppler run -- turbo db:push",
-    "db:studio": "doppler run -- pnpm --filter @cognobserve/db db:studio"
+    "db:studio": "doppler run -- pnpm --filter @ducsigr/db db:studio"
   }
 }
 ```
@@ -336,7 +336,7 @@ setup:
 
 # Development with Doppler
 dev:
-	doppler run -p cognobserve-ingest -c dev -- go run ./cmd/ingest
+	doppler run -p ducsigr-ingest -c dev -- go run ./cmd/ingest
 
 # Build binary
 build:
@@ -344,7 +344,7 @@ build:
 
 # Run tests with Doppler
 test:
-	doppler run -p cognobserve-ingest -c dev -- go test ./...
+	doppler run -p ducsigr-ingest -c dev -- go test ./...
 
 # Production run (expects DOPPLER_TOKEN env var)
 run-prod:
@@ -430,9 +430,9 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: cognobserve
-          POSTGRES_PASSWORD: cognobserve
-          POSTGRES_DB: cognobserve
+          POSTGRES_USER: ducsigr
+          POSTGRES_PASSWORD: ducsigr
+          POSTGRES_DB: ducsigr
         ports:
           - 5432:5432
 
@@ -538,7 +538,7 @@ version: "3.8"
 
 services:
   web:
-    image: cognobserve/web:latest
+    image: ducsigr/web:latest
     environment:
       - DOPPLER_TOKEN=${DOPPLER_TOKEN_WEB_PRD}
     ports:
@@ -548,7 +548,7 @@ services:
       - temporal
 
   ingest:
-    image: cognobserve/ingest:latest
+    image: ducsigr/ingest:latest
     environment:
       - DOPPLER_TOKEN=${DOPPLER_TOKEN_INGEST_PRD}
     ports:
@@ -557,7 +557,7 @@ services:
       - temporal
 
   worker:
-    image: cognobserve/worker:latest
+    image: ducsigr/worker:latest
     environment:
       - DOPPLER_TOKEN=${DOPPLER_TOKEN_WORKER_PRD}
     depends_on:
@@ -614,14 +614,14 @@ For Kubernetes deployments, use Doppler Kubernetes Operator:
 apiVersion: secrets.doppler.com/v1alpha1
 kind: DopplerSecret
 metadata:
-  name: cognobserve-web-secrets
+  name: ducsigr-web-secrets
 spec:
   tokenSecret:
     name: doppler-token-secret
   config: prd
-  project: cognobserve-web
+  project: ducsigr-web
   managedSecret:
-    name: cognobserve-web
+    name: ducsigr-web
     type: Opaque
 ```
 
@@ -683,10 +683,10 @@ _ = godotenv.Load("../../.env")
 **Remove dependencies:**
 ```bash
 # Remove from web
-pnpm remove dotenv --filter @cognobserve/web
+pnpm remove dotenv --filter @ducsigr/web
 
 # Remove from worker
-pnpm remove dotenv --filter @cognobserve/worker
+pnpm remove dotenv --filter @ducsigr/worker
 
 # Remove from Go
 cd apps/ingest && go mod tidy

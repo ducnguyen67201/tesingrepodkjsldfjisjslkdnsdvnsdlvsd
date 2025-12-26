@@ -1,7 +1,7 @@
 # TypeScript SDK - Engineering Specs
 
 **EPIC:** TypeScript SDK
-**Package:** `@cognobserve/sdk`
+**Package:** `@ducsigr/sdk`
 
 ---
 
@@ -26,8 +26,8 @@ flowchart TB
         Anthropic["Anthropic Client"]
     end
 
-    subgraph SDK["@cognobserve/sdk"]
-        CognObserve["CognObserve.init()"]
+    subgraph SDK["@ducsigr/sdk"]
+        Ducsigr["Ducsigr.init()"]
         Tracer["Tracer"]
         SpanManager["SpanManager"]
         Transport["Transport"]
@@ -38,11 +38,11 @@ flowchart TB
         end
     end
 
-    subgraph Backend["CognObserve Backend"]
+    subgraph Backend["Ducsigr Backend"]
         Ingest["Ingest Service (Go)"]
     end
 
-    UserCode --> CognObserve
+    UserCode --> Ducsigr
     UserCode --> Tracer
     OpenAI --> WrapOpenAI
     Anthropic --> WrapAnthropic
@@ -59,14 +59,14 @@ flowchart TB
 
 ### 1. Simple Initialization
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
-CognObserve.init({ apiKey: 'co_...' });
+Ducsigr.init({ apiKey: 'co_...' });
 ```
 
 ### 2. Context-Based Tracing
 ```typescript
-const trace = CognObserve.startTrace({ name: 'chat-completion' });
+const trace = Ducsigr.startTrace({ name: 'chat-completion' });
 const span = trace.startSpan({ name: 'openai-call' });
 // ... work
 span.end();
@@ -75,7 +75,7 @@ trace.end();
 
 ### 3. Automatic Instrumentation
 ```typescript
-import { wrapOpenAI } from '@cognobserve/sdk';
+import { wrapOpenAI } from '@ducsigr/sdk';
 
 const openai = wrapOpenAI(new OpenAI());
 // All calls automatically traced
@@ -169,7 +169,7 @@ packages/sdk/
 ├── tsup.config.ts            # Build config (ESM + CJS)
 ├── src/
 │   ├── index.ts              # Public exports
-│   ├── cognobserve.ts        # Main CognObserve class
+│   ├── ducsigr.ts        # Main Ducsigr class
 │   ├── config.ts             # Configuration
 │   ├── client.ts             # HTTP client
 │   ├── transport.ts          # Batching & sending
@@ -263,10 +263,10 @@ interface IngestTraceResponse {
 ### Environment Variables
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `COGNOBSERVE_API_KEY` | API key for authentication | - |
-| `COGNOBSERVE_ENDPOINT` | Ingest service URL | `https://ingest.cognobserve.com` |
-| `COGNOBSERVE_DEBUG` | Enable debug logging | `false` |
-| `COGNOBSERVE_DISABLED` | Disable SDK entirely | `false` |
+| `DUCSIGR_API_KEY` | API key for authentication | - |
+| `DUCSIGR_ENDPOINT` | Ingest service URL | `https://ingest.ducsigr.com` |
+| `DUCSIGR_DEBUG` | Enable debug logging | `false` |
+| `DUCSIGR_DISABLED` | Disable SDK entirely | `false` |
 
 ### Supported Runtimes
 - Node.js 18+
@@ -278,7 +278,7 @@ interface IngestTraceResponse {
 
 ## Definition of Done (Full SDK)
 
-- [ ] Published to npm as `@cognobserve/sdk`
+- [ ] Published to npm as `@ducsigr/sdk`
 - [ ] ESM and CJS builds working
 - [ ] TypeScript types included
 - [ ] Manual tracing API working

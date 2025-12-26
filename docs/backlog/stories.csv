@@ -102,8 +102,8 @@ Acceptance Criteria:
 "Install SDK via npm","As a developer, I can install the SDK via npm so that I can add it to my project.
 
 Acceptance Criteria:
-- Package published to npm as @cognobserve/sdk
-- npm install @cognobserve/sdk works
+- Package published to npm as @Ducsigr/sdk
+- npm install @Ducsigr/sdk works
 - TypeScript types included
 - ESM and CJS builds
 - Minimal dependencies
@@ -111,8 +111,8 @@ Acceptance Criteria:
 "Initialize SDK with API key","As a developer, I can initialize the SDK with my API key so that traces are authenticated.
 
 Acceptance Criteria:
-- CognObserve.init({ apiKey }) configures client
-- Environment variable fallback (COGNOBSERVE_API_KEY)
+- Ducsigr.init({ apiKey }) configures client
+- Environment variable fallback (Ducsigr_API_KEY)
 - Validates API key format
 - Configurable endpoint URL
 - Graceful handling of missing key",Story,Highest,3,"[EPIC] TypeScript SDK","sdk,init,config","Sprint 7"
@@ -147,8 +147,8 @@ Acceptance Criteria:
 "Install Python SDK via pip","As a Python developer, I can install the SDK via pip so that I can add it to my project.
 
 Acceptance Criteria:
-- Package published to PyPI as cognobserve
-- pip install cognobserve works
+- Package published to PyPI as Ducsigr
+- pip install Ducsigr works
 - Python 3.9+ supported
 - Type hints included (py.typed)
 - Minimal dependencies
@@ -156,8 +156,8 @@ Acceptance Criteria:
 "Initialize Python SDK with API key","As a Python developer, I can initialize the SDK with my API key so that traces are authenticated.
 
 Acceptance Criteria:
-- cognobserve.init(api_key=...) configures client
-- Environment variable fallback (COGNOBSERVE_API_KEY)
+- Ducsigr.init(api_key=...) configures client
+- Environment variable fallback (Ducsigr_API_KEY)
 - Validates API key format
 - Configurable endpoint URL
 - Context manager support",Story,Highest,3,"[EPIC] Python SDK","sdk,python,init","Sprint 9"
@@ -173,8 +173,8 @@ Acceptance Criteria:
 "Python decorator for tracing","As a Python developer, I can use decorators for tracing so that instrumentation is clean.
 
 Acceptance Criteria:
-- @cognobserve.trace decorator for functions
-- @cognobserve.span decorator for nested spans
+- @Ducsigr.trace decorator for functions
+- @Ducsigr.span decorator for nested spans
 - Works with sync and async functions
 - Captures function arguments (configurable)
 - Captures return values (configurable)
@@ -200,7 +200,7 @@ Acceptance Criteria:
 "Auto-trace LangChain","As a Python developer, I can integrate with LangChain for automatic tracing so that chains and agents are captured.
 
 Acceptance Criteria:
-- CognObserveCallbackHandler for LangChain
+- DucsigrCallbackHandler for LangChain
 - Traces LLM calls, chains, tools, agents
 - Captures intermediate steps
 - Works with LCEL (LangChain Expression Language)
@@ -208,7 +208,7 @@ Acceptance Criteria:
 "Auto-trace LlamaIndex","As a Python developer, I can integrate with LlamaIndex for automatic tracing so that queries are captured.
 
 Acceptance Criteria:
-- CognObserveSpanHandler for LlamaIndex
+- DucsigrSpanHandler for LlamaIndex
 - Traces query engines, retrievers, synthesizers
 - Captures retrieved documents
 - Captures LLM calls within index

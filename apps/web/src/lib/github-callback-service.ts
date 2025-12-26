@@ -6,7 +6,7 @@
  */
 
 import { jwtVerify } from "jose";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import {
   getStateSecret,
   fetchInstallationDetails,

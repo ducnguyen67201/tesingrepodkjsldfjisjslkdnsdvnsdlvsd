@@ -8,7 +8,7 @@
  */
 
 import { useMemo } from "react";
-import type { AttributeScope, FilterField } from "@cognobserve/api/schemas";
+import type { AttributeScope, FilterField } from "@ducsigr/api/schemas";
 import { trpc } from "@/lib/trpc/client";
 import {
   TRACE_FIELD_META,
@@ -220,7 +220,7 @@ interface UseFilterStatsOptions {
   /** Time range */
   timeRange: { from: string; to: string };
   /** Current filter to apply */
-  filter?: import("@cognobserve/api/schemas").FilterExpression;
+  filter?: import("@ducsigr/api/schemas").FilterExpression;
   /** Enable/disable */
   enabled?: boolean;
 }

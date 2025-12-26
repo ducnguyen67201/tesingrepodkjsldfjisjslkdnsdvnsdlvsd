@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Deploy CognObserve to **Railway** with:
+Deploy Ducsigr to **Railway** with:
 - **Neon PostgreSQL** (free tier) - Application database
 - **Temporal Cloud** (free tier) - Workflow orchestration
 - **Doppler** - Secret management (already integrated)
@@ -48,7 +48,7 @@ Deploy CognObserve to **Railway** with:
     ┌─────────────────┐         ┌─────────────────┐
     │   Railway Web   │         │ Railway Ingest  │
     │    (Next.js)    │         │      (Go)       │
-    │  cognobserve.io │         │ ingest.cogn...  │
+    │  ducsigr.io │         │ ingest.cogn...  │
     └────────┬────────┘         └────────┬────────┘
              │                           │
              │    ┌──────────────────────┘
@@ -86,12 +86,12 @@ Note: Worker activities are READ-ONLY. All mutations go through Web API.
 1. Go to [neon.tech](https://neon.tech)
 2. Sign up / Log in
 3. Create new project:
-   - **Name:** `cognobserve`
+   - **Name:** `ducsigr`
    - **Region:** `us-east-1` (or closest to you)
    - **Postgres version:** 16
 4. Copy the connection string:
    ```
-   postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/cognobserve?sslmode=require
+   postgresql://username:password@ep-xxx.us-east-1.aws.neon.tech/ducsigr?sslmode=require
    ```
 
 **Neon Free Tier Limits:**
@@ -106,11 +106,11 @@ Note: Worker activities are READ-ONLY. All mutations go through Web API.
 
 1. Go to [temporal.io/cloud](https://temporal.io/cloud)
 2. Sign up for free tier
-3. Create namespace: `cognobserve-prod`
+3. Create namespace: `ducsigr-prod`
 4. Note the connection details:
    ```
    Address: <namespace>.<account>.tmprl.cloud:7233
-   Namespace: cognobserve-prod
+   Namespace: ducsigr-prod
    ```
 5. Create API key for authentication
 
@@ -127,25 +127,25 @@ Note: Worker activities are READ-ONLY. All mutations go through Web API.
 You already have Doppler set up. Add/update these secrets in `prd` config:
 
 ```bash
-# Doppler Dashboard → cognobserve → prd
+# Doppler Dashboard → ducsigr → prd
 
 # Database (Neon)
-DATABASE_URL=postgresql://...@neon.tech/cognobserve?sslmode=require
+DATABASE_URL=postgresql://...@neon.tech/ducsigr?sslmode=require
 
 # Temporal Cloud
 TEMPORAL_ADDRESS=<namespace>.<account>.tmprl.cloud:7233
-TEMPORAL_NAMESPACE=cognobserve-prod
-TEMPORAL_TASK_QUEUE=cognobserve-tasks
+TEMPORAL_NAMESPACE=ducsigr-prod
+TEMPORAL_TASK_QUEUE=ducsigr-tasks
 TEMPORAL_API_KEY=<your-temporal-cloud-api-key>
 
 # Auth
-NEXTAUTH_URL=https://cognobserve.io
+NEXTAUTH_URL=https://ducsigr.io
 NEXTAUTH_SECRET=<generate-32-char-secret>
 
 # Cross-service
 INTERNAL_API_SECRET=<generate-32-char-secret>
 JWT_SHARED_SECRET=<generate-32-char-secret>
-WEB_API_URL=https://cognobserve.io
+WEB_API_URL=https://ducsigr.io
 
 # Optional OAuth
 AUTH_GOOGLE_ID=xxx
@@ -161,12 +161,12 @@ AUTH_GOOGLE_SECRET=xxx
 1. Go to [railway.app](https://railway.app)
 2. Sign up with GitHub
 3. Click **"New Project"** → **"Empty Project"**
-4. Name it: `cognobserve`
+4. Name it: `ducsigr`
 
 ### 2.2 Deploy Web Service
 
 1. Click **"+ New"** → **"GitHub Repo"**
-2. Select your `CognObserve` repository
+2. Select your `Ducsigr` repository
 3. Configure:
    - **Root Directory:** `/` (monorepo root)
    - **Watch Paths:** `apps/web/**`, `packages/**`
@@ -179,14 +179,14 @@ AUTH_GOOGLE_SECRET=xxx
 5. Set build & start commands (Settings → Build):
    ```
    # Build Command
-   curl -Ls https://cli.doppler.com/install.sh | sh && doppler run -- pnpm install && doppler run -- pnpm --filter @cognobserve/db generate && doppler run -- pnpm --filter @cognobserve/web build
+   curl -Ls https://cli.doppler.com/install.sh | sh && doppler run -- pnpm install && doppler run -- pnpm --filter @ducsigr/db generate && doppler run -- pnpm --filter @ducsigr/web build
 
    # Start Command
    doppler run -- node apps/web/.next/standalone/apps/web/server.js
    ```
 
 6. Add custom domain (Settings → Networking):
-   - `cognobserve.io`
+   - `ducsigr.io`
 
 ### 2.3 Deploy Ingest Service
 
@@ -211,7 +211,7 @@ AUTH_GOOGLE_SECRET=xxx
    ```
 
 6. Add custom domain:
-   - `ingest.cognobserve.io`
+   - `ingest.ducsigr.io`
 
 ### 2.4 Deploy Worker Service
 
@@ -229,7 +229,7 @@ AUTH_GOOGLE_SECRET=xxx
 5. Set build & start commands:
    ```
    # Build Command
-   curl -Ls https://cli.doppler.com/install.sh | sh && doppler run -- pnpm install && doppler run -- pnpm --filter @cognobserve/db generate && doppler run -- pnpm --filter @cognobserve/worker build
+   curl -Ls https://cli.doppler.com/install.sh | sh && doppler run -- pnpm install && doppler run -- pnpm --filter @ducsigr/db generate && doppler run -- pnpm --filter @ducsigr/worker build
 
    # Start Command
    doppler run -- node apps/worker/dist/index.js
@@ -250,7 +250,7 @@ import "./src/lib/env";
 
 const nextConfig: NextConfig = {
   output: "standalone",  // Required for Railway
-  transpilePackages: ["@cognobserve/shared", "@cognobserve/db"],
+  transpilePackages: ["@ducsigr/shared", "@ducsigr/db"],
 };
 
 export default nextConfig;
@@ -300,7 +300,7 @@ export const env = createEnv({
     // Temporal Configuration
     TEMPORAL_ADDRESS: z.string().default("localhost:7233"),
     TEMPORAL_NAMESPACE: z.string().default("default"),
-    TEMPORAL_TASK_QUEUE: z.string().default("cognobserve-tasks"),
+    TEMPORAL_TASK_QUEUE: z.string().default("ducsigr-tasks"),
     TEMPORAL_API_KEY: z.string().optional(), // For Temporal Cloud
   },
   // ...
@@ -316,7 +316,7 @@ type Config struct {
 
     TemporalAddress   string `env:"TEMPORAL_ADDRESS" envDefault:"localhost:7233"`
     TemporalNamespace string `env:"TEMPORAL_NAMESPACE" envDefault:"default"`
-    TemporalTaskQueue string `env:"TEMPORAL_TASK_QUEUE" envDefault:"cognobserve-tasks"`
+    TemporalTaskQueue string `env:"TEMPORAL_TASK_QUEUE" envDefault:"ducsigr-tasks"`
     TemporalAPIKey    string `env:"TEMPORAL_API_KEY"` // For Temporal Cloud
 }
 ```
@@ -347,7 +347,7 @@ export async function GET() {
 
 In Doppler Dashboard:
 
-1. Go to `cognobserve` project → `prd` config
+1. Go to `ducsigr` project → `prd` config
 2. Click **"Access"** → **"Service Tokens"**
 3. Create token: `railway-prd`
 4. Copy the token (starts with `dp.st.`)
@@ -365,11 +365,11 @@ For each Railway service (Web, Ingest, Worker):
 ### 5.1 Railway Domain Configuration
 
 1. **Web Service** → Settings → Networking → Custom Domain
-   - Add: `cognobserve.io`
+   - Add: `ducsigr.io`
    - Railway provides CNAME target
 
 2. **Ingest Service** → Settings → Networking → Custom Domain
-   - Add: `ingest.cognobserve.io`
+   - Add: `ingest.ducsigr.io`
    - Railway provides CNAME target
 
 ### 5.2 DNS Configuration
@@ -391,7 +391,7 @@ With Doppler configured, run migration locally:
 
 ```bash
 # From project root
-doppler run -c prd -- pnpm --filter @cognobserve/db db:push
+doppler run -c prd -- pnpm --filter @ducsigr/db db:push
 ```
 
 Or use Railway CLI:
@@ -473,8 +473,8 @@ railway up --service web
 
 ### Health Check URLs
 
-- Web: `https://cognobserve.io/api/health`
-- Ingest: `https://ingest.cognobserve.io/health`
+- Web: `https://ducsigr.io/api/health`
+- Ingest: `https://ingest.ducsigr.io/health`
 - Temporal: Via Temporal Cloud dashboard
 
 ---
@@ -482,7 +482,7 @@ railway up --service web
 ## File Changes Summary
 
 ```
-CognObserve/
+Ducsigr/
 ├── apps/
 │   ├── web/
 │   │   └── next.config.ts           # Add: output: 'standalone'
@@ -526,7 +526,7 @@ CognObserve/
 - [ ] Run Prisma migrations against Neon
 
 ### Phase 6: Verification (15 mins)
-- [ ] Access `https://cognobserve.io`
+- [ ] Access `https://ducsigr.io`
 - [ ] Test ingest endpoint
 - [ ] Check Temporal Cloud for workflow execution
 - [ ] Verify worker processes workflows
@@ -563,7 +563,7 @@ CognObserve/
 - [ ] Doppler `prd` config complete
 - [ ] Railway services deployed (Web, Ingest, Worker)
 - [ ] Custom domains configured with HTTPS
-- [ ] Can access `https://cognobserve.io`
-- [ ] Can POST traces to `https://ingest.cognobserve.io/v1/traces`
+- [ ] Can access `https://ducsigr.io`
+- [ ] Can POST traces to `https://ingest.ducsigr.io/v1/traces`
 - [ ] Workflows execute in Temporal Cloud
 - [ ] Auto-deploys working on push to main

@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime } from "@/lib/format";
-import type { RecentActivityItem, ActivityType, AlertSeverity } from "@cognobserve/api/schemas";
+import type { RecentActivityItem, ActivityType, AlertSeverity } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Constants

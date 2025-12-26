@@ -15,7 +15,7 @@
 
 ## Executive Summary
 
-This specification details the implementation of the Root Cause Analysis (RCA) Engine for CognObserve Sprint 3. When an alert fires, the system will automatically:
+This specification details the implementation of the Root Cause Analysis (RCA) Engine for Ducsigr Sprint 3. When an alert fires, the system will automatically:
 
 1. **Analyze traces** to extract error patterns and anomalies
 2. **Correlate with recent code changes** (commits/PRs) using vector similarity
@@ -459,7 +459,7 @@ pnpm db:push
 #### 3.1 Trace Analysis Activity
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { type RCAWorkflowInput, type TraceAnalysisOutput } from "../types";
 
 /**
@@ -641,7 +641,7 @@ function detectAnomalies(
 #### 3.2 Code Correlation Activity
 
 ```typescript
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getLLM } from "@/lib/llm-manager";
 import { searchSimilarChunks } from "./search.activities";
 import {
@@ -837,7 +837,7 @@ function calculatePathMatchScore(
 
 ```typescript
 import { getLLM } from "@/lib/llm-manager";
-import { LLMRCAOutputSchema } from "@cognobserve/api/schemas";
+import { LLMRCAOutputSchema } from "@ducsigr/api/schemas";
 import {
   type RCAWorkflowInput,
   type TraceAnalysisOutput,

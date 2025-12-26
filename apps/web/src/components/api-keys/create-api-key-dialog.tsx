@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { CreatedApiKey } from "@cognobserve/api/client";
+import type { CreatedApiKey } from "@ducsigr/api/client";
 
 interface CreateApiKeyDialogProps {
   open: boolean;

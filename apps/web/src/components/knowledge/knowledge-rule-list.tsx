@@ -36,7 +36,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useKnowledgeRules } from "@/hooks/use-knowledge-rules";
 import { KnowledgeRuleDialog } from "./knowledge-rule-dialog";
-import type { KnowledgeRuleScope } from "@cognobserve/api/schemas";
+import type { KnowledgeRuleScope } from "@ducsigr/api/schemas";
 
 interface KnowledgeRuleListProps {
   workspaceSlug: string;

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@/lib/form";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { CreateWorkspaceSchema, type CreateWorkspaceInput } from "@cognobserve/api/client";
+import { CreateWorkspaceSchema, type CreateWorkspaceInput } from "@ducsigr/api/client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

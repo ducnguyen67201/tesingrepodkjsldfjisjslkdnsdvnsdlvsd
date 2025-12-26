@@ -17,7 +17,7 @@ import { ApiKeyEmptyState } from "./api-key-empty-state";
 import { CreateApiKeyDialog } from "./create-api-key-dialog";
 import { ApiKeyCreatedDialog } from "./api-key-created-dialog";
 import { DeleteApiKeyDialog } from "./delete-api-key-dialog";
-import type { ApiKeyListItem, CreatedApiKey } from "@cognobserve/api/client";
+import type { ApiKeyListItem, CreatedApiKey } from "@ducsigr/api/client";
 import { toast } from "sonner";
 
 interface ApiKeyListProps {

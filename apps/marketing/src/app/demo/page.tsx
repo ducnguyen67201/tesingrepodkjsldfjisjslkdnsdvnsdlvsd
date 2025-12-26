@@ -97,7 +97,7 @@ export default function DemoPage() {
                 className="text-base leading-relaxed"
                 style={{ color: COLORS.ink.secondary }}
               >
-                See how CognObserve can transform your AI observability.
+                See how Ducsigr can transform your AI observability.
                 <br />
                 <span className="font-medium">No commitment required.</span>
               </p>

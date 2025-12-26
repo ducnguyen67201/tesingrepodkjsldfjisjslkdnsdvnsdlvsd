@@ -16,7 +16,7 @@ import type {
   TimeRangeInput,
   SearchScope,
   FieldPredicate,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 import {
   FILTER_V2_URL_PARAMS,
   compressFilterForUrl,

@@ -141,7 +141,7 @@ docker-logs:
 
 help:
 	@echo ""
-	@echo "CognObserve - AI Observability Platform"
+	@echo "Ducsigr - AI Observability Platform"
 	@echo ""
 	@echo "Quick Start:"
 	@echo "  make setup          - One command setup (recommended for new devs)"

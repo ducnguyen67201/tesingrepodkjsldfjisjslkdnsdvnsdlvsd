@@ -7,7 +7,7 @@
  * IMPORTANT: Follows READ-ONLY pattern - all storage via tRPC internal procedures.
  */
 
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { getInternalCaller } from "@/lib/trpc-caller";
 
 // ============================================

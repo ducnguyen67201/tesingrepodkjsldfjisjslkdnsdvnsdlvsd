@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { Lock, Plus } from "lucide-react";
 import { authOptions } from "@/lib/auth/config";
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { Button } from "@/components/ui/button";
 import {
   Card,

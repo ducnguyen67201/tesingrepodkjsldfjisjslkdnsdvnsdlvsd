@@ -1,6 +1,6 @@
 /**
  * API key utilities.
- * Re-exported from @cognobserve/shared with environment configuration.
+ * Re-exported from @ducsigr/shared with environment configuration.
  */
 import { env } from "./env";
 import {
@@ -15,7 +15,7 @@ import {
   getApiKeyConfig,
   isApiKeyConfigInitialized,
   type ApiKeyConfig,
-} from "@cognobserve/shared";
+} from "@ducsigr/shared";
 
 // Initialize API key config from environment variables
 setApiKeyConfig({

@@ -20,10 +20,10 @@ function getTemporalAddress(): string {
 
 /**
  * Get the Temporal task queue from environment.
- * Defaults to cognobserve-tasks.
+ * Defaults to ducsigr-tasks.
  */
 function getTaskQueue(): string {
-  return process.env.TEMPORAL_TASK_QUEUE ?? "cognobserve-tasks";
+  return process.env.TEMPORAL_TASK_QUEUE ?? "ducsigr-tasks";
 }
 
 /**

@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useProjectSummaries } from "@/hooks/use-dashboards";
 import { ProjectSummaryCard } from "./project-summary-card";
 import { TimeRangeFilter } from "./time-range-filter";
-import type { DashboardTimeRange } from "@cognobserve/api/schemas";
+import type { DashboardTimeRange } from "@ducsigr/api/schemas";
 
 // ============================================================
 // Props

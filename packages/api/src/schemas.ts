@@ -4,6 +4,6 @@
  * with NO server-side dependencies (Prisma, tRPC routers, etc.)
  *
  * Use this import in client components:
- * import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+ * import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
  */
 export * from "./schemas/index";

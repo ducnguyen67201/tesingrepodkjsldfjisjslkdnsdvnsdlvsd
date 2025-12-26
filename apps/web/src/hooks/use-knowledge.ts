@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { trpc } from "@/lib/trpc/client";
 import { knowledgeToast } from "@/lib/success";
 import { showError } from "@/lib/errors";
-import type { ArticleStatus } from "@cognobserve/api/schemas";
+import type { ArticleStatus } from "@ducsigr/api/schemas";
 
 interface UseKnowledgeOptions {
   workspaceSlug: string;

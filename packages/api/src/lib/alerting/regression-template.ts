@@ -70,7 +70,7 @@ export function buildRegressionContent(regressionInfo: RegressionInfo): Regressi
     changePercent: detail.changePercent,
   }));
 
-  const footer = "Eval Pipeline Regression Detection by CognObserve";
+  const footer = "Eval Pipeline Regression Detection by Ducsigr";
 
   return { header, triggerText, details, footer };
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@cognobserve/db",
+  "name": "@ducsigr/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -26,8 +26,8 @@
     "pg": "^8.13.0"
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@eslint/js": "^9.16.0",
     "@types/pg": "^8.11.0",
     "eslint": "^9.16.0",

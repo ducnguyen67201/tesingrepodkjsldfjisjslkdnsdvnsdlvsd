@@ -63,7 +63,7 @@ const validAlertContext = {
   alertHistoryId: "ah_123",
   alertName: "High Error Rate - Auth Service",
   projectId: "proj_789",
-  projectName: "CognObserve",
+  projectName: "Ducsigr",
   alertType: "ERROR_RATE" as const,
   severity: "HIGH" as const,
   currentValue: 0.15,

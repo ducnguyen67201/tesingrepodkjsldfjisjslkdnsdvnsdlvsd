@@ -17,7 +17,7 @@ import {
   type ExtensionManifest,
   type ExtensionVisibility,
   ExtensionTypeSchema,
-} from "@cognobserve/api/schemas";
+} from "@ducsigr/api/schemas";
 
 // URL query param names (namespaced to avoid conflicts)
 const URL_PARAMS = {

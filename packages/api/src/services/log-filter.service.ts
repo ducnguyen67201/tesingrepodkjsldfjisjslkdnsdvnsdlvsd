@@ -8,7 +8,7 @@
  * @see packages/api/src/schemas/log-filtering.ts
  */
 
-import { Prisma } from "@cognobserve/db";
+import { Prisma } from "@ducsigr/db";
 import type {
   LogFilterExpression,
   LogFieldPredicate,

@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Loader2, MoreHorizontal, Shield, User, Crown, Trash2 } from "lucide-react";
-import { WORKSPACE_ADMIN_ROLES } from "@cognobserve/api/schemas";
+import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
 import { showError } from "@/lib/errors";
 import { showDeleted } from "@/lib/success";
 import { trpc } from "@/lib/trpc/client";

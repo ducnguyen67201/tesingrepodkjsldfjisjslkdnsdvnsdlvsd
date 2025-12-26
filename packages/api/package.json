@@ -1,5 +1,5 @@
 {
-  "name": "@cognobserve/api",
+  "name": "@ducsigr/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -22,8 +22,8 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@cognobserve/db": "workspace:*",
-    "@cognobserve/shared": "workspace:*",
+    "@ducsigr/db": "workspace:*",
+    "@ducsigr/shared": "workspace:*",
     "@temporalio/client": "^1.13.2",
     "@trpc/server": "^11.0.0",
     "date-fns": "^4.1.0",
@@ -32,8 +32,8 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@cognobserve/config-eslint": "workspace:*",
-    "@cognobserve/config-typescript": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
     "@types/node": "^22.10.1",
     "@types/nodemailer": "^6.4.17",
     "eslint": "^9.16.0",

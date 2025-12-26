@@ -182,7 +182,7 @@ export interface AnthropicSpanData {
 
 ```typescript
 import type OpenAI from 'openai';
-import { CognObserve } from '../cognobserve';
+import { Ducsigr } from '../ducsigr';
 import { getActiveTrace } from '../context';
 import type { Trace } from '../trace';
 import type { WrapperOptions } from './types';
@@ -200,7 +200,7 @@ const DEFAULT_OPTIONS: Required<WrapperOptions> = {
  * @example
  * ```typescript
  * import OpenAI from 'openai';
- * import { wrapOpenAI } from '@cognobserve/sdk/integrations';
+ * import { wrapOpenAI } from '@ducsigr/sdk/integrations';
  *
  * const openai = wrapOpenAI(new OpenAI());
  *
@@ -231,7 +231,7 @@ export function wrapOpenAI<T extends OpenAI>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-chat`,
       });
       shouldEndTrace = true;
@@ -332,7 +332,7 @@ export function wrapOpenAI<T extends OpenAI>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-embedding`,
       });
       shouldEndTrace = true;
@@ -482,7 +482,7 @@ async function* wrapStream(
 
 ```typescript
 import type Anthropic from '@anthropic-ai/sdk';
-import { CognObserve } from '../cognobserve';
+import { Ducsigr } from '../ducsigr';
 import { getActiveTrace } from '../context';
 import type { Trace } from '../trace';
 import type { WrapperOptions } from './types';
@@ -500,7 +500,7 @@ const DEFAULT_OPTIONS: Required<WrapperOptions> = {
  * @example
  * ```typescript
  * import Anthropic from '@anthropic-ai/sdk';
- * import { wrapAnthropic } from '@cognobserve/sdk/integrations';
+ * import { wrapAnthropic } from '@ducsigr/sdk/integrations';
  *
  * const anthropic = wrapAnthropic(new Anthropic());
  *
@@ -529,7 +529,7 @@ export function wrapAnthropic<T extends Anthropic>(
     let shouldEndTrace = false;
 
     if (!trace && opts.createTrace) {
-      trace = CognObserve.startTrace({
+      trace = Ducsigr.startTrace({
         name: `${opts.tracePrefix}-messages`,
       });
       shouldEndTrace = true;
@@ -639,7 +639,7 @@ export function wrapAnthropic<T extends Anthropic>(
       let shouldEndTrace = false;
 
       if (!trace && opts.createTrace) {
-        trace = CognObserve.startTrace({
+        trace = Ducsigr.startTrace({
           name: `${opts.tracePrefix}-messages-stream`,
         });
         shouldEndTrace = true;
@@ -796,18 +796,18 @@ export type { WrapperOptions } from './types';
 **File:** `packages/sdk/README.md`
 
 ```markdown
-# @cognobserve/sdk
+# @ducsigr/sdk
 
-Official TypeScript SDK for [CognObserve](https://cognobserve.com) - AI Platform Monitoring & Observability.
+Official TypeScript SDK for [Ducsigr](https://ducsigr.com) - AI Platform Monitoring & Observability.
 
 ## Installation
 
 ```bash
-npm install @cognobserve/sdk
+npm install @ducsigr/sdk
 # or
-pnpm add @cognobserve/sdk
+pnpm add @ducsigr/sdk
 # or
-yarn add @cognobserve/sdk
+yarn add @ducsigr/sdk
 ```
 
 ## Quick Start
@@ -815,10 +815,10 @@ yarn add @cognobserve/sdk
 ### 1. Initialize the SDK
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY,
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY,
 });
 ```
 
@@ -826,7 +826,7 @@ CognObserve.init({
 
 ```typescript
 import OpenAI from 'openai';
-import { wrapOpenAI } from '@cognobserve/sdk/integrations';
+import { wrapOpenAI } from '@ducsigr/sdk/integrations';
 
 const openai = wrapOpenAI(new OpenAI());
 
@@ -841,7 +841,7 @@ const response = await openai.chat.completions.create({
 
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
-import { wrapAnthropic } from '@cognobserve/sdk/integrations';
+import { wrapAnthropic } from '@ducsigr/sdk/integrations';
 
 const anthropic = wrapAnthropic(new Anthropic());
 
@@ -858,10 +858,10 @@ const response = await anthropic.messages.create({
 For custom instrumentation:
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Start a trace
-const trace = CognObserve.startTrace({ name: 'my-operation' });
+const trace = Ducsigr.startTrace({ name: 'my-operation' });
 
 // Create spans for individual operations
 const span = trace.startSpan({ name: 'database-query' });
@@ -872,7 +872,7 @@ span.setInput({ query: 'SELECT * FROM users' });
 span.setOutput({ rowCount: 10 });
 span.end();
 
-// End the trace (sends to CognObserve)
+// End the trace (sends to Ducsigr)
 trace.end();
 ```
 
@@ -881,7 +881,7 @@ trace.end();
 The SDK automatically propagates trace context through async operations:
 
 ```typescript
-import { CognObserve, getActiveTrace } from '@cognobserve/sdk';
+import { Ducsigr, getActiveTrace } from '@ducsigr/sdk';
 
 async function processRequest() {
   // This will be parented to the active trace
@@ -894,7 +894,7 @@ async function processRequest() {
 }
 
 // Wrap your handler
-await CognObserve.trace({ name: 'request-handler' }, async (trace) => {
+await Ducsigr.trace({ name: 'request-handler' }, async (trace) => {
   await processRequest(); // Spans created here are children of request-handler
 });
 ```
@@ -902,12 +902,12 @@ await CognObserve.trace({ name: 'request-handler' }, async (trace) => {
 ## Configuration
 
 ```typescript
-CognObserve.init({
+Ducsigr.init({
   // Required
   apiKey: 'co_...',
 
   // Optional
-  endpoint: 'https://ingest.cognobserve.com', // Custom endpoint
+  endpoint: 'https://ingest.ducsigr.com', // Custom endpoint
   debug: false,                                // Enable debug logging
   disabled: false,                             // Disable SDK entirely
   flushInterval: 5000,                         // Batch flush interval (ms)
@@ -920,10 +920,10 @@ CognObserve.init({
 
 | Variable | Description |
 |----------|-------------|
-| `COGNOBSERVE_API_KEY` | API key (fallback if not in config) |
-| `COGNOBSERVE_ENDPOINT` | Custom ingest endpoint |
-| `COGNOBSERVE_DEBUG` | Enable debug mode (`true`/`false`) |
-| `COGNOBSERVE_DISABLED` | Disable SDK (`true`/`false`) |
+| `DUCSIGR_API_KEY` | API key (fallback if not in config) |
+| `DUCSIGR_ENDPOINT` | Custom ingest endpoint |
+| `DUCSIGR_DEBUG` | Enable debug mode (`true`/`false`) |
+| `DUCSIGR_DISABLED` | Disable SDK (`true`/`false`) |
 
 ## Wrapper Options
 
@@ -961,10 +961,10 @@ The SDK registers shutdown handlers automatically. For manual control:
 
 ```typescript
 // Flush pending traces
-await CognObserve.flush();
+await Ducsigr.flush();
 
 // Full shutdown
-await CognObserve.shutdown();
+await Ducsigr.shutdown();
 ```
 
 ## TypeScript
@@ -973,12 +973,12 @@ Full TypeScript support with exported types:
 
 ```typescript
 import type {
-  CognObserveConfig,
+  DucsigrConfig,
   TraceOptions,
   SpanOptions,
   SpanLevel,
   TokenUsage,
-} from '@cognobserve/sdk';
+} from '@ducsigr/sdk';
 ```
 
 ## Requirements
@@ -1001,17 +1001,17 @@ MIT
 **File:** `packages/sdk/examples/basic.ts`
 
 ```typescript
-import { CognObserve } from '@cognobserve/sdk';
+import { Ducsigr } from '@ducsigr/sdk';
 
 // Initialize
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY!,
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY!,
   debug: true,
 });
 
 async function main() {
   // Manual tracing
-  const trace = CognObserve.startTrace({
+  const trace = Ducsigr.startTrace({
     name: 'example-trace',
     metadata: { environment: 'development' },
   });
@@ -1034,7 +1034,7 @@ async function main() {
   trace.end();
 
   // Wait for flush
-  await CognObserve.flush();
+  await Ducsigr.flush();
   console.log('Done!');
 }
 
@@ -1047,12 +1047,12 @@ main().catch(console.error);
 
 ```typescript
 import OpenAI from 'openai';
-import { CognObserve } from '@cognobserve/sdk';
-import { wrapOpenAI } from '@cognobserve/sdk/integrations';
+import { Ducsigr } from '@ducsigr/sdk';
+import { wrapOpenAI } from '@ducsigr/sdk/integrations';
 
-// Initialize CognObserve
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY!,
+// Initialize Ducsigr
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY!,
   debug: true,
 });
 
@@ -1094,7 +1094,7 @@ async function main() {
   });
   console.log('Embedding dimensions:', embedding.data[0].embedding.length);
 
-  await CognObserve.shutdown();
+  await Ducsigr.shutdown();
 }
 
 main().catch(console.error);
@@ -1106,12 +1106,12 @@ main().catch(console.error);
 
 ```typescript
 import Anthropic from '@anthropic-ai/sdk';
-import { CognObserve } from '@cognobserve/sdk';
-import { wrapAnthropic } from '@cognobserve/sdk/integrations';
+import { Ducsigr } from '@ducsigr/sdk';
+import { wrapAnthropic } from '@ducsigr/sdk/integrations';
 
-// Initialize CognObserve
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY!,
+// Initialize Ducsigr
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY!,
   debug: true,
 });
 
@@ -1152,7 +1152,7 @@ async function main() {
   }
   console.log('\n');
 
-  await CognObserve.shutdown();
+  await Ducsigr.shutdown();
 }
 
 main().catch(console.error);
@@ -1165,11 +1165,11 @@ main().catch(console.error);
 ```typescript
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
-import { CognObserve } from '@cognobserve/sdk';
-import { wrapOpenAI, wrapAnthropic } from '@cognobserve/sdk/integrations';
+import { Ducsigr } from '@ducsigr/sdk';
+import { wrapOpenAI, wrapAnthropic } from '@ducsigr/sdk/integrations';
 
-CognObserve.init({
-  apiKey: process.env.COGNOBSERVE_API_KEY!,
+Ducsigr.init({
+  apiKey: process.env.DUCSIGR_API_KEY!,
 });
 
 const openai = wrapOpenAI(new OpenAI());
@@ -1177,7 +1177,7 @@ const anthropic = wrapAnthropic(new Anthropic());
 
 async function analyzeWithBothModels(prompt: string) {
   // Create a parent trace for the combined operation
-  const trace = CognObserve.startTrace({
+  const trace = Ducsigr.startTrace({
     name: 'multi-model-analysis',
     metadata: { prompt },
   });
@@ -1222,7 +1222,7 @@ async function analyzeWithBothModels(prompt: string) {
 
 analyzeWithBothModels('Explain quantum computing in one sentence.')
   .then(console.log)
-  .finally(() => CognObserve.shutdown());
+  .finally(() => Ducsigr.shutdown());
 ```
 
 ---

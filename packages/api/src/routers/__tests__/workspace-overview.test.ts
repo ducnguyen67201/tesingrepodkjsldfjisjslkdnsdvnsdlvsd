@@ -4,7 +4,7 @@ import { createCallerFactory } from "../../trpc";
 import type { SessionWithWorkspaces } from "../../context";
 
 // Mock prisma
-vi.mock("@cognobserve/db", () => ({
+vi.mock("@ducsigr/db", () => ({
   prisma: {
     project: {
       findMany: vi.fn(),
@@ -32,7 +32,7 @@ vi.mock("@cognobserve/db", () => ({
 }));
 
 // Import after mocks
-import { prisma } from "@cognobserve/db";
+import { prisma } from "@ducsigr/db";
 import { workspaceOverviewRouter } from "../workspace-overview";
 
 // ============================================================

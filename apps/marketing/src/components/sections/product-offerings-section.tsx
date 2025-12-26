@@ -132,7 +132,7 @@ function CentralLogo() {
       {/* Logo icon */}
       <Image
         src="/logo.svg"
-        alt="CognObserve"
+        alt="Ducsigr"
         width={32}
         height={32}
         className="rounded-lg"
@@ -141,7 +141,7 @@ function CentralLogo() {
         className="font-bold text-lg"
         style={{ color: COLORS.accent.yellowStrong }}
       >
-        CognObserve
+        Ducsigr
       </span>
     </div>
   );
@@ -275,7 +275,7 @@ export function ProductOfferingsSection() {
             className="font-display text-4xl md:text-5xl font-bold"
             style={{ color: COLORS.accent.yellowStrong }}
           >
-            Level with CognObserve.
+            Level with Ducsigr.
           </h2>
         </div>
 
@@ -326,7 +326,7 @@ export function ProductOfferingsSection() {
               className="text-base max-w-2xl mx-auto"
               style={{ color: COLORS.ink.secondary }}
             >
-              CognObserve unifies traces, metrics, and AI insights to fuel
+              Ducsigr unifies traces, metrics, and AI insights to fuel
               powerful observability across your entire application stack.
             </p>
           </div>

@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
-import { ARTICLE_STATUS_LABELS, type ArticleStatus } from "@cognobserve/api/schemas";
+import { ARTICLE_STATUS_LABELS, type ArticleStatus } from "@ducsigr/api/schemas";
 import { STATUS_COLORS } from "./knowledge-constants";
 
 export interface ArticleRowProps {

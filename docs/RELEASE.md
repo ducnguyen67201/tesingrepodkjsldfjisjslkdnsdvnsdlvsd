@@ -1,6 +1,6 @@
 # Release Guide
 
-This document explains how to release new versions of CognObserve.
+This document explains how to release new versions of Ducsigr.
 
 ## Quick Reference
 
@@ -116,12 +116,12 @@ After release, images are available at:
 
 ```bash
 # Quick Start (all-in-one)
-docker pull ghcr.io/ducnguyen67201/cognobserve:latest
-docker pull ghcr.io/ducnguyen67201/cognobserve:v0.1.0
+docker pull ghcr.io/ducnguyen67201/ducsigr:latest
+docker pull ghcr.io/ducnguyen67201/ducsigr:v0.1.0
 
 # Production (app only)
-docker pull ghcr.io/ducnguyen67201/cognobserve-app:latest
-docker pull ghcr.io/ducnguyen67201/cognobserve-app:v0.1.0
+docker pull ghcr.io/ducnguyen67201/ducsigr-app:latest
+docker pull ghcr.io/ducnguyen67201/ducsigr-app:v0.1.0
 ```
 
 ## Examples

@@ -4,7 +4,7 @@
  * Business logic for dashboard and widget operations.
  */
 
-import { prisma, type Prisma } from "@cognobserve/db";
+import { prisma, type Prisma } from "@ducsigr/db";
 import { TRPCError } from "@trpc/server";
 import type {
   CreateDashboardInput,

@@ -316,7 +316,7 @@ export const THEME_PRESETS = {
   /** Default yellow theme (matches globals.css) */
   default: {
     name: "Default",
-    description: "The default CognObserve yellow theme",
+    description: "The default Ducsigr yellow theme",
     config: DEFAULT_THEME,
   },
   /** Dark mode variant */

@@ -5,7 +5,7 @@ import {
   Archive,
   FlaskConical,
 } from "lucide-react";
-import type { ExperimentStatus } from "@cognobserve/api/schemas";
+import type { ExperimentStatus } from "@ducsigr/api/schemas";
 
 export interface StatusFilter {
   value: ExperimentStatus | "all";

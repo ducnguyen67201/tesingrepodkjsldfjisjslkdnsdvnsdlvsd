@@ -116,11 +116,11 @@ Update the PostgreSQL service to use the pgvector image:
 services:
   postgres:
     image: pgvector/pgvector:pg16  # Changed from postgres:16
-    container_name: cognobserve-postgres
+    container_name: ducsigr-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-cognobserve}
+      POSTGRES_DB: ${POSTGRES_DB:-ducsigr}
     ports:
       - "5432:5432"
     volumes:
@@ -577,7 +577,7 @@ cd packages/db
 pnpm prisma migrate dev --name add_pgvector
 
 # 6. Verify extension is enabled
-docker exec -it cognobserve-postgres psql -U postgres -d cognobserve -c "SELECT * FROM pg_extension WHERE extname = 'vector';"
+docker exec -it ducsigr-postgres psql -U postgres -d ducsigr -c "SELECT * FROM pg_extension WHERE extname = 'vector';"
 ```
 
 ### Production Deployment

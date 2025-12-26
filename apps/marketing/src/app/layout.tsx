@@ -25,7 +25,7 @@ const notoSansMono = Noto_Sans_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CognObserve - AI Platform Monitoring & Observability",
+  title: "Ducsigr - AI Platform Monitoring & Observability",
   description:
     "Production-grade AI observability with zero overhead. Get p99 latency insights, distributed tracing, and AI-guided root cause analysis.",
   keywords: [

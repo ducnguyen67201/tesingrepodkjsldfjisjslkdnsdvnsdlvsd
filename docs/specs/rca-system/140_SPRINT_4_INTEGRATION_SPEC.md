@@ -129,7 +129,7 @@ private buildEmbed(payload: AlertPayload): DiscordEmbed {
     fields,
     timestamp: payload.triggeredAt,
     footer: {
-      text: "CognObserve Alerting",
+      text: "Ducsigr Alerting",
     },
   };
 }

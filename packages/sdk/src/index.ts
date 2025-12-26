@@ -1,5 +1,5 @@
 // Main client
-export { CognObserve } from './cognobserve';
+export { Ducsigr } from './ducsigr';
 
 // Classes (for advanced usage)
 export { Trace } from './trace';
@@ -9,7 +9,7 @@ export { LoggerClient } from './logger';
 
 // Types
 export type {
-  CognObserveConfig,
+  DucsigrConfig,
   TraceOptions,
   SpanOptions,
   SpanEndOptions,
