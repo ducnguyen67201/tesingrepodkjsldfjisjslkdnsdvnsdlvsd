@@ -92,9 +92,14 @@ export function NavProjects() {
   // Auto-expand active project after mount
   useEffect(() => {
     if (!isMounted || !projects) return;
-    const activeProjectId = projects.find((p) => isProjectActive(p.id))?.id;
-    if (activeProjectId && !expandedProjects.has(activeProjectId)) {
-      setExpandedProjects((prev) => new Set(prev).add(activeProjectId));
+    const activeProjectId = projects.find((p) =>
+      pathname?.includes(`/projects/${p.id}`)
+    )?.id;
+    if (activeProjectId) {
+      setExpandedProjects((prev) => {
+        if (prev.has(activeProjectId)) return prev;
+        return new Set(prev).add(activeProjectId);
+      });
     }
   }, [isMounted, projects, pathname]);
 

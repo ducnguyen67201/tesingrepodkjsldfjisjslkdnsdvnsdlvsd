@@ -112,8 +112,9 @@ export function DashboardView({
     setActiveDashboardId(id);
   }, []);
 
-  const handleEditWidget = useCallback((_widgetId: string) => {
+  const handleEditWidget = useCallback((widgetId: string) => {
     // TODO: Open widget editor dialog
+    console.debug("Edit widget:", widgetId);
   }, []);
 
   const handleDeleteWidget = useCallback(
