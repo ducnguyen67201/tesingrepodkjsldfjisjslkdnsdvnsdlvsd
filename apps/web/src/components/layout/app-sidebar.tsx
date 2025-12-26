@@ -10,6 +10,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
+import { NavSettings } from "./nav-settings";
 import { NavUser } from "./nav-user";
 import { ThemeSwitcher } from "./theme-switcher";
 import { WorkspaceSwitcher } from "./workspace-switcher";
@@ -30,6 +31,8 @@ export function AppSidebar({ workspace }: AppSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter>
+        <NavSettings />
+        <SidebarSeparator />
         <ThemeSwitcher />
         <SidebarSeparator />
         <NavUser />

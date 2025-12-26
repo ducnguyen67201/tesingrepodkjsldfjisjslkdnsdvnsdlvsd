@@ -11,7 +11,14 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { formatRelativeTime } from "@/lib/format";
 import type { RecentActivityItem, ActivityType, AlertSeverity } from "@cognobserve/api/schemas";
+
+// ============================================================
+// Constants
+// ============================================================
+
+const SKELETON_ITEM_COUNT = 5;
 
 // ============================================================
 // Props
@@ -140,6 +147,16 @@ function EmptyActivityState() {
 // ============================================================
 
 function ActivityFeedSkeleton() {
+  const renderSkeletonItem = (index: number) => (
+    <div key={`activity-skeleton-${index}`} className="flex items-start gap-3">
+      <Skeleton className="h-7 w-7 rounded-full" />
+      <div className="flex-1 space-y-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-1/2" />
+      </div>
+    </div>
+  );
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -147,15 +164,7 @@ function ActivityFeedSkeleton() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={`activity-skeleton-${i}`} className="flex items-start gap-3">
-              <Skeleton className="h-7 w-7 rounded-full" />
-              <div className="flex-1 space-y-2">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-              </div>
-            </div>
-          ))}
+          {Array.from({ length: SKELETON_ITEM_COUNT }).map((_, i) => renderSkeletonItem(i))}
         </div>
       </CardContent>
     </Card>
@@ -205,22 +214,4 @@ function getSeverityVariant(severity: AlertSeverity): "default" | "secondary" | 
     default:
       return "outline";
   }
-}
-
-function formatRelativeTime(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - new Date(date).getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 1) return "just now";
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-
-  return new Date(date).toLocaleDateString([], {
-    month: "short",
-    day: "numeric",
-  });
 }

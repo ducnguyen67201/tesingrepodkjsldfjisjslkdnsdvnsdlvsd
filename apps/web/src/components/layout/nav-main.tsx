@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LayoutDashboard, FileCode, BookOpen, Settings } from "lucide-react";
+import { LayoutDashboard, FileCode, BookOpen } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -36,12 +36,6 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { title: "Prompts", path: "/prompts", icon: FileCode },
       { title: "Knowledge", path: "/knowledge", icon: BookOpen },
-    ],
-  },
-  {
-    label: "Configuration",
-    items: [
-      { title: "Settings", path: "/settings", icon: Settings },
     ],
   },
 ];

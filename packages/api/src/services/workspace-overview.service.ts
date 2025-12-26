@@ -18,6 +18,13 @@ import type {
 } from "../schemas/workspace-overview";
 
 // ============================================================
+// Constants
+// ============================================================
+
+/** Minimum percentage change to consider a trend as "up" or "down" vs "flat" */
+const TREND_THRESHOLD_PERCENT = 1;
+
+// ============================================================
 // Types
 // ============================================================
 
@@ -233,9 +240,9 @@ export class WorkspaceOverviewService {
     if (previous > 0) {
       percentChange = ((current - previous) / previous) * 100;
 
-      if (percentChange > 1) {
+      if (percentChange > TREND_THRESHOLD_PERCENT) {
         direction = "up";
-      } else if (percentChange < -1) {
+      } else if (percentChange < -TREND_THRESHOLD_PERCENT) {
         direction = "down";
       } else {
         direction = "flat";

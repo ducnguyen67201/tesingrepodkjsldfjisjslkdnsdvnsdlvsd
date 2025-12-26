@@ -50,5 +50,59 @@ export const formatCost = (cost: number): string => {
   return `$${cost.toFixed(4)}`;
 };
 
+/**
+ * Formats a number to a human-readable string with K/M suffixes.
+ * - Under 1000: displays the raw number
+ * - 1000-999999: displays with 'K' suffix (e.g., "1.5K")
+ * - 1000000+: displays with 'M' suffix (e.g., "2.3M")
+ */
+export const formatNumber = (num: number): string => {
+  if (num >= 1_000_000) {
+    return `${(num / 1_000_000).toFixed(1)}M`;
+  }
+  if (num >= 1_000) {
+    return `${(num / 1_000).toFixed(1)}K`;
+  }
+  return num.toString();
+};
+
+/**
+ * Formats latency in milliseconds to a human-readable string.
+ * - Under 1 second: displays in milliseconds (e.g., "500ms")
+ * - 1 second or more: displays in seconds (e.g., "1.5s")
+ */
+export const formatLatency = (ms: number): string => {
+  if (ms >= 1000) {
+    return `${(ms / 1000).toFixed(1)}s`;
+  }
+  return `${Math.round(ms)}ms`;
+};
+
+/**
+ * Formats a date to a relative time string.
+ * - Under 1 minute: "just now"
+ * - Under 1 hour: "Xm ago"
+ * - Under 24 hours: "Xh ago"
+ * - Under 7 days: "Xd ago"
+ * - Otherwise: formatted date (e.g., "Dec 25")
+ */
+export const formatRelativeTime = (date: Date): string => {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return "just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+
+  return date.toLocaleDateString([], {
+    month: "short",
+    day: "numeric",
+  });
+};
+
 // Re-export formatFileSize from shared utils
 export { formatFileSize } from "@cognobserve/shared";

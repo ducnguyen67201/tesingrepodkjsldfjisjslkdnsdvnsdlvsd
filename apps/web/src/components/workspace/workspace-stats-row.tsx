@@ -11,7 +11,14 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatNumber, formatLatency } from "@/lib/format";
 import type { WorkspaceStats, StatTrend } from "@cognobserve/api/schemas";
+
+// ============================================================
+// Constants
+// ============================================================
+
+const STAT_CARD_COUNT = 4;
 
 // ============================================================
 // Props
@@ -99,7 +106,7 @@ const StatCard = memo(function StatCard({
     const isGood = trendPositiveIsGood ? isPositive : !isPositive;
 
     if (trend.direction === "flat") return "text-muted-foreground";
-    return isGood ? "text-green-600" : "text-red-600";
+    return isGood ? "text-emerald-600 dark:text-emerald-400" : "text-destructive";
   };
 
   const renderTrendIcon = () => {
@@ -117,9 +124,9 @@ const StatCard = memo(function StatCard({
 
   const getAlertColor = (): string => {
     if (alertCount === undefined) return "";
-    if (alertCount === 0) return "text-green-600";
-    if (alertCount <= 2) return "text-yellow-600";
-    return "text-red-600";
+    if (alertCount === 0) return "text-emerald-600 dark:text-emerald-400";
+    if (alertCount <= 2) return "text-amber-600 dark:text-amber-400";
+    return "text-destructive";
   };
 
   return (
@@ -155,43 +162,25 @@ const StatCard = memo(function StatCard({
 // ============================================================
 
 function StatsRowSkeleton() {
+  const renderSkeletonCard = (index: number) => (
+    <Card key={`stat-skeleton-${index}`}>
+      <CardContent className="pt-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-8 w-16" />
+            <Skeleton className="h-3 w-20" />
+          </div>
+          <Skeleton className="h-12 w-12 rounded-full" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <Card key={`stat-skeleton-${i}`}>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-8 w-16" />
-                <Skeleton className="h-3 w-20" />
-              </div>
-              <Skeleton className="h-12 w-12 rounded-full" />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+      {Array.from({ length: STAT_CARD_COUNT }).map((_, i) => renderSkeletonCard(i))}
     </div>
   );
 }
 
-// ============================================================
-// Helpers
-// ============================================================
-
-function formatNumber(num: number): string {
-  if (num >= 1_000_000) {
-    return `${(num / 1_000_000).toFixed(1)}M`;
-  }
-  if (num >= 1_000) {
-    return `${(num / 1_000).toFixed(1)}K`;
-  }
-  return num.toString();
-}
-
-function formatLatency(ms: number): string {
-  if (ms >= 1000) {
-    return `${(ms / 1000).toFixed(2)}s`;
-  }
-  return `${Math.round(ms)}ms`;
-}

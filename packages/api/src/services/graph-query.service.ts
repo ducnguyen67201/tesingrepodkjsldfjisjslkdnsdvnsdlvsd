@@ -744,6 +744,9 @@ export class GraphQueryService {
     }));
   }
 
+  /** Minimum bucket duration in milliseconds (1 minute) to prevent excessive database load */
+  private static readonly MIN_BUCKET_MS = 60_000;
+
   /**
    * Get sparkline data (time-bucketed trace counts) for all projects in a workspace
    */
@@ -753,9 +756,12 @@ export class GraphQueryService {
     to: Date,
     bucketCount: number = 12
   ): Promise<Map<string, Array<{ time: string; value: number }>>> {
-    // Calculate bucket interval
+    // Calculate bucket interval with minimum size validation
     const totalMs = to.getTime() - from.getTime();
-    const bucketMs = Math.floor(totalMs / bucketCount);
+    const bucketMs = Math.max(
+      Math.floor(totalMs / bucketCount),
+      this.MIN_BUCKET_MS
+    );
 
     const sql = Prisma.sql`
       WITH buckets AS (

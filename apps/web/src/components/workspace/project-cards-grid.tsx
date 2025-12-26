@@ -13,7 +13,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProjectSummaries, useProjectSparklines } from "@/hooks/use-dashboards";
+import { formatNumber, formatLatency } from "@/lib/format";
 import type { DashboardTimeRange } from "@cognobserve/api/schemas";
+
+// ============================================================
+// Constants
+// ============================================================
+
+const SKELETON_CARD_COUNT = 3;
 
 // ============================================================
 // Props
@@ -105,11 +112,10 @@ const ProjectCard = memo(function ProjectCard({
   sparklineData,
   onClick,
 }: ProjectCardProps) {
-
   const getErrorRateColor = (): string => {
-    if (errorRate === 0) return "text-green-600";
-    if (errorRate < 5) return "text-yellow-600";
-    return "text-red-600";
+    if (errorRate === 0) return "text-emerald-600 dark:text-emerald-400";
+    if (errorRate < 5) return "text-amber-600 dark:text-amber-400";
+    return "text-destructive";
   };
 
   return (
@@ -128,11 +134,11 @@ const ProjectCard = memo(function ProjectCard({
         <div className="h-[120px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={sparklineData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
               <Line
                 type="monotone"
                 dataKey="value"
-                stroke="#eab308"
+                className="stroke-primary"
                 strokeWidth={2}
                 dot={false}
               />
@@ -196,6 +202,22 @@ function EmptyProjectsState({ onCreate }: EmptyProjectsStateProps) {
 // ============================================================
 
 function ProjectGridSkeleton() {
+  const renderSkeletonCard = (index: number) => (
+    <Card key={`project-skeleton-${index}`}>
+      <CardHeader className="pb-2">
+        <Skeleton className="h-5 w-32" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Skeleton className="h-[40px] w-full" />
+        <div className="grid grid-cols-3 gap-2">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -203,44 +225,10 @@ function ProjectGridSkeleton() {
         <Skeleton className="h-9 w-28" />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <Card key={`project-skeleton-${i}`}>
-            <CardHeader className="pb-2">
-              <Skeleton className="h-5 w-32" />
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Skeleton className="h-[40px] w-full" />
-              <div className="grid grid-cols-3 gap-2">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {Array.from({ length: SKELETON_CARD_COUNT }).map((_, i) => renderSkeletonCard(i))}
       </div>
     </div>
   );
 }
 
-// ============================================================
-// Helpers
-// ============================================================
-
-function formatNumber(num: number): string {
-  if (num >= 1_000_000) {
-    return `${(num / 1_000_000).toFixed(1)}M`;
-  }
-  if (num >= 1_000) {
-    return `${(num / 1_000).toFixed(1)}K`;
-  }
-  return num.toString();
-}
-
-function formatLatency(ms: number): string {
-  if (ms >= 1000) {
-    return `${(ms / 1000).toFixed(1)}s`;
-  }
-  return `${Math.round(ms)}ms`;
-}
 
