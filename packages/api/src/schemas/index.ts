@@ -24,3 +24,4 @@ export * from "./knowledge";
 export * from "./extensions";
 export * from "./theme";
 export * from "./dashboard";
+export * from "./workspace-overview";

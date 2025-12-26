@@ -301,3 +301,34 @@ export function useProjectSummaries(
     refetch,
   };
 }
+
+// ============================================================
+// useProjectSparklines Hook (workspace overview sparklines)
+// ============================================================
+
+export function useProjectSparklines(
+  workspaceSlug: string,
+  timeRange: "24h" | "7d" | "30d" | "custom" = "24h",
+  customTimeRange?: { from: string; to: string }
+) {
+  const {
+    data: sparklines = {},
+    isLoading,
+    error,
+    refetch,
+  } = trpc.graphs.projectSparklines.useQuery(
+    { workspaceSlug, timeRange, customTimeRange },
+    {
+      enabled: !!workspaceSlug,
+      staleTime: 60_000, // Cache for 1 minute
+      refetchInterval: 120_000, // Auto-refresh every 2 minutes
+    }
+  );
+
+  return {
+    sparklines,
+    isLoading,
+    error: error as Error | null,
+    refetch,
+  };
+}

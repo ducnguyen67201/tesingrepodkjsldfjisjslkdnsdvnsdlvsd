@@ -743,4 +743,66 @@ export class GraphQueryService {
       lastActiveAt: row.lastActiveAt,
     }));
   }
+
+  /**
+   * Get sparkline data (time-bucketed trace counts) for all projects in a workspace
+   */
+  static async getProjectSparklines(
+    workspaceId: string,
+    from: Date,
+    to: Date,
+    bucketCount: number = 12
+  ): Promise<Map<string, Array<{ time: string; value: number }>>> {
+    // Calculate bucket interval
+    const totalMs = to.getTime() - from.getTime();
+    const bucketMs = Math.floor(totalMs / bucketCount);
+
+    const sql = Prisma.sql`
+      WITH buckets AS (
+        SELECT
+          generate_series(
+            ${from}::timestamptz,
+            ${to}::timestamptz - interval '1 millisecond',
+            ${bucketMs}::int * interval '1 millisecond'
+          ) as bucket_start
+      ),
+      project_buckets AS (
+        SELECT
+          p."id" as "projectId",
+          b.bucket_start,
+          COUNT(t."id")::INT as trace_count
+        FROM "Project" p
+        CROSS JOIN buckets b
+        LEFT JOIN "Trace" t ON t."projectId" = p."id"
+          AND t."startTime" >= b.bucket_start
+          AND t."startTime" < b.bucket_start + ${bucketMs}::int * interval '1 millisecond'
+        WHERE p."workspaceId" = ${workspaceId}
+        GROUP BY p."id", b.bucket_start
+        ORDER BY p."id", b.bucket_start
+      )
+      SELECT "projectId", bucket_start as "bucketTime", trace_count as "traceCount"
+      FROM project_buckets
+    `;
+
+    const rows = await prisma.$queryRaw<Array<{
+      projectId: string;
+      bucketTime: Date;
+      traceCount: number;
+    }>>(sql);
+
+    // Group by projectId
+    const sparklineMap = new Map<string, Array<{ time: string; value: number }>>();
+
+    for (const row of rows) {
+      if (!sparklineMap.has(row.projectId)) {
+        sparklineMap.set(row.projectId, []);
+      }
+      sparklineMap.get(row.projectId)!.push({
+        time: row.bucketTime.toISOString(),
+        value: Number(row.traceCount),
+      });
+    }
+
+    return sparklineMap;
+  }
 }

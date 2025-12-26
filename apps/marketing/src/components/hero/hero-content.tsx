@@ -29,7 +29,7 @@ export function HeroContent() {
             style={{ backgroundColor: COLORS.accent.yellowStrong }}
           />
         </span>
-        v2.4 Live: AI Root Cause Analysis
+        v1.0.0 Live: AI Root Cause Analysis
       </div>
 
       {/* Headline */}

@@ -36,6 +36,7 @@ import { extensionsRouter } from "./extensions";
 import { themeRouter } from "./theme";
 import { logsRouter } from "./logs";
 import { dashboardsRouter, graphsRouter } from "./dashboards";
+import { workspaceOverviewRouter } from "./workspace-overview";
 
 /**
  * Main application router.
@@ -405,6 +406,17 @@ export const appRouter = createRouter({
   graphs: graphsRouter,
 
   /**
+   * Workspace Overview
+   * @see ./workspace-overview.ts
+   *
+   * Aggregated workspace stats and activity feed for landing page.
+   *
+   * - workspaceOverview.getStats       - Get aggregated stats with trends
+   * - workspaceOverview.getRecentActivity - Get recent alerts and events
+   */
+  workspaceOverview: workspaceOverviewRouter,
+
+  /**
    * Future modules:
    *
    * billing: billingRouter,    // Billing & subscriptions
@@ -442,4 +454,5 @@ export {
   logsRouter,
   dashboardsRouter,
   graphsRouter,
+  workspaceOverviewRouter,
 };
