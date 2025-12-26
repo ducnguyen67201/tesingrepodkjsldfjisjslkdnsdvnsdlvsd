@@ -29,7 +29,7 @@ vi.mock("@ducsigr/db", () => ({
     extensionAuditLog: {
       create: vi.fn(),
       findMany: vi.fn(),
-    },
+    }, 
     workspaceMember: {
       findMany: vi.fn().mockResolvedValue([]),
     },
