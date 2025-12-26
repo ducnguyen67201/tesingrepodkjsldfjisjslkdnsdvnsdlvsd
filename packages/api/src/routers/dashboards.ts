@@ -174,6 +174,23 @@ export const graphsRouter = createRouter({
       const { from, to } = timeRangeToDateRange(input.timeRange, input.customTimeRange);
       return GraphQueryService.getProjectSummaries(ctx.workspace.id, from, to);
     }),
+
+  /**
+   * Get sparkline data for all projects in a workspace
+   */
+  projectSparklines: protectedProcedure
+    .input(GetProjectSummariesInputSchema)
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      const { from, to } = timeRangeToDateRange(input.timeRange, input.customTimeRange);
+      const sparklineMap = await GraphQueryService.getProjectSparklines(ctx.workspace.id, from, to);
+      // Convert Map to object for JSON serialization
+      const result: Record<string, Array<{ time: string; value: number }>> = {};
+      for (const [projectId, data] of sparklineMap) {
+        result[projectId] = data;
+      }
+      return result;
+    }),
 });
 
 export type DashboardsRouter = typeof dashboardsRouter;

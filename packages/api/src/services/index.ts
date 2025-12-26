@@ -10,3 +10,4 @@ export { RCAService } from "./rca.service";
 export { TrackedUserService } from "./trackedUser.service";
 export { DashboardService } from "./dashboard.service";
 export { GraphQueryService } from "./graph-query.service";
+export { WorkspaceOverviewService } from "./workspace-overview.service";
