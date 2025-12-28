@@ -21,7 +21,7 @@ RUN pnpm install --frozen-lockfile
 
 # Build
 FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app ./
 COPY . .
 
 # Generate Prisma client
@@ -29,6 +29,12 @@ RUN pnpm --filter @ducsigr/db db:generate
 
 # Build the web app
 ENV NEXT_TELEMETRY_DISABLED=1
+# Build-time placeholder secrets - actual values injected at runtime by Railway
+ENV NEXTAUTH_SECRET="build-time-placeholder-secret-min-32-chars"
+ENV JWT_SHARED_SECRET="build-time-placeholder-secret-min-32-chars"
+ENV INTERNAL_API_SECRET="build-time-placeholder-secret-min-32-chars"
+ENV NEXTAUTH_URL="http://localhost:3000"
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 RUN pnpm --filter @ducsigr/web build
 
 # Production image
