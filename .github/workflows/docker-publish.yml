@@ -17,9 +17,7 @@ on:
     paths:
       - "apps/**"
       - "packages/**"
-      - "Dockerfile.*"
       - "docker/**"
-      - "docker-compose*.yml"
       - ".github/workflows/docker-publish.yml"
   workflow_dispatch:
     inputs:
@@ -78,7 +76,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.quickstart
+          file: ./docker/Dockerfile.quickstart
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -131,7 +129,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.app
+          file: ./docker/Dockerfile.app
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

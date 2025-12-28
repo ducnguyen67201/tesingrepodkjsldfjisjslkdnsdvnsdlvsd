@@ -12,7 +12,6 @@ on:
     paths:
       - "apps/**"
       - "packages/**"
-      - "Dockerfile.*"
       - "docker/**"
       - ".github/workflows/docker-build-check.yml"
   pull_request:
@@ -22,7 +21,6 @@ on:
     paths:
       - "apps/**"
       - "packages/**"
-      - "Dockerfile.*"
       - "docker/**"
 
 concurrency:
@@ -49,7 +47,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.quickstart
+          file: ./docker/Dockerfile.quickstart
           push: false
           load: true
           tags: ducsigr:quickstart-test
@@ -140,7 +138,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.app
+          file: ./docker/Dockerfile.app
           push: false
           tags: ducsigr-app:test
           cache-from: type=gha
