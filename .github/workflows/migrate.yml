@@ -3,13 +3,14 @@ name: Database Migration
 on:
   push:
     branches:
-      - main
+      - stage
+      - prod
 
 jobs:
   migrate:
     name: Run Prisma Migrations
     runs-on: ubuntu-latest
-    environment: Staging
+    environment: ${{ github.ref_name == 'prod' && 'Production' || 'Staging' }}
 
     steps:
       - name: Checkout code
