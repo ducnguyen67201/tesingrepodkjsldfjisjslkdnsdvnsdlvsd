@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "postinstall": "prisma generate --schema prisma/schema",
+    "postinstall": "test -d prisma/schema && prisma generate --schema prisma/schema || echo 'Skipping prisma generate (schema not found)'",
     "db:generate": "prisma generate --schema prisma/schema",
     "db:push": "prisma db push --schema prisma/schema",
     "db:migrate": "prisma migrate dev --schema prisma/schema",
