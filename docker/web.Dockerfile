@@ -1,12 +1,13 @@
 # syntax=docker/dockerfile:1
 # Web (Next.js) Dockerfile
 
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
+ENV PNPM_CONFIG_PRODUCTION=false
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/api/package.json ./packages/api/
