@@ -41,15 +41,29 @@ RUN pnpm --filter @ducsigr/web build
 FROM node:24-alpine AS runner
 WORKDIR /app
 
+# Install pnpm for migrations
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Copy Next.js standalone build
 COPY --from=builder /app/apps/web/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
+# Copy prisma files for migrations
+COPY --from=builder /app/packages/db/prisma ./packages/db/prisma
+COPY --from=builder /app/packages/db/prisma.config.ts ./packages/db/prisma.config.ts
+COPY --from=builder /app/packages/db/package.json ./packages/db/package.json
+COPY --from=builder /app/node_modules/.pnpm ./node_modules/.pnpm
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/.bin ./node_modules/.bin
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 USER nextjs
 
@@ -57,4 +71,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "apps/web/server.js"]
+# Run migrations then start server
+CMD ["sh", "-c", "cd packages/db && npx prisma migrate deploy --schema prisma/schema && cd /app && node apps/web/server.js"]
