@@ -27,14 +27,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Resolve failed migrations
-        working-directory: packages/db
-        run: |
-          # Mark any failed migrations as rolled back
-          npx prisma migrate resolve --rolled-back 20251220211117_init_otlp_schema --schema prisma/schema || true
-        env:
-          DATABASE_URL: ${{ vars.DATABASE_URL }}
-
       - name: Run database migrations
         run: pnpm --filter @ducsigr/db db:migrate:deploy
         env:
