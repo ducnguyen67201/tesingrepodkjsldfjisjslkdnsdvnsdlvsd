@@ -32,7 +32,7 @@ COPY packages/api/package.json ./packages/api/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/proto/package.json ./packages/proto/
 COPY packages/config-eslint/package.json ./packages/config-eslint/
-COPY packages/config-typescript/package.json ./packages/config-typescript/
+COPY packages/config-typescript/*.json ./packages/config-typescript/
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile

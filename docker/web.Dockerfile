@@ -14,7 +14,7 @@ COPY packages/db/package.json ./packages/db/
 COPY packages/sdk/package.json ./packages/sdk/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/config-eslint/package.json ./packages/config-eslint/
-COPY packages/config-typescript/package.json ./packages/config-typescript/
+COPY packages/config-typescript/*.json ./packages/config-typescript/
 RUN pnpm install --frozen-lockfile
 
 # Build
