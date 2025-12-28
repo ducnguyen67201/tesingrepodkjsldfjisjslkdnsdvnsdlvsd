@@ -239,9 +239,9 @@ model KnowledgeChunk {
   endOffset    Int
   sectionTitle String? // Heading context for display
 
-  // pgvector embedding column for semantic search
-  // 1536 dimensions for OpenAI text-embedding-3-small model
-  embedding Unsupported("vector(1536)")?
+  // Embedding stored as JSONB array (1536 floats for OpenAI text-embedding-3-small)
+  // For pgvector support, use Supabase/Neon and change to: Unsupported("vector(1536)")?
+  embedding Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

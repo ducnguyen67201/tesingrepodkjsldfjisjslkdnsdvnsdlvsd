@@ -131,7 +131,7 @@ CREATE TABLE "KnowledgeChunk" (
     "startOffset" INTEGER NOT NULL,
     "endOffset" INTEGER NOT NULL,
     "sectionTitle" TEXT,
-    "embedding" vector(1536),
+    "embedding" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

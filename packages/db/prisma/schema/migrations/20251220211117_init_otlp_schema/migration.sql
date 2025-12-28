@@ -1,5 +1,6 @@
--- Enable pgvector extension for embeddings
-CREATE EXTENSION IF NOT EXISTS vector;
+-- Enable pgvector extension for embeddings (requires pgvector-enabled PostgreSQL)
+-- Uncomment when using Supabase, Neon, or other pgvector-enabled database
+-- CREATE EXTENSION IF NOT EXISTS vector;
 
 -- CreateEnum
 CREATE TYPE "AlertType" AS ENUM ('ERROR_RATE', 'LATENCY_P50', 'LATENCY_P95', 'LATENCY_P99');
@@ -312,7 +313,7 @@ CREATE TABLE "CodeChunk" (
     "chunkType" TEXT NOT NULL DEFAULT 'block',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "embedding" vector(1536),
+    "embedding" JSONB,
 
     CONSTRAINT "CodeChunk_pkey" PRIMARY KEY ("id")
 );
