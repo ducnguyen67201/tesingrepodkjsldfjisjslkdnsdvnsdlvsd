@@ -15,6 +15,7 @@ COPY packages/db/package.json ./packages/db/
 COPY packages/sdk/package.json ./packages/sdk/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/config-eslint/package.json ./packages/config-eslint/
+COPY packages/config-typescript/package.json ./packages/config-typescript/
 COPY packages/config-typescript/*.json ./packages/config-typescript/
 RUN pnpm install --frozen-lockfile
 
@@ -31,7 +32,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm --filter @ducsigr/web build
 
 # Production image
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
