@@ -21,7 +21,7 @@ RUN pnpm install --frozen-lockfile
 
 # Build
 FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app ./
 COPY . .
 
 # Generate Prisma client
