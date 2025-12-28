@@ -199,22 +199,22 @@ importers:
         version: 19.2.3(@types/react@19.2.7)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.0.0
-        version: 8.48.0(@typescript-eslint/parser@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+        version: 8.48.0(@typescript-eslint/parser@8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/parser':
         specifier: ^8.0.0
-        version: 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+        version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       autoprefixer:
         specifier: ^10.4.0
         version: 10.4.22(postcss@8.5.6)
       eslint:
         specifier: ^9.0.0
-        version: 9.39.1(jiti@1.21.7)
+        version: 9.39.1(jiti@2.6.1)
       eslint-plugin-react:
         specifier: ^7.37.0
-        version: 7.37.5(eslint@9.39.1(jiti@1.21.7))
+        version: 7.37.5(eslint@9.39.1(jiti@2.6.1))
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
-        version: 5.2.0(eslint@9.39.1(jiti@1.21.7))
+        version: 5.2.0(eslint@9.39.1(jiti@2.6.1))
       postcss:
         specifier: ^8.4.0
         version: 8.5.6
@@ -443,22 +443,22 @@ importers:
         version: 19.2.3(@types/react@19.2.7)
       '@vitejs/plugin-react':
         specifier: ^5.1.1
-        version: 5.1.1(vite@7.2.4(@types/node@22.19.1)(jiti@2.6.1)(terser@5.44.1)(tsx@4.20.6))
+        version: 5.1.1(vite@7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6))
       '@vitest/coverage-v8':
         specifier: 4.0.14
-        version: 4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@2.6.1)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6))
+        version: 4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@1.21.7)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.22(postcss@8.5.6)
       eslint:
         specifier: ^9.16.0
-        version: 9.39.1(jiti@2.6.1)
+        version: 9.39.1(jiti@1.21.7)
       eslint-plugin-react:
         specifier: ^7.37.0
-        version: 7.37.5(eslint@9.39.1(jiti@2.6.1))
+        version: 7.37.5(eslint@9.39.1(jiti@1.21.7))
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
-        version: 5.2.0(eslint@9.39.1(jiti@2.6.1))
+        version: 5.2.0(eslint@9.39.1(jiti@1.21.7))
       jsdom:
         specifier: ^27.2.0
         version: 27.2.0
@@ -473,10 +473,10 @@ importers:
         version: 5.9.3
       typescript-eslint:
         specifier: ^8.18.0
-        version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+        version: 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
       vitest:
         specifier: ^4.0.14
-        version: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@2.6.1)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6)
+        version: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@1.21.7)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6)
 
   apps/worker:
     dependencies:
@@ -509,7 +509,7 @@ importers:
         version: 1.13.2
       '@temporalio/worker':
         specifier: ^1.13.2
-        version: 1.13.2(esbuild@0.27.0)
+        version: 1.13.2
       '@temporalio/workflow':
         specifier: ^1.13.2
         version: 1.13.2
@@ -10697,7 +10697,7 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.4
 
-  '@temporalio/worker@1.13.2(esbuild@0.27.0)':
+  '@temporalio/worker@1.13.2':
     dependencies:
       '@grpc/grpc-js': 1.14.2
       '@swc/core': 1.15.3
@@ -10716,11 +10716,11 @@ snapshots:
       protobufjs: 7.5.4
       rxjs: 7.8.2
       source-map: 0.7.6
-      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3))
       supports-color: 8.1.1
-      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       unionfs: 4.6.0
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     transitivePeerDependencies:
       - '@swc/helpers'
       - esbuild
@@ -11140,7 +11140,7 @@ snapshots:
       '@typescript-eslint/types': 8.48.0
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react@5.1.1(vite@7.2.4(@types/node@22.19.1)(jiti@2.6.1)(terser@5.44.1)(tsx@4.20.6))':
+  '@vitejs/plugin-react@5.1.1(vite@7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -11148,11 +11148,11 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.47
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.2.4(@types/node@22.19.1)(jiti@2.6.1)(terser@5.44.1)(tsx@4.20.6)
+      vite: 7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@2.6.1)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6))':
+  '@vitest/coverage-v8@4.0.14(vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@1.21.7)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6))':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/utils': 4.0.14
@@ -11165,7 +11165,7 @@ snapshots:
       obug: 2.1.1
       std-env: 3.10.0
       tinyrainbow: 3.0.3
-      vitest: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@2.6.1)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6)
+      vitest: 4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@1.21.7)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -11192,6 +11192,14 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 5.4.21(@types/node@22.19.1)(terser@5.44.1)
+
+  '@vitest/mocker@4.0.14(vite@7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6))':
+    dependencies:
+      '@vitest/spy': 4.0.14
+      estree-walker: 3.0.3
+      magic-string: 0.30.21
+    optionalDependencies:
+      vite: 7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6)
 
   '@vitest/mocker@4.0.14(vite@7.2.4(@types/node@22.19.1)(jiti@2.6.1)(terser@5.44.1)(tsx@4.20.6))':
     dependencies:
@@ -14226,11 +14234,11 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   source-map-support@0.5.21:
     dependencies:
@@ -14378,11 +14386,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@swc/core': 1.15.3
       '@swc/counter': 0.1.3
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   symbol-tree@3.2.4: {}
 
@@ -14428,17 +14436,16 @@ snapshots:
     dependencies:
       bintrees: 1.0.2
 
-  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       terser: 5.44.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     optionalDependencies:
       '@swc/core': 1.15.3
-      esbuild: 0.27.0
 
   terser@5.44.1:
     dependencies:
@@ -14650,6 +14657,17 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
+  typescript-eslint@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3):
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 8.48.0(@typescript-eslint/parser@8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3))(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/parser': 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      '@typescript-eslint/typescript-estree': 8.48.0(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.48.0(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
+      eslint: 9.39.1(jiti@1.21.7)
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
+
   typescript-eslint@8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
       '@typescript-eslint/eslint-plugin': 8.48.0(@typescript-eslint/parser@8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
@@ -14790,6 +14808,21 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.44.1
 
+  vite@7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6):
+    dependencies:
+      esbuild: 0.25.12
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.53.3
+      tinyglobby: 0.2.15
+    optionalDependencies:
+      '@types/node': 22.19.1
+      fsevents: 2.3.3
+      jiti: 1.21.7
+      terser: 5.44.1
+      tsx: 4.20.6
+
   vite@7.2.4(@types/node@22.19.1)(jiti@2.6.1)(terser@5.44.1)(tsx@4.20.6):
     dependencies:
       esbuild: 0.25.12
@@ -14855,6 +14888,45 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@1.21.7)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6):
+    dependencies:
+      '@vitest/expect': 4.0.14
+      '@vitest/mocker': 4.0.14(vite@7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6))
+      '@vitest/pretty-format': 4.0.14
+      '@vitest/runner': 4.0.14
+      '@vitest/snapshot': 4.0.14
+      '@vitest/spy': 4.0.14
+      '@vitest/utils': 4.0.14
+      es-module-lexer: 1.7.0
+      expect-type: 1.2.2
+      magic-string: 0.30.21
+      obug: 2.1.1
+      pathe: 2.0.3
+      picomatch: 4.0.3
+      std-env: 3.10.0
+      tinybench: 2.9.0
+      tinyexec: 0.3.2
+      tinyglobby: 0.2.15
+      tinyrainbow: 3.0.3
+      vite: 7.2.4(@types/node@22.19.1)(jiti@1.21.7)(terser@5.44.1)(tsx@4.20.6)
+      why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.0
+      '@types/node': 22.19.1
+      jsdom: 27.2.0
+    transitivePeerDependencies:
+      - jiti
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - terser
+      - tsx
+      - yaml
 
   vitest@4.0.14(@opentelemetry/api@1.9.0)(@types/node@22.19.1)(jiti@2.6.1)(jsdom@27.2.0)(terser@5.44.1)(tsx@4.20.6):
     dependencies:
@@ -14953,7 +15025,7 @@ snapshots:
 
   webpack-sources@3.3.3: {}
 
-  webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0):
+  webpack@5.103.0(@swc/core@1.15.3):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -14977,7 +15049,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
