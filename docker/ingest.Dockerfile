@@ -39,29 +39,26 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 ingest
 
-# Copy root workspace files (needed for pnpm workspace resolution)
-COPY --from=builder /app/package.json /app/pnpm-workspace.yaml ./
+# Copy node_modules first (external dependencies)
+COPY --from=builder /app/node_modules ./node_modules
 
-# Copy workspace packages (pnpm symlinks point to these)
-COPY --from=builder /app/packages/shared/package.json ./packages/shared/
-COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
-COPY --from=builder /app/packages/api/package.json ./packages/api/
-COPY --from=builder /app/packages/api/dist ./packages/api/dist
-COPY --from=builder /app/packages/db/package.json ./packages/db/
-COPY --from=builder /app/packages/db/dist ./packages/db/dist
-COPY --from=builder /app/packages/proto/package.json ./packages/proto/
-COPY --from=builder /app/packages/proto/dist ./packages/proto/dist
+# Copy workspace packages directly into node_modules (replacing broken symlinks)
+# This ensures Node.js can resolve @ducsigr/* packages without symlinks
+COPY --from=builder /app/packages/shared/package.json ./node_modules/@ducsigr/shared/
+COPY --from=builder /app/packages/shared/dist ./node_modules/@ducsigr/shared/dist
+COPY --from=builder /app/packages/api/package.json ./node_modules/@ducsigr/api/
+COPY --from=builder /app/packages/api/dist ./node_modules/@ducsigr/api/dist
+COPY --from=builder /app/packages/db/package.json ./node_modules/@ducsigr/db/
+COPY --from=builder /app/packages/db/dist ./node_modules/@ducsigr/db/dist
+COPY --from=builder /app/packages/proto/package.json ./node_modules/@ducsigr/proto/
+COPY --from=builder /app/packages/proto/dist ./node_modules/@ducsigr/proto/dist
 
 # Copy built ingest application
-COPY --from=builder /app/apps/ingest-node/package.json ./apps/ingest-node/
-COPY --from=builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
-
-# Copy node_modules (includes pnpm symlinks to workspace packages)
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/ingest-node/dist ./dist
 
 USER ingest
 
 EXPOSE 3001
 ENV PORT=3001
 
-CMD ["node", "apps/ingest-node/dist/index.js"]
+CMD ["node", "dist/index.js"]
