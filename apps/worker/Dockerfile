@@ -44,8 +44,8 @@ COPY packages/api/package.json packages/api/
 COPY packages/proto/package.json packages/proto/
 COPY apps/worker/package.json apps/worker/
 
-# Production deps only
-RUN pnpm install --frozen-lockfile --prod
+# Production deps only (worker + its workspace deps)
+RUN pnpm install --frozen-lockfile --prod --filter @ducsigr/worker...
 
 # Production stage
 FROM node:24-alpine AS runner
