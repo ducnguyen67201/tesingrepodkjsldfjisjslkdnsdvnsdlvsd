@@ -52,9 +52,6 @@ COPY --from=builder /app/packages/db/dist ./packages/db/dist
 COPY --from=builder /app/packages/proto/package.json ./packages/proto/
 COPY --from=builder /app/packages/proto/dist ./packages/proto/dist
 
-# Copy Prisma query engine (required at runtime)
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-
 # Copy built ingest application
 COPY --from=builder /app/apps/ingest-node/package.json ./apps/ingest-node/
 COPY --from=builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
