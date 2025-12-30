@@ -71,8 +71,9 @@ export async function createTemporalWorker(): Promise<Worker> {
     apiKey: env.TEMPORAL_API_KEY,
   });
 
-  // Path to workflows module (ESM compatible)
-  const workflowsPath = resolve(__dirname, "../workflows/index.ts");
+  // Use the correct extension depending on whether we're running TS or built JS.
+  const workflowExtension = __filename.endsWith(".ts") ? ".ts" : ".js";
+  const workflowsPath = resolve(__dirname, `../workflows/index${workflowExtension}`);
 
   // Note: workflowsPath must be a path to a file that exports workflows
   // Temporal will bundle this file separately for workflow isolation
