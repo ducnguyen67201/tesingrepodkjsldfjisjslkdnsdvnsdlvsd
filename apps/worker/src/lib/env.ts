@@ -33,6 +33,13 @@ export const env = createEnv({
     TEMPORAL_NAMESPACE: z.string().default("default"),
     TEMPORAL_TASK_QUEUE: z.string().default("ducsigr-tasks"),
 
+    // Temporal Cloud Authentication
+    // Option 1: API Key (recommended for Temporal Cloud)
+    TEMPORAL_API_KEY: z.string().optional(),
+    // Option 2: mTLS certificates
+    TEMPORAL_TLS_CERT: z.string().optional(),
+    TEMPORAL_TLS_KEY: z.string().optional(),
+
     // GitHub API (optional, for higher rate limits)
     GITHUB_TOKEN: z.string().optional(),
 
@@ -68,6 +75,9 @@ export const env = createEnv({
     TEMPORAL_ADDRESS: process.env.TEMPORAL_ADDRESS,
     TEMPORAL_NAMESPACE: process.env.TEMPORAL_NAMESPACE,
     TEMPORAL_TASK_QUEUE: process.env.TEMPORAL_TASK_QUEUE,
+    TEMPORAL_API_KEY: process.env.TEMPORAL_API_KEY,
+    TEMPORAL_TLS_CERT: process.env.TEMPORAL_TLS_CERT,
+    TEMPORAL_TLS_KEY: process.env.TEMPORAL_TLS_KEY,
 
     // GitHub API
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,

@@ -20,6 +20,39 @@ let workerInstance: Worker | null = null;
 let connectionInstance: NativeConnection | null = null;
 
 /**
+ * Check if connecting to Temporal Cloud (not localhost)
+ */
+function isTemporalCloud(): boolean {
+  return env.TEMPORAL_ADDRESS.includes("tmprl.cloud");
+}
+
+/**
+ * Get TLS config for Temporal Cloud
+ * - API Key auth: TLS enabled, no client certs
+ * - mTLS auth: TLS with client certificate pair
+ */
+function getTlsConfig() {
+  // mTLS authentication (client certificates)
+  if (env.TEMPORAL_TLS_CERT && env.TEMPORAL_TLS_KEY) {
+    console.log("[Temporal Worker] Using mTLS for Temporal Cloud");
+    return {
+      clientCertPair: {
+        crt: Buffer.from(env.TEMPORAL_TLS_CERT),
+        key: Buffer.from(env.TEMPORAL_TLS_KEY),
+      },
+    };
+  }
+
+  // API Key authentication (TLS without client certs)
+  if (env.TEMPORAL_API_KEY && isTemporalCloud()) {
+    console.log("[Temporal Worker] Using API Key auth for Temporal Cloud");
+    return true; // Enable TLS without client certs
+  }
+
+  return undefined;
+}
+
+/**
  * Create a Temporal worker configured for Ducsigr.
  * The worker handles both workflows and activities.
  */
@@ -30,8 +63,12 @@ export async function createTemporalWorker(): Promise<Worker> {
 
   console.log(`[Temporal Worker] Connecting to ${env.TEMPORAL_ADDRESS}...`);
 
+  const tlsConfig = getTlsConfig();
+
   connectionInstance = await NativeConnection.connect({
     address: env.TEMPORAL_ADDRESS,
+    tls: tlsConfig,
+    apiKey: env.TEMPORAL_API_KEY,
   });
 
   // Path to workflows module (ESM compatible)

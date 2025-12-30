@@ -9,6 +9,23 @@ let _client: Client | null = null;
 let _connection: Connection | null = null;
 
 /**
+ * Check if connecting to Temporal Cloud
+ */
+function isTemporalCloud(): boolean {
+  return (env.TEMPORAL_ADDRESS ?? "").includes("tmprl.cloud");
+}
+
+/**
+ * Get TLS config for Temporal Cloud (API Key auth needs TLS enabled)
+ */
+function getTlsConfig() {
+  if (env.TEMPORAL_API_KEY && isTemporalCloud()) {
+    return true; // Enable TLS without client certs
+  }
+  return undefined;
+}
+
+/**
  * Get or create a Temporal client singleton.
  * Used for starting workflows from the web app.
  */
@@ -17,14 +34,21 @@ export async function getTemporalClient(): Promise<Client> {
     return _client;
   }
 
+  const address = env.TEMPORAL_ADDRESS ?? "localhost:7233";
+  console.log(`[Temporal Client] Connecting to ${address}...`);
+
   _connection = await Connection.connect({
-    address: env.TEMPORAL_ADDRESS ?? "localhost:7233",
+    address,
+    tls: getTlsConfig(),
+    apiKey: env.TEMPORAL_API_KEY,
   });
 
   _client = new Client({
     connection: _connection,
-    namespace: "default",
+    namespace: env.TEMPORAL_NAMESPACE,
   });
+
+  console.log(`[Temporal Client] Connected to namespace: ${env.TEMPORAL_NAMESPACE}`);
 
   return _client;
 }
@@ -39,7 +63,7 @@ export async function startGitHubIndexWorkflow(
   const client = await getTemporalClient();
 
   const handle = await client.workflow.start("githubIndexWorkflow", {
-    taskQueue: "ducsigr-worker",
+    taskQueue: "ducsigr-tasks",
     workflowId: `github-index-${input.deliveryId}`,
     args: [input],
   });
@@ -69,7 +93,7 @@ export async function startEvalWorkflow(
   const workflowId = `eval-${input.suiteId}-${triggerSuffix}`;
 
   const handle = await client.workflow.start("evalPipelineWorkflow", {
-    taskQueue: "ducsigr-worker",
+    taskQueue: "ducsigr-tasks",
     workflowId,
     args: [input],
   });

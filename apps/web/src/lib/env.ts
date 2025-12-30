@@ -57,8 +57,10 @@ export const env = createEnv({
     GITHUB_STATE_SECRET: z.string().min(32).optional(),
 
     // Temporal (host:port format, NOT a URL - no scheme like http://)
-    // Example: "localhost:7233" or "temporal.example.com:7233"
+    // Example: "localhost:7233" or "your-ns.tmprl.cloud:7233"
     TEMPORAL_ADDRESS: z.string().optional(),
+    TEMPORAL_NAMESPACE: z.string().default("default"),
+    TEMPORAL_API_KEY: z.string().optional(),
   },
 
   /**
@@ -95,6 +97,8 @@ export const env = createEnv({
     GITHUB_APP_PRIVATE_KEY: process.env.GITHUB_APP_PRIVATE_KEY,
     GITHUB_STATE_SECRET: process.env.GITHUB_STATE_SECRET,
     TEMPORAL_ADDRESS: process.env.TEMPORAL_ADDRESS,
+    TEMPORAL_NAMESPACE: process.env.TEMPORAL_NAMESPACE,
+    TEMPORAL_API_KEY: process.env.TEMPORAL_API_KEY,
   },
 
   /**
