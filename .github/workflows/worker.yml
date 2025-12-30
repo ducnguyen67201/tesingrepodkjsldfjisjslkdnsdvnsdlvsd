@@ -27,17 +27,17 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate:ci
 
+      - name: Build (includes dependencies)
+        run: pnpm turbo run build --filter=@ducsigr/worker
+
       - name: Type check
-        run: pnpm --filter @ducsigr/worker typecheck
+        run: pnpm turbo run typecheck --filter=@ducsigr/worker
 
       - name: Test
-        run: pnpm --filter @ducsigr/worker test
+        run: pnpm turbo run test --filter=@ducsigr/worker
 
       - name: Lint
         run: pnpm --filter @ducsigr/worker lint
-
-      - name: Build worker
-        run: pnpm --filter @ducsigr/worker build
 
       # Temporal architecture checks
       - name: Verify Temporal structure

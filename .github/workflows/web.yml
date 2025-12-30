@@ -80,19 +80,19 @@ jobs:
           fi
           echo "✓ Database matches migrations"
 
+      - name: Build (includes dependencies)
+        run: pnpm turbo run build --filter=@ducsigr/web
+        env:
+          SKIP_ENV_VALIDATION: "true"
+
       - name: Type check
-        run: pnpm --filter @ducsigr/web --filter @ducsigr/api typecheck
+        run: pnpm turbo run typecheck --filter=@ducsigr/web --filter=@ducsigr/api
 
       - name: Test
-        run: pnpm --filter @ducsigr/web --filter @ducsigr/api test
+        run: pnpm turbo run test --filter=@ducsigr/web --filter=@ducsigr/api
 
       - name: Lint
         run: pnpm --filter @ducsigr/web --filter @ducsigr/api lint
-
-      - name: Build
-        run: pnpm --filter @ducsigr/web build
-        env:
-          SKIP_ENV_VALIDATION: "true"
 
       - name: Check for uncommitted changes (drift check)
         run: |
