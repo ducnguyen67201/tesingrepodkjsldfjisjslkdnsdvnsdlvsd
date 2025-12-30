@@ -18,9 +18,13 @@ export default defineConfig({
     // Mark the generated Prisma client as external
     /\.\/generated\/.*/,
   ],
-  // Copy the generated Prisma files
+  // Copy generated Prisma sources, then emit JS and fix ESM import specifiers.
   onSuccess: async () => {
     const { execSync } = await import("child_process");
     execSync("cp -r src/generated dist/", { stdio: "inherit" });
+    execSync("tsc -p tsconfig.generated.json", { stdio: "inherit" });
+    execSync('tsc-alias -p tsconfig.json --resolve-full-paths --inputglob "{js,mjs,cjs}"', {
+      stdio: "inherit",
+    });
   },
 });
