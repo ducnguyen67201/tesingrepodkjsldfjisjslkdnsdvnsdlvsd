@@ -25,7 +25,6 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ducsigr_test
-      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ducsigr_shadow
 
     steps:
       - name: Checkout
@@ -46,10 +45,6 @@ jobs:
       - name: Generate Prisma client
         run: pnpm db:generate:ci
 
-      - name: Create shadow database
-        run: |
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE ducsigr_shadow;"
-
       - name: Run migrations
         run: pnpm --filter @ducsigr/db db:migrate:deploy
 
@@ -63,7 +58,6 @@ jobs:
           if ! pnpm exec prisma migrate diff \
             --from-migrations ./prisma/schema/migrations \
             --to-schema ./prisma/schema \
-            --shadow-database-url "$SHADOW_DATABASE_URL" \
             --exit-code; then
             echo ""
             echo "::error::Schema drift detected! Run 'pnpm db:migrate --name <descriptive_name>' locally to create the migration."
