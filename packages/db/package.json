@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
+    "build": "tsc",
     "postinstall": "test -d prisma/schema && prisma generate --schema prisma/schema || echo 'Skipping prisma generate (schema not found)'",
     "db:generate": "prisma generate --schema prisma/schema",
     "db:push": "prisma db push --schema prisma/schema",

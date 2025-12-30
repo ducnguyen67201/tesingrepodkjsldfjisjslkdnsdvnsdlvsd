@@ -3,18 +3,40 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./client": "./src/client.ts",
-    "./schemas": "./src/schemas.ts",
-    "./lib/cost": "./src/lib/cost/index.ts",
-    "./lib/alerting": "./src/lib/alerting/index.ts",
-    "./lib/alerting/init": "./src/lib/alerting/init.ts",
-    "./lib/github": "./src/lib/github/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas.d.ts",
+      "import": "./dist/schemas.js"
+    },
+    "./lib/cost": {
+      "types": "./dist/lib/cost/index.d.ts",
+      "import": "./dist/lib/cost/index.js"
+    },
+    "./lib/alerting": {
+      "types": "./dist/lib/alerting/index.d.ts",
+      "import": "./dist/lib/alerting/index.js"
+    },
+    "./lib/alerting/init": {
+      "types": "./dist/lib/alerting/init.d.ts",
+      "import": "./dist/lib/alerting/init.js"
+    },
+    "./lib/github": {
+      "types": "./dist/lib/github/index.d.ts",
+      "import": "./dist/lib/github/index.js"
+    }
   },
   "scripts": {
+    "build": "tsc",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",
     "test": "vitest",

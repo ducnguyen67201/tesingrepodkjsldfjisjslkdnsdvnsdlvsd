@@ -3,28 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./cache": {
-      "types": "./src/cache/index.ts",
-      "default": "./src/cache/index.ts"
+      "types": "./dist/cache/index.d.ts",
+      "import": "./dist/cache/index.js"
     },
     "./llm": {
-      "types": "./src/llm/index.ts",
-      "default": "./src/llm/index.ts"
+      "types": "./dist/llm/index.d.ts",
+      "import": "./dist/llm/index.js"
     },
     "./llm/configs": {
-      "types": "./src/llm/configs/index.ts",
-      "default": "./src/llm/configs/index.ts"
+      "types": "./dist/llm/configs/index.d.ts",
+      "import": "./dist/llm/configs/index.js"
     },
     "./rca": {
-      "types": "./src/rca/index.ts",
-      "default": "./src/rca/index.ts"
+      "types": "./dist/rca/index.d.ts",
+      "import": "./dist/rca/index.js"
     }
   },
   "dependencies": {
