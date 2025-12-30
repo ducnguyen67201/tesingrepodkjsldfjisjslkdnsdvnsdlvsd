@@ -40,11 +40,11 @@
       "outputs": []
     },
     "typecheck": {
-      "dependsOn": ["^typecheck", "db:generate"],
+      "dependsOn": ["^build", "db:generate"],
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^test"],
+      "dependsOn": ["^build"],
       "outputs": []
     },
     "db:generate": {
