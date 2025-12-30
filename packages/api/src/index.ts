@@ -64,6 +64,15 @@ export type {
   WorkspaceDetail,
   WorkspaceMemberItem,
 } from "./routers/workspaces";
+export type { AllowedDomainItem } from "./routers/domains";
+export type { SpanWithType, TraceListItem } from "./routers/traces";
+
+// Re-export types from services
+export type { TrackRCARequestOutput } from "./services/rca.service";
+export type { TrackedUserBasic } from "./services/trackedUser.service";
+
+// Re-export types from lib
+export type { TraceWithSpans } from "./lib/filtering/query-builder";
 
 // ============================================================
 // Auth Middleware Utilities
