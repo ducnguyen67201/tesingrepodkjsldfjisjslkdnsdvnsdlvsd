@@ -27,8 +27,8 @@ COPY . .
 # Generate Prisma client
 RUN pnpm --filter @ducsigr/db db:generate
 
-# Build the ingest app
-RUN pnpm --filter @ducsigr/ingest-node build
+# Build the ingest app (use turbo to build dependencies first)
+RUN pnpm turbo run build --filter=@ducsigr/ingest-node
 
 # Production image
 FROM node:24-alpine AS runner
@@ -39,9 +39,27 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 ingest
 
-# Copy built application
-COPY --from=builder /app/apps/ingest-node/dist ./dist
-COPY --from=builder /app/apps/ingest-node/package.json ./
+# Copy root workspace files (needed for pnpm workspace resolution)
+COPY --from=builder /app/package.json /app/pnpm-workspace.yaml ./
+
+# Copy workspace packages (pnpm symlinks point to these)
+COPY --from=builder /app/packages/shared/package.json ./packages/shared/
+COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=builder /app/packages/api/package.json ./packages/api/
+COPY --from=builder /app/packages/api/dist ./packages/api/dist
+COPY --from=builder /app/packages/db/package.json ./packages/db/
+COPY --from=builder /app/packages/db/dist ./packages/db/dist
+COPY --from=builder /app/packages/proto/package.json ./packages/proto/
+COPY --from=builder /app/packages/proto/dist ./packages/proto/dist
+
+# Copy Prisma query engine (required at runtime)
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+
+# Copy built ingest application
+COPY --from=builder /app/apps/ingest-node/package.json ./apps/ingest-node/
+COPY --from=builder /app/apps/ingest-node/dist ./apps/ingest-node/dist
+
+# Copy node_modules (includes pnpm symlinks to workspace packages)
 COPY --from=builder /app/node_modules ./node_modules
 
 USER ingest
@@ -49,4 +67,4 @@ USER ingest
 EXPOSE 3001
 ENV PORT=3001
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "apps/ingest-node/dist/index.js"]

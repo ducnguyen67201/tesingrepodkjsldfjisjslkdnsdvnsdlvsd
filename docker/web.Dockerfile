@@ -35,7 +35,7 @@ ENV JWT_SHARED_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV INTERNAL_API_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV NEXTAUTH_URL="http://localhost:3000"
 ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
-RUN pnpm --filter @ducsigr/web build
+RUN pnpm turbo run build --filter=@ducsigr/web
 
 # Production image
 FROM node:24-alpine AS runner
