@@ -27,6 +27,7 @@ COPY packages/db/prisma ./packages/db/prisma/
 COPY packages/api/package.json ./packages/api/
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/proto/package.json ./packages/proto/
+COPY packages/sdk/package.json ./packages/sdk/
 COPY packages/config-eslint/package.json ./packages/config-eslint/
 COPY packages/config-typescript/package.json ./packages/config-typescript/
 COPY packages/config-typescript/*.json ./packages/config-typescript/
@@ -41,7 +42,7 @@ COPY . .
 RUN pnpm --filter @ducsigr/db db:generate
 
 # Build all workspace packages with turbo (handles dependency order)
-RUN pnpm turbo run build --filter=@ducsigr/shared --filter=@ducsigr/db --filter=@ducsigr/api --filter=@ducsigr/proto
+RUN pnpm turbo run build --filter=@ducsigr/shared --filter=@ducsigr/db --filter=@ducsigr/api --filter=@ducsigr/proto --filter=@ducsigr/sdk
 
 # Build Web (Next.js with standalone output)# Provide dummy env vars for build time - actual values are set at runtime
 ENV NEXTAUTH_SECRET="build-time-placeholder-secret-min-32-chars"
