@@ -40,25 +40,23 @@ COPY . .
 # Generate Prisma client
 RUN pnpm --filter @ducsigr/db db:generate
 
-# Build shared packages first
-RUN pnpm --filter @ducsigr/shared build
-RUN pnpm --filter @ducsigr/api build
+# Build all workspace packages with turbo (handles dependency order)
+RUN pnpm turbo run build --filter=@ducsigr/shared --filter=@ducsigr/db --filter=@ducsigr/api --filter=@ducsigr/proto
 
-# Build Web (Next.js with standalone output)
-# Provide dummy env vars for build time - actual values are set at runtime
+# Build Web (Next.js with standalone output)# Provide dummy env vars for build time - actual values are set at runtime
 ENV NEXTAUTH_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV JWT_SHARED_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV INTERNAL_API_SECRET="build-time-placeholder-secret-min-32-chars"
 ENV NEXTAUTH_URL="http://localhost:3000"
 ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 
-RUN pnpm --filter @ducsigr/web build
+RUN pnpm turbo run build --filter=@ducsigr/web
 
 # Build Worker
-RUN pnpm --filter @ducsigr/worker build
+RUN pnpm turbo run build --filter=@ducsigr/worker
 
 # Build Ingest Node
-RUN pnpm --filter @ducsigr/ingest-node build
+RUN pnpm turbo run build --filter=@ducsigr/ingest-node
 
 # ============================================================
 # Stage 2: Production Runtime

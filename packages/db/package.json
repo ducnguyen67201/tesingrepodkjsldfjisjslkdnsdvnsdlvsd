@@ -12,7 +12,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "postinstall": "test -d prisma/schema && prisma generate --schema prisma/schema || echo 'Skipping prisma generate (schema not found)'",
     "db:generate": "prisma generate --schema prisma/schema",
     "db:push": "prisma db push --schema prisma/schema",
@@ -39,6 +39,7 @@
     "@types/pg": "^8.11.0",
     "eslint": "^9.16.0",
     "prisma": "^7.0.0",
+    "tsup": "^8.3.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"

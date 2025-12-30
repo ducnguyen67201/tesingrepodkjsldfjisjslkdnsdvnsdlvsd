@@ -17,7 +17,7 @@
   },
   "scripts": {
     "generate": "buf generate",
-    "build": "tsc",
+    "build": "tsup",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@ducsigr/config-typescript": "workspace:*",
+    "tsup": "^8.3.5",
     "typescript": "^5.7.2"
   }
 }
