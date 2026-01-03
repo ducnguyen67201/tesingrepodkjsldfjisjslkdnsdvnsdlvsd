@@ -1,6 +1,11 @@
 "use client";
 
-import { createTRPCReact, httpBatchLink, loggerLink } from "@trpc/react-query";
+import {
+  createTRPCReact,
+  httpBatchLink,
+  loggerLink,
+  type CreateTRPCReact,
+} from "@trpc/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import superjson from "superjson";
@@ -9,7 +14,8 @@ import type { AppRouter } from "@ducsigr/api";
 /**
  * tRPC React hooks
  */
-export const trpc = createTRPCReact<AppRouter>();
+export const trpc: CreateTRPCReact<AppRouter, unknown> =
+  createTRPCReact<AppRouter>();
 
 /**
  * Get the base URL for tRPC requests.

@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * RCA Detail Hook
  *
@@ -17,13 +19,21 @@ interface UseRCADetailParams {
  * Fetch RCA detail with all related data
  */
 export function useRCADetail({ workspaceSlug, rcaId }: UseRCADetailParams) {
-  return trpc.alerts.getRCADetail.useQuery(
+  const query = trpc.alerts.getRCADetail.useQuery(
     { workspaceSlug, rcaId },
     {
       staleTime: 30_000, // 30 seconds
       retry: false,
     }
   );
+
+  return {
+    data: query.data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    error: query.error,
+    refetch: query.refetch,
+  };
 }
 
 /**
@@ -32,7 +42,7 @@ export function useRCADetail({ workspaceSlug, rcaId }: UseRCADetailParams) {
 export function useSubmitRCAFeedback(workspaceSlug: string) {
   const utils = trpc.useUtils();
 
-  return trpc.alerts.submitRCAFeedback.useMutation({
+  const mutation = trpc.alerts.submitRCAFeedback.useMutation({
     onSuccess: (_data, variables) => {
       rcaToast.feedbackSubmitted();
       utils.alerts.getRCADetail.invalidate({
@@ -42,6 +52,14 @@ export function useSubmitRCAFeedback(workspaceSlug: string) {
     },
     onError: showError,
   });
+
+  return {
+    mutate: mutation.mutate,
+    mutateAsync: mutation.mutateAsync,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error,
+  };
 }
 
 /**
@@ -52,11 +70,19 @@ export function useGenerateFixPrompt({
   rcaId,
   enabled = false,
 }: UseRCADetailParams & { enabled?: boolean }) {
-  return trpc.alerts.generateFixPrompt.useQuery(
+  const query = trpc.alerts.generateFixPrompt.useQuery(
     { workspaceSlug, rcaId },
     {
       enabled,
       staleTime: 60_000, // 1 minute
     }
   );
+
+  return {
+    data: query.data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+    error: query.error,
+    refetch: query.refetch,
+  };
 }
