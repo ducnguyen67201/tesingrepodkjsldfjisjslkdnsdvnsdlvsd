@@ -8,12 +8,22 @@ on:
       - prod
     paths:
       - 'packages/db/prisma/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run migrations'
+        required: true
+        default: 'Production'
+        type: choice
+        options:
+          - Production
+          - Staging
 
 jobs:
   migrate:
     name: Run Prisma Migrations
     runs-on: ubuntu-latest
-    environment: ${{ (github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging' }}
+    environment: ${{ inputs.environment || ((github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging') }}
 
     steps:
       - name: Checkout code
