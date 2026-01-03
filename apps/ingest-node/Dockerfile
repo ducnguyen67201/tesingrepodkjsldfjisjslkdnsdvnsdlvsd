@@ -48,12 +48,12 @@ COPY --from=builder /app/packages/api/package.json packages/api/
 COPY --from=builder /app/apps/ingest-node/package.json apps/ingest-node/
 
 # Install production dependencies only
+# Note: Prisma 7 generates client to src/generated/prisma, not node_modules/.prisma
 RUN pnpm install --frozen-lockfile --prod
 
-# Copy built files
+# Copy built files (includes Prisma 7 generated client in dist/generated/prisma)
 COPY --from=builder /app/packages/db/dist packages/db/dist
 COPY --from=builder /app/packages/db/prisma packages/db/prisma
-COPY --from=builder /app/node_modules/.prisma node_modules/.prisma
 COPY --from=builder /app/packages/shared/dist packages/shared/dist
 COPY --from=builder /app/packages/api/dist packages/api/dist
 COPY --from=builder /app/apps/ingest-node/dist apps/ingest-node/dist

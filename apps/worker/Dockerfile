@@ -30,25 +30,11 @@ RUN pnpm --filter @ducsigr/db db:generate
 # Build all packages
 RUN pnpm --filter @ducsigr/worker... build
 
-# Dependencies stage - for production node_modules
-FROM node:24-alpine AS deps
-
-RUN corepack enable && corepack prepare pnpm@9 --activate
-
-WORKDIR /app
-
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/db/package.json packages/db/
-COPY packages/shared/package.json packages/shared/
-COPY packages/api/package.json packages/api/
-COPY packages/proto/package.json packages/proto/
-COPY apps/worker/package.json apps/worker/
-
-# Production deps only (worker + its workspace deps)
-RUN pnpm install --frozen-lockfile --prod --filter @ducsigr/worker...
-
 # Production stage
 FROM node:24-alpine AS runner
+
+# Install pnpm for production dependencies
+RUN corepack enable && corepack prepare pnpm@9 --activate
 
 WORKDIR /app
 
@@ -56,13 +42,21 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 worker
 
-# Copy production node_modules
-COPY --from=deps /app ./
+# Copy package files for production install
+COPY --from=builder /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
+COPY --from=builder /app/packages/db/package.json packages/db/
+COPY --from=builder /app/packages/shared/package.json packages/shared/
+COPY --from=builder /app/packages/api/package.json packages/api/
+COPY --from=builder /app/packages/proto/package.json packages/proto/
+COPY --from=builder /app/apps/worker/package.json apps/worker/
 
-# Copy built packages
+# Install production dependencies
+# Note: Prisma 7 generates client to src/generated/prisma, not node_modules/.prisma
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy built packages (includes Prisma 7 generated client in dist/generated/prisma)
 COPY --from=builder /app/packages/db/dist packages/db/dist
 COPY --from=builder /app/packages/db/prisma packages/db/prisma
-COPY --from=builder /app/node_modules/.prisma node_modules/.prisma
 COPY --from=builder /app/packages/shared/dist packages/shared/dist
 COPY --from=builder /app/packages/api/dist packages/api/dist
 COPY --from=builder /app/packages/proto/dist packages/proto/dist
