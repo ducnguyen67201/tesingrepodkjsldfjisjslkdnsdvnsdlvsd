@@ -21,8 +21,8 @@ importers:
   apps/ingest-demo:
     dependencies:
       '@ducsigr/sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
+        specifier: ^1.0.3
+        version: 1.0.3(@anthropic-ai/sdk@0.20.9)(openai@4.104.0(ws@8.18.3)(zod@4.1.13))
       '@opentelemetry/api':
         specifier: ^1.9.0
         version: 1.9.0
@@ -1086,6 +1086,18 @@ packages:
 
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
+
+  '@ducsigr/sdk@1.0.3':
+    resolution: {integrity: sha512-yh8pITGr5PjxPCo55OO7Mdh2u48UlupV/aRyxtu5eZDrnDekL+rd9iZ1N4mUvbDYp+WPKgrl8mUGL6kucbl4pg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@anthropic-ai/sdk': ^0.20.0
+      openai: ^4.0.0
+    peerDependenciesMeta:
+      '@anthropic-ai/sdk':
+        optional: true
+      openai:
+        optional: true
 
   '@electric-sql/pglite-socket@0.0.6':
     resolution: {integrity: sha512-6RjmgzphIHIBA4NrMGJsjNWK4pu+bCWJlEWlwcxFTVY3WT86dFpKwbZaGWZV6C5Rd7sCk1Z0CI76QEfukLAUXw==}
@@ -8023,6 +8035,11 @@ snapshots:
   '@csstools/css-tokenizer@3.0.4': {}
 
   '@date-fns/tz@1.4.1': {}
+
+  '@ducsigr/sdk@1.0.3(@anthropic-ai/sdk@0.20.9)(openai@4.104.0(ws@8.18.3)(zod@4.1.13))':
+    optionalDependencies:
+      '@anthropic-ai/sdk': 0.20.9
+      openai: 4.104.0(ws@8.18.3)(zod@4.1.13)
 
   '@electric-sql/pglite-socket@0.0.6(@electric-sql/pglite@0.3.2)':
     dependencies:

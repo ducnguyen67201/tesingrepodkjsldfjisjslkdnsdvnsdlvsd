@@ -52,6 +52,21 @@ export interface WorkspaceMemberItem {
  */
 export const workspacesRouter = createRouter({
   /**
+   * Check if the current user is approved by system admin.
+   * Used to determine if user can create workspaces.
+   */
+  checkApproval: protectedProcedure.query(async ({ ctx }): Promise<{ isApproved: boolean }> => {
+    const session = ctx.session as SessionWithWorkspaces;
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { isApproved: true },
+    });
+
+    return { isApproved: user?.isApproved ?? false };
+  }),
+
+  /**
    * List all workspaces for the current user.
    * Returns workspaces from session (already loaded).
    * Note: Name uses slug as fallback since session doesn't store names.
@@ -141,12 +156,26 @@ export const workspacesRouter = createRouter({
   /**
    * Create a new workspace.
    * User becomes OWNER.
+   * Requires user to be approved by system admin.
    * Uses atomic operation to prevent race conditions on slug uniqueness.
    */
   create: protectedProcedure
     .input(CreateWorkspaceSchema)
     .mutation(async ({ ctx, input }): Promise<WorkspaceListItem> => {
       const session = ctx.session as SessionWithWorkspaces;
+
+      // Check if user is approved
+      const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { isApproved: true },
+      });
+
+      if (!user?.isApproved) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Your account is pending approval. Please contact the system administrator.",
+        });
+      }
 
       try {
         // Atomic create - unique constraint handles race condition

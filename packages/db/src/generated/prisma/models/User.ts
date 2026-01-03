@@ -33,6 +33,8 @@ export type UserMinAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isApproved: boolean | null
+  isSystemAdmin: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -44,6 +46,8 @@ export type UserMaxAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isApproved: boolean | null
+  isSystemAdmin: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -55,6 +59,8 @@ export type UserCountAggregateOutputType = {
   image: number
   createdAt: number
   updatedAt: number
+  isApproved: number
+  isSystemAdmin: number
   _all: number
 }
 
@@ -68,6 +74,8 @@ export type UserMinAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isApproved?: true
+  isSystemAdmin?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -79,6 +87,8 @@ export type UserMaxAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isApproved?: true
+  isSystemAdmin?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -90,6 +100,8 @@ export type UserCountAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isApproved?: true
+  isSystemAdmin?: true
   _all?: true
 }
 
@@ -174,6 +186,8 @@ export type UserGroupByOutputType = {
   image: string | null
   createdAt: Date
   updatedAt: Date
+  isApproved: boolean
+  isSystemAdmin: boolean
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -206,6 +220,8 @@ export type UserWhereInput = {
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isApproved?: Prisma.BoolFilter<"User"> | boolean
+  isSystemAdmin?: Prisma.BoolFilter<"User"> | boolean
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   projects?: Prisma.ProjectMemberListRelationFilter
@@ -232,6 +248,8 @@ export type UserOrderByWithRelationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isApproved?: Prisma.SortOrder
+  isSystemAdmin?: Prisma.SortOrder
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   projects?: Prisma.ProjectMemberOrderByRelationAggregateInput
@@ -261,6 +279,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isApproved?: Prisma.BoolFilter<"User"> | boolean
+  isSystemAdmin?: Prisma.BoolFilter<"User"> | boolean
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   projects?: Prisma.ProjectMemberListRelationFilter
@@ -287,6 +307,8 @@ export type UserOrderByWithAggregationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isApproved?: Prisma.SortOrder
+  isSystemAdmin?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -304,6 +326,8 @@ export type UserScalarWhereWithAggregatesInput = {
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  isApproved?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  isSystemAdmin?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
 }
 
 export type UserCreateInput = {
@@ -315,6 +339,8 @@ export type UserCreateInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -341,6 +367,8 @@ export type UserUncheckedCreateInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -367,6 +395,8 @@ export type UserUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -393,6 +423,8 @@ export type UserUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -419,6 +451,8 @@ export type UserCreateManyInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -430,6 +464,8 @@ export type UserUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -441,6 +477,8 @@ export type UserUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -452,6 +490,8 @@ export type UserCountOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isApproved?: Prisma.SortOrder
+  isSystemAdmin?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -463,6 +503,8 @@ export type UserMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isApproved?: Prisma.SortOrder
+  isSystemAdmin?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -474,6 +516,8 @@ export type UserMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isApproved?: Prisma.SortOrder
+  isSystemAdmin?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -715,6 +759,8 @@ export type UserCreateWithoutAccountsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
@@ -740,6 +786,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
@@ -781,6 +829,8 @@ export type UserUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
@@ -806,6 +856,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -831,6 +883,8 @@ export type UserCreateWithoutSessionsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
@@ -856,6 +910,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
@@ -897,6 +953,8 @@ export type UserUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
@@ -922,6 +980,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -947,6 +1007,8 @@ export type UserCreateWithoutDashboardsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -972,6 +1034,8 @@ export type UserUncheckedCreateWithoutDashboardsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1013,6 +1077,8 @@ export type UserUpdateWithoutDashboardsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1038,6 +1104,8 @@ export type UserUncheckedUpdateWithoutDashboardsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1063,6 +1131,8 @@ export type UserCreateWithoutDashboardWidgetsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1088,6 +1158,8 @@ export type UserUncheckedCreateWithoutDashboardWidgetsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1129,6 +1201,8 @@ export type UserUpdateWithoutDashboardWidgetsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1154,6 +1228,8 @@ export type UserUncheckedUpdateWithoutDashboardWidgetsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1179,6 +1255,8 @@ export type UserCreateWithoutExtensionsOwnedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1204,6 +1282,8 @@ export type UserUncheckedCreateWithoutExtensionsOwnedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1245,6 +1325,8 @@ export type UserUpdateWithoutExtensionsOwnedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1270,6 +1352,8 @@ export type UserUncheckedUpdateWithoutExtensionsOwnedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1295,6 +1379,8 @@ export type UserCreateWithoutExtensionsInstalledInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1320,6 +1406,8 @@ export type UserUncheckedCreateWithoutExtensionsInstalledInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1361,6 +1449,8 @@ export type UserUpdateWithoutExtensionsInstalledInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1386,6 +1476,8 @@ export type UserUncheckedUpdateWithoutExtensionsInstalledInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1411,6 +1503,8 @@ export type UserCreateWithoutExtensionAuditLogsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1436,6 +1530,8 @@ export type UserUncheckedCreateWithoutExtensionAuditLogsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1477,6 +1573,8 @@ export type UserUpdateWithoutExtensionAuditLogsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1502,6 +1600,8 @@ export type UserUncheckedUpdateWithoutExtensionAuditLogsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1527,6 +1627,8 @@ export type UserCreateWithoutArticlesCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1552,6 +1654,8 @@ export type UserUncheckedCreateWithoutArticlesCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1582,6 +1686,8 @@ export type UserCreateWithoutArticlesUpdatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1607,6 +1713,8 @@ export type UserUncheckedCreateWithoutArticlesUpdatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1648,6 +1756,8 @@ export type UserUpdateWithoutArticlesCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1673,6 +1783,8 @@ export type UserUncheckedUpdateWithoutArticlesCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1709,6 +1821,8 @@ export type UserUpdateWithoutArticlesUpdatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1734,6 +1848,8 @@ export type UserUncheckedUpdateWithoutArticlesUpdatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1759,6 +1875,8 @@ export type UserCreateWithoutArticleVersionsCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1784,6 +1902,8 @@ export type UserUncheckedCreateWithoutArticleVersionsCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1825,6 +1945,8 @@ export type UserUpdateWithoutArticleVersionsCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1850,6 +1972,8 @@ export type UserUncheckedUpdateWithoutArticleVersionsCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1875,6 +1999,8 @@ export type UserCreateWithoutKnowledgeLinksCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -1900,6 +2026,8 @@ export type UserUncheckedCreateWithoutKnowledgeLinksCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -1941,6 +2069,8 @@ export type UserUpdateWithoutKnowledgeLinksCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -1966,6 +2096,8 @@ export type UserUncheckedUpdateWithoutKnowledgeLinksCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -1991,6 +2123,8 @@ export type UserCreateWithoutProjectsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
@@ -2016,6 +2150,8 @@ export type UserUncheckedCreateWithoutProjectsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   workspaces?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
@@ -2057,6 +2193,8 @@ export type UserUpdateWithoutProjectsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
@@ -2082,6 +2220,8 @@ export type UserUncheckedUpdateWithoutProjectsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   workspaces?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -2107,6 +2247,8 @@ export type UserCreateWithoutRcaFeedbackInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -2132,6 +2274,8 @@ export type UserUncheckedCreateWithoutRcaFeedbackInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -2173,6 +2317,8 @@ export type UserUpdateWithoutRcaFeedbackInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -2198,6 +2344,8 @@ export type UserUncheckedUpdateWithoutRcaFeedbackInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -2223,6 +2371,8 @@ export type UserCreateWithoutWorkspacesInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -2248,6 +2398,8 @@ export type UserUncheckedCreateWithoutWorkspacesInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -2289,6 +2441,8 @@ export type UserUpdateWithoutWorkspacesInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -2314,6 +2468,8 @@ export type UserUncheckedUpdateWithoutWorkspacesInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -2339,6 +2495,8 @@ export type UserCreateWithoutDomainsCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
@@ -2364,6 +2522,8 @@ export type UserUncheckedCreateWithoutDomainsCreatedInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   projects?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
@@ -2405,6 +2565,8 @@ export type UserUpdateWithoutDomainsCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
@@ -2430,6 +2592,8 @@ export type UserUncheckedUpdateWithoutDomainsCreatedInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isSystemAdmin?: Prisma.BoolFieldUpdateOperationsInput | boolean
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   projects?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -2612,6 +2776,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isApproved?: boolean
+  isSystemAdmin?: boolean
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   projects?: boolean | Prisma.User$projectsArgs<ExtArgs>
@@ -2639,6 +2805,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isApproved?: boolean
+  isSystemAdmin?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2650,6 +2818,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isApproved?: boolean
+  isSystemAdmin?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -2661,9 +2831,11 @@ export type UserSelectScalar = {
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isApproved?: boolean
+  isSystemAdmin?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "password" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "password" | "image" | "createdAt" | "updatedAt" | "isApproved" | "isSystemAdmin", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -2713,6 +2885,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     image: string | null
     createdAt: Date
     updatedAt: Date
+    isApproved: boolean
+    isSystemAdmin: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -3159,6 +3333,8 @@ export interface UserFieldRefs {
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly isApproved: Prisma.FieldRef<"User", 'Boolean'>
+  readonly isSystemAdmin: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 
