@@ -1,6 +1,5 @@
 import type { DucsigrConfig, ResolvedConfig } from './types';
-
-const DEFAULT_ENDPOINT = 'https://ingest.ducsigr.com';
+import { DEFAULT_ENDPOINT } from './env';
 const DEFAULT_FLUSH_INTERVAL = 5000;
 const DEFAULT_MAX_BATCH_SIZE = 10;
 const DEFAULT_MAX_RETRIES = 3;

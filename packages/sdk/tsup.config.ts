@@ -13,4 +13,9 @@ export default defineConfig({
   minify: false,
   treeshake: true,
   external: ['openai', '@anthropic-ai/sdk'],
+  // Replace env vars at build time
+  env: {
+    DUCSIGR_DEFAULT_ENDPOINT:
+      process.env.DUCSIGR_DEFAULT_ENDPOINT || 'https://ingest.ducsigr.com',
+  },
 });

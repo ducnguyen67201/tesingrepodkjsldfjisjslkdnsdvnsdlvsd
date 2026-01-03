@@ -36,6 +36,8 @@ jobs:
 
       - name: Build
         run: pnpm --filter @ducsigr/sdk build
+        env:
+          DUCSIGR_DEFAULT_ENDPOINT: ${{ secrets.DUCSIGR_DEFAULT_ENDPOINT }}
 
       - name: Test
         run: pnpm --filter @ducsigr/sdk test:run
