@@ -15,7 +15,6 @@
   "dependencies": {
     "@ducsigr/api": "workspace:^",
     "@ducsigr/db": "workspace:*",
-    "@ducsigr/proto": "workspace:*",
     "@ducsigr/shared": "workspace:*",
     "@prisma/client": "^7.0.0",
     "@octokit/auth-app": "^6.0.0",
