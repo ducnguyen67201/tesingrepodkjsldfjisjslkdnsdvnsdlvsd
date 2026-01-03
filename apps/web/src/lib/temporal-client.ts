@@ -12,7 +12,8 @@ let _connection: Connection | null = null;
  * Check if connecting to Temporal Cloud
  */
 function isTemporalCloud(): boolean {
-  return (env.TEMPORAL_ADDRESS ?? "").includes("tmprl.cloud");
+  const address = env.TEMPORAL_ADDRESS ?? "";
+  return address.includes("tmprl.cloud") || address.includes("temporal.io");
 }
 
 /**
