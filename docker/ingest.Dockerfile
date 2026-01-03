@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 # Ingest (Express/Node.js) Dockerfile
+# Note: Using node:24-slim (Debian) instead of Alpine for better compatibility
 
-FROM node:24-alpine AS base
+FROM node:24-slim AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
@@ -32,13 +33,17 @@ RUN pnpm turbo run build --filter=@ducsigr/ingest-node
 RUN pnpm prune --prod
 
 # Production image
-FROM node:24-alpine AS runner
+FROM node:24-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 ingest
+# Install CA certificates for TLS connections
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs ingest
 
 # Copy node_modules from builder (already pruned, with correct structure)
 COPY --from=builder /app/node_modules ./node_modules
@@ -60,7 +65,7 @@ COPY --from=builder /app/apps/ingest-node/dist ./dist
 
 USER ingest
 
-EXPOSE 3001
-ENV PORT=3001
+EXPOSE 8080
+ENV PORT=8080
 
 CMD ["node", "dist/index.js"]
