@@ -21,8 +21,8 @@ importers:
   apps/ingest-demo:
     dependencies:
       '@ducsigr/sdk':
-        specifier: workspace:*
-        version: link:../../packages/sdk
+        specifier: ^1.0.3
+        version: 1.0.3(@anthropic-ai/sdk@0.20.9)(openai@4.104.0(ws@8.18.3)(zod@4.1.13))
       '@opentelemetry/api':
         specifier: ^1.9.0
         version: 1.9.0
@@ -509,7 +509,7 @@ importers:
         version: 1.13.2
       '@temporalio/worker':
         specifier: ^1.13.2
-        version: 1.13.2(esbuild@0.27.0)
+        version: 1.13.2
       '@temporalio/workflow':
         specifier: ^1.13.2
         version: 1.13.2
@@ -1086,6 +1086,18 @@ packages:
 
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
+
+  '@ducsigr/sdk@1.0.3':
+    resolution: {integrity: sha512-yh8pITGr5PjxPCo55OO7Mdh2u48UlupV/aRyxtu5eZDrnDekL+rd9iZ1N4mUvbDYp+WPKgrl8mUGL6kucbl4pg==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@anthropic-ai/sdk': ^0.20.0
+      openai: ^4.0.0
+    peerDependenciesMeta:
+      '@anthropic-ai/sdk':
+        optional: true
+      openai:
+        optional: true
 
   '@electric-sql/pglite-socket@0.0.6':
     resolution: {integrity: sha512-6RjmgzphIHIBA4NrMGJsjNWK4pu+bCWJlEWlwcxFTVY3WT86dFpKwbZaGWZV6C5Rd7sCk1Z0CI76QEfukLAUXw==}
@@ -8024,6 +8036,11 @@ snapshots:
 
   '@date-fns/tz@1.4.1': {}
 
+  '@ducsigr/sdk@1.0.3(@anthropic-ai/sdk@0.20.9)(openai@4.104.0(ws@8.18.3)(zod@4.1.13))':
+    optionalDependencies:
+      '@anthropic-ai/sdk': 0.20.9
+      openai: 4.104.0(ws@8.18.3)(zod@4.1.13)
+
   '@electric-sql/pglite-socket@0.0.6(@electric-sql/pglite@0.3.2)':
     dependencies:
       '@electric-sql/pglite': 0.3.2
@@ -10713,7 +10730,7 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.4
 
-  '@temporalio/worker@1.13.2(esbuild@0.27.0)':
+  '@temporalio/worker@1.13.2':
     dependencies:
       '@grpc/grpc-js': 1.14.2
       '@swc/core': 1.15.3
@@ -10732,11 +10749,11 @@ snapshots:
       protobufjs: 7.5.4
       rxjs: 7.8.2
       source-map: 0.7.6
-      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      source-map-loader: 4.0.2(webpack@5.103.0(@swc/core@1.15.3))
       supports-color: 8.1.1
-      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      swc-loader: 0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       unionfs: 4.6.0
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     transitivePeerDependencies:
       - '@swc/helpers'
       - esbuild
@@ -14242,11 +14259,11 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  source-map-loader@4.0.2(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       iconv-lite: 0.6.3
       source-map-js: 1.2.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   source-map-support@0.5.21:
     dependencies:
@@ -14394,11 +14411,11 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  swc-loader@0.2.6(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@swc/core': 1.15.3
       '@swc/counter': 0.1.3
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
 
   symbol-tree@3.2.4: {}
 
@@ -14444,17 +14461,16 @@ snapshots:
     dependencies:
       bintrees: 1.0.2
 
-  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)):
+  terser-webpack-plugin@5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       serialize-javascript: 6.0.2
       terser: 5.44.1
-      webpack: 5.103.0(@swc/core@1.15.3)(esbuild@0.27.0)
+      webpack: 5.103.0(@swc/core@1.15.3)
     optionalDependencies:
       '@swc/core': 1.15.3
-      esbuild: 0.27.0
 
   terser@5.44.1:
     dependencies:
@@ -14969,7 +14985,7 @@ snapshots:
 
   webpack-sources@3.3.3: {}
 
-  webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0):
+  webpack@5.103.0(@swc/core@1.15.3):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -14993,7 +15009,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.0
-      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(esbuild@0.27.0)(webpack@5.103.0(@swc/core@1.15.3)(esbuild@0.27.0))
+      terser-webpack-plugin: 5.3.15(@swc/core@1.15.3)(webpack@5.103.0(@swc/core@1.15.3))
       watchpack: 2.4.4
       webpack-sources: 3.3.3
     transitivePeerDependencies:
