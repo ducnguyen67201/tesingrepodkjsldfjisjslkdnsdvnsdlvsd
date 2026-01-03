@@ -41,6 +41,12 @@ export default function CreateWorkspacePage() {
 
   const createMutation = trpc.workspaces.create.useMutation();
 
+  // Check if user is approved
+  const { data: approvalData, isLoading: isCheckingApproval } =
+    trpc.workspaces.checkApproval.useQuery(undefined, {
+      enabled: status === "authenticated",
+    });
+
   const form = useForm<CreateWorkspaceInput>({
     resolver: zodResolver(CreateWorkspaceSchema),
     defaultValues: {
@@ -55,6 +61,13 @@ export default function CreateWorkspacePage() {
       router.push("/login");
     }
   }, [status, router]);
+
+  // Redirect unapproved users
+  useEffect(() => {
+    if (approvalData && !approvalData.isApproved) {
+      router.push("/no-workspace");
+    }
+  }, [approvalData, router]);
 
   const generateSlug = (name: string): string => {
     return name
@@ -111,7 +124,16 @@ export default function CreateWorkspacePage() {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || isCheckingApproval) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  // Don't render if user is not approved (will redirect)
+  if (approvalData && !approvalData.isApproved) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
