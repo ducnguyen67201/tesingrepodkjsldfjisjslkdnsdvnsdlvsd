@@ -57,12 +57,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ducsigr/ducsigr.git",
+    "url": "https://github.com/ducnguyen67201/tesingrepodkjsldfjisjslkdnsdvnsdlvsd.git",
     "directory": "packages/sdk"
   },
-  "homepage": "https://github.com/ducsigr/ducsigr/tree/main/packages/sdk#readme",
+  "homepage": "https://github.com/ducnguyen67201/tesingrepodkjsldfjisjslkdnsdvnsdlvsd/tree/main/packages/sdk#readme",
   "bugs": {
-    "url": "https://github.com/ducsigr/ducsigr/issues"
+    "url": "https://github.com/ducnguyen67201/tesingrepodkjsldfjisjslkdnsdvnsdlvsd/issues"
   },
   "publishConfig": {
     "access": "public"
