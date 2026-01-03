@@ -30,7 +30,6 @@ COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma/
 COPY packages/api/package.json ./packages/api/
 COPY packages/shared/package.json ./packages/shared/
-COPY packages/proto/package.json ./packages/proto/
 COPY packages/config-eslint/package.json ./packages/config-eslint/
 COPY packages/config-typescript/package.json ./packages/config-typescript/
 COPY packages/config-typescript/*.json ./packages/config-typescript/
@@ -44,8 +43,9 @@ COPY . .
 # Generate Prisma client
 RUN pnpm --filter @ducsigr/db db:generate
 
-# Build shared packages
+# Build shared packages (db must be built before api for type exports)
 RUN pnpm --filter @ducsigr/shared build
+RUN pnpm --filter @ducsigr/db build
 RUN pnpm --filter @ducsigr/api build
 
 # Build Web (Next.js with standalone output)
@@ -123,7 +123,6 @@ COPY --from=node-builder /app/packages/db/package.json ./packages/db/package.jso
 COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
 COPY --from=node-builder /app/packages/shared/package.json ./packages/shared/package.json
 COPY --from=node-builder /app/packages/api/package.json ./packages/api/package.json
-COPY --from=node-builder /app/packages/proto/package.json ./packages/proto/package.json
 
 # Install ALL dependencies (not --prod, need tsx for TypeScript runtime)
 RUN pnpm install --frozen-lockfile
@@ -138,12 +137,13 @@ COPY --from=node-builder /app/apps/web/public ./apps/web/public
 COPY --from=node-builder /app/apps/ingest-node/src ./apps/ingest-node/src
 COPY --from=node-builder /app/apps/ingest-node/tsconfig.json ./apps/ingest-node/tsconfig.json
 
-# Copy workspace packages (TypeScript source)
+# Copy workspace packages (TypeScript source and built dist)
 COPY --from=node-builder /app/packages/db/src ./packages/db/src
+COPY --from=node-builder /app/packages/db/dist ./packages/db/dist
 COPY --from=node-builder /app/packages/shared/src ./packages/shared/src
 COPY --from=node-builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=node-builder /app/packages/api/src ./packages/api/src
-COPY --from=node-builder /app/packages/proto/src ./packages/proto/src
+COPY --from=node-builder /app/packages/api/dist ./packages/api/dist
 
 # Copy Temporal CLI
 COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
@@ -152,8 +152,7 @@ COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
 RUN mkdir -p /app/node_modules/@ducsigr \
     && ln -sf /app/packages/shared /app/node_modules/@ducsigr/shared \
     && ln -sf /app/packages/api /app/node_modules/@ducsigr/api \
-    && ln -sf /app/packages/db /app/node_modules/@ducsigr/db \
-    && ln -sf /app/packages/proto /app/node_modules/@ducsigr/proto
+    && ln -sf /app/packages/db /app/node_modules/@ducsigr/db
 
 # Copy configuration files
 COPY docker/quickstart/supervisord.conf /etc/supervisord.conf
