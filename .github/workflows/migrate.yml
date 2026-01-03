@@ -6,8 +6,6 @@ on:
       - main
       - stage
       - prod
-    paths:
-      - 'packages/db/prisma/**'
   workflow_dispatch:
     inputs:
       environment:
