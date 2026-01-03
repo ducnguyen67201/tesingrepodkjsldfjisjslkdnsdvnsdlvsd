@@ -30,10 +30,6 @@ export function initializeAlertingAdapters(): void {
   if (SMTP_CONFIGURED) {
     AdapterRegistry.register(new GmailAdapter());
     console.log("Gmail adapter registered");
-  } else {
-    console.warn(
-      "Gmail adapter not registered: SMTP_USER, SMTP_PASS not configured"
-    );
   }
 
   console.log(
