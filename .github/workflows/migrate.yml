@@ -11,7 +11,7 @@ on:
       environment:
         description: 'Environment to run migrations'
         required: true
-        default: 'Production'
+        default: 'Staging'
         type: choice
         options:
           - Production
@@ -21,14 +21,9 @@ jobs:
   migrate:
     name: Run Prisma Migrations
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment || ((github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging') }}
+    environment: Staging
 
     steps:
-      - name: Debug environment
-        run: |
-          echo "Environment: ${{ inputs.environment || ((github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging') }}"
-          echo "Branch: ${{ github.ref_name }}"
-          echo "DATABASE_URL is set: ${{ vars.DATABASE_URL != '' }}"
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -48,4 +43,4 @@ jobs:
       - name: Run database migrations
         run: pnpm --filter @ducsigr/db db:migrate:deploy
         env:
-          DATABASE_URL: ${{ vars.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
