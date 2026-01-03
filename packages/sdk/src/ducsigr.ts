@@ -137,14 +137,21 @@ class DucsigrClient {
   }
 
   /**
-   * Ensure the SDK is initialized
+   * Ensure the SDK is initialized.
+   * Auto-initializes from environment variables if not explicitly initialized.
+   *
+   * Environment variables:
+   * - DUCSIGR_API_KEY: Required for sending traces
+   * - DUCSIGR_ENDPOINT: Optional, uses baked-in default
+   * - DUCSIGR_DEBUG: Optional, enables debug logging
+   * - DUCSIGR_DISABLED: Optional, disables the SDK entirely
    */
   private ensureInitialized(): void {
-    if (!this.initialized) {
-      throw new Error(
-        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
-      );
-    }
+    if (this.initialized) return;
+
+    // Auto-initialize from environment variables
+    // This allows users to just import and use without explicit init()
+    this.init({});
   }
 
   /**
@@ -382,12 +389,8 @@ class DucsigrClient {
    * ```
    */
   get prompts(): PromptClient {
-    if (!this._prompts) {
-      throw new Error(
-        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
-      );
-    }
-    return this._prompts;
+    this.ensureInitialized();
+    return this._prompts!;
   }
 
   /**
@@ -411,12 +414,8 @@ class DucsigrClient {
    * ```
    */
   get logs(): LoggerClient {
-    if (!this._logger) {
-      throw new Error(
-        '[Ducsigr] SDK not initialized. Call Ducsigr.init() first.'
-      );
-    }
-    return this._logger;
+    this.ensureInitialized();
+    return this._logger!;
   }
 }
 

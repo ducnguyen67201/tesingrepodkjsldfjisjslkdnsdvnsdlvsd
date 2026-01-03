@@ -232,6 +232,12 @@
         <button onclick="callAPI('/api/demo/llm', {prompt: 'Tell me about observability', model: 'gpt-4-mock'})">
           <span class="icon">🤖</span> Mock LLM
         </button>
+        <button onclick="callAPI('/api/demo/sdk-test', {message: 'Testing SDK!'})">
+          <span class="icon">📦</span> SDK Test
+        </button>
+        <button onclick="callAPI('/api/demo/sdk-test/simple')">
+          <span class="icon">⚡</span> SDK Simple
+        </button>
       </div>
 
       <div class="result-section">

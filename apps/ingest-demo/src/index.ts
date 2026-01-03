@@ -22,6 +22,7 @@ import { quotesRouter } from "./routes/quotes.js";
 import { jokesRouter } from "./routes/jokes.js";
 import { llmRouter } from "./routes/llm-mock.js";
 import { promptTestRouter } from "./routes/prompt-test.js";
+import { sdkTestRouter } from "./routes/sdk-test.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,6 +48,7 @@ app.use("/api/demo", quotesRouter);
 app.use("/api/demo", jokesRouter);
 app.use("/api/demo", llmRouter);
 app.use("/api/demo", promptTestRouter);
+app.use("/api/demo", sdkTestRouter);
 
 // Root route redirects to static UI
 app.get("/", (_req, res) => {
@@ -82,6 +84,8 @@ const server = app.listen(port, () => {
     POST /api/demo/llm                  - Mock LLM response
     POST /api/demo/prompt-test/single   - Test prompt fetch + mock LLM
     POST /api/demo/prompt-test/experiment - Test A/B experiment + mock LLM
+    POST /api/demo/sdk-test             - Test @ducsigr/sdk package
+    POST /api/demo/sdk-test/simple      - Simple SDK test
 
   Traces exporting to:   ${config.ducsigr.tracesUrl}
   Logs exporting to:     ${config.ducsigr.endpoint}/v1/logs
