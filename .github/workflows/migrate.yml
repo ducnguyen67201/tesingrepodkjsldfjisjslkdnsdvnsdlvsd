@@ -24,6 +24,12 @@ jobs:
     environment: ${{ inputs.environment || ((github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging') }}
 
     steps:
+      - name: Debug environment
+        run: |
+          echo "Environment: ${{ inputs.environment || ((github.ref_name == 'prod' || github.ref_name == 'main') && 'Production' || 'Staging') }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "DATABASE_URL is set: ${{ vars.DATABASE_URL != '' }}"
+
       - name: Checkout code
         uses: actions/checkout@v4
 
