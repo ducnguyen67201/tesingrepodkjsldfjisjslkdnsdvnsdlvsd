@@ -3,6 +3,7 @@
   "globalDependencies": [".env"],
   "globalPassThroughEnv": [
     "NODE_ENV",
+    "SKIP_ENV_VALIDATION",
     "DATABASE_URL",
     "NEXTAUTH_SECRET",
     "NEXTAUTH_URL",
