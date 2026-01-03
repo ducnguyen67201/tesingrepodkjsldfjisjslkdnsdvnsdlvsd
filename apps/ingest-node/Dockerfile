@@ -7,7 +7,7 @@ RUN corepack enable && corepack prepare pnpm@9 --activate
 WORKDIR /app
 
 # Copy workspace files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
 COPY packages/db/package.json packages/db/
 COPY packages/shared/package.json packages/shared/
 COPY packages/api/package.json packages/api/
@@ -25,14 +25,14 @@ COPY apps/ingest-node apps/ingest-node
 # Generate Prisma client
 RUN pnpm --filter @ducsigr/db db:generate
 
-# Build ingest-node
-RUN pnpm --filter @ducsigr/ingest-node build
+# Build ingest-node and dependencies
+RUN pnpm --filter @ducsigr/ingest-node... build
+
+# Prune dev dependencies for production
+RUN pnpm prune --prod
 
 # Production stage
 FROM node:24-alpine AS runner
-
-# Install pnpm for production dependencies
-RUN corepack enable && corepack prepare pnpm@9 --activate
 
 WORKDIR /app
 
@@ -40,22 +40,21 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 ingest
 
-# Copy package files
-COPY --from=builder /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
-COPY --from=builder /app/packages/db/package.json packages/db/
-COPY --from=builder /app/packages/shared/package.json packages/shared/
-COPY --from=builder /app/packages/api/package.json packages/api/
-COPY --from=builder /app/apps/ingest-node/package.json apps/ingest-node/
+# Copy node_modules from builder (already pruned to prod deps)
+# This preserves pnpm's symlink structure and ensures @prisma/client is resolvable
+COPY --from=builder /app/node_modules node_modules
 
-# Install production dependencies only
-# Note: Prisma 7 generates client to src/generated/prisma, not node_modules/.prisma
-RUN pnpm install --frozen-lockfile --prod
-
-# Copy built files (includes Prisma 7 generated client in dist/generated/prisma)
+# Copy built workspace packages with their dist folders
+COPY --from=builder /app/packages/db/package.json packages/db/package.json
 COPY --from=builder /app/packages/db/dist packages/db/dist
 COPY --from=builder /app/packages/db/prisma packages/db/prisma
+COPY --from=builder /app/packages/shared/package.json packages/shared/package.json
 COPY --from=builder /app/packages/shared/dist packages/shared/dist
+COPY --from=builder /app/packages/api/package.json packages/api/package.json
 COPY --from=builder /app/packages/api/dist packages/api/dist
+
+# Copy ingest-node app
+COPY --from=builder /app/apps/ingest-node/package.json apps/ingest-node/package.json
 COPY --from=builder /app/apps/ingest-node/dist apps/ingest-node/dist
 
 # Set ownership

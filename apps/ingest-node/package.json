@@ -19,6 +19,7 @@
     "@ducsigr/db": "workspace:*",
     "@ducsigr/proto": "workspace:*",
     "@ducsigr/shared": "workspace:*",
+    "@prisma/client": "^7.0.0",
     "@t3-oss/env-core": "^0.13.8",
     "compression": "^1.7.5",
     "express": "^4.21.2",

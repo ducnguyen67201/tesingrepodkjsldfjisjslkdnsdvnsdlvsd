@@ -17,6 +17,7 @@
     "@ducsigr/db": "workspace:*",
     "@ducsigr/proto": "workspace:*",
     "@ducsigr/shared": "workspace:*",
+    "@prisma/client": "^7.0.0",
     "@octokit/auth-app": "^6.0.0",
     "@octokit/rest": "^20.0.0",
     "@t3-oss/env-core": "^0.13.8",
