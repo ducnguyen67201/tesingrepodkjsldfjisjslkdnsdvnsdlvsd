@@ -1,7 +1,9 @@
 # syntax=docker/dockerfile:1
 # Worker (Temporal) Dockerfile
+# Note: Using node:24-slim (Debian) instead of Alpine because
+# Temporal SDK requires glibc (Alpine uses musl)
 
-FROM node:24-alpine AS base
+FROM node:24-slim AS base
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
@@ -32,13 +34,13 @@ RUN pnpm turbo run build --filter=@ducsigr/worker
 RUN pnpm prune --prod
 
 # Production image
-FROM node:24-alpine AS runner
+FROM node:24-slim AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 worker
+RUN groupadd --system --gid 1001 nodejs && \
+    useradd --system --uid 1001 --gid nodejs worker
 
 # Copy node_modules from builder (already pruned, with correct structure)
 COPY --from=builder /app/node_modules ./node_modules
