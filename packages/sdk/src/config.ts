@@ -4,6 +4,11 @@ const DEFAULT_ENDPOINT = 'https://ingest.ducsigr.com';
 const DEFAULT_FLUSH_INTERVAL = 5000;
 const DEFAULT_MAX_BATCH_SIZE = 10;
 const DEFAULT_MAX_RETRIES = 3;
+const DEFAULT_MAX_QUEUE_SIZE = 10000;
+const DEFAULT_TIMEOUT = 30000;
+const DEFAULT_COMPRESSION = true;
+const DEFAULT_MAX_RETRY_DELAY = 30000;
+const DEFAULT_SAMPLE_RATE = 1.0;
 
 /**
  * Get environment variable value (works in Node.js and edge runtimes)
@@ -37,6 +42,11 @@ export function resolveConfig(config: DucsigrConfig): ResolvedConfig {
     flushInterval: config.flushInterval ?? DEFAULT_FLUSH_INTERVAL,
     maxBatchSize: config.maxBatchSize ?? DEFAULT_MAX_BATCH_SIZE,
     maxRetries: config.maxRetries ?? DEFAULT_MAX_RETRIES,
+    maxQueueSize: config.maxQueueSize ?? DEFAULT_MAX_QUEUE_SIZE,
+    timeout: config.timeout ?? DEFAULT_TIMEOUT,
+    compression: config.compression ?? DEFAULT_COMPRESSION,
+    maxRetryDelay: config.maxRetryDelay ?? DEFAULT_MAX_RETRY_DELAY,
+    sampleRate: Math.max(0, Math.min(1, config.sampleRate ?? DEFAULT_SAMPLE_RATE)),
   };
 }
 
@@ -65,5 +75,21 @@ export function validateConfig(config: ResolvedConfig): void {
 
   if (config.maxRetries < 0) {
     throw new Error('[Ducsigr] Max retries cannot be negative');
+  }
+
+  if (config.maxQueueSize < 1) {
+    throw new Error('[Ducsigr] Max queue size must be at least 1');
+  }
+
+  if (config.timeout < 1000) {
+    throw new Error('[Ducsigr] Timeout must be at least 1000ms');
+  }
+
+  if (config.maxRetryDelay < 1000) {
+    throw new Error('[Ducsigr] Max retry delay must be at least 1000ms');
+  }
+
+  if (config.sampleRate < 0 || config.sampleRate > 1) {
+    throw new Error('[Ducsigr] Sample rate must be between 0.0 and 1.0');
   }
 }

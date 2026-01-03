@@ -58,6 +58,16 @@ export interface DucsigrConfig {
   maxBatchSize?: number;
   /** Max retry attempts on failure (default: 3) */
   maxRetries?: number;
+  /** Max queue size before dropping oldest traces (default: 10000) */
+  maxQueueSize?: number;
+  /** Request timeout in ms (default: 30000) */
+  timeout?: number;
+  /** Enable gzip compression (default: true) */
+  compression?: boolean;
+  /** Max retry delay in ms (default: 30000) */
+  maxRetryDelay?: number;
+  /** Sample rate 0.0-1.0 for trace sampling (default: 1.0) */
+  sampleRate?: number;
 }
 
 /**
@@ -71,6 +81,11 @@ export interface ResolvedConfig {
   flushInterval: number;
   maxBatchSize: number;
   maxRetries: number;
+  maxQueueSize: number;
+  timeout: number;
+  compression: boolean;
+  maxRetryDelay: number;
+  sampleRate: number;
 }
 
 /**

@@ -60,6 +60,13 @@
     "url": "https://github.com/ducsigr/ducsigr.git",
     "directory": "packages/sdk"
   },
+  "homepage": "https://github.com/ducsigr/ducsigr/tree/main/packages/sdk#readme",
+  "bugs": {
+    "url": "https://github.com/ducsigr/ducsigr/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

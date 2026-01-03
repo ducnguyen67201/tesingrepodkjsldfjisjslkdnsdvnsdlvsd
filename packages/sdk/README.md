@@ -104,11 +104,22 @@ Ducsigr.init({
 
   // Optional
   endpoint: 'https://ingest.ducsigr.com', // Custom endpoint
-  debug: false,                                // Enable debug logging
-  disabled: false,                             // Disable SDK entirely
-  flushInterval: 5000,                         // Batch flush interval (ms)
-  maxBatchSize: 10,                            // Max traces per batch
-  maxRetries: 3,                               // Retry attempts on failure
+  debug: false,                            // Enable debug logging
+  disabled: false,                         // Disable SDK entirely
+
+  // Batching
+  flushInterval: 5000,   // Batch flush interval in ms (default: 5000)
+  maxBatchSize: 10,      // Max traces per batch (default: 10)
+  maxQueueSize: 10000,   // Max queue size before dropping (default: 10000)
+
+  // Transport
+  timeout: 30000,        // Request timeout in ms (default: 30000)
+  compression: true,     // Enable gzip compression (default: true)
+  maxRetries: 3,         // Max retry attempts (default: 3)
+  maxRetryDelay: 30000,  // Max retry delay in ms (default: 30000)
+
+  // Sampling
+  sampleRate: 1.0,       // Sample rate 0.0-1.0 (default: 1.0)
 });
 ```
 
