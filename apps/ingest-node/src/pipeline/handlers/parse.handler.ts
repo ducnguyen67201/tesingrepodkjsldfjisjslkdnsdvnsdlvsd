@@ -48,21 +48,8 @@ export class ParseHandler implements PipelineHandler {
       };
     }
 
-    // 2. Decompress if needed
-    let payload: Buffer;
-    try {
-      payload = this.decompressPayload(ctx.rawBody, ctx.contentEncoding);
-    } catch (error) {
-      logger.error({ error }, "Failed to decompress payload");
-      return {
-        continue: false,
-        error: {
-          code: PipelineErrorCodes.DECOMPRESSION_ERROR,
-          message: "Failed to decompress gzip payload",
-          httpStatus: 400,
-        },
-      };
-    }
+    // 2. Decompress if needed (handles errors gracefully)
+    const payload = this.decompressPayload(ctx.rawBody, ctx.contentEncoding);
 
     // 3. Parse based on content type
     try {
@@ -115,11 +102,22 @@ export class ParseHandler implements PipelineHandler {
   }
 
   /**
-   * Decompress gzip payload if needed
+   * Decompress gzip payload if needed.
+   * Falls back to raw body if decompression fails (header mismatch).
    */
   private decompressPayload(body: Buffer, encoding: string): Buffer {
     if (encoding === "gzip") {
-      return gunzipSync(body);
+      try {
+        return gunzipSync(body);
+      } catch (error) {
+        // If decompression fails, the Content-Encoding header might be wrong.
+        // Try using the raw body - it might not actually be compressed.
+        logger.warn(
+          { error: error instanceof Error ? error.message : String(error) },
+          "Gzip decompression failed, trying raw body"
+        );
+        return body;
+      }
     }
     return body;
   }
