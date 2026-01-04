@@ -202,7 +202,9 @@ describe("ParseHandler", () => {
       expect(ctx.parsedRequest).toBeDefined();
     });
 
-    it("should fail on invalid gzip data", async () => {
+    it("should gracefully fall back to raw body on invalid gzip data", async () => {
+      // When gzip decompression fails, the handler tries the raw body
+      // Since "not gzip data" isn't valid JSON, it results in PARSE_ERROR
       const ctx = createMockPipelineContext({
         contentType: "application/json",
         contentEncoding: "gzip",
@@ -212,7 +214,8 @@ describe("ParseHandler", () => {
       const result = await handler.handle(ctx);
 
       expect(result.continue).toBe(false);
-      expect(result.error?.code).toBe("DECOMPRESSION_ERROR");
+      // Falls back to raw body, which then fails JSON parsing
+      expect(result.error?.code).toBe("PARSE_ERROR");
       expect(result.error?.httpStatus).toBe(400);
     });
 
