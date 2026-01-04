@@ -10,6 +10,15 @@ import { Ducsigr } from "@ducsigr/sdk";
 import { config } from "../config/env.js";
 import { logger } from "../lib/logger.js";
 
+// Initialize the SDK - only API key needed, endpoint uses SDK default
+Ducsigr.init({
+  apiKey: config.ducsigr.apiKey,
+  debug: config.server.isDev,
+  compression: false,  // Disable compression for testing
+});
+
+logger.info("Ducsigr SDK initialized for sdk-test routes (using SDK default endpoint)");
+
 const router = Router();
 
 /**
@@ -19,7 +28,6 @@ const router = Router();
  */
 router.post("/sdk-test", async (req: Request, res: Response) => {
   try {
-    // SDK auto-initializes from env vars (DUCSIGR_API_KEY, DUCSIGR_ENDPOINT)
     const { message = "Hello from SDK test!", userId = "demo-user-123" } = req.body as {
       message?: string;
       userId?: string;

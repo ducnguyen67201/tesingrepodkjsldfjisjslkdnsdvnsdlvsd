@@ -44,6 +44,9 @@ importers:
       '@t3-oss/env-core':
         specifier: ^0.13.8
         version: 0.13.8(typescript@5.9.3)(valibot@1.1.0(typescript@5.9.3))(zod@4.1.13)
+      dotenv:
+        specifier: ^16.4.0
+        version: 16.6.1
       express:
         specifier: ^4.21.2
         version: 4.22.1

@@ -20,6 +20,7 @@
     "@opentelemetry/sdk-node": "^0.56.0",
     "@opentelemetry/semantic-conventions": "^1.28.0",
     "@t3-oss/env-core": "^0.13.8",
+    "dotenv": "^16.4.0",
     "express": "^4.21.2",
     "pino": "^9.6.0",
     "pino-abstract-transport": "^3.0.0",

@@ -2,9 +2,60 @@ import { gzipSync } from 'node:zlib';
 import type {
   ResolvedConfig,
   TraceData,
-  IngestRequest,
-  IngestResponse,
+  SpanData,
+  SpanLevel,
 } from './types';
+
+/**
+ * OTLP Format Types (matching ingest service expectations)
+ */
+interface OtlpAttribute {
+  key: string;
+  value: {
+    stringValue?: string;
+    intValue?: string | number;
+    doubleValue?: number;
+    boolValue?: boolean;
+  };
+}
+
+interface OtlpSpan {
+  traceId: string;
+  spanId: string;
+  parentSpanId?: string;
+  name: string;
+  kind: number;
+  startTimeUnixNano: string;
+  endTimeUnixNano?: string;
+  attributes?: OtlpAttribute[];
+  status?: {
+    code: number;
+    message?: string;
+  };
+}
+
+interface OtlpExportRequest {
+  resourceSpans: Array<{
+    resource?: {
+      attributes?: OtlpAttribute[];
+    };
+    scopeSpans: Array<{
+      scope?: {
+        name?: string;
+        version?: string;
+      };
+      spans: OtlpSpan[];
+    }>;
+  }>;
+}
+
+interface OtlpResponse {
+  // OTLP response is typically empty on success
+  partialSuccess?: {
+    rejectedSpans?: number;
+    errorMessage?: string;
+  };
+}
 
 /**
  * HTTP transport for sending traces to the ingest service
@@ -111,8 +162,8 @@ export class Transport {
   /**
    * Send a single trace to the server with retries
    */
-  private async sendTrace(trace: TraceData): Promise<IngestResponse> {
-    const payload = this.formatPayload(trace);
+  private async sendTrace(trace: TraceData): Promise<OtlpResponse> {
+    const payload = this.formatOtlpPayload(trace);
     const jsonBody = JSON.stringify(payload);
 
     // Compress if enabled
@@ -189,7 +240,7 @@ export class Transport {
           continue;
         }
 
-        const result = (await response.json()) as IngestResponse;
+        const result = (await response.json()) as OtlpResponse;
 
         if (this.config.debug) {
           console.log(
@@ -241,51 +292,199 @@ export class Transport {
   }
 
   /**
-   * Format trace data for the ingest API
+   * Format trace data as OTLP ExportTraceServiceRequest
    */
-  private formatPayload(trace: TraceData): IngestRequest {
-    // Build user object for ingest (excludes 'id' as it goes in user_id)
-    const user = trace.user
-      ? {
-          name: trace.user.name,
-          email: trace.user.email,
-          ...Object.fromEntries(
-            Object.entries(trace.user).filter(
-              ([key]) => !['id', 'name', 'email'].includes(key)
-            )
-          ),
-        }
-      : undefined;
+  private formatOtlpPayload(trace: TraceData): OtlpExportRequest {
+    // Build resource attributes (service info + SDK-specific metadata)
+    const resourceAttrs: OtlpAttribute[] = [
+      { key: 'service.name', value: { stringValue: trace.name } },
+      { key: 'ducsigr.sdk.name', value: { stringValue: '@ducsigr/sdk' } },
+      { key: 'ducsigr.sdk.version', value: { stringValue: '1.0.0' } },
+    ];
+
+    // Add session ID if present
+    if (trace.sessionId) {
+      resourceAttrs.push({
+        key: 'ducsigr.session_id',
+        value: { stringValue: trace.sessionId },
+      });
+    }
+
+    // Add user ID if present
+    if (trace.userId) {
+      resourceAttrs.push({
+        key: 'ducsigr.user_id',
+        value: { stringValue: trace.userId },
+      });
+    }
+
+    // Add user info if present
+    if (trace.user) {
+      if (trace.user.name) {
+        resourceAttrs.push({
+          key: 'ducsigr.user.name',
+          value: { stringValue: trace.user.name },
+        });
+      }
+      if (trace.user.email) {
+        resourceAttrs.push({
+          key: 'ducsigr.user.email',
+          value: { stringValue: trace.user.email },
+        });
+      }
+    }
+
+    // Add trace metadata as resource attributes
+    if (trace.metadata) {
+      for (const [key, value] of Object.entries(trace.metadata)) {
+        resourceAttrs.push(this.toOtlpAttribute(`ducsigr.metadata.${key}`, value));
+      }
+    }
+
+    // Convert spans to OTLP format
+    const otlpSpans: OtlpSpan[] = trace.spans.map((span) =>
+      this.formatOtlpSpan(span, trace.id)
+    );
 
     return {
-      trace_id: trace.id,
-      session_id: trace.sessionId ?? undefined,
-      user_id: trace.userId ?? undefined,
-      user: user,
-      name: trace.name,
-      metadata: trace.metadata ?? undefined,
-      spans: trace.spans.map((span) => ({
-        span_id: span.id,
-        parent_span_id: span.parentSpanId ?? undefined,
-        name: span.name,
-        start_time: span.startTime.toISOString(),
-        end_time: span.endTime?.toISOString(),
-        input: span.input ?? undefined,
-        output: span.output ?? undefined,
-        metadata: span.metadata ?? undefined,
-        model: span.model ?? undefined,
-        model_parameters: span.modelParameters ?? undefined,
-        usage: span.usage
-          ? {
-              prompt_tokens: span.usage.promptTokens,
-              completion_tokens: span.usage.completionTokens,
-              total_tokens: span.usage.totalTokens,
-            }
-          : undefined,
-        level: span.level,
-        status_message: span.statusMessage ?? undefined,
-      })),
+      resourceSpans: [
+        {
+          resource: {
+            attributes: resourceAttrs,
+          },
+          scopeSpans: [
+            {
+              scope: {
+                name: '@ducsigr/sdk',
+                version: '1.0.0',
+              },
+              spans: otlpSpans,
+            },
+          ],
+        },
+      ],
     };
+  }
+
+  /**
+   * Format a single span as OTLP Span
+   */
+  private formatOtlpSpan(span: SpanData, traceId: string): OtlpSpan {
+    const attributes: OtlpAttribute[] = [];
+
+    // Add input as attribute
+    if (span.input) {
+      attributes.push({
+        key: 'gen_ai.prompt',
+        value: { stringValue: JSON.stringify(span.input) },
+      });
+    }
+
+    // Add output as attribute
+    if (span.output) {
+      attributes.push({
+        key: 'gen_ai.completion',
+        value: { stringValue: JSON.stringify(span.output) },
+      });
+    }
+
+    // Add model info
+    if (span.model) {
+      attributes.push({
+        key: 'gen_ai.request.model',
+        value: { stringValue: span.model },
+      });
+    }
+
+    // Add model parameters
+    if (span.modelParameters) {
+      for (const [key, value] of Object.entries(span.modelParameters)) {
+        attributes.push(
+          this.toOtlpAttribute(`gen_ai.request.${key}`, value)
+        );
+      }
+    }
+
+    // Add token usage (GenAI semantic conventions)
+    if (span.usage) {
+      if (span.usage.promptTokens !== undefined) {
+        attributes.push({
+          key: 'gen_ai.usage.input_tokens',
+          value: { intValue: span.usage.promptTokens },
+        });
+      }
+      if (span.usage.completionTokens !== undefined) {
+        attributes.push({
+          key: 'gen_ai.usage.output_tokens',
+          value: { intValue: span.usage.completionTokens },
+        });
+      }
+    }
+
+    // Add span metadata as attributes
+    if (span.metadata) {
+      for (const [key, value] of Object.entries(span.metadata)) {
+        attributes.push(this.toOtlpAttribute(key, value));
+      }
+    }
+
+    return {
+      traceId,
+      spanId: span.id,
+      parentSpanId: span.parentSpanId ?? undefined,
+      name: span.name,
+      kind: 1, // SPAN_KIND_INTERNAL
+      startTimeUnixNano: this.dateToNano(span.startTime),
+      endTimeUnixNano: span.endTime ? this.dateToNano(span.endTime) : undefined,
+      attributes: attributes.length > 0 ? attributes : undefined,
+      status: {
+        code: this.levelToStatusCode(span.level),
+        message: span.statusMessage ?? undefined,
+      },
+    };
+  }
+
+  /**
+   * Convert a value to OTLP attribute
+   */
+  private toOtlpAttribute(key: string, value: unknown): OtlpAttribute {
+    if (typeof value === 'string') {
+      return { key, value: { stringValue: value } };
+    }
+    if (typeof value === 'number') {
+      if (Number.isInteger(value)) {
+        return { key, value: { intValue: value } };
+      }
+      return { key, value: { doubleValue: value } };
+    }
+    if (typeof value === 'boolean') {
+      return { key, value: { boolValue: value } };
+    }
+    // For objects/arrays, serialize to JSON string
+    return { key, value: { stringValue: JSON.stringify(value) } };
+  }
+
+  /**
+   * Convert Date to nanoseconds string (OTLP format)
+   */
+  private dateToNano(date: Date): string {
+    return (BigInt(date.getTime()) * 1_000_000n).toString();
+  }
+
+  /**
+   * Map SDK span level to OTLP status code
+   * OTLP: 0=UNSET, 1=OK, 2=ERROR
+   */
+  private levelToStatusCode(level: SpanLevel): number {
+    switch (level) {
+      case 'ERROR':
+        return 2;
+      case 'WARNING':
+      case 'DEBUG':
+      case 'DEFAULT':
+      default:
+        return 1; // OK
+    }
   }
 
   /**
