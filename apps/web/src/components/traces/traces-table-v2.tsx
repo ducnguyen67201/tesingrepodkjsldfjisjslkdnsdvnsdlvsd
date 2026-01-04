@@ -337,9 +337,23 @@ export function TracesTableV2({
       // Parse the query into conditions
       const conditions = parseQueryToConditions(query);
 
-      // Build filter expression directly (single state update)
+      // If no structured conditions (field=value), treat as full-text search
       if (conditions.length === 0) {
-        setFilter(null);
+        const trimmed = query.trim();
+        if (trimmed) {
+          // Use full-text search for plain text queries
+          // Replace all filters with search filter (not add to existing)
+          setFilter({
+            search: {
+              query: trimmed,
+              scope: "both",
+              mode: "terms",
+            },
+          });
+        } else {
+          // Empty query - clear all filters
+          setFilter(null);
+        }
         return;
       }
 
@@ -380,6 +394,7 @@ export function TracesTableV2({
         onChange={setQueryInput}
         onExecute={handleExecute}
         isLoading={isExecuting || isFetching}
+        hasFilters={hasFilters}
         className="flex-1"
       />
 

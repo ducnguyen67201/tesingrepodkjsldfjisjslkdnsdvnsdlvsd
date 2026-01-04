@@ -35,6 +35,8 @@ interface QueryBuilderInputProps {
   onExecute: (query: string) => void;
   /** Whether a search is currently in progress */
   isLoading?: boolean;
+  /** Whether there are active filters (enables execute with empty query to clear) */
+  hasFilters?: boolean;
   placeholder?: string;
   className?: string;
 }
@@ -254,6 +256,7 @@ export function QueryBuilderInput({
   onChange,
   onExecute,
   isLoading = false,
+  hasFilters = false,
   placeholder = 'service.name="api" AND span.type="HTTP"',
   className,
 }: QueryBuilderInputProps) {
@@ -345,11 +348,12 @@ export function QueryBuilderInput({
   }, [onChange]);
 
   const handleExecute = useCallback(() => {
-    if (value.trim() && !isLoading) {
+    // Allow execute if there's text OR if there are active filters to clear
+    if ((value.trim() || hasFilters) && !isLoading) {
       setShowSuggestions(false);
       onExecute(value.trim());
     }
-  }, [value, isLoading, onExecute]);
+  }, [value, hasFilters, isLoading, onExecute]);
 
   const applySuggestion = useCallback(
     (suggestion: Suggestion) => {
@@ -511,7 +515,7 @@ export function QueryBuilderInput({
               variant="default"
               size="sm"
               onClick={handleExecute}
-              disabled={!value.trim() || isLoading}
+              disabled={(!value.trim() && !hasFilters) || isLoading}
               className="h-8 px-2.5"
             >
               {isLoading ? (
