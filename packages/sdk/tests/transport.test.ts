@@ -136,11 +136,13 @@ describe('Transport', () => {
       const body = options.body as Buffer;
       expect(Buffer.isBuffer(body)).toBe(true);
 
-      // Decompress and verify JSON structure
+      // Decompress and verify OTLP JSON structure
       const decompressed = gunzipSync(body).toString('utf-8');
       const parsed = JSON.parse(decompressed);
-      expect(parsed.trace_id).toBe('trace-123');
-      expect(parsed.spans).toHaveLength(1);
+      // SDK now sends OTLP format
+      expect(parsed.resourceSpans).toHaveLength(1);
+      expect(parsed.resourceSpans[0].scopeSpans[0].spans).toHaveLength(1);
+      expect(parsed.resourceSpans[0].scopeSpans[0].spans[0].traceId).toBe('trace-123');
     });
 
     it('should send payload without compression when disabled', async () => {
@@ -168,7 +170,10 @@ describe('Transport', () => {
       expect(typeof body).toBe('string');
 
       const parsed = JSON.parse(body);
-      expect(parsed.trace_id).toBe('trace-123');
+      // SDK now sends OTLP format
+      expect(parsed.resourceSpans).toHaveLength(1);
+      expect(parsed.resourceSpans[0].scopeSpans[0].spans).toHaveLength(1);
+      expect(parsed.resourceSpans[0].scopeSpans[0].spans[0].traceId).toBe('trace-123');
     });
   });
 
