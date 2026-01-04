@@ -18,13 +18,13 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- Add GIN trigram index on Trace.searchText for fast free-text search
 -- This accelerates queries like: WHERE "searchText" ILIKE '%query%'
-CREATE INDEX IF NOT EXISTS "Trace_searchText_gin_trgm_idx"
+CREATE INDEX IF NOT EXISTS "Trace_searchText_idx"
 ON "Trace" USING gin ("searchText" gin_trgm_ops);
 
 -- Add GIN trigram index on Span.searchText for fast free-text search
-CREATE INDEX IF NOT EXISTS "Span_searchText_gin_trgm_idx"
+CREATE INDEX IF NOT EXISTS "Span_searchText_idx"
 ON "Span" USING gin ("searchText" gin_trgm_ops);
 
 -- Add GIN trigram index on LogRecord.bodyText for fast log search
-CREATE INDEX IF NOT EXISTS "LogRecord_bodyText_gin_trgm_idx"
+CREATE INDEX IF NOT EXISTS "LogRecord_bodyText_idx"
 ON "LogRecord" USING gin ("bodyText" gin_trgm_ops);
