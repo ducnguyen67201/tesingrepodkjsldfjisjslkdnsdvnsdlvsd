@@ -1,148 +1,89 @@
-<div align="center">
+# T3 Monorepo
 
-<img src="docs/images/banner.png" alt="Ducsigr Banner" width="100%"/>
+A T3-style monorepo with Next.js 15, tRPC, Prisma, and BullMQ.
 
-<h3>Open Source LLM Observability Platform</h3>
+## Tech Stack
 
-<p>
-<a href="#traces">Traces</a>, <a href="#alerts">alerts</a>, <a href="#prompt-management">prompt management</a>, <a href="#cost-analytics">cost analytics</a>, and <a href="#rca">root cause analysis</a><br/>
-to debug and improve your LLM application.
-</p>
+- **Runtime**: Node.js 20+
+- **Package Manager**: pnpm with workspaces
+- **Build**: Turborepo
+- **Web**: Next.js 15, React 19, Tailwind CSS 4
+- **API**: tRPC v11
+- **Database**: PostgreSQL + Prisma 6
+- **Queue**: BullMQ (Redis-based)
+- **Validation**: Zod
 
-<br/>
+## Structure
 
-**[Cloud](https://ducsigr.com)** · **[Self Host](#-self-hosting)** · **[Demo](https://demo.ducsigr.com)**
-
-[Docs](https://docs.ducsigr.com) · [Report Bug](https://github.com/ducsigr/ducsigr/issues) · [Feature Request](https://github.com/ducsigr/ducsigr/issues) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
-
-<br/>
-
-[![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org/)
-[![Discord](https://img.shields.io/discord/1234567890?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/ducsigr)
-[![Twitter Follow](https://img.shields.io/twitter/follow/ducsigr?style=social)](https://twitter.com/ducsigr)
-
-</div>
-
----
-
-Ducsigr is an **open source LLM observability** platform. It helps teams collaboratively **develop, monitor, evaluate, and debug** AI applications. Ducsigr can be **self-hosted in minutes** and is designed for production workloads.
-
-<div align="center">
-<img src="docs/images/demo.gif" alt="Ducsigr Demo" width="90%"/>
-</div>
-
----
-
-## ✨ Features
-
-- **[LLM Observability](#traces)**: Instrument your app and start ingesting traces, tracking LLM calls, embeddings, retrievals, and agent actions. Inspect and debug complex logs and user sessions with our interactive trace viewer.
-
-- **[Prompt Management](#prompt-management)**: Centrally manage, version control, and collaboratively iterate on your prompts. With strong caching on server and client side, you can iterate on prompts without adding latency to your application.
-
-- **[Cost Analytics](#cost-analytics)**: Track token usage and costs across models, features, and users. Set budgets and get alerts before costs spiral out of control.
-
-- **[Smart Alerting](#alerts)**: Get notified when error rates spike, latency increases, or costs exceed thresholds. Supports Discord, Slack, Email, and webhooks.
-
-- **[Root Cause Analysis](#rca)**: When incidents occur, AI-powered RCA automatically correlates traces, code changes, and system metrics to identify the root cause.
-
-- **[GitHub Integration](#github)**: Link production issues to code changes. Know exactly which commit or PR caused a regression.
-
----
-
-## Prompt Management
-
-Prompt A/B testing lets you compare two prompt versions and route live traffic
-to each variant while tracking usage, latency, cost, and error rate.
-
-### Prompt A/B Testing UI (Mock)
-
-```text
-+--------------------------------------------------------------------------------+
-| Prompts / Experiments                                                          |
-+-------------------------------+------------------------------------------------+
-| Prompt List                   | Experiment: checkout-copy-test                |
-| - checkout-copy (v5)          | Status: RUNNING   Allocation: 50%             |
-| - checkout-copy (v6)          | Variants:                                      |
-| - onboarding (v3)             |  A (control): checkout-copy v5   Weight: 50%  |
-|                               |  B:           checkout-copy v6   Weight: 50%  |
-|                               |                                                |
-|                               | [Compare A vs B] [Pause] [End] [Promote B]     |
-|                               +------------------------------------------------+
-|                               | Metrics (last 7 days)                          |
-|                               |  Variant   Usage   P95 Latency   Cost   Errors |
-|                               |  A         12,430  420ms         $14.22 1.2%   |
-|                               |  B         12,201  398ms         $13.80 1.1%   |
-|                               +------------------------------------------------+
-|                               | Diff                                           |
-|                               | - system: You are an expert support agent...   |
-|                               | + system: You are a concise support agent...   |
-+--------------------------------------------------------------------------------+
+```
+├── apps/
+│   ├── web/          # Next.js app
+│   └── worker/       # BullMQ worker
+├── packages/
+│   ├── api/          # tRPC routers
+│   ├── db/           # Prisma schema + client
+│   ├── queue/        # BullMQ setup
+│   └── shared/       # Shared types & utilities
+└── tooling/
+    ├── eslint/       # ESLint config
+    └── typescript/   # TypeScript config
 ```
 
----
+## Getting Started
 
-## 📦 Self Hosting
+### Prerequisites
 
-Ducsigr can be self-hosted using Docker Compose:
+- Node.js 20+
+- pnpm 9+
+- Docker (for PostgreSQL and Redis)
+
+### Setup
 
 ```bash
-git clone https://github.com/ducsigr/ducsigr.git
-cd ducsigr
-docker compose up -d
+# Install dependencies
+pnpm install
+
+# Start PostgreSQL and Redis
+docker-compose up -d
+
+# Copy env file
+cp .env.example .env
+
+# Generate Prisma client
+pnpm db:generate
+
+# Push schema to database
+pnpm db:push
+
+# Start all apps in dev mode
+pnpm dev
 ```
 
-For detailed deployment options, see the [Self Hosting Guide](https://docs.ducsigr.com/self-hosting).
+### Available Scripts
 
----
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start all apps in development mode |
+| `pnpm build` | Build all apps and packages |
+| `pnpm lint` | Run ESLint on all packages |
+| `pnpm typecheck` | Run TypeScript type checking |
+| `pnpm db:generate` | Generate Prisma client |
+| `pnpm db:push` | Push schema changes to database |
+| `pnpm db:migrate` | Run database migrations |
 
-## 🔌 Integrations
+## Type Architecture
 
-| Integration | Supports | Description |
-|-------------|----------|-------------|
-| [SDK](https://docs.ducsigr.com/sdk) | JS/TS | Manual instrumentation using the SDK for full flexibility |
-| [OpenAI](https://docs.ducsigr.com/integrations/openai) | JS/TS | Automated instrumentation using drop-in replacement |
-| [Anthropic](https://docs.ducsigr.com/integrations/anthropic) | JS/TS | Automated instrumentation for Claude models |
-| [LangChain](https://docs.ducsigr.com/integrations/langchain) | JS/TS | Callback handler for LangChain applications |
-| [Vercel AI SDK](https://docs.ducsigr.com/integrations/vercel-ai) | JS/TS | Integration for Vercel AI SDK applications |
-| [OpenTelemetry](https://docs.ducsigr.com/integrations/otel) | Any | Native OTLP support for any language |
-| [API](https://docs.ducsigr.com/api) | Any | Directly call the public API. OpenAPI spec available |
+All types are centralized in two packages:
 
----
+- **`@t3/shared`**: Zod schemas and inferred types (validation + runtime)
+- **`@t3/db`**: Prisma-generated types (database models)
 
-## 📚 Resources
+Import types from these packages:
 
-- [Documentation](https://docs.ducsigr.com)
-- [API Reference](https://docs.ducsigr.com/api)
-- [Blog](https://ducsigr.com/blog)
-- [Discord Community](https://discord.gg/ducsigr)
+```typescript
+// Zod schemas and types
+import { createUserSchema, type CreateUserInput } from "@t3/shared";
 
----
-
-## 👨‍💻 Contributors
-
-<table>
-<tr>
-<td align="center">
-<a href="https://github.com/ducnguyen67201">
-<img src="https://github.com/ducnguyen67201.png" width="100px;" alt="Duc Nguyen"/>
-<br />
-<sub><b>Duc Nguyen</b></sub>
-</a>
-<br />
-<sub>Creator & Maintainer</sub>
-</td>
-</tr>
-</table>
-
-**Duc Nguyen** — Just a guy who loves building software and shipping things that actually work. Was addicted to coffee, had to downgrade to tea (the betrayal 🍵). When not shipping code, I'm climbing rocks 🧗 — as hardcore as I ship. Built Ducsigr because debugging LLMs shouldn't feel like bouldering with no pads.
-
-[GitHub](https://github.com/ducnguyen67201) · [LinkedIn](https://www.linkedin.com/in/ducnguyen6721/)
-
----
-
-<div align="center">
-
-**Built with ❤️ for the AI community**
-
-</div>
+// Prisma types
+import { db, type User, type Post } from "@t3/db";
+```
