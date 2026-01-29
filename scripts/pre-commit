@@ -1,0 +1,60 @@
+#!/bin/bash
+# Pre-commit hook to prevent committing .env files with secrets
+#
+# Install: cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# Or run: make install-hooks
+
+set -e
+
+# Check for .env files being committed (excluding .env.example)
+ENV_FILES=$(git diff --cached --name-only | grep -E '^\.env$|^\.env\.[^e]|/\.env$|/\.env\.[^e]' || true)
+
+if [ -n "$ENV_FILES" ]; then
+    echo ""
+    echo "⚠️  WARNING: You are attempting to commit .env file(s):"
+    echo ""
+    for file in $ENV_FILES; do
+        echo "   - $file"
+    done
+    echo ""
+    echo "This project uses Doppler for secret management."
+    echo ".env files should NOT be committed as they may contain secrets."
+    echo ""
+    echo "To proceed anyway (e.g., for .env.local.example):"
+    echo "   git commit --no-verify"
+    echo ""
+    echo "To unstage the .env file(s):"
+    echo "   git reset HEAD $ENV_FILES"
+    echo ""
+    exit 1
+fi
+
+# Check for common secret patterns in staged files
+SECRETS_PATTERN='(NEXTAUTH_SECRET|JWT_SHARED_SECRET|INTERNAL_API_SECRET|AUTH_GOOGLE_SECRET|AUTH_GITHUB_SECRET|SMTP_PASS)=[^$"\n]*[a-zA-Z0-9]{20,}'
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx|js|jsx|json|go|yaml|yml|md)$' || true)
+
+if [ -n "$STAGED_FILES" ]; then
+    for file in $STAGED_FILES; do
+        # Skip .env.example which is supposed to have placeholder values
+        if [[ "$file" == *".env.example"* ]]; then
+            continue
+        fi
+
+        # Check file content for secrets
+        if git show ":$file" 2>/dev/null | grep -qE "$SECRETS_PATTERN"; then
+            echo ""
+            echo "⚠️  WARNING: Potential secret detected in: $file"
+            echo ""
+            echo "Please review the file and ensure no real secrets are being committed."
+            echo "Use Doppler for secret management instead of hardcoding values."
+            echo ""
+            echo "To proceed anyway:"
+            echo "   git commit --no-verify"
+            echo ""
+            exit 1
+        fi
+    done
+fi
+
+exit 0

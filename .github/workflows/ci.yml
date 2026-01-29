@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Detect which paths changed
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+      worker: ${{ steps.filter.outputs.worker }}
+      ingest: ${{ steps.filter.outputs.ingest }}
+      sdk: ${{ steps.filter.outputs.sdk }}
+      marketing: ${{ steps.filter.outputs.marketing }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect changed paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            web:
+              - 'apps/web/**'
+              - 'packages/api/**'
+              - 'packages/db/**'
+              - 'packages/shared/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+            worker:
+              - 'apps/worker/**'
+              - 'packages/api/**'
+              - 'packages/db/**'
+              - 'packages/shared/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+            ingest:
+              - 'apps/ingest-node/**'
+              - 'packages/db/**'
+              - 'packages/shared/**'
+              - 'packages/proto/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+            sdk:
+              - 'packages/sdk/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+            marketing:
+              - 'apps/marketing/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+
+  web:
+    name: Web
+    needs: changes
+    if: ${{ needs.changes.outputs.web == 'true' }}
+    uses: ./.github/workflows/web.yml
+
+  ingest:
+    name: Ingest
+    needs: changes
+    if: ${{ needs.changes.outputs.ingest == 'true' }}
+    uses: ./.github/workflows/ingest.yml
+
+  sdk:
+    name: SDK
+    needs: changes
+    if: ${{ needs.changes.outputs.sdk == 'true' }}
+    uses: ./.github/workflows/sdk.yml
+
+  worker:
+    name: Worker
+    needs: changes
+    if: ${{ needs.changes.outputs.worker == 'true' }}
+    uses: ./.github/workflows/worker.yml
+
+  marketing:
+    name: Marketing
+    needs: changes
+    if: ${{ needs.changes.outputs.marketing == 'true' }}
+    uses: ./.github/workflows/marketing.yml

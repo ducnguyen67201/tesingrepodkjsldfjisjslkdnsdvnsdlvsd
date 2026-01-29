@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package ducsigr.v1;
+
+option go_package = "github.com/ducsigr/ingest/internal/proto/duscigrv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "ducsigr/v1/common.proto";
+
+// Trace represents a single request/operation flow
+message Trace {
+  string id = 1;
+  string project_id = 2;
+  string name = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  optional google.protobuf.Struct metadata = 5;
+}
+
+// Span represents an individual operation within a trace
+message Span {
+  string id = 1;
+  string trace_id = 2;
+  optional string parent_span_id = 3;
+  string name = 4;
+  google.protobuf.Timestamp start_time = 5;
+  optional google.protobuf.Timestamp end_time = 6;
+  optional google.protobuf.Struct input = 7;
+  optional google.protobuf.Struct output = 8;
+  optional google.protobuf.Struct metadata = 9;
+  optional string model = 10;
+  optional google.protobuf.Struct model_parameters = 11;
+  optional TokenUsage usage = 12;
+  SpanLevel level = 13;
+  optional string status_message = 14;
+}
+
+// Project container
+message Project {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+// API Key for authentication
+message ApiKey {
+  string id = 1;
+  string project_id = 2;
+  string display_key = 3;
+  google.protobuf.Timestamp created_at = 4;
+  optional google.protobuf.Timestamp last_used_at = 5;
+}

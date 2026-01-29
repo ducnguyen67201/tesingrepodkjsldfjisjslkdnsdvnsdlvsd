@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
-const config: NextConfig = {
-  transpilePackages: ["@t3/api", "@t3/db", "@t3/shared", "@t3/queue"],
+// Validate environment variables
+import "./src/lib/env";
+
+const nextConfig: NextConfig = {
+  // Required for Docker deployments - creates a standalone build with all dependencies
+  output: "standalone",
+  transpilePackages: ["@ducsigr/shared", "@ducsigr/db", "@ducsigr/api", "@ducsigr/proto"],
 };
 
-export default config;
+export default nextConfig;

@@ -1,24 +1,48 @@
 {
-  "name": "@t3/db",
-  "version": "0.0.0",
+  "name": "@ducsigr/db",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
   "scripts": {
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
+    "build": "tsup",
+    "postinstall": "test -d prisma/schema && prisma generate --schema prisma/schema || echo 'Skipping prisma generate (schema not found)'",
+    "db:generate": "prisma generate --schema prisma/schema",
+    "db:push": "prisma db push --schema prisma/schema",
+    "db:migrate": "prisma migrate dev --schema prisma/schema",
+    "db:migrate:deploy": "prisma migrate deploy --schema prisma/schema",
+    "db:studio": "prisma studio --schema prisma/schema",
+    "db:seed": "tsx seeding/index.ts",
+    "db:seed-sessions": "tsx src/seed-sessions.ts",
+    "db:seed-alerts": "tsx src/seed-alert-history.ts",
+    "lint": "eslint src/",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@prisma/client": "^7.0.0"
+    "@prisma/adapter-pg": "^7.0.0",
+    "@prisma/client": "^7.0.0",
+    "@prisma/client-runtime-utils": "^7.0.0",
+    "dotenv": "^16.4.0",
+    "pg": "^8.13.0"
   },
   "devDependencies": {
-    "@t3/tsconfig": "workspace:*",
+    "@ducsigr/config-eslint": "workspace:*",
+    "@ducsigr/config-typescript": "workspace:*",
+    "@eslint/js": "^9.16.0",
+    "@types/pg": "^8.11.0",
+    "eslint": "^9.16.0",
     "prisma": "^7.0.0",
-    "typescript": "^5.7.2"
+    "tsc-alias": "^1.8.16",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
   }
 }

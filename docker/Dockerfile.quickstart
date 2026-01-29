@@ -1,0 +1,179 @@
+# Dockerfile.quickstart
+#
+# Ducsigr Quick Start - Everything in one container
+# Includes: PostgreSQL, Redis, Temporal (dev), Web, Ingest
+#
+# NOTE: Worker not included. Traces are queued but alerts/background
+# processing requires running the worker separately.
+# See docs/self-hosting for full setup.
+#
+# Usage:
+#   docker build -f Dockerfile.quickstart -t ducsigr:quickstart .
+#   docker run -d -p 3000:3000 -p 8080:8080 -v ducsigr_data:/data ducsigr:quickstart
+
+# ============================================================
+# Stage 1: Build Node.js Applications
+# ============================================================
+FROM node:24-alpine AS node-builder
+
+RUN apk add --no-cache python3 make g++
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
+WORKDIR /app
+
+# Copy package files for dependency installation
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json .npmrc ./
+COPY apps/web/package.json ./apps/web/
+COPY apps/worker/package.json ./apps/worker/
+COPY apps/ingest-node/package.json ./apps/ingest-node/
+COPY packages/db/package.json ./packages/db/
+COPY packages/db/prisma ./packages/db/prisma/
+COPY packages/api/package.json ./packages/api/
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/config-eslint/package.json ./packages/config-eslint/
+COPY packages/config-typescript/package.json ./packages/config-typescript/
+COPY packages/config-typescript/*.json ./packages/config-typescript/
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Generate Prisma client
+RUN pnpm --filter @ducsigr/db db:generate
+
+# Build shared packages (db must be built before api for type exports)
+RUN pnpm --filter @ducsigr/shared build
+RUN pnpm --filter @ducsigr/db build
+RUN pnpm --filter @ducsigr/api build
+
+# Build Web (Next.js with standalone output)
+# Skip env validation during build - actual values are provided at runtime
+ENV SKIP_ENV_VALIDATION=true
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+
+RUN pnpm --filter @ducsigr/web build
+
+# Build Ingest Node
+RUN pnpm --filter @ducsigr/ingest-node build
+
+# ============================================================
+# Stage 2: Get Temporal CLI (for dev server)
+# ============================================================
+FROM temporalio/admin-tools:latest AS temporal-tools
+
+# ============================================================
+# Stage 3: Production Runtime (All-in-One)
+# ============================================================
+FROM node:24-alpine AS runtime
+
+# Install all required services and tools
+RUN apk add --no-cache \
+    # PostgreSQL
+    postgresql16 \
+    postgresql16-contrib \
+    postgresql16-client \
+    # Redis
+    redis \
+    # Process manager
+    supervisor \
+    # Utilities
+    bash \
+    curl \
+    wget \
+    openssl \
+    netcat-openbsd \
+    ca-certificates \
+    tzdata \
+    # gcompat needed for Temporal CLI
+    gcompat
+
+# Install pnpm for production dependency installation
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
+
+# Install Prisma CLI globally (avoids pnpm ESM issues)
+RUN npm install -g prisma@7
+
+# Create users
+RUN addgroup -S ducsigr && adduser -S ducsigr -G ducsigr
+
+# Setup PostgreSQL
+ENV PGDATA=/data/postgresql
+RUN mkdir -p /data/postgresql /run/postgresql \
+    && chown -R postgres:postgres /data/postgresql /run/postgresql
+
+# Setup Redis
+RUN mkdir -p /data/redis \
+    && chown -R redis:redis /data/redis
+
+# Setup Temporal data directory
+RUN mkdir -p /data/temporal
+
+# Copy Node.js application
+WORKDIR /app
+
+# Copy package files for dependency installation
+COPY --from=node-builder /app/package.json ./package.json
+COPY --from=node-builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=node-builder /app/.npmrc ./.npmrc
+COPY --from=node-builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=node-builder /app/apps/ingest-node/package.json ./apps/ingest-node/package.json
+COPY --from=node-builder /app/packages/db/package.json ./packages/db/package.json
+COPY --from=node-builder /app/packages/db/prisma ./packages/db/prisma
+COPY --from=node-builder /app/packages/shared/package.json ./packages/shared/package.json
+COPY --from=node-builder /app/packages/api/package.json ./packages/api/package.json
+
+# Install ALL dependencies (not --prod, need tsx for TypeScript runtime)
+RUN pnpm install --frozen-lockfile
+
+# Copy Next.js standalone output (includes its own node_modules)
+COPY --from=node-builder /app/apps/web/.next/standalone ./
+COPY --from=node-builder /app/apps/web/.next/static ./apps/web/.next/static
+# Copy public directory (contains static assets like favicon, images)
+COPY --from=node-builder /app/apps/web/public ./apps/web/public
+
+# Copy ingest-node source (TypeScript, will be run with tsx)
+COPY --from=node-builder /app/apps/ingest-node/src ./apps/ingest-node/src
+COPY --from=node-builder /app/apps/ingest-node/tsconfig.json ./apps/ingest-node/tsconfig.json
+
+# Copy workspace packages (TypeScript source and built dist)
+COPY --from=node-builder /app/packages/db/src ./packages/db/src
+COPY --from=node-builder /app/packages/db/dist ./packages/db/dist
+COPY --from=node-builder /app/packages/shared/src ./packages/shared/src
+COPY --from=node-builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=node-builder /app/packages/api/src ./packages/api/src
+COPY --from=node-builder /app/packages/api/dist ./packages/api/dist
+
+# Copy Temporal CLI
+COPY --from=temporal-tools /usr/local/bin/temporal /usr/local/bin/temporal
+
+# Create symlinks in node_modules for workspace packages
+RUN mkdir -p /app/node_modules/@ducsigr \
+    && ln -sf /app/packages/shared /app/node_modules/@ducsigr/shared \
+    && ln -sf /app/packages/api /app/node_modules/@ducsigr/api \
+    && ln -sf /app/packages/db /app/node_modules/@ducsigr/db
+
+# Copy configuration files
+COPY docker/quickstart/supervisord.conf /etc/supervisord.conf
+COPY docker/quickstart/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+# Create data directories
+RUN mkdir -p /data/secrets /app/logs \
+    && chown -R ducsigr:ducsigr /app /data/secrets /app/logs
+
+# Expose ports
+# 3000 - Web Dashboard & API
+# 8080 - Ingest API (for SDKs)
+EXPOSE 3000 8080
+
+# Health check - use ingest service (no auth required)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD wget -qO- http://localhost:8080/health || exit 1
+
+# Volume for persistent data
+VOLUME ["/data"]
+
+ENTRYPOINT ["/entrypoint.sh"]

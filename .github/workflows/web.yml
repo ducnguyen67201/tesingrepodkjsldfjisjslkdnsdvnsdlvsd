@@ -1,0 +1,109 @@
+name: Web
+
+on:
+  workflow_call:
+
+jobs:
+  ci:
+    name: Type Check → Test → Lint
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ducsigr_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ducsigr_test
+      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ducsigr_shadow
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm db:generate:ci
+
+      - name: Create shadow database
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE ducsigr_shadow;" || true
+
+      - name: Run migrations
+        run: pnpm --filter @ducsigr/db db:migrate:deploy
+
+      # Schema Drift Detection
+      # Checks if migrations match the Prisma schema (catches missing migrations)
+      # --exit-code returns: 0 = no diff, 1 = error, 2 = diff exists
+      - name: Check schema drift (migrations vs schema)
+        run: |
+          echo "Checking if migrations match the Prisma schema..."
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
+            --from-migrations ./prisma/schema/migrations \
+            --to-schema ./prisma/schema \
+            --exit-code; then
+            echo ""
+            echo "::error::Schema drift detected! Run 'pnpm db:migrate --name <descriptive_name>' locally to create the migration."
+            exit 1
+          fi
+          echo "✓ Migrations match schema"
+
+      # Checks if database matches migrations (catches manual DB changes)
+      - name: Check database drift (database vs migrations)
+        run: |
+          echo "Checking if database state matches applied migrations..."
+          cd packages/db
+          if ! pnpm exec prisma migrate diff \
+            --from-config-datasource \
+            --to-migrations ./prisma/schema/migrations \
+            --exit-code; then
+            echo ""
+            echo "::error::Database drift detected! The database state doesn't match the migrations."
+            exit 1
+          fi
+          echo "✓ Database matches migrations"
+
+      - name: Build (includes dependencies)
+        run: pnpm turbo run build --filter=@ducsigr/web
+        env:
+          SKIP_ENV_VALIDATION: "true"
+
+      - name: Type check
+        run: pnpm turbo run typecheck --filter=@ducsigr/web --filter=@ducsigr/api
+
+      - name: Test
+        run: pnpm turbo run test --filter=@ducsigr/web --filter=@ducsigr/api
+
+      - name: Lint
+        run: pnpm --filter @ducsigr/web --filter @ducsigr/api lint
+
+      - name: Check for uncommitted changes (drift check)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Uncommitted changes detected after build. Please commit all generated files."
+            git status --porcelain
+            git diff
+            exit 1
+          fi

@@ -1,23 +1,34 @@
 {
-  "name": "t3-monorepo",
+  "name": "ducsigr",
+  "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "description": "AI Platform Monitoring & Observability",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
+    "dev": "doppler run -- turbo dev",
+    "dev:no-doppler": "turbo dev",
+    "build": "doppler run -- turbo build",
+    "build:ci": "turbo build",
     "lint": "turbo lint",
+    "test": "doppler run -- turbo test",
+    "test:ci": "turbo test",
     "typecheck": "turbo typecheck",
-    "db:generate": "pnpm --filter @t3/db db:generate",
-    "db:push": "pnpm --filter @t3/db db:push",
-    "db:migrate": "pnpm --filter @t3/db db:migrate",
-    "db:studio": "pnpm --filter @t3/db db:studio",
-    "clean": "turbo clean && rm -rf node_modules"
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:generate": "doppler run -- turbo db:generate",
+    "db:generate:ci": "turbo db:generate",
+    "db:push": "doppler run -- turbo db:push",
+    "db:migrate": "doppler run -- turbo db:migrate",
+    "db:seed": "doppler run -- pnpm --filter @ducsigr/db db:seed",
+    "db:studio": "doppler run -- pnpm --filter @ducsigr/db db:studio",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "devDependencies": {
-    "turbo": "^2.3.3",
-    "typescript": "^5.7.2"
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "turbo": "^2.5.0"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "24.0.0"
   }
 }

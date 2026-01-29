@@ -1,0 +1,31 @@
+{
+  "labels": [
+    {
+      "name": "go",
+      "color": "00ADD8",
+      "description": "Go/Golang code"
+    },
+    {
+      "name": "ingest",
+      "color": "7C3AED",
+      "description": "Ingest service"
+    },
+    {
+      "name": "observability",
+      "color": "F59E0B",
+      "description": "Logging, monitoring, tracing"
+    }
+  ],
+  "issues": [
+    {
+      "title": "Add request ID to all logs in Go ingest service",
+      "labels": ["go", "ingest", "observability", "tech-debt"],
+      "body": "## Summary\nLogs in the Go ingest service handlers don't include the request ID from chi middleware, making production debugging difficult when correlating logs across a single request.\n\n## Context\n- **Files:** `apps/ingest/internal/handler/trace.go`, `apps/ingest/internal/handler/health.go`\n- **Middleware:** chi's `middleware.RequestID` already generates unique IDs\n- **Impact:** Cannot trace a single request through multiple log entries\n\n## Current Behavior\n```go\nslog.Warn(\"failed to decode request\", \"error\", err)\nslog.Info(\"trace ingested\", \"traceId\", traceID)\n```\n\n## Expected Behavior\n```go\nrequestID := middleware.GetReqID(r.Context())\nslog.Warn(\"failed to decode request\", \"error\", err, \"request_id\", requestID)\nslog.Info(\"trace ingested\", \"traceId\", traceID, \"request_id\", requestID)\n```\n\n## Acceptance Criteria\n- [ ] All log statements in `handler/trace.go` include `request_id` field\n- [ ] All log statements in `handler/health.go` include `request_id` field\n- [ ] All log statements in middleware files include `request_id` where context is available\n- [ ] Request ID is retrieved using `middleware.GetReqID(r.Context())`\n- [ ] Consider creating a helper function to reduce boilerplate\n\n## Technical Notes\n```go\nimport \"github.com/go-chi/chi/v5/middleware\"\n\nfunc (h *Handler) IngestTrace(w http.ResponseWriter, r *http.Request) {\n    requestID := middleware.GetReqID(r.Context())\n    \n    // Use in all log statements\n    slog.Info(\"processing trace\", \"request_id\", requestID, \"project_id\", projectID)\n}\n```\n\n**Optional Enhancement:** Create a context-aware logger:\n```go\nfunc loggerFromContext(ctx context.Context) *slog.Logger {\n    requestID := middleware.GetReqID(ctx)\n    return slog.Default().With(\"request_id\", requestID)\n}\n```\n\n**Story Points:** 2"
+    },
+    {
+      "title": "Sanitize error messages to prevent information leakage in Go ingest service",
+      "labels": ["go", "ingest", "security", "tech-debt"],
+      "body": "## Summary\nError messages from internal API validation and other operations may leak internal details to clients, potentially exposing system architecture or sensitive information to attackers.\n\n## Context\n- **File:** `apps/ingest/internal/middleware/apikey.go:165`\n- **Issue:** Error from API validation is returned directly to client\n- **Risk:** Internal error messages could reveal database structure, service names, or implementation details\n\n## Current Behavior\n```go\nif result.Error != \"\" {\n    return \"\", fmt.Errorf(result.Error)  // Could expose internal info\n}\n```\n\nExample leaked error: `\"connection refused to postgres:5432\"` or `\"column 'hashed_key' not found\"`\n\n## Expected Behavior\n```go\nif !result.Valid {\n    // Log detailed error internally for debugging\n    if result.Error != \"\" {\n        slog.Warn(\"API key validation failed\", \n            \"reason\", result.Error,\n            \"request_id\", requestID)\n    }\n    // Return generic error to client\n    return \"\", fmt.Errorf(\"invalid API key\")\n}\n```\n\n## Acceptance Criteria\n- [ ] All error messages returned to clients are generic and don't expose internal details\n- [ ] Detailed errors are logged internally with appropriate log level\n- [ ] Review all `http.Error()` calls for information leakage\n- [ ] Review all error returns from middleware functions\n- [ ] Create standard error messages for common scenarios:\n  - `\"invalid API key\"` - for any API key validation failure\n  - `\"unauthorized\"` - for JWT/auth failures  \n  - `\"invalid request\"` - for malformed requests\n  - `\"internal server error\"` - for unexpected failures\n\n## Files to Review\n- `apps/ingest/internal/middleware/apikey.go`\n- `apps/ingest/internal/middleware/auth.go`\n- `apps/ingest/internal/handler/trace.go`\n- `apps/ingest/internal/handler/health.go`\n\n## Technical Notes\nCreate error constants for consistency:\n```go\n// errors.go\npackage handler\n\nconst (\n    ErrInvalidAPIKey    = \"invalid API key\"\n    ErrUnauthorized     = \"unauthorized\"\n    ErrInvalidRequest   = \"invalid request body\"\n    ErrInternalServer   = \"internal server error\"\n)\n```\n\n**Story Points:** 3"
+    }
+  ]
+}

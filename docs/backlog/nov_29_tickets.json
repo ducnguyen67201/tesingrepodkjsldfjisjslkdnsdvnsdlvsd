@@ -1,0 +1,41 @@
+{
+  "labels": [
+    {
+      "name": "security",
+      "color": "D93F0B",
+      "description": "Security related"
+    },
+    {
+      "name": "performance",
+      "color": "0E8A16",
+      "description": "Performance improvement"
+    },
+    {
+      "name": "api-keys",
+      "color": "1D76DB",
+      "description": "API key management"
+    },
+    {
+      "name": "tech-debt",
+      "color": "FBCA04",
+      "description": "Technical debt"
+    },
+    {
+      "name": "caching",
+      "color": "5319E7",
+      "description": "Caching related"
+    }
+  ],
+  "issues": [
+    {
+      "title": "Add rate limiting to /api/internal/validate-key endpoint",
+      "labels": ["security", "api-keys", "tech-debt"],
+      "body": "## Summary\nThe internal API key validation endpoint currently has no rate limiting, making it vulnerable to brute-force attacks and potential DoS.\n\n## Context\n- **Endpoint:** `apps/web/src/app/api/internal/validate-key/route.ts`\n- **Called by:** Go ingest service for every API key validation\n- **Protection:** Only `INTERNAL_API_SECRET` header (no rate limiting)\n\n## Attack Scenario\n1. Attacker obtains `INTERNAL_API_SECRET` (leaked env, compromised container)\n2. Sends thousands of validation requests with random hashes\n3. Overloads PostgreSQL with lookups\n4. Legitimate ingestion requests fail\n\n## Acceptance Criteria\n- [ ] Rate limiting middleware added to `/api/internal/validate-key`\n- [ ] Limit: 100 requests/minute per IP OR 1000 requests/minute globally\n- [ ] Returns `429 Too Many Requests` when limit exceeded\n- [ ] Failed attempts logged for monitoring\n- [ ] Consider using Redis for distributed rate limit tracking\n- [ ] Unit tests for rate limiting behavior\n\n## Technical Notes\n- Consider `@upstash/ratelimit` or similar library\n- Add exponential backoff after repeated failures\n- Monitor for suspicious patterns (same hash, rapid retries)\n\n**Story Points:** 3"
+    },
+    {
+      "title": "Add in-memory cache for API key validation in Go ingest service",
+      "labels": ["performance", "api-keys", "caching"],
+      "body": "## Summary\nEvery API key validation currently requires a synchronous HTTP call from Go ingest → Web API → PostgreSQL, adding 5-50ms+ latency to every trace ingestion request.\n\n## Context\n- **File:** `apps/ingest/internal/middleware/apikey.go`\n- **Current flow:** Hash key → HTTP call to validate → Block until response\n- **Impact:** Adds minimum 5-50ms latency per request, single point of failure\n\n## Acceptance Criteria\n- [ ] In-memory cache implemented in Go ingest service\n- [ ] Cache key: SHA-256 hash of API key\n- [ ] Cache value: `projectId` from validation response\n- [ ] TTL: 5 minutes (configurable via env var `VALIDATION_CACHE_TTL`)\n- [ ] Cache miss falls back to HTTP validation\n- [ ] Cache invalidation on key deletion (optional: webhook from web)\n- [ ] Metrics: cache hit/miss rate logged\n- [ ] Load testing shows >90% reduction in validation latency for cached keys\n\n## Technical Notes\n- Use `sync.Map` or `github.com/patrickmn/go-cache` for thread-safe caching\n- Consider Redis cache for multi-instance deployments (future enhancement)\n- Add `VALIDATION_CACHE_TTL` env var with default 5m\n- Log cache statistics periodically for observability\n\n## Future Considerations\n- Redis distributed cache for horizontal scaling\n- Webhook integration to invalidate cache on key revocation\n\n**Story Points:** 5"
+    }
+  ]
+}

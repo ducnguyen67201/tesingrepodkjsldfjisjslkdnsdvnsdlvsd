@@ -1,0 +1,44 @@
+# doppler.yaml - Monorepo configuration for Ducsigr
+#
+# Default config: dev_personal (where your secrets are stored)
+#
+# Usage:
+#   doppler setup --no-interactive    # Configure with dev_personal
+#   pnpm dev                          # Uses dev_personal secrets
+#
+# To use a different config (e.g., dev, stg):
+#   doppler run -c dev -- pnpm dev
+#   doppler run -c stg -- pnpm build
+#
+# See: docs/specs/issue-104-doppler-secret-management.md
+
+setup:
+  # Root level - for turbo commands (pnpm dev, pnpm build)
+  - project: web
+    config: dev_personal
+    path: .
+
+  # Web app
+  - project: web
+    config: dev_personal
+    path: apps/web
+
+  # Ingest service (Node.js)
+  - project: web
+    config: dev_personal
+    path: apps/ingest-node
+
+  # Ingest demo app
+  - project: web
+    config: dev_personal
+    path: apps/ingest-demo
+
+  # Worker service (Temporal)
+  - project: web
+    config: dev_personal
+    path: apps/worker
+
+  # Database package (Prisma)
+  - project: web
+    config: dev_personal
+    path: packages/db

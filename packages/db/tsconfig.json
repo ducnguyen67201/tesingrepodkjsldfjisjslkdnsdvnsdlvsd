@@ -1,9 +1,12 @@
 {
-  "extends": "@t3/tsconfig/node.json",
+  "extends": "@ducsigr/config-typescript/base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "src/__tests__"]
 }

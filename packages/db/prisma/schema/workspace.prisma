@@ -1,0 +1,75 @@
+// ============================================================
+// Workspace Models
+// ============================================================
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Workspace {
+  id         String   @id @default(cuid())
+  name       String
+  slug       String   @unique
+  isPersonal Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  members              WorkspaceMember[]
+  projects             Project[]
+  allowedDomains       AllowedDomain[]
+  notificationChannels NotificationChannel[]
+  githubInstallation   GitHubInstallation?
+
+  // Knowledge Base
+  knowledgeGroups      KnowledgeGroup[]
+  knowledgeArticles    KnowledgeArticle[]
+  knowledgeRules       KnowledgeRule[]
+  knowledgeLinks       KnowledgeLink[]
+  knowledgeAttachments KnowledgeAttachment[]
+  knowledgeChunks      KnowledgeChunk[]
+
+  // Extensions Hub
+  extensionInstalls ExtensionInstall[]
+
+  // Observability Dashboards
+  dashboards Dashboard[]
+
+  @@index([slug])
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        WorkspaceRole @default(MEMBER)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+// ============================================================
+// Domain Matcher Model (Auto-Join by Email Domain)
+// ============================================================
+
+model AllowedDomain {
+  id          String        @id @default(cuid())
+  workspaceId String
+  domain      String        @unique
+  role        WorkspaceRole @default(MEMBER)
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy User      @relation("DomainCreatedBy", fields: [createdById], references: [id])
+
+  @@index([domain])
+  @@index([workspaceId])
+}

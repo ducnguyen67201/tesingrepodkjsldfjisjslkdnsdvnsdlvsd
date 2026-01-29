@@ -1,0 +1,2 @@
+# This directory is for static assets served by Next.js
+# Keep this file to ensure the directory exists for Docker builds

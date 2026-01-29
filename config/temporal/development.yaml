@@ -1,0 +1,28 @@
+# Temporal Dynamic Configuration
+# Used by both local development and self-hosted deployments
+
+# Force search attribute cache refresh on read
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+
+# Disable client version check for development
+system.enableClientVersionCheck:
+  - value: false
+
+# History configuration
+history.maximumSignalsPerExecution:
+  - value: 10000
+
+# Matching configuration
+matching.numTaskqueueReadPartitions:
+  - value: 5
+matching.numTaskqueueWritePartitions:
+  - value: 5
+
+# Frontend configuration
+frontend.enableClientVersionCheck:
+  - value: false
+
+# Limit ID length
+limit.maxIDLength:
+  - value: 255

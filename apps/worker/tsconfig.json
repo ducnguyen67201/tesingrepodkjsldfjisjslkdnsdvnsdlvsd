@@ -1,9 +1,19 @@
 {
-  "extends": "@t3/tsconfig/node.json",
+  "extends": "@ducsigr/config-typescript/base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*.ts"],
+  "tsc-alias": {
+    "resolveFullPaths": true
+  },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

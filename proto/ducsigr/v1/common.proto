@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ducsigr.v1;
+
+option go_package = "github.com/ducsigr/ingest/internal/proto/duscigrv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// Token usage for LLM calls
+message TokenUsage {
+  optional int32 prompt_tokens = 1;
+  optional int32 completion_tokens = 2;
+  optional int32 total_tokens = 3;
+}
+
+// Span level for categorizing spans
+enum SpanLevel {
+  SPAN_LEVEL_UNSPECIFIED = 0;
+  SPAN_LEVEL_DEBUG = 1;
+  SPAN_LEVEL_DEFAULT = 2;
+  SPAN_LEVEL_WARNING = 3;
+  SPAN_LEVEL_ERROR = 4;
+}

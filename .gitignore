@@ -6,8 +6,11 @@ node_modules/
 dist/
 .next/
 .turbo/
+out/
 
-# Environment
+# Environment files
+# NOTE: Use Doppler for secret management. See doppler.yaml
+# Local .env files should NOT contain secrets after Doppler migration
 .env
 .env.local
 .env.*.local
@@ -29,10 +32,11 @@ pnpm-debug.log*
 
 # Testing
 coverage/
+.nyc_output/
 
-# Prisma
-packages/db/prisma/*.db
-packages/db/prisma/*.db-journal
+# Database
+*.db
+*.sqlite
 
 # Misc
 *.tsbuildinfo

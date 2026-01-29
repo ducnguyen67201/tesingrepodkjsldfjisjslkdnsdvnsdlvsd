@@ -1,0 +1,98 @@
+# Project name for Docker Desktop grouping
+name: ducsigr
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ducsigr-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ducsigr
+      POSTGRES_DB: ducsigr
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ducsigr-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # Temporal Workflow Engine
+  # ============================================================
+  temporal:
+    image: temporalio/auto-setup:latest
+    container_name: ducsigr-temporal
+    restart: unless-stopped
+    ports:
+      - "7233:7233"
+    environment:
+      - DB=postgres12
+      - DB_PORT=5432
+      - POSTGRES_USER=ducsigr
+      - POSTGRES_PWD=ducsigr
+      - POSTGRES_SEEDS=postgres
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
+    volumes:
+      - ./temporal-config:/etc/temporal/config/dynamicconfig
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "tctl", "--address", "temporal:7233", "cluster", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  temporal-ui:
+    image: temporalio/ui:latest
+    container_name: ducsigr-temporal-ui
+    restart: unless-stopped
+    ports:
+      - "8088:8080"
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    depends_on:
+      - temporal
+
+  # ============================================================
+  # Ingest service (optional - for full local setup)
+  # Uncomment to run ingest in Docker instead of locally
+  # ingest:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/ingest-node/Dockerfile
+  #   container_name: ducsigr-ingest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     PORT: "8080"
+  #     DATABASE_URL: "postgresql://ducsigr:ducsigr@postgres:5432/ducsigr"
+  #     LOG_LEVEL: "info"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,177 @@
+# docker-compose.self-hosted.yml
+#
+# Ducsigr Self-Hosted Production Deployment
+#
+# Quick Start:
+#   export NEXTAUTH_SECRET=$(openssl rand -base64 32)
+#   export NEXTAUTH_URL="http://localhost:3000"
+#   docker compose -f docker-compose.self-hosted.yml up -d
+#
+# With Temporal UI (for debugging):
+#   docker compose -f docker-compose.self-hosted.yml --profile debug up -d
+#
+# Documentation: https://github.com/ducsigr/ducsigr
+
+name: ducsigr
+
+services:
+  # ============================================================
+  # PostgreSQL Database
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: ducsigr-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ducsigr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ducsigr}
+      POSTGRES_DB: ducsigr
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ducsigr"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - ducsigr-internal
+    # Uncomment to expose PostgreSQL externally
+    # ports:
+    #   - "5432:5432"
+
+  # ============================================================
+  # Redis Cache
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    container_name: ducsigr-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - ducsigr-internal
+    # Uncomment to expose Redis externally
+    # ports:
+    #   - "6379:6379"
+
+  # ============================================================
+  # Temporal Server (Workflow Orchestration)
+  # ============================================================
+  temporal:
+    image: temporalio/auto-setup:latest
+    container_name: ducsigr-temporal
+    restart: unless-stopped
+    environment:
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=ducsigr
+      - POSTGRES_PWD=${POSTGRES_PASSWORD:-ducsigr}
+      - POSTGRES_SEEDS=postgres
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml
+      - SKIP_DEFAULT_NAMESPACE_CREATION=false
+    volumes:
+      - ./temporal-config:/etc/temporal/config/dynamicconfig:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "tctl", "--address", "temporal:7233", "cluster", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    networks:
+      - ducsigr-internal
+
+  # ============================================================
+  # Temporal UI (Optional - for debugging)
+  # ============================================================
+  temporal-ui:
+    image: temporalio/ui:latest
+    container_name: ducsigr-temporal-ui
+    restart: unless-stopped
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000,${NEXTAUTH_URL:-http://localhost:3000}
+    ports:
+      - "8088:8080"
+    depends_on:
+      temporal:
+        condition: service_healthy
+    networks:
+      - ducsigr-internal
+    profiles:
+      - debug
+
+  # ============================================================
+  # Ducsigr Application (Web + Worker + Ingest)
+  # ============================================================
+  app:
+    image: ghcr.io/ducsigr/ducsigr-app:${VERSION:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: ducsigr-app
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+      - "${INGEST_PORT:-8080}:8080"
+    environment:
+      # Required - Must be set by user
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?NEXTAUTH_SECRET is required. Generate with: openssl rand -base64 32}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+
+      # Database (auto-configured for bundled services)
+      DATABASE_URL: postgresql://ducsigr:${POSTGRES_PASSWORD:-ducsigr}@postgres:5432/ducsigr
+      REDIS_URL: redis://redis:6379
+
+      # Temporal
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_NAMESPACE: default
+      TEMPORAL_TASK_QUEUE: ducsigr-tasks
+
+      # Internal (auto-generated if not set)
+      INTERNAL_API_SECRET: ${INTERNAL_API_SECRET:-}
+      JWT_SHARED_SECRET: ${JWT_SHARED_SECRET:-}
+      WEB_API_URL: http://localhost:3000
+
+      # Optional configuration
+      NODE_ENV: production
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      RETENTION_DAYS: ${RETENTION_DAYS:-30}
+      ENABLE_REGISTRATION: ${ENABLE_REGISTRATION:-true}
+    volumes:
+      - app_secrets:/app/secrets
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      temporal:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - ducsigr-internal
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  app_secrets:
+    driver: local
+
+networks:
+  ducsigr-internal:
+    driver: bridge

@@ -1,0 +1,29 @@
+// ============================================================
+// Root Cause Analysis Models
+// ============================================================
+
+model AlertRCA {
+  id               String   @id @default(cuid())
+  alertId          String
+  triggeredAt      DateTime
+  analysisJson     Json
+  suspectedPRs     String[]
+  suspectedCommits String[]
+  confidence       Float?
+  createdAt        DateTime @default(now())
+
+  // User feedback
+  helpful        Boolean?
+  feedback       String?
+  feedbackAt     DateTime?
+  feedbackUserId String?
+
+  alert        Alert @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  feedbackUser User? @relation("RCAFeedbackUser", fields: [feedbackUserId], references: [id], onDelete: SetNull)
+
+  // Knowledge Base matches
+  knowledgeMatches AlertRCAKnowledge[]
+
+  @@index([alertId])
+  @@index([triggeredAt(sort: Desc)])
+}

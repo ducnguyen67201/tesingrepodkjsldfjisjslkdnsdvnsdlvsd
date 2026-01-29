@@ -1,0 +1,330 @@
+Summary,Description,Issue Type,Priority,Story Points,Labels,Epic Name,Sprint
+"[EPIC] Authentication & API Keys","Enable secure API key-based authentication for trace ingestion.",Epic,Highest,,auth;security;mvp,,
+"[EPIC] Basic Dashboard","Provide visibility into trace data through a web dashboard.",Epic,Highest,,dashboard;ui;mvp,,
+"[EPIC] Trace Visualization","Enable debugging of LLM calls through visual trace exploration.",Epic,High,,visualization;ui;mvp,,
+"[EPIC] TypeScript SDK","Official TypeScript SDK for instrumenting Node.js/Deno applications.",Epic,High,,sdk;typescript,,
+"[EPIC] Python SDK","Official Python SDK for instrumenting Python applications.",Epic,High,,sdk;python,,
+"[EPIC] User Management","Team collaboration features with role-based access control.",Epic,Medium,,users;teams,,
+"[EPIC] Alerting System","Proactive notifications for error rates and latency thresholds.",Epic,Medium,,alerting;monitoring,,
+"[EPIC] Cost Tracking","Visibility into LLM spending with token usage and budgets.",Epic,Medium,,cost;analytics,,
+"[EPIC] Infrastructure Scale","Queue and database evolution for higher throughput.",Epic,Low,,infrastructure;scale,,
+"Create project and receive API key","As a user, I can create a project and receive an API key.
+
+Acceptance Criteria:
+- User can create a new project with name and description
+- API key is generated using secure random bytes
+- API key is displayed once upon creation
+- API key is stored as hashed value in database",Story,Highest,5,auth;api-key;mvp,[EPIC] Authentication & API Keys,Sprint 1
+"Validate API keys on incoming traces","As the ingest service, I can validate API keys on incoming traces.
+
+Acceptance Criteria:
+- Ingest service extracts API key from Authorization header
+- Invalid or missing key returns 401 Unauthorized
+- Valid key associates trace with correct project
+- Validation is performant (<1ms overhead)",Story,Highest,3,auth;ingest;go;mvp,[EPIC] Authentication & API Keys,Sprint 1
+"Revoke and regenerate API keys","As a user, I can revoke and regenerate API keys.
+
+Acceptance Criteria:
+- User can revoke existing API key
+- Revoked key immediately stops working
+- User can generate new API key
+- UI shows key creation/revocation history",Story,High,3,auth;api-key;security,[EPIC] Authentication & API Keys,Sprint 2
+"View API key usage stats","As a user, I can view my project's API key usage stats.
+
+Acceptance Criteria:
+- Dashboard shows request count per API key
+- Shows success vs. error rate
+- Shows last used timestamp
+- Time range filter (24h, 7d, 30d)",Story,Medium,2,auth;dashboard;metrics,[EPIC] Authentication & API Keys,Sprint 2
+"View list of projects","As a user, I can see a list of my projects.
+
+Acceptance Criteria:
+- Projects page shows all user's projects
+- Each project shows: name, created date, trace count
+- Projects are sorted by most recent activity
+- Empty state for new users",Story,Highest,3,dashboard;projects;ui;mvp,[EPIC] Basic Dashboard,Sprint 3
+"View recent traces for a project","As a user, I can view recent traces for a project.
+
+Acceptance Criteria:
+- Trace list page with pagination (20 per page)
+- Each trace shows: timestamp, name, status, duration
+- Color coding for success/error status
+- Click to view trace details",Story,Highest,5,dashboard;traces;ui;mvp,[EPIC] Basic Dashboard,Sprint 3
+"View basic metrics dashboard","As a user, I can see basic metrics (trace count, error rate).
+
+Acceptance Criteria:
+- Dashboard cards showing key metrics
+- Total traces (24h, 7d, 30d)
+- Error rate percentage
+- Average latency (P50, P95, P99)
+- Token usage summary",Story,Highest,5,dashboard;metrics;analytics;mvp,[EPIC] Basic Dashboard,Sprint 4
+"Filter traces by date range","As a user, I can filter traces by date range.
+
+Acceptance Criteria:
+- Date range picker component
+- Preset options: Last hour, 24h, 7d, 30d, Custom
+- Custom range with start and end datetime
+- URL reflects selected range (shareable)",Story,High,3,dashboard;filters;ui,[EPIC] Basic Dashboard,Sprint 4
+"View trace span hierarchy (waterfall)","As a user, I can view a trace's span hierarchy in a waterfall view.
+
+Acceptance Criteria:
+- Visual tree showing parent-child span relationships
+- Timeline bar showing duration of each span
+- Span name, type, and status visible
+- Zoom and pan controls
+- Color coding by span type (LLM, tool, chain)",Story,Highest,8,visualization;waterfall;ui;mvp,[EPIC] Trace Visualization,Sprint 5
+"View span details panel","As a user, I can see span details (tokens, latency, model).
+
+Acceptance Criteria:
+- Click span to open detail panel
+- Shows: duration, start time, span type
+- Shows: model name, provider
+- Shows: token counts (input, output, total)
+- Copy button for values",Story,High,5,visualization;spans;ui;mvp,[EPIC] Trace Visualization,Sprint 5
+"View span input/output content","As a user, I can view input/output of each span.
+
+Acceptance Criteria:
+- Collapsible input section
+- Collapsible output section
+- JSON syntax highlighting
+- Long text truncation with expand
+- Copy to clipboard button",Story,High,5,visualization;spans;content;mvp,[EPIC] Trace Visualization,Sprint 6
+"View error details on failed spans","As a user, I can see error details on failed spans.
+
+Acceptance Criteria:
+- Red highlight on error spans
+- Error icon in waterfall view
+- Error message displayed prominently
+- Stack trace if available
+- Error type/code shown",Story,High,3,visualization;errors;debugging,[EPIC] Trace Visualization,Sprint 6
+"Install SDK via npm","As a developer, I can install the SDK via npm.
+
+Acceptance Criteria:
+- Package published to npm as @Ducsigr/sdk
+- npm install @Ducsigr/sdk works
+- TypeScript types included
+- ESM and CJS builds
+- Package size < 50KB",Story,Highest,2,sdk;npm;typescript,[EPIC] TypeScript SDK,Sprint 7
+"Initialize SDK with API key","As a developer, I can initialize the SDK with my API key.
+
+Acceptance Criteria:
+- Ducsigr.init({ apiKey }) configures client
+- Environment variable fallback (Ducsigr_API_KEY)
+- Validates API key format
+- Configurable endpoint URL",Story,Highest,3,sdk;init;config,[EPIC] TypeScript SDK,Sprint 7
+"Create traces and spans manually","As a developer, I can create traces and spans programmatically.
+
+Acceptance Criteria:
+- startTrace({ name }) returns trace object
+- trace.startSpan({ name }) returns span
+- span.end() completes the span
+- trace.end() sends to server
+- Nested spans supported",Story,Highest,5,sdk;tracing;api,[EPIC] TypeScript SDK,Sprint 7
+"Auto-trace OpenAI/Anthropic calls","As a developer, I can wrap OpenAI/Anthropic clients for automatic tracing.
+
+Acceptance Criteria:
+- wrapOpenAI(client) returns instrumented client
+- wrapAnthropic(client) returns instrumented client
+- All API methods traced automatically
+- Token usage captured
+- Streaming responses supported",Story,Highest,8,sdk;openai;anthropic;auto-instrumentation,[EPIC] TypeScript SDK,Sprint 8
+"SDK documentation and examples","As a developer, I can read SDK documentation.
+
+Acceptance Criteria:
+- README with quick start guide
+- API reference documentation
+- Code examples for common use cases
+- TypeScript examples
+- Troubleshooting section",Story,High,3,sdk;docs;developer-experience,[EPIC] TypeScript SDK,Sprint 8
+"Install Python SDK via pip","As a Python developer, I can install the SDK via pip.
+
+Acceptance Criteria:
+- Package published to PyPI as Ducsigr
+- pip install Ducsigr works
+- Python 3.9+ supported
+- Type hints included (py.typed)
+- Minimal dependencies",Story,Highest,2,sdk;pip;python,[EPIC] Python SDK,Sprint 9
+"Initialize Python SDK with API key","As a Python developer, I can initialize the SDK with my API key.
+
+Acceptance Criteria:
+- Ducsigr.init(api_key=...) configures client
+- Environment variable fallback (Ducsigr_API_KEY)
+- Validates API key format
+- Configurable endpoint URL",Story,Highest,3,sdk;python;init,[EPIC] Python SDK,Sprint 9
+"Create traces and spans in Python","As a Python developer, I can create traces and spans programmatically.
+
+Acceptance Criteria:
+- start_trace(name=...) returns trace object
+- trace.start_span(name=...) returns span
+- span.end() completes the span
+- Context manager support (with trace.span(...))
+- Async/await support",Story,Highest,5,sdk;python;tracing,[EPIC] Python SDK,Sprint 9
+"Python decorator for tracing","As a Python developer, I can use decorators for tracing.
+
+Acceptance Criteria:
+- @Ducsigr.trace decorator for functions
+- @Ducsigr.span decorator for nested spans
+- Works with sync and async functions
+- Captures function arguments (configurable)
+- Exception tracking",Story,High,3,sdk;python;decorators,[EPIC] Python SDK,Sprint 10
+"Auto-trace OpenAI Python SDK","As a Python developer, I can wrap OpenAI client for automatic tracing.
+
+Acceptance Criteria:
+- wrap_openai(client) returns instrumented client
+- chat.completions.create traced automatically
+- Streaming responses supported
+- Token usage captured from response
+- Model name captured",Story,Highest,5,sdk;python;openai;auto-instrumentation,[EPIC] Python SDK,Sprint 10
+"Auto-trace Anthropic Python SDK","As a Python developer, I can wrap Anthropic client for automatic tracing.
+
+Acceptance Criteria:
+- wrap_anthropic(client) returns instrumented client
+- messages.create traced automatically
+- Streaming responses supported
+- Token usage captured
+- Model name captured",Story,High,5,sdk;python;anthropic;auto-instrumentation,[EPIC] Python SDK,Sprint 10
+"Auto-trace LangChain","As a Python developer, I can integrate with LangChain for automatic tracing.
+
+Acceptance Criteria:
+- DucsigrCallbackHandler for LangChain
+- Traces LLM calls, chains, tools, agents
+- Captures intermediate steps
+- Works with LCEL (LangChain Expression Language)",Story,High,8,sdk;python;langchain;auto-instrumentation,[EPIC] Python SDK,Sprint 11
+"Auto-trace LlamaIndex","As a Python developer, I can integrate with LlamaIndex for automatic tracing.
+
+Acceptance Criteria:
+- DucsigrSpanHandler for LlamaIndex
+- Traces query engines, retrievers, synthesizers
+- Captures retrieved documents
+- Works with async operations",Story,Medium,5,sdk;python;llamaindex;auto-instrumentation,[EPIC] Python SDK,Sprint 11
+"Python SDK documentation","As a Python developer, I can read SDK documentation.
+
+Acceptance Criteria:
+- README with quick start guide
+- API reference (Sphinx/MkDocs)
+- Code examples for common use cases
+- Framework integration guides (LangChain, LlamaIndex)",Story,High,3,sdk;python;docs;developer-experience,[EPIC] Python SDK,Sprint 11
+"User signup and login","As a user, I can sign up and log in.
+
+Acceptance Criteria:
+- Email/password signup form
+- Email verification (optional for MVP)
+- Login with email/password
+- Password reset flow
+- Session management",Story,Highest,5,users;auth;signup;login,[EPIC] User Management,Sprint 12
+"Invite team members to project","As a project owner, I can invite team members.
+
+Acceptance Criteria:
+- Invite by email address
+- Email invitation sent with link
+- Invitee can accept and join project
+- Pending invitations visible
+- Can cancel pending invitation",Story,High,5,users;teams;invitations,[EPIC] User Management,Sprint 12
+"Assign roles to team members","As an admin, I can assign roles.
+
+Acceptance Criteria:
+- Roles: Owner, Admin, Member, Viewer
+- Owner: full access, can delete project
+- Admin: manage members, settings
+- Member: view and create traces
+- Viewer: read-only access",Story,High,3,users;roles;permissions,[EPIC] User Management,Sprint 13
+"Manage user profile settings","As a user, I can manage my profile.
+
+Acceptance Criteria:
+- Update display name
+- Change password (requires current password)
+- Profile picture upload (optional)
+- Email preferences
+- Delete account option",Story,Medium,2,users;profile;settings,[EPIC] User Management,Sprint 13
+"Create error rate threshold alerts","As a user, I can create alerts for error rate thresholds.
+
+Acceptance Criteria:
+- Create alert with error rate threshold (e.g., >5%)
+- Select time window (5min, 15min, 1hr)
+- Choose projects to monitor
+- Enable/disable alert
+- Test alert button",Story,Highest,5,alerting;errors;monitoring,[EPIC] Alerting System,Sprint 14
+"Create latency threshold alerts","As a user, I can create alerts for latency thresholds.
+
+Acceptance Criteria:
+- Create alert for P99 latency threshold
+- Configurable percentile (P50, P95, P99)
+- Time window selection
+- Project/trace name filter
+- Severity levels",Story,High,5,alerting;latency;performance,[EPIC] Alerting System,Sprint 14
+"Receive alerts via email/webhook","As a user, I can receive alerts via email or webhook.
+
+Acceptance Criteria:
+- Email notifications with alert details
+- Webhook POST with JSON payload
+- Configure notification channels per alert
+- Multiple channels per alert
+- Webhook retry on failure",Story,High,5,alerting;notifications;email;webhook,[EPIC] Alerting System,Sprint 15
+"View alert history","As a user, I can view alert history.
+
+Acceptance Criteria:
+- List of triggered alerts
+- Timestamp, alert name, severity
+- Triggered value vs. threshold
+- Resolution status
+- Filter by date range",Story,Medium,3,alerting;history;dashboard,[EPIC] Alerting System,Sprint 15
+"View token usage per project","As a user, I can see token usage per project.
+
+Acceptance Criteria:
+- Dashboard showing input/output tokens
+- Breakdown by model
+- Daily/weekly/monthly views
+- Comparison to previous period
+- Export data option",Story,Highest,5,cost;tokens;analytics,[EPIC] Cost Tracking,Sprint 16
+"View estimated costs by model","As a user, I can see estimated costs by model.
+
+Acceptance Criteria:
+- Cost calculated using model pricing table
+- Configurable pricing overrides
+- Cost by model breakdown
+- Cost by project breakdown
+- Currency selection",Story,High,5,cost;models;pricing,[EPIC] Cost Tracking,Sprint 16
+"Set cost budgets with alerts","As a user, I can set cost budgets.
+
+Acceptance Criteria:
+- Set monthly budget per project
+- Alert at threshold (50%, 80%, 100%)
+- Email notification on threshold
+- Budget reset on month start
+- Budget history tracking",Story,High,5,cost;budgets;alerts,[EPIC] Cost Tracking,Sprint 17
+"View cost trends over time","As a user, I can view cost trends.
+
+Acceptance Criteria:
+- Line chart showing daily costs
+- Compare to previous periods
+- Trend line projection
+- Filter by project/model
+- Anomaly highlighting",Story,Medium,3,cost;trends;charts,[EPIC] Cost Tracking,Sprint 17
+"Upgrade to Redis Streams","Migrate from Redis LPUSH/BRPOP to Redis Streams for higher throughput.
+
+Technical Requirements:
+- Implement Redis Streams producer in Go
+- Update worker to use XREADGROUP
+- Consumer group management
+- Message acknowledgment",Task,Medium,5,infrastructure;redis;queue,[EPIC] Infrastructure Scale,Backlog
+"Add Redpanda to infrastructure","Set up Redpanda (Kafka-compatible) for production scale.
+
+Technical Requirements:
+- Docker Compose configuration
+- Topic creation and configuration
+- Partition strategy (by project_id)
+- Retention policy configuration",Task,Low,3,infrastructure;redpanda;kafka,[EPIC] Infrastructure Scale,Backlog
+"Implement Kafka producer in ingest","Add Kafka/Redpanda producer to Go ingest service.
+
+Technical Requirements:
+- Implement Producer interface for Kafka
+- Configuration-based driver selection
+- Batch publishing for efficiency
+- Graceful shutdown",Task,Low,5,infrastructure;kafka;go;ingest,[EPIC] Infrastructure Scale,Backlog
+"Add ClickHouse for analytics","Set up ClickHouse for high-performance analytics queries.
+
+Technical Requirements:
+- Docker Compose configuration
+- Schema design for traces/spans
+- Dual-write from worker
+- Migration of analytics queries",Task,Low,8,infrastructure;clickhouse;analytics,[EPIC] Infrastructure Scale,Backlog

@@ -1,0 +1,412 @@
+{
+  "issues": [
+    {
+      "title": "[EPIC] Authentication & API Keys",
+      "description": "Enable secure API key-based authentication for trace ingestion. Users can create projects, generate API keys, and validate incoming traces.",
+      "priority": 1,
+      "labels": ["epic", "auth", "security", "mvp"]
+    },
+    {
+      "title": "[EPIC] Basic Dashboard",
+      "description": "Provide visibility into trace data through a web dashboard. Users can view projects, traces, and basic metrics.",
+      "priority": 1,
+      "labels": ["epic", "dashboard", "ui", "mvp"]
+    },
+    {
+      "title": "[EPIC] Trace Visualization",
+      "description": "Enable debugging of LLM calls through visual trace exploration. Waterfall view, span details, and error highlighting.",
+      "priority": 2,
+      "labels": ["epic", "visualization", "ui", "mvp"]
+    },
+    {
+      "title": "[EPIC] TypeScript SDK",
+      "description": "Official TypeScript SDK for instrumenting Node.js/Deno applications. Auto-tracing for OpenAI/Anthropic.",
+      "priority": 2,
+      "labels": ["epic", "sdk", "typescript", "developer-experience"]
+    },
+    {
+      "title": "[EPIC] Python SDK",
+      "description": "Official Python SDK for instrumenting Python applications. Auto-tracing for LangChain, LlamaIndex, OpenAI, Anthropic.",
+      "priority": 2,
+      "labels": ["epic", "sdk", "python", "developer-experience"]
+    },
+    {
+      "title": "Create project and receive API key",
+      "description": "As a user, I can create a project and receive an API key so that I can authenticate my trace ingestion.\n\n## Acceptance Criteria\n- User can create a new project with name and description\n- API key is generated using secure random bytes\n- API key is displayed once upon creation (not retrievable later)\n- API key is stored as hashed value in database\n- Project appears in user's project list",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["auth", "api-key", "mvp"],
+      "parentTitle": "[EPIC] Authentication & API Keys",
+      "cycle": "Sprint 1"
+    },
+    {
+      "title": "Validate API keys on incoming traces",
+      "description": "As the ingest service, I can validate API keys on incoming traces so that only authorized requests are processed.\n\n## Acceptance Criteria\n- Ingest service extracts API key from Authorization header\n- Invalid or missing key returns 401 Unauthorized\n- Valid key associates trace with correct project\n- Rate limiting per API key (optional)\n- Validation is performant (<1ms overhead)",
+      "priority": 1,
+      "estimate": 3,
+      "labels": ["auth", "ingest", "go", "mvp"],
+      "parentTitle": "[EPIC] Authentication & API Keys",
+      "cycle": "Sprint 1"
+    },
+    {
+      "title": "Revoke and regenerate API keys",
+      "description": "As a user, I can revoke and regenerate API keys so that I can rotate credentials when needed.\n\n## Acceptance Criteria\n- User can revoke existing API key\n- Revoked key immediately stops working\n- User can generate new API key\n- Old key hash is archived for audit\n- UI shows key creation/revocation history",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["auth", "api-key", "security"],
+      "parentTitle": "[EPIC] Authentication & API Keys",
+      "cycle": "Sprint 2"
+    },
+    {
+      "title": "View API key usage stats",
+      "description": "As a user, I can view my project's API key usage stats so that I can monitor my integration.\n\n## Acceptance Criteria\n- Dashboard shows request count per API key\n- Shows success vs. error rate\n- Shows last used timestamp\n- Time range filter (24h, 7d, 30d)",
+      "priority": 3,
+      "estimate": 2,
+      "labels": ["auth", "dashboard", "metrics"],
+      "parentTitle": "[EPIC] Authentication & API Keys",
+      "cycle": "Sprint 2"
+    },
+    {
+      "title": "View list of projects",
+      "description": "As a user, I can see a list of my projects so that I can navigate to each one.\n\n## Acceptance Criteria\n- Projects page shows all user's projects\n- Each project shows: name, created date, trace count\n- Projects are sorted by most recent activity\n- Empty state for new users\n- Quick actions: view, settings, delete",
+      "priority": 1,
+      "estimate": 3,
+      "labels": ["dashboard", "projects", "ui", "mvp"],
+      "parentTitle": "[EPIC] Basic Dashboard",
+      "cycle": "Sprint 3"
+    },
+    {
+      "title": "View recent traces for a project",
+      "description": "As a user, I can view recent traces for a project so that I can see what's happening.\n\n## Acceptance Criteria\n- Trace list page with pagination (20 per page)\n- Each trace shows: timestamp, name, status, duration, span count\n- Color coding for success/error status\n- Click to view trace details\n- Auto-refresh toggle",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["dashboard", "traces", "ui", "mvp"],
+      "parentTitle": "[EPIC] Basic Dashboard",
+      "cycle": "Sprint 3"
+    },
+    {
+      "title": "View basic metrics dashboard",
+      "description": "As a user, I can see basic metrics (trace count, error rate) so that I can understand system health.\n\n## Acceptance Criteria\n- Dashboard cards showing key metrics\n- Total traces (24h, 7d, 30d)\n- Error rate percentage\n- Average latency (P50, P95, P99)\n- Token usage summary\n- Trend indicators (up/down arrows)",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["dashboard", "metrics", "analytics", "mvp"],
+      "parentTitle": "[EPIC] Basic Dashboard",
+      "cycle": "Sprint 4"
+    },
+    {
+      "title": "Filter traces by date range",
+      "description": "As a user, I can filter traces by date range so that I can investigate specific time periods.\n\n## Acceptance Criteria\n- Date range picker component\n- Preset options: Last hour, 24h, 7d, 30d, Custom\n- Custom range with start and end datetime\n- URL reflects selected range (shareable)\n- Metrics update based on filter",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["dashboard", "filters", "ui"],
+      "parentTitle": "[EPIC] Basic Dashboard",
+      "cycle": "Sprint 4"
+    },
+    {
+      "title": "View trace span hierarchy (waterfall)",
+      "description": "As a user, I can view a trace's span hierarchy in a waterfall view so that I can understand the execution flow.\n\n## Acceptance Criteria\n- Visual tree showing parent-child span relationships\n- Timeline bar showing duration of each span\n- Span name, type, and status visible\n- Zoom and pan controls\n- Collapsible span groups\n- Color coding by span type (LLM, tool, chain)",
+      "priority": 1,
+      "estimate": 8,
+      "labels": ["visualization", "waterfall", "ui", "mvp"],
+      "parentTitle": "[EPIC] Trace Visualization",
+      "cycle": "Sprint 5"
+    },
+    {
+      "title": "View span details panel",
+      "description": "As a user, I can see span details (tokens, latency, model) so that I can debug specific operations.\n\n## Acceptance Criteria\n- Click span to open detail panel\n- Shows: duration, start time, span type\n- Shows: model name, provider\n- Shows: token counts (input, output, total)\n- Shows: custom attributes/metadata\n- Copy button for values",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["visualization", "spans", "ui", "mvp"],
+      "parentTitle": "[EPIC] Trace Visualization",
+      "cycle": "Sprint 5"
+    },
+    {
+      "title": "View span input/output content",
+      "description": "As a user, I can view input/output of each span so that I can see what was sent and received.\n\n## Acceptance Criteria\n- Collapsible input section\n- Collapsible output section\n- JSON syntax highlighting\n- Long text truncation with expand\n- Copy to clipboard button\n- Search within content",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["visualization", "spans", "content", "mvp"],
+      "parentTitle": "[EPIC] Trace Visualization",
+      "cycle": "Sprint 6"
+    },
+    {
+      "title": "View error details on failed spans",
+      "description": "As a user, I can see error details on failed spans so that I can diagnose issues.\n\n## Acceptance Criteria\n- Red highlight on error spans\n- Error icon in waterfall view\n- Error message displayed prominently\n- Stack trace if available\n- Error type/code shown\n- Link to related logs (future)",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["visualization", "errors", "debugging"],
+      "parentTitle": "[EPIC] Trace Visualization",
+      "cycle": "Sprint 6"
+    },
+    {
+      "title": "Install SDK via npm",
+      "description": "As a developer, I can install the SDK via npm so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to npm as @ducsigr/sdk\n- npm install @ducsigr/sdk works\n- TypeScript types included\n- ESM and CJS builds\n- Minimal dependencies\n- Package size < 50KB",
+      "priority": 1,
+      "estimate": 2,
+      "labels": ["sdk", "npm", "typescript"],
+      "parentTitle": "[EPIC] TypeScript SDK",
+      "cycle": "Sprint 7"
+    },
+    {
+      "title": "Initialize SDK with API key",
+      "description": "As a developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- Ducsigr.init({ apiKey }) configures client\n- Environment variable fallback (Ducsigr_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Graceful handling of missing key",
+      "priority": 1,
+      "estimate": 3,
+      "labels": ["sdk", "init", "config"],
+      "parentTitle": "[EPIC] TypeScript SDK",
+      "cycle": "Sprint 7"
+    },
+    {
+      "title": "Create traces and spans manually",
+      "description": "As a developer, I can create traces and spans programmatically so that I can instrument custom code.\n\n## Acceptance Criteria\n- startTrace({ name }) returns trace object\n- trace.startSpan({ name }) returns span\n- span.end() completes the span\n- trace.end() sends to server\n- Nested spans supported\n- Attributes can be added",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["sdk", "tracing", "api"],
+      "parentTitle": "[EPIC] TypeScript SDK",
+      "cycle": "Sprint 7"
+    },
+    {
+      "title": "Auto-trace OpenAI/Anthropic calls",
+      "description": "As a developer, I can wrap OpenAI/Anthropic clients for automatic tracing so that LLM calls are captured.\n\n## Acceptance Criteria\n- wrapOpenAI(client) returns instrumented client\n- wrapAnthropic(client) returns instrumented client\n- All API methods traced automatically\n- Token usage captured\n- Model name captured\n- Streaming responses supported\n- Error handling preserved",
+      "priority": 1,
+      "estimate": 8,
+      "labels": ["sdk", "openai", "anthropic", "auto-instrumentation"],
+      "parentTitle": "[EPIC] TypeScript SDK",
+      "cycle": "Sprint 8"
+    },
+    {
+      "title": "SDK documentation and examples",
+      "description": "As a developer, I can read SDK documentation so that I can integrate quickly.\n\n## Acceptance Criteria\n- README with quick start guide\n- API reference documentation\n- Code examples for common use cases\n- TypeScript examples\n- Troubleshooting section\n- Published to docs site",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["sdk", "docs", "developer-experience"],
+      "parentTitle": "[EPIC] TypeScript SDK",
+      "cycle": "Sprint 8"
+    },
+    {
+      "title": "Install Python SDK via pip",
+      "description": "As a Python developer, I can install the SDK via pip so that I can add it to my project.\n\n## Acceptance Criteria\n- Package published to PyPI as Ducsigr\n- pip install Ducsigr works\n- Python 3.9+ supported\n- Type hints included (py.typed)\n- Minimal dependencies\n- Works with virtualenv, poetry, conda",
+      "priority": 1,
+      "estimate": 2,
+      "labels": ["sdk", "pip", "python"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 9"
+    },
+    {
+      "title": "Initialize Python SDK with API key",
+      "description": "As a Python developer, I can initialize the SDK with my API key so that traces are authenticated.\n\n## Acceptance Criteria\n- Ducsigr.init(api_key=...) configures client\n- Environment variable fallback (Ducsigr_API_KEY)\n- Validates API key format\n- Configurable endpoint URL\n- Context manager support",
+      "priority": 1,
+      "estimate": 3,
+      "labels": ["sdk", "python", "init"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 9"
+    },
+    {
+      "title": "Create traces and spans in Python",
+      "description": "As a Python developer, I can create traces and spans programmatically so that I can instrument custom code.\n\n## Acceptance Criteria\n- start_trace(name=...) returns trace object\n- trace.start_span(name=...) returns span\n- span.end() completes the span\n- trace.end() sends to server\n- Context manager support (with trace.span(...))\n- Async/await support",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["sdk", "python", "tracing"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 9"
+    },
+    {
+      "title": "Python decorator for tracing",
+      "description": "As a Python developer, I can use decorators for tracing so that instrumentation is clean.\n\n## Acceptance Criteria\n- @ducsigr.trace decorator for functions\n- @ducsigr.span decorator for nested spans\n- Works with sync and async functions\n- Captures function arguments (configurable)\n- Captures return values (configurable)\n- Exception tracking",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["sdk", "python", "decorators"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 10"
+    },
+    {
+      "title": "Auto-trace OpenAI Python SDK",
+      "description": "As a Python developer, I can wrap OpenAI client for automatic tracing so that LLM calls are captured.\n\n## Acceptance Criteria\n- wrap_openai(client) returns instrumented client\n- chat.completions.create traced automatically\n- Streaming responses supported\n- Token usage captured from response\n- Model name captured\n- Error handling preserved",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["sdk", "python", "openai", "auto-instrumentation"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 10"
+    },
+    {
+      "title": "Auto-trace Anthropic Python SDK",
+      "description": "As a Python developer, I can wrap Anthropic client for automatic tracing so that Claude calls are captured.\n\n## Acceptance Criteria\n- wrap_anthropic(client) returns instrumented client\n- messages.create traced automatically\n- Streaming responses supported\n- Token usage captured\n- Model name captured\n- Error handling preserved",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["sdk", "python", "anthropic", "auto-instrumentation"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 10"
+    },
+    {
+      "title": "Auto-trace LangChain",
+      "description": "As a Python developer, I can integrate with LangChain for automatic tracing so that chains and agents are captured.\n\n## Acceptance Criteria\n- DucsigrCallbackHandler for LangChain\n- Traces LLM calls, chains, tools, agents\n- Captures intermediate steps\n- Works with LCEL (LangChain Expression Language)\n- Nested span hierarchy reflects chain structure",
+      "priority": 2,
+      "estimate": 8,
+      "labels": ["sdk", "python", "langchain", "auto-instrumentation"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 11"
+    },
+    {
+      "title": "Auto-trace LlamaIndex",
+      "description": "As a Python developer, I can integrate with LlamaIndex for automatic tracing so that queries are captured.\n\n## Acceptance Criteria\n- DucsigrSpanHandler for LlamaIndex\n- Traces query engines, retrievers, synthesizers\n- Captures retrieved documents\n- Captures LLM calls within index\n- Works with async operations",
+      "priority": 3,
+      "estimate": 5,
+      "labels": ["sdk", "python", "llamaindex", "auto-instrumentation"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 11"
+    },
+    {
+      "title": "Python SDK documentation",
+      "description": "As a Python developer, I can read SDK documentation so that I can integrate quickly.\n\n## Acceptance Criteria\n- README with quick start guide\n- API reference (Sphinx/MkDocs)\n- Code examples for common use cases\n- Framework integration guides (LangChain, LlamaIndex)\n- Troubleshooting section\n- Published to docs site",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["sdk", "python", "docs", "developer-experience"],
+      "parentTitle": "[EPIC] Python SDK",
+      "cycle": "Sprint 11"
+    },
+    {
+      "title": "User signup and login",
+      "description": "As a user, I can sign up and log in so that I can access my account.\n\n## Acceptance Criteria\n- Email/password signup form\n- Email verification (optional for MVP)\n- Login with email/password\n- Password reset flow\n- Session management\n- Remember me option",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["users", "auth", "signup", "login"],
+      "parentTitle": "[EPIC] User Management",
+      "cycle": "Sprint 12"
+    },
+    {
+      "title": "Invite team members to project",
+      "description": "As a project owner, I can invite team members so that we can collaborate.\n\n## Acceptance Criteria\n- Invite by email address\n- Email invitation sent with link\n- Invitee can accept and join project\n- Pending invitations visible\n- Can cancel pending invitation\n- Limit invitations per project",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["users", "teams", "invitations"],
+      "parentTitle": "[EPIC] User Management",
+      "cycle": "Sprint 12"
+    },
+    {
+      "title": "Assign roles to team members",
+      "description": "As an admin, I can assign roles so that permissions are controlled.\n\n## Acceptance Criteria\n- Roles: Owner, Admin, Member, Viewer\n- Owner: full access, can delete project\n- Admin: manage members, settings\n- Member: view and create traces\n- Viewer: read-only access\n- Role changes take effect immediately",
+      "priority": 2,
+      "estimate": 3,
+      "labels": ["users", "roles", "permissions"],
+      "parentTitle": "[EPIC] User Management",
+      "cycle": "Sprint 13"
+    },
+    {
+      "title": "Manage user profile settings",
+      "description": "As a user, I can manage my profile so that my information is current.\n\n## Acceptance Criteria\n- Update display name\n- Change password (requires current password)\n- Profile picture upload (optional)\n- Email preferences\n- Delete account option",
+      "priority": 3,
+      "estimate": 2,
+      "labels": ["users", "profile", "settings"],
+      "parentTitle": "[EPIC] User Management",
+      "cycle": "Sprint 13"
+    },
+    {
+      "title": "Create error rate threshold alerts",
+      "description": "As a user, I can create alerts for error rate thresholds so that I'm notified of issues.\n\n## Acceptance Criteria\n- Create alert with error rate threshold (e.g., >5%)\n- Select time window (5min, 15min, 1hr)\n- Choose projects to monitor\n- Enable/disable alert\n- Test alert button\n- Alert history log",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["alerting", "errors", "monitoring"],
+      "parentTitle": "[EPIC] Alerting System",
+      "cycle": "Sprint 14"
+    },
+    {
+      "title": "Create latency threshold alerts",
+      "description": "As a user, I can create alerts for latency thresholds so that I know about performance issues.\n\n## Acceptance Criteria\n- Create alert for P99 latency threshold\n- Configurable percentile (P50, P95, P99)\n- Time window selection\n- Project/trace name filter\n- Alert cooldown period\n- Severity levels",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["alerting", "latency", "performance"],
+      "parentTitle": "[EPIC] Alerting System",
+      "cycle": "Sprint 14"
+    },
+    {
+      "title": "Receive alerts via email/webhook",
+      "description": "As a user, I can receive alerts via email or webhook so that I'm notified through my preferred channel.\n\n## Acceptance Criteria\n- Email notifications with alert details\n- Webhook POST with JSON payload\n- Configure notification channels per alert\n- Multiple channels per alert\n- Webhook retry on failure\n- Unsubscribe link in emails",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["alerting", "notifications", "email", "webhook"],
+      "parentTitle": "[EPIC] Alerting System",
+      "cycle": "Sprint 15"
+    },
+    {
+      "title": "View alert history",
+      "description": "As a user, I can view alert history so that I can see past incidents.\n\n## Acceptance Criteria\n- List of triggered alerts\n- Timestamp, alert name, severity\n- Triggered value vs. threshold\n- Resolution status\n- Filter by date range\n- Export to CSV",
+      "priority": 3,
+      "estimate": 3,
+      "labels": ["alerting", "history", "dashboard"],
+      "parentTitle": "[EPIC] Alerting System",
+      "cycle": "Sprint 15"
+    },
+    {
+      "title": "View token usage per project",
+      "description": "As a user, I can see token usage per project so that I understand consumption.\n\n## Acceptance Criteria\n- Dashboard showing input/output tokens\n- Breakdown by model\n- Daily/weekly/monthly views\n- Comparison to previous period\n- Export data option",
+      "priority": 1,
+      "estimate": 5,
+      "labels": ["cost", "tokens", "analytics"],
+      "parentTitle": "[EPIC] Cost Tracking",
+      "cycle": "Sprint 16"
+    },
+    {
+      "title": "View estimated costs by model",
+      "description": "As a user, I can see estimated costs by model so that I understand spending.\n\n## Acceptance Criteria\n- Cost calculated using model pricing table\n- Configurable pricing overrides\n- Cost by model breakdown\n- Cost by project breakdown\n- Total cost summary\n- Currency selection",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["cost", "models", "pricing"],
+      "parentTitle": "[EPIC] Cost Tracking",
+      "cycle": "Sprint 16"
+    },
+    {
+      "title": "Set cost budgets with alerts",
+      "description": "As a user, I can set cost budgets so that I don't overspend.\n\n## Acceptance Criteria\n- Set monthly budget per project\n- Alert at threshold (50%, 80%, 100%)\n- Email notification on threshold\n- Budget reset on month start\n- Budget history tracking",
+      "priority": 2,
+      "estimate": 5,
+      "labels": ["cost", "budgets", "alerts"],
+      "parentTitle": "[EPIC] Cost Tracking",
+      "cycle": "Sprint 17"
+    },
+    {
+      "title": "View cost trends over time",
+      "description": "As a user, I can view cost trends so that I can forecast spending.\n\n## Acceptance Criteria\n- Line chart showing daily costs\n- Compare to previous periods\n- Trend line projection\n- Filter by project/model\n- Anomaly highlighting\n- Export chart data",
+      "priority": 3,
+      "estimate": 3,
+      "labels": ["cost", "trends", "charts"],
+      "parentTitle": "[EPIC] Cost Tracking",
+      "cycle": "Sprint 17"
+    },
+    {
+      "title": "Upgrade to Redis Streams",
+      "description": "Migrate from Redis LPUSH/BRPOP to Redis Streams for higher throughput.\n\n## Technical Requirements\n- Implement Redis Streams producer in Go\n- Update worker to use XREADGROUP\n- Consumer group management\n- Message acknowledgment\n- Maintain backward compatibility during migration\n- Performance benchmarks",
+      "priority": 3,
+      "estimate": 5,
+      "labels": ["infrastructure", "redis", "queue"],
+      "parentTitle": "[EPIC] Infrastructure Scale",
+      "cycle": "Backlog"
+    },
+    {
+      "title": "Add Redpanda to infrastructure",
+      "description": "Set up Redpanda (Kafka-compatible) for production scale.\n\n## Technical Requirements\n- Docker Compose configuration\n- Topic creation and configuration\n- Partition strategy (by project_id)\n- Retention policy configuration\n- Monitoring setup",
+      "priority": 4,
+      "estimate": 3,
+      "labels": ["infrastructure", "redpanda", "kafka"],
+      "parentTitle": "[EPIC] Infrastructure Scale",
+      "cycle": "Backlog"
+    },
+    {
+      "title": "Implement Kafka producer in ingest",
+      "description": "Add Kafka/Redpanda producer to Go ingest service.\n\n## Technical Requirements\n- Implement Producer interface for Kafka\n- Configuration-based driver selection\n- Batch publishing for efficiency\n- Error handling and retries\n- Graceful shutdown",
+      "priority": 4,
+      "estimate": 5,
+      "labels": ["infrastructure", "kafka", "go", "ingest"],
+      "parentTitle": "[EPIC] Infrastructure Scale",
+      "cycle": "Backlog"
+    },
+    {
+      "title": "Add ClickHouse for analytics",
+      "description": "Set up ClickHouse for high-performance analytics queries.\n\n## Technical Requirements\n- Docker Compose configuration\n- Schema design for traces/spans\n- Dual-write from worker\n- Migration of analytics queries\n- Backup strategy",
+      "priority": 4,
+      "estimate": 8,
+      "labels": ["infrastructure", "clickhouse", "analytics"],
+      "parentTitle": "[EPIC] Infrastructure Scale",
+      "cycle": "Backlog"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+# .github/workflows/auto-tag.yml
+#
+# Automatically create version tags based on conventional commits
+# Triggers on merge to stage branch
+#
+# Commit prefixes:
+#   - feat:           → Minor bump (0.1.0 → 0.2.0)
+#   - fix:            → Patch bump (0.1.0 → 0.1.1)
+#   - BREAKING CHANGE → Major bump (0.1.0 → 1.0.0)
+#   - chore:, docs:   → No bump (skip)
+
+name: Auto Tag on Stage
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+  auto-tag:
+    name: Create Version Tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for tag detection
+
+      - name: Bump version and push tag
+        id: tag
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: false  # Don't bump if no conventional commit found
+          release_branches: stage
+          pre_release_branches: ""
+          tag_prefix: v
+          # Conventional commit mapping
+          # feat: = minor, fix: = patch, BREAKING CHANGE = major
+          custom_release_rules: |
+            feat:minor,
+            fix:patch,
+            perf:patch,
+            refactor:patch,
+            build:patch,
+            ci:patch,
+            docs:patch,
+            style:patch,
+            test:patch
+
+      - name: Summary
+        if: steps.tag.outputs.new_tag
+        run: |
+          echo "## 🏷️ New Tag Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| New Tag | \`${{ steps.tag.outputs.new_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Previous Tag | \`${{ steps.tag.outputs.previous_tag }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bump Type | \`${{ steps.tag.outputs.release_type }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changelog" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.tag.outputs.changelog }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: No bump needed
+        if: ${{ !steps.tag.outputs.new_tag }}
+        run: |
+          echo "## ⏭️ No Version Bump" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No conventional commit found that triggers a version bump." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Use these prefixes to trigger a bump:" >> $GITHUB_STEP_SUMMARY
+          echo "- \`feat:\` → Minor bump" >> $GITHUB_STEP_SUMMARY
+          echo "- \`fix:\` → Patch bump" >> $GITHUB_STEP_SUMMARY
+          echo "- \`BREAKING CHANGE:\` → Major bump" >> $GITHUB_STEP_SUMMARY

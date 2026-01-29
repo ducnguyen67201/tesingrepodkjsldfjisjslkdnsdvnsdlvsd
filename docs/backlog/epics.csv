@@ -1,0 +1,10 @@
+Summary,Description,Issue Type,Priority,Labels
+"[EPIC] Authentication & API Keys","Enable secure API key-based authentication for trace ingestion. Users can create projects, generate API keys, and validate incoming traces.",Epic,Highest,"auth,security,mvp"
+"[EPIC] Basic Dashboard","Provide visibility into trace data through a web dashboard. Users can view projects, traces, and basic metrics.",Epic,Highest,"dashboard,ui,mvp"
+"[EPIC] Trace Visualization","Enable debugging of LLM calls through visual trace exploration. Waterfall view, span details, and error highlighting.",Epic,High,"visualization,ui,mvp"
+"[EPIC] TypeScript SDK","Official TypeScript SDK for instrumenting Node.js/Deno applications. Auto-tracing for OpenAI/Anthropic.",Epic,High,"sdk,typescript,developer-experience"
+"[EPIC] Python SDK","Official Python SDK for instrumenting Python applications. Auto-tracing for LangChain, LlamaIndex, OpenAI, Anthropic.",Epic,High,"sdk,python,developer-experience"
+"[EPIC] User Management","Team collaboration features. Sign up, login, invitations, and role-based access control.",Epic,Medium,"users,teams,collaboration"
+"[EPIC] Alerting System","Proactive notifications for error rates, latency thresholds, and anomalies.",Epic,Medium,"alerting,monitoring,ops"
+"[EPIC] Cost Tracking","Visibility into LLM spending. Token usage, cost estimation, budgets, and trends.",Epic,Medium,"cost,analytics,billing"
+"[EPIC] Infrastructure Scale","Queue and database evolution for higher throughput. Redis Streams, Redpanda, ClickHouse.",Epic,Low,"infrastructure,scale,performance"

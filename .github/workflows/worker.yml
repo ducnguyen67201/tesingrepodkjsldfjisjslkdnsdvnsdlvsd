@@ -1,0 +1,79 @@
+name: Worker
+
+on:
+  workflow_call:
+
+jobs:
+  ci:
+    name: Build → Lint → Typecheck → Temporal
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm db:generate:ci
+
+      - name: Build (includes dependencies)
+        run: pnpm turbo run build --filter=@ducsigr/worker
+
+      - name: Type check
+        run: pnpm turbo run typecheck --filter=@ducsigr/worker
+
+      - name: Test
+        run: pnpm turbo run test --filter=@ducsigr/worker
+
+      - name: Lint
+        run: pnpm --filter @ducsigr/worker lint
+
+      # Temporal architecture checks
+      - name: Verify Temporal structure
+        run: |
+          echo "Checking Temporal architecture..."
+
+          # Verify required directories exist
+          [ -d "apps/worker/src/temporal" ] || { echo "Error: temporal/ directory missing"; exit 1; }
+          [ -d "apps/worker/src/workflows" ] || { echo "Error: workflows/ directory missing"; exit 1; }
+          [ -d "apps/worker/src/temporal/activities" ] || { echo "Error: activities/ directory missing"; exit 1; }
+
+          # Verify key files exist
+          [ -f "apps/worker/src/temporal/index.ts" ] || { echo "Error: temporal/index.ts missing"; exit 1; }
+          [ -f "apps/worker/src/temporal/types.ts" ] || { echo "Error: temporal/types.ts missing"; exit 1; }
+          [ -f "apps/worker/src/workflows/index.ts" ] || { echo "Error: workflows/index.ts missing"; exit 1; }
+          [ -f "apps/worker/src/lib/trpc-caller.ts" ] || { echo "Error: trpc-caller.ts missing"; exit 1; }
+
+          echo "✓ Temporal structure verified"
+
+      - name: Verify activities use tRPC caller (no direct DB writes)
+        run: |
+          echo "Checking activities for direct DB mutations..."
+          FORBIDDEN="prisma\.\(create\|update\|delete\|upsert\)"
+
+          if grep -rE "$FORBIDDEN" apps/worker/src/temporal/activities/ 2>/dev/null; then
+            echo "Error: Activities contain direct database mutations!"
+            echo "Use getInternalCaller() to call tRPC internal procedures instead."
+            exit 1
+          fi
+          echo "✓ No direct DB mutations in activities"
+
+      - name: Check for uncommitted changes (drift check)
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "::error::Uncommitted changes detected after build. Please commit all generated files."
+            git status --porcelain
+            git diff
+            exit 1
+          fi

@@ -1,0 +1,22 @@
+# Temporal Dynamic Configuration
+# https://docs.temporal.io/references/dynamic-configuration
+
+# Force refresh of search attributes cache on read
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}
+
+# Disable client version check for development
+frontend.enableClientVersionCheck:
+  - value: false
+    constraints: {}
+
+# History settings for development
+history.maximumSignalsPerExecution:
+  - value: 10000
+    constraints: {}
+
+# Workflow execution timeouts
+limit.maxIDLength:
+  - value: 255
+    constraints: {}
