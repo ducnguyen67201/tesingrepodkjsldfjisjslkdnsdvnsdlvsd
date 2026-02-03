@@ -47,6 +47,32 @@ export function AdminWorkspaceSwitcher() {
     [currentSlug, router]
   );
 
+  const renderWorkspaceItem = useCallback(
+    (workspace: WorkspaceListItem) => {
+      const isCurrentWorkspace = workspace.slug === currentSlug;
+      const Icon = workspace.isPersonal ? User : Building2;
+
+      const handleClick = () => handleWorkspaceSelect(workspace.slug);
+
+      return (
+        <DropdownMenuItem
+          key={workspace.id}
+          onClick={handleClick}
+          className="flex items-center justify-between gap-2 cursor-pointer"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <span className="truncate">{workspace.name}</span>
+          </div>
+          {isCurrentWorkspace && (
+            <Check className="h-4 w-4 shrink-0 text-primary" />
+          )}
+        </DropdownMenuItem>
+      );
+    },
+    [currentSlug, handleWorkspaceSelect]
+  );
+
   // Return null if not admin or still loading admin status
   if (isAdminLoading || !isSystemAdmin) {
     return null;
@@ -54,29 +80,6 @@ export function AdminWorkspaceSwitcher() {
 
   const currentWorkspace = workspaces?.find((w) => w.slug === currentSlug);
   const isLoading = isWorkspacesLoading;
-
-  const renderWorkspaceItem = (workspace: WorkspaceListItem) => {
-    const isCurrentWorkspace = workspace.slug === currentSlug;
-    const Icon = workspace.isPersonal ? User : Building2;
-
-    const handleClick = () => handleWorkspaceSelect(workspace.slug);
-
-    return (
-      <DropdownMenuItem
-        key={workspace.id}
-        onClick={handleClick}
-        className="flex items-center justify-between gap-2 cursor-pointer"
-      >
-        <div className="flex items-center gap-2 min-w-0">
-          <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-          <span className="truncate">{workspace.name}</span>
-        </div>
-        {isCurrentWorkspace && (
-          <Check className="h-4 w-4 shrink-0 text-primary" />
-        )}
-      </DropdownMenuItem>
-    );
-  };
 
   return (
     <DropdownMenu>
