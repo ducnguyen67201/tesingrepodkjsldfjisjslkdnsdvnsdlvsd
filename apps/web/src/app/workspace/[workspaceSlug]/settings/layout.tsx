@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Settings, Users, Key, Building2, Globe, Bell, Github, Puzzle, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
+import { AdminWorkspaceSwitcher } from "@/components/settings/admin-workspace-switcher";
 
 interface SettingsNavItem {
   title: string;
@@ -63,16 +64,23 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   };
 
   return (
-    <div className="flex gap-6">
-      {/* Inner Settings Sidebar */}
-      <aside className="w-56 shrink-0">
-        <nav className="flex flex-col gap-1">
-          {SETTINGS_NAV_ITEMS.map(renderNavItem)}
-        </nav>
-      </aside>
+    <div className="space-y-6">
+      {/* Admin Workspace Switcher - Only shows for system admins */}
+      <div className="flex justify-end">
+        <AdminWorkspaceSwitcher />
+      </div>
 
-      {/* Settings Content */}
-      <div className="flex-1 min-w-0">{children}</div>
+      <div className="flex gap-6">
+        {/* Inner Settings Sidebar */}
+        <aside className="w-56 shrink-0">
+          <nav className="flex flex-col gap-1">
+            {SETTINGS_NAV_ITEMS.map(renderNavItem)}
+          </nav>
+        </aside>
+
+        {/* Settings Content */}
+        <div className="flex-1 min-w-0">{children}</div>
+      </div>
     </div>
   );
 }
