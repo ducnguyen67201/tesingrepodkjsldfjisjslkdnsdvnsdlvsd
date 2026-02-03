@@ -67,6 +67,21 @@ export const workspacesRouter = createRouter({
   }),
 
   /**
+   * Check if the current user is a system admin.
+   * Used to conditionally show admin-only features like workspace switcher.
+   */
+  checkSystemAdmin: protectedProcedure.query(async ({ ctx }): Promise<{ isSystemAdmin: boolean }> => {
+    const session = ctx.session as SessionWithWorkspaces;
+
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { isSystemAdmin: true },
+    });
+
+    return { isSystemAdmin: user?.isSystemAdmin ?? false };
+  }),
+
+  /**
    * List all workspaces for the current user.
    * Returns workspaces from session (already loaded).
    * Note: Name uses slug as fallback since session doesn't store names.
