@@ -25,7 +25,10 @@ import { useSystemAdmin } from "@/hooks/use-system-admin";
 export function AdminWorkspaceSwitcher() {
   const params = useParams();
   const router = useRouter();
-  const currentSlug = params.workspaceSlug as string;
+
+  // Validate workspaceSlug - can be string | string[] | undefined
+  const rawSlug = params.workspaceSlug;
+  const currentSlug = typeof rawSlug === "string" ? rawSlug : undefined;
 
   // Check if user is system admin
   const { isSystemAdmin, isLoading: isAdminLoading } = useSystemAdmin();
@@ -49,7 +52,7 @@ export function AdminWorkspaceSwitcher() {
 
   const renderWorkspaceItem = useCallback(
     (workspace: WorkspaceListItem) => {
-      const isCurrentWorkspace = workspace.slug === currentSlug;
+      const isCurrentWorkspace = currentSlug ? workspace.slug === currentSlug : false;
       const Icon = workspace.isPersonal ? User : Building2;
 
       const handleClick = () => handleWorkspaceSelect(workspace.slug);
@@ -73,8 +76,8 @@ export function AdminWorkspaceSwitcher() {
     [currentSlug, handleWorkspaceSelect]
   );
 
-  // Return null if not admin or still loading admin status
-  if (isAdminLoading || !isSystemAdmin) {
+  // Return null if not admin, still loading, or invalid slug
+  if (isAdminLoading || !isSystemAdmin || !currentSlug) {
     return null;
   }
 
@@ -111,7 +114,13 @@ export function AdminWorkspaceSwitcher() {
           Admin: Switch Workspace
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {workspaces?.map(renderWorkspaceItem)}
+        {workspaces && workspaces.length > 0 ? (
+          workspaces.map(renderWorkspaceItem)
+        ) : (
+          <DropdownMenuItem disabled className="text-muted-foreground">
+            No workspaces available
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

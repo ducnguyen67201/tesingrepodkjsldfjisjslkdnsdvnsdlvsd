@@ -5,7 +5,7 @@ import { trpc } from "@/lib/trpc/client";
 interface UseSystemAdminReturn {
   isSystemAdmin: boolean;
   isLoading: boolean;
-  error: Error | null;
+  error: unknown;
 }
 
 /**
@@ -24,6 +24,6 @@ export function useSystemAdmin(): UseSystemAdminReturn {
   return {
     isSystemAdmin: data?.isSystemAdmin ?? false,
     isLoading,
-    error: error as Error | null,
+    error,
   };
 }
