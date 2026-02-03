@@ -37,14 +37,7 @@ export function AdminWorkspaceSwitcher() {
       staleTime: 5 * 60 * 1000,
     });
 
-  // Return null if not admin or still loading admin status
-  if (isAdminLoading || !isSystemAdmin) {
-    return null;
-  }
-
-  const currentWorkspace = workspaces?.find((w) => w.slug === currentSlug);
-  const isLoading = isWorkspacesLoading;
-
+  // Must define useCallback before early return (React hooks rules)
   const handleWorkspaceSelect = useCallback(
     (slug: string) => {
       if (slug !== currentSlug) {
@@ -53,6 +46,14 @@ export function AdminWorkspaceSwitcher() {
     },
     [currentSlug, router]
   );
+
+  // Return null if not admin or still loading admin status
+  if (isAdminLoading || !isSystemAdmin) {
+    return null;
+  }
+
+  const currentWorkspace = workspaces?.find((w) => w.slug === currentSlug);
+  const isLoading = isWorkspacesLoading;
 
   const renderWorkspaceItem = (workspace: WorkspaceListItem) => {
     const isCurrentWorkspace = workspace.slug === currentSlug;
