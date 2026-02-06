@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useId } from "react";
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,10 +51,12 @@ export function TimeRangeFilter({
     [onChange]
   );
 
+  const selectId = useId();
+
   return (
     <div className={className}>
       <Select value={value} onValueChange={handleChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-[160px]" id={selectId}>
           <Calendar className="mr-2 h-4 w-4" />
           <SelectValue />
         </SelectTrigger>
