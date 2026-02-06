@@ -2,18 +2,21 @@
 
 ## Overview
 
-Add a workspace switcher dropdown in the workspace settings page that is **only visible to system admins**. This allows admins to quickly switch between workspaces they manage while configuring settings.
+A workspace switcher inside the General settings page that is **only visible to system admins**. Allows admins to view and manage **any** workspace without needing membership, with a searchable dropdown for quick navigation.
 
 ## Problem Statement
 
-System administrators need to manage settings across multiple workspaces efficiently. Currently, they must navigate back to the dashboard, select a different workspace, then navigate to settings again. This creates friction for admin workflows.
+System administrators need to manage settings across multiple workspaces efficiently. Previously, admins had to be a member of every workspace and navigate back to the dashboard to switch. This created friction for admin workflows.
 
 ## Solution
 
-A dropdown component in the settings page header that:
+A searchable combobox component inside the "Workspace Information" card on the General settings page that:
 1. Only renders for users with `isSystemAdmin = true`
-2. Lists all workspaces the user belongs to
-3. Allows one-click navigation to another workspace's settings
+2. Lists **all** workspaces (not just ones the admin belongs to)
+3. Provides search/filter for quick lookup
+4. Allows one-click navigation to another workspace's settings
+
+System admins also bypass workspace membership checks across the entire application — both the server-side layout gate and all tRPC workspace middleware.
 
 ---
 
@@ -26,19 +29,18 @@ A dropdown component in the settings page header that:
 │                         DATA FLOW                                   │
 └─────────────────────────────────────────────────────────────────────┘
 
-  ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-  │   Settings       │     │  useSystemAdmin  │     │  tRPC Backend    │
-  │   Layout         │────▶│  Hook            │────▶│  checkSystemAdmin│
-  │                  │     │                  │     │                  │
-  └──────────────────┘     └──────────────────┘     └──────────────────┘
-           │                        │                        │
-           │                        │                        │
-           ▼                        ▼                        ▼
-  ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
-  │   Admin          │     │  listWithDetails │     │   PostgreSQL     │
-  │   Workspace      │◀────│  (if admin)      │◀────│   User.isSystem  │
-  │   Switcher       │     │                  │     │   Admin          │
-  └──────────────────┘     └──────────────────┘     └──────────────────┘
+  ┌──────────────────┐     ┌──────────────────────────┐     ┌──────────────────┐
+  │   General        │     │  useAdminWorkspace       │     │  tRPC Backend    │
+  │   Settings Page  │────▶│  Switcher Hook           │────▶│  checkSystemAdmin│
+  │                  │     │                          │     │  listWithDetails │
+  └──────────────────┘     └──────────────────────────┘     └──────────────────┘
+           │                          │                              │
+           ▼                          ▼                              ▼
+  ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────────────┐
+  │   Admin          │     │  useSystemAdmin  │     │   PostgreSQL             │
+  │   Workspace      │◀────│  Hook            │◀────│   User.isSystemAdmin     │
+  │   Switcher       │     │                  │     │   Workspace (all)        │
+  └──────────────────┘     └──────────────────┘     └──────────────────────────┘
 ```
 
 ### Security Model
@@ -48,251 +50,140 @@ A dropdown component in the settings page header that:
 | Frontend | Conditional render | Component returns `null` if not admin |
 | API | `protectedProcedure` | Requires authenticated session |
 | Database | `isSystemAdmin` check | Only returns `true` for admins |
-| Navigation | Workspace middleware | Still enforces membership on target workspace |
+| Workspace layout | System admin bypass | Admins can access any workspace without membership |
+| tRPC middleware | System admin bypass | `requireWorkspaceAccess` grants access to admins for any workspace |
 
-**Important:** The frontend check is cosmetic. System admins can only switch to workspaces they are members of - the workspace middleware enforces this on every page load.
+**System admin access flow:**
+1. `requireWorkspaceAccess` first checks session workspace memberships
+2. If no membership found, queries DB for `isSystemAdmin`
+3. If admin, resolves workspace directly and grants `ADMIN` role
+4. If not admin, throws `FORBIDDEN`
 
 ---
 
 ## Implementation Details
 
-### Phase 1: Backend - Add System Admin Check Procedure
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `packages/api/src/middleware/workspace.ts` | Workspace access checks with system admin bypass |
+| `packages/api/src/routers/workspaces.ts` | `checkSystemAdmin` + `listWithDetails` (all workspaces for admins) |
+| `apps/web/src/hooks/use-system-admin.ts` | Hook to check if current user is system admin |
+| `apps/web/src/hooks/use-admin-workspace-switcher.ts` | Hook with workspace fetching and navigation logic |
+| `apps/web/src/components/settings/admin-workspace-switcher.tsx` | Searchable combobox UI component |
+| `apps/web/src/app/workspace/[workspaceSlug]/settings/page.tsx` | General settings page (hosts the switcher) |
+| `apps/web/src/app/workspace/[workspaceSlug]/layout.tsx` | Workspace layout with system admin bypass |
+
+---
+
+### Backend: Workspace Middleware (System Admin Bypass)
+
+**File:** `packages/api/src/middleware/workspace.ts`
+
+`requireWorkspaceAccess` is async and checks `isSystemAdmin` when no membership is found:
+
+```typescript
+export async function requireWorkspaceAccess(
+  ctx: Context & { session: SessionWithWorkspaces },
+  workspaceIdOrSlug: string,
+  bySlug = false
+): Promise<WorkspaceAccess> {
+  // 1. Check session memberships first (fast path)
+  const access = bySlug
+    ? hasWorkspaceAccessBySlug(workspaces, workspaceIdOrSlug)
+    : hasWorkspaceAccess(workspaces, workspaceIdOrSlug);
+
+  if (access) return access;
+
+  // 2. No membership — check if system admin (DB query)
+  const user = await prisma.user.findUnique({
+    where: { id: ctx.session.user.id },
+    select: { isSystemAdmin: true },
+  });
+
+  if (user?.isSystemAdmin) {
+    // Resolve workspace and return synthetic ADMIN access
+    const workspace = await prisma.workspace.findUnique({ ... });
+    if (workspace) {
+      return { id: workspace.id, slug: workspace.slug, role: "ADMIN", isPersonal: workspace.isPersonal };
+    }
+  }
+
+  throw new TRPCError({ code: "FORBIDDEN" });
+}
+```
+
+This applies globally to all procedures using `workspaceMiddleware` or `workspaceAdminMiddleware`.
+
+---
+
+### Backend: listWithDetails (All Workspaces for Admins)
 
 **File:** `packages/api/src/routers/workspaces.ts`
 
-**Location:** After `checkApproval` procedure (approximately line 67)
-
-**Procedure Definition:**
-
 ```typescript
-/**
- * Check if the current user is a system admin.
- * Used to conditionally show admin-only features like workspace switcher.
- */
-checkSystemAdmin: protectedProcedure.query(async ({ ctx }): Promise<{ isSystemAdmin: boolean }> => {
-  const session = ctx.session as SessionWithWorkspaces;
-
+listWithDetails: protectedProcedure.query(async ({ ctx }) => {
+  // Check if system admin
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { isSystemAdmin: true },
   });
+  const isAdmin = user?.isSystemAdmin ?? false;
 
-  return { isSystemAdmin: user?.isSystemAdmin ?? false };
-}),
+  // Admins see ALL workspaces; regular users see only their own
+  const workspaces = await prisma.workspace.findMany({
+    where: isAdmin ? undefined : { members: { some: { userId: session.user.id } } },
+    // ...
+  });
+});
 ```
-
-**Rationale:**
-- Returns simple boolean object for easy consumption
-- Follows existing `checkApproval` pattern in same file
-- Uses `protectedProcedure` to ensure authenticated users only
-- Minimal database query (single field select)
 
 ---
 
-### Phase 2: Frontend Hook - useSystemAdmin
+### Frontend: Hook Architecture
 
-**File:** `apps/web/src/hooks/use-system-admin.ts`
+**`useSystemAdmin`** (`hooks/use-system-admin.ts`)
+- Calls `workspaces.checkSystemAdmin` tRPC query
+- Cached for 5 minutes, no refetch on window focus
+- Returns `{ isSystemAdmin, isLoading, error }`
+
+**`useAdminWorkspaceSwitcher`** (`hooks/use-admin-workspace-switcher.ts`)
+- Composes `useSystemAdmin` with workspace list fetching
+- Handles current workspace resolution from URL params
+- Provides `selectWorkspace(slug)` for navigation
+- Returns `{ isSystemAdmin, isLoading, currentSlug, currentWorkspace, workspaces, selectWorkspace }`
+
+---
+
+### Frontend: Component
+
+**`AdminWorkspaceSwitcher`** (`components/settings/admin-workspace-switcher.tsx`)
+- Consumes `useAdminWorkspaceSwitcher` hook (no data logic)
+- Uses `Popover` + `Command` (cmdk) for searchable combobox
+- Shows "Admin workspace view" label next to the trigger button
+- Shield icon with yellow color as admin indicator
+- Renders inside "Workspace Information" card on General settings page
+
+---
+
+### Workspace Layout: Admin Bypass
+
+**File:** `apps/web/src/app/workspace/[workspaceSlug]/layout.tsx`
 
 ```typescript
-"use client";
+// Check if user is a system admin
+const user = await prisma.user.findUnique({
+  where: { id: session.user.id },
+  select: { isSystemAdmin: true },
+});
+const isAdmin = user?.isSystemAdmin ?? false;
 
-import { trpc } from "@/lib/trpc/client";
-
-/**
- * Hook to check if the current user is a system admin.
- * Results are cached for 5 minutes to minimize API calls.
- */
-export function useSystemAdmin() {
-  const { data, isLoading, error } = trpc.workspaces.checkSystemAdmin.useQuery(
-    undefined,
-    {
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-      refetchOnWindowFocus: false,
-    }
-  );
-
-  return {
-    isSystemAdmin: data?.isSystemAdmin ?? false,
-    isLoading,
-    error: error as Error | null,
-  };
+// System admins can access any workspace, even without membership
+if (!membership && !isAdmin) {
+  notFound();
 }
 ```
-
-**Rationale:**
-- Encapsulates admin check logic for reuse
-- Aggressive caching (5 min) since admin status rarely changes
-- Defaults to `false` during loading (safe default)
-- `refetchOnWindowFocus: false` prevents unnecessary calls
-
----
-
-### Phase 3: Frontend Component - AdminWorkspaceSwitcher
-
-**File:** `apps/web/src/components/settings/admin-workspace-switcher.tsx`
-
-**Component Structure:**
-
-```typescript
-"use client";
-
-import { useParams, useRouter } from "next/navigation";
-import { Check, ChevronsUpDown, Building2, User, Shield } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { trpc } from "@/lib/trpc/client";
-import { useSystemAdmin } from "@/hooks/use-system-admin";
-
-export function AdminWorkspaceSwitcher() {
-  const params = useParams();
-  const router = useRouter();
-  const currentSlug = params.workspaceSlug as string;
-
-  // Check if user is system admin
-  const { isSystemAdmin, isLoading: isAdminLoading } = useSystemAdmin();
-
-  // Only fetch workspaces if user is admin (conditional query)
-  const { data: workspaces, isLoading: isWorkspacesLoading } =
-    trpc.workspaces.listWithDetails.useQuery(undefined, {
-      enabled: isSystemAdmin, // Only fetch if admin
-      staleTime: 5 * 60 * 1000,
-    });
-
-  // Return null if not admin or still loading admin status
-  if (isAdminLoading || !isSystemAdmin) {
-    return null;
-  }
-
-  const currentWorkspace = workspaces?.find((w) => w.slug === currentSlug);
-  const isLoading = isWorkspacesLoading;
-
-  const handleWorkspaceSelect = (slug: string) => {
-    if (slug !== currentSlug) {
-      router.push(`/workspace/${slug}/settings`);
-    }
-  };
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
-          disabled={isLoading}
-        >
-          <Shield className="h-4 w-4 text-yellow-600" />
-          {isLoading ? (
-            "Loading..."
-          ) : currentWorkspace ? (
-            <>
-              <span className="max-w-[150px] truncate">
-                {currentWorkspace.name}
-              </span>
-              <ChevronsUpDown className="h-4 w-4 opacity-50" />
-            </>
-          ) : (
-            "Select workspace"
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[220px]">
-        <DropdownMenuLabel className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Shield className="h-3 w-3" />
-          Admin: Switch Workspace
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {workspaces?.map((workspace) => {
-          const isCurrentWorkspace = workspace.slug === currentSlug;
-          const Icon = workspace.isPersonal ? User : Building2;
-
-          return (
-            <DropdownMenuItem
-              key={workspace.id}
-              onClick={() => handleWorkspaceSelect(workspace.slug)}
-              className="flex items-center justify-between gap-2"
-            >
-              <div className="flex items-center gap-2 min-w-0">
-                <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <span className="truncate">{workspace.name}</span>
-              </div>
-              {isCurrentWorkspace && (
-                <Check className="h-4 w-4 shrink-0 text-primary" />
-              )}
-            </DropdownMenuItem>
-          );
-        })}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-```
-
-**Key Design Decisions:**
-
-| Decision | Rationale |
-|----------|-----------|
-| `enabled: isSystemAdmin` | Prevents API call if not admin |
-| Shield icon with yellow color | Visual indicator this is admin feature |
-| Returns `null` during loading | No UI flash for non-admins |
-| Same workspace item pattern | Consistent with existing `workspace-switcher.tsx` |
-| Truncation on names | Handles long workspace names gracefully |
-
----
-
-### Phase 4: Integration - Settings Layout
-
-**File:** `apps/web/src/app/workspace/[workspaceSlug]/settings/layout.tsx`
-
-**Changes Required:**
-
-1. Add import at top of file:
-```typescript
-import { AdminWorkspaceSwitcher } from "@/components/settings/admin-workspace-switcher";
-```
-
-2. Wrap existing content and add switcher:
-```typescript
-return (
-  <div className="space-y-6">
-    {/* Admin Workspace Switcher - Only shows for system admins */}
-    <div className="flex justify-end">
-      <AdminWorkspaceSwitcher />
-    </div>
-
-    <div className="flex gap-6">
-      {/* Existing sidebar */}
-      <aside className="w-48 shrink-0">
-        <SettingsSidebar />
-      </aside>
-
-      {/* Existing main content */}
-      <main className="flex-1 min-w-0">{children}</main>
-    </div>
-  </div>
-);
-```
-
----
-
-## File Summary
-
-| File | Action | Lines Changed |
-|------|--------|---------------|
-| `packages/api/src/routers/workspaces.ts` | Modify | +15 |
-| `apps/web/src/hooks/use-system-admin.ts` | Create | ~25 |
-| `apps/web/src/components/settings/admin-workspace-switcher.tsx` | Create | ~100 |
-| `apps/web/src/app/workspace/[workspaceSlug]/settings/layout.tsx` | Modify | +10 |
-
-**Total estimated changes:** ~150 lines
 
 ---
 
@@ -315,43 +206,34 @@ No database migrations required. The `isSystemAdmin` field already exists in the
 
 2. **Admin user tests:**
    - [ ] Navigate to `/workspace/{slug}/settings`
-   - [ ] Verify switcher appears in top-right corner
+   - [ ] Verify switcher appears inside "Workspace Information" card
+   - [ ] Verify "Admin workspace view" label is visible
    - [ ] Verify Shield icon is yellow
-   - [ ] Click dropdown - all user's workspaces listed
+   - [ ] Click dropdown — **all** workspaces listed (not just member workspaces)
+   - [ ] Type in search — filters workspaces by name
    - [ ] Current workspace has checkmark
-   - [ ] Click different workspace - navigates to its settings
-   - [ ] Personal workspace shows User icon
-   - [ ] Team workspace shows Building2 icon
+   - [ ] Click different workspace — navigates to its settings
+   - [ ] Navigate to a workspace admin is NOT a member of — page loads without errors
+   - [ ] tRPC queries (graphs, overview, etc.) work on non-member workspaces
 
 3. **Non-admin user tests:**
    - [ ] Navigate to `/workspace/{slug}/settings`
    - [ ] Verify switcher does NOT appear
    - [ ] No visual flash or loading state visible
+   - [ ] Navigating to a non-member workspace returns 404
 
 4. **Edge cases:**
-   - [ ] User with only one workspace - switcher still works
-   - [ ] Long workspace names - truncated properly
-   - [ ] Rapid clicking between workspaces - no race conditions
+   - [ ] User with only one workspace — switcher still works
+   - [ ] Long workspace names — truncated properly
+   - [ ] Rapid clicking between workspaces — no race conditions
+   - [ ] Search with no results — shows "No workspace found."
 
-### Automated Tests (Future)
+### Automated Tests
 
-```typescript
-// packages/api/src/routers/__tests__/workspaces.test.ts
-
-describe("checkSystemAdmin", () => {
-  it("returns true for system admin", async () => {
-    // Setup admin user
-    const result = await caller.workspaces.checkSystemAdmin();
-    expect(result.isSystemAdmin).toBe(true);
-  });
-
-  it("returns false for regular user", async () => {
-    // Setup regular user
-    const result = await caller.workspaces.checkSystemAdmin();
-    expect(result.isSystemAdmin).toBe(false);
-  });
-});
-```
+Tests in `packages/api/src/routers/__tests__/workspaces-system-admin.test.ts`:
+- Returns `true` for system admin
+- Returns `false` for regular user
+- Requires authentication
 
 ---
 
@@ -359,20 +241,10 @@ describe("checkSystemAdmin", () => {
 
 | Aspect | Mitigation |
 |--------|------------|
-| Extra API call for admin check | Cached for 5 minutes |
-| Workspace list fetch | Conditional - only if admin |
+| Admin check API call | Cached for 5 minutes |
+| Workspace list fetch | Conditional — only if admin |
 | Component render | Returns `null` early for non-admins |
-
-**Expected impact:** Negligible. One additional small query for authenticated users, cached aggressively.
-
----
-
-## Future Enhancements
-
-1. **Show all workspaces for super-admins** - Currently only shows workspaces user belongs to
-2. **Quick actions per workspace** - Could add sub-menus for common actions
-3. **Search/filter** - For users with many workspaces
-4. **Keyboard navigation** - Ctrl+K style workspace search
+| Middleware DB query | Only triggered when no session membership found |
 
 ---
 
@@ -381,24 +253,7 @@ describe("checkSystemAdmin", () => {
 If issues arise, the feature can be disabled by:
 
 1. **Quick fix:** Return `null` from `AdminWorkspaceSwitcher` component
-2. **Full rollback:** Revert all 4 files to previous state
+2. **Middleware rollback:** Revert `requireWorkspaceAccess` to synchronous membership-only check
+3. **Full rollback:** Revert all changed files to previous state
 
 No database changes required for rollback.
-
----
-
-## Approval Checklist
-
-- [ ] Security review - admin check pattern approved
-- [ ] UX review - placement and interaction approved
-- [ ] Code review - follows project patterns
-- [ ] Testing - manual tests passed
-- [ ] Documentation - spec complete
-
----
-
-## References
-
-- **Similar patterns:** `apps/web/src/components/workspace-switcher.tsx` (workspace rendering)
-- **Auth pattern:** `packages/api/src/routers/workspaces.ts:checkApproval` (DB query pattern)
-- **Protected procedure:** `packages/api/src/trpc.ts` (authentication)

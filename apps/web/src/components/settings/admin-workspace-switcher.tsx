@@ -1,66 +1,61 @@
 "use client";
 
-import { useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 import { Check, ChevronsUpDown, Building2, User, Shield } from "lucide-react";
 import type { WorkspaceListItem } from "@ducsigr/api/client";
 
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { trpc } from "@/lib/trpc/client";
-import { useSystemAdmin } from "@/hooks/use-system-admin";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { useAdminWorkspaceSwitcher } from "@/hooks/use-admin-workspace-switcher";
 
 /**
  * Admin-only workspace switcher for the settings page.
  * Only renders for users with isSystemAdmin = true.
- * Allows quick navigation between workspace settings.
+ * Uses a searchable combobox for quick workspace navigation.
  */
 export function AdminWorkspaceSwitcher() {
-  const params = useParams();
-  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const {
+    isSystemAdmin,
+    isLoading,
+    currentSlug,
+    currentWorkspace,
+    workspaces,
+    selectWorkspace,
+  } = useAdminWorkspaceSwitcher();
 
-  // Validate workspaceSlug - can be string | string[] | undefined
-  const rawSlug = params.workspaceSlug;
-  const currentSlug = typeof rawSlug === "string" ? rawSlug : undefined;
-
-  // Check if user is system admin
-  const { isSystemAdmin, isLoading: isAdminLoading } = useSystemAdmin();
-
-  // Only fetch workspaces if user is admin (conditional query)
-  const { data: workspaces, isLoading: isWorkspacesLoading } =
-    trpc.workspaces.listWithDetails.useQuery(undefined, {
-      enabled: isSystemAdmin,
-      staleTime: 5 * 60 * 1000,
-    });
-
-  // Must define useCallback before early return (React hooks rules)
-  const handleWorkspaceSelect = useCallback(
+  const handleSelect = useCallback(
     (slug: string) => {
-      if (slug !== currentSlug) {
-        router.push(`/workspace/${slug}/settings`);
-      }
+      setOpen(false);
+      selectWorkspace(slug);
     },
-    [currentSlug, router]
+    [selectWorkspace]
   );
 
   const renderWorkspaceItem = useCallback(
     (workspace: WorkspaceListItem) => {
-      const isCurrentWorkspace = currentSlug ? workspace.slug === currentSlug : false;
+      const isCurrentWorkspace = currentSlug === workspace.slug;
       const Icon = workspace.isPersonal ? User : Building2;
 
-      const handleClick = () => handleWorkspaceSelect(workspace.slug);
+      const onSelect = () => handleSelect(workspace.slug);
 
       return (
-        <DropdownMenuItem
+        <CommandItem
           key={workspace.id}
-          onClick={handleClick}
+          value={workspace.name}
+          onSelect={onSelect}
           className="flex items-center justify-between gap-2 cursor-pointer"
         >
           <div className="flex items-center gap-2 min-w-0">
@@ -70,58 +65,60 @@ export function AdminWorkspaceSwitcher() {
           {isCurrentWorkspace && (
             <Check className="h-4 w-4 shrink-0 text-primary" />
           )}
-        </DropdownMenuItem>
+        </CommandItem>
       );
     },
-    [currentSlug, handleWorkspaceSelect]
+    [currentSlug, handleSelect]
   );
 
-  // Return null if not admin, still loading, or invalid slug
-  if (isAdminLoading || !isSystemAdmin || !currentSlug) {
+  if (!isSystemAdmin || !currentSlug) {
     return null;
   }
 
-  const currentWorkspace = workspaces?.find((w) => w.slug === currentSlug);
-  const isLoading = isWorkspacesLoading;
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
-          disabled={isLoading}
-        >
-          <Shield className="h-4 w-4 text-yellow-600" />
-          {isLoading ? (
-            "Loading..."
-          ) : currentWorkspace ? (
-            <>
-              <span className="max-w-[150px] truncate">
-                {currentWorkspace.name}
-              </span>
-              <ChevronsUpDown className="h-4 w-4 opacity-50" />
-            </>
-          ) : (
-            "Select workspace"
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[220px]">
-        <DropdownMenuLabel className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Shield className="h-3 w-3" />
-          Admin: Switch Workspace
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {workspaces && workspaces.length > 0 ? (
-          workspaces.map(renderWorkspaceItem)
-        ) : (
-          <DropdownMenuItem disabled className="text-muted-foreground">
-            No workspaces available
-          </DropdownMenuItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex items-center gap-3">
+      <span className="text-xs font-medium text-muted-foreground">
+        Admin workspace view
+      </span>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            role="combobox"
+            aria-expanded={open}
+            className="gap-2"
+            disabled={isLoading}
+          >
+            <Shield className="h-4 w-4 text-yellow-600" />
+            {isLoading ? (
+              "Loading..."
+            ) : currentWorkspace ? (
+              <>
+                <span className="max-w-[150px] truncate">
+                  {currentWorkspace.name}
+                </span>
+                <ChevronsUpDown className="h-4 w-4 opacity-50" />
+              </>
+            ) : (
+              "Select workspace"
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[250px] p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Search workspaces..." />
+            <CommandList>
+              <CommandEmpty>No workspace found.</CommandEmpty>
+              <CommandGroup heading="Admin: Switch Workspace">
+                {workspaces.length > 0
+                  ? workspaces.map(renderWorkspaceItem)
+                  : null}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

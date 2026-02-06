@@ -30,8 +30,9 @@ export function NavUser() {
     session.user.email?.[0]?.toUpperCase() ||
     "U";
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/login" });
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    window.location.href = "/login";
   };
 
   return (

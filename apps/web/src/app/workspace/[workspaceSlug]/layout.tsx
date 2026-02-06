@@ -62,6 +62,13 @@ export default async function WorkspaceLayout({
     redirect("/login");
   }
 
+  // Check if user is a system admin
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isSystemAdmin: true },
+  });
+  const isAdmin = user?.isSystemAdmin ?? false;
+
   // Verify user has access to this workspace
   const membership = await prisma.workspaceMember.findFirst({
     where: {
@@ -80,14 +87,28 @@ export default async function WorkspaceLayout({
     },
   });
 
-  if (!membership) {
+  // System admins can access any workspace, even without membership
+  if (!membership && !isAdmin) {
     notFound();
   }
 
-  const workspace = {
-    ...membership.workspace,
-    role: membership.role,
-  };
+  let workspace;
+  if (membership) {
+    workspace = {
+      ...membership.workspace,
+      role: membership.role,
+    };
+  } else {
+    // System admin without membership — fetch workspace directly
+    const ws = await prisma.workspace.findUnique({
+      where: { slug: resolvedParams.workspaceSlug },
+      select: { id: true, name: true, slug: true, isPersonal: true },
+    });
+    if (!ws) {
+      notFound();
+    }
+    workspace = { ...ws, role: "ADMIN" as const };
+  }
 
   // Fetch active theme for this workspace
   const activeTheme = await getActiveTheme(workspace.id);

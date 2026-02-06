@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { prisma } from "@ducsigr/db";
 import type {
   Context,
   SessionWithWorkspaces,
@@ -41,35 +42,65 @@ export function hasWorkspaceRole(
 /**
  * Throws FORBIDDEN if user doesn't have access to workspace.
  * Supports both ID and slug lookup.
+ * System admins bypass membership checks and can access any workspace.
  */
-export function requireWorkspaceAccess(
+export async function requireWorkspaceAccess(
   ctx: Context & { session: SessionWithWorkspaces },
   workspaceIdOrSlug: string,
   bySlug = false
-): WorkspaceAccess {
+): Promise<WorkspaceAccess> {
   const workspaces = ctx.session.user.workspaces;
   const access = bySlug
     ? hasWorkspaceAccessBySlug(workspaces, workspaceIdOrSlug)
     : hasWorkspaceAccess(workspaces, workspaceIdOrSlug);
 
-  if (!access) {
-    throw new TRPCError({
-      code: "FORBIDDEN",
-      message: "You don't have access to this workspace",
-    });
+  if (access) {
+    return access;
   }
-  return access;
+
+  // No membership — check if user is a system admin
+  const user = await prisma.user.findUnique({
+    where: { id: ctx.session.user.id },
+    select: { isSystemAdmin: true },
+  });
+
+  if (user?.isSystemAdmin) {
+    // Resolve workspace to build a synthetic WorkspaceAccess
+    const workspace = bySlug
+      ? await prisma.workspace.findUnique({
+          where: { slug: workspaceIdOrSlug },
+          select: { id: true, slug: true, isPersonal: true },
+        })
+      : await prisma.workspace.findUnique({
+          where: { id: workspaceIdOrSlug },
+          select: { id: true, slug: true, isPersonal: true },
+        });
+
+    if (workspace) {
+      return {
+        id: workspace.id,
+        slug: workspace.slug,
+        role: "ADMIN",
+        isPersonal: workspace.isPersonal,
+      };
+    }
+  }
+
+  throw new TRPCError({
+    code: "FORBIDDEN",
+    message: "You don't have access to this workspace",
+  });
 }
 
 /**
  * Throws FORBIDDEN if user doesn't have required role in workspace.
  */
-export function requireWorkspaceRole(
+export async function requireWorkspaceRole(
   ctx: Context & { session: SessionWithWorkspaces },
   workspaceId: string,
   allowedRoles: string[]
-): WorkspaceAccess {
-  const access = requireWorkspaceAccess(ctx, workspaceId);
+): Promise<WorkspaceAccess> {
+  const access = await requireWorkspaceAccess(ctx, workspaceId);
   if (!allowedRoles.includes(access.role)) {
     throw new TRPCError({
       code: "FORBIDDEN",

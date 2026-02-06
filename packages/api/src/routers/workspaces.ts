@@ -103,16 +103,21 @@ export const workspacesRouter = createRouter({
 
   /**
    * List workspaces with full details (requires DB query).
+   * System admins see ALL workspaces; regular users see only their own.
    */
   listWithDetails: protectedProcedure.query(async ({ ctx }): Promise<WorkspaceListItem[]> => {
     const session = ctx.session as SessionWithWorkspaces;
 
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { isSystemAdmin: true },
+    });
+    const isAdmin = user?.isSystemAdmin ?? false;
+
     const workspaces = await prisma.workspace.findMany({
-      where: {
-        members: {
-          some: { userId: session.user.id },
-        },
-      },
+      where: isAdmin
+        ? undefined
+        : { members: { some: { userId: session.user.id } } },
       include: {
         members: {
           where: { userId: session.user.id },
@@ -127,7 +132,7 @@ export const workspacesRouter = createRouter({
       name: w.name,
       slug: w.slug,
       isPersonal: w.isPersonal,
-      role: w.members[0]?.role ?? "MEMBER",
+      role: w.members[0]?.role ?? (isAdmin ? "ADMIN" : "MEMBER"),
     }));
   }),
 
