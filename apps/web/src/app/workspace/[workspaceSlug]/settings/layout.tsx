@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { Settings, Users, Key, Building2, Globe, Bell, Github, Puzzle, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useWorkspaceUrl } from "@/hooks/use-workspace-url";
-import { AdminWorkspaceSwitcher } from "@/components/settings/admin-workspace-switcher";
 
 interface SettingsNavItem {
   title: string;
@@ -65,11 +64,6 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
 
   return (
     <div className="space-y-6">
-      {/* Admin Workspace Switcher - Only shows for system admins */}
-      <div className="flex justify-end">
-        <AdminWorkspaceSwitcher />
-      </div>
-
       <div className="flex gap-6">
         {/* Inner Settings Sidebar */}
         <aside className="w-56 shrink-0">

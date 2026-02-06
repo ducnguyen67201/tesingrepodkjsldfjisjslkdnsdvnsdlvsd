@@ -91,7 +91,10 @@ export function UserMenu() {
 
           <div className="border-t border-gray-100 py-1">
             <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={async () => {
+                await signOut({ redirect: false });
+                window.location.href = "/login";
+              }}
               className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
               data-testid="logout"
             >

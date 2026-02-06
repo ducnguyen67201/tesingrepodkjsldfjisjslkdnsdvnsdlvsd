@@ -172,8 +172,8 @@ export const workspaceMiddleware = middleware(async ({ ctx, next, getRawInput })
     });
   }
 
-  // Check workspace access
-  const workspace = requireWorkspaceAccess(
+  // Check workspace access (async — supports system admin bypass)
+  const workspace = await requireWorkspaceAccess(
     ctx as Context & { session: SessionWithWorkspaces },
     identifier,
     bySlug
@@ -218,8 +218,8 @@ export const workspaceAdminMiddleware = middleware(async ({ ctx, next, getRawInp
     });
   }
 
-  // Check admin role
-  requireWorkspaceRole(
+  // Check admin role (async — supports system admin bypass)
+  await requireWorkspaceRole(
     ctx as Context & { session: SessionWithWorkspaces },
     input.workspaceId,
     [...WORKSPACE_ADMIN_ROLES]

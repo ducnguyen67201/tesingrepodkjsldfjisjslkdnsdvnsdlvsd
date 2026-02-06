@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AdminWorkspaceSwitcher } from "@/components/settings/admin-workspace-switcher";
 
 export default function WorkspaceSettingsGeneralPage() {
   return (
@@ -23,7 +24,9 @@ export default function WorkspaceSettingsGeneralPage() {
             Update your workspace name and details.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* Admin workspace switcher - only visible to system admins */}
+          <AdminWorkspaceSwitcher />
           <p className="text-sm text-muted-foreground">
             Workspace settings coming soon.
           </p>
