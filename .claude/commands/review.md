@@ -56,7 +56,7 @@ Review the specified files or recent changes for:
 ## Output
 
 The reviewer provides:
-- 🔴 **Critical** - Must fix before merge
-- 🟡 **Warning** - Should fix
-- 🟢 **Suggestion** - Consider improving
-- ✅ **Good** - Following conventions correctly
+- **Critical** - Must fix before merge
+- **Warning** - Should fix
+- **Suggestion** - Consider improving
+- **Good** - Following conventions correctly
