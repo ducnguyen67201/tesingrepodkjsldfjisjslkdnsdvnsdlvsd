@@ -19,13 +19,15 @@ import {
   type RCASummary,
   type RCATopChange,
 } from "../schemas/alerting";
-import { StoreGitHubIndexSchema } from "../schemas/github";
+import { StoreGitHubIndexSchema, IndexStatusSchema, ChunkTypeSchema } from "../schemas/github";
 import { StoreRCAInputSchema, LLMRCAOutputSchema } from "../schemas/rca";
 import {
   StoreKnowledgeChunksInputSchema,
   StoreKnowledgeEmbeddingsInputSchema,
   StoreRCAKnowledgeMatchesInputSchema,
 } from "../schemas/knowledge";
+import { EvalTriggerTypeSchema, EvalRunStatusSchema, RegressionDetailSchema } from "../schemas/eval";
+import { AnalysisStatusSchema } from "../schemas/prompt-experiments";
 import { AdapterRegistry } from "../lib/alerting/registry";
 import { GitHubService, RCAService } from "../services";
 
@@ -464,7 +466,7 @@ export const internalRouter = createRouter({
   updateRepositoryIndexStatus: internalProcedure
     .input(z.object({
       repositoryId: z.string(),
-      status: z.enum(["PENDING", "INDEXING", "READY", "FAILED"]),
+      status: IndexStatusSchema,
       lastIndexedAt: z.date().optional(),
     }))
     .mutation(async ({ input }) => {
@@ -521,7 +523,7 @@ export const internalRouter = createRouter({
         content: z.string(),
         contentHash: z.string(),
         language: z.string().nullable(),
-        chunkType: z.enum(["function", "class", "module", "block"]),
+        chunkType: ChunkTypeSchema,
       })),
     }))
     .mutation(async ({ input }) => {
@@ -671,7 +673,7 @@ export const internalRouter = createRouter({
   createEvalRun: internalProcedure
     .input(z.object({
       suiteId: z.string(),
-      triggeredBy: z.enum(["pr_merge", "manual", "scheduled"]),
+      triggeredBy: EvalTriggerTypeSchema,
       triggerRef: z.string().optional(),
       totalPrompts: z.number().int().positive(),
     }))
@@ -700,7 +702,7 @@ export const internalRouter = createRouter({
   updateEvalRun: internalProcedure
     .input(z.object({
       runId: z.string(),
-      status: z.enum(["PENDING", "RUNNING", "PASSED", "FAILED", "REGRESSION_DETECTED"]),
+      status: EvalRunStatusSchema,
       completedAt: z.date().optional(),
       passedPrompts: z.number().int().nonnegative().optional(),
       failedPrompts: z.number().int().nonnegative().optional(),
@@ -708,14 +710,7 @@ export const internalRouter = createRouter({
       errorRate: z.number().optional(),
       scores: z.record(z.string(), z.number()).optional(),
       isRegression: z.boolean().optional(),
-      regressionDetails: z.array(z.object({
-        metric: z.enum(["latency_p95", "error_rate", "pass_rate"]),
-        baseline: z.number(),
-        current: z.number(),
-        threshold: z.number(),
-        changePercent: z.number(),
-        message: z.string(),
-      })).optional(),
+      regressionDetails: z.array(RegressionDetailSchema).optional(),
     }))
     .mutation(async ({ input }) => {
       const { runId, ...updateData } = input;
@@ -749,14 +744,7 @@ export const internalRouter = createRouter({
     .input(z.object({
       suiteId: z.string(),
       runId: z.string(),
-      regressionDetails: z.array(z.object({
-        metric: z.enum(["latency_p95", "error_rate", "pass_rate"]),
-        baseline: z.number(),
-        current: z.number(),
-        threshold: z.number(),
-        changePercent: z.number(),
-        message: z.string(),
-      })),
+      regressionDetails: z.array(RegressionDetailSchema),
     }))
     .mutation(async ({ input }) => {
       const { suiteId, runId, regressionDetails } = input;
@@ -1096,7 +1084,7 @@ export const internalRouter = createRouter({
   updateExperimentAnalysis: internalProcedure
     .input(z.object({
       experimentId: z.string().min(1),
-      status: z.enum(["pending", "running", "completed", "failed"]),
+      status: AnalysisStatusSchema,
       result: z.unknown().optional(),
       error: z.string().optional(),
       winnerVariantId: z.string().optional().nullable(),

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createRouter, protectedProcedure, workspaceMiddleware } from "../trpc";
 import { TrackedUserService } from "../services/trackedUser.service";
+import { SortOrderSchema } from "../schemas/observability";
 
 /**
  * Tracked Users Router - Manage tracked users (end-users of AI applications)
@@ -25,7 +26,7 @@ export const trackedUsersRouter = createRouter({
         sortBy: z
           .enum(["lastSeenAt", "firstSeenAt"])
           .default("lastSeenAt"),
-        sortOrder: z.enum(["asc", "desc"]).default("desc"),
+        sortOrder: SortOrderSchema.default("desc"),
         limit: z.number().int().min(1).max(100).default(50),
         cursor: z.string().optional(),
       })

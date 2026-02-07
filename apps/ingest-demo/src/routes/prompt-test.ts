@@ -14,6 +14,7 @@ import { trace, SpanStatusCode, context } from "@opentelemetry/api";
 import { z } from "zod";
 import { Ducsigr } from "@ducsigr/sdk";
 import { config } from "../config/env.js";
+import { PromptLabelNameSchema, VariantNameSchema } from "@ducsigr/api/schemas";
 
 const router: IRouter = Router();
 const tracer = trace.getTracer("demo-prompt-test");
@@ -24,7 +25,7 @@ const tracer = trace.getTracer("demo-prompt-test");
 
 const SinglePromptRequestSchema = z.object({
   promptSlug: z.string().min(1),
-  label: z.enum(["production", "staging", "latest"]).optional(),
+  label: PromptLabelNameSchema.optional(),
   version: z.number().int().positive().optional(),
   variables: z.record(z.string(), z.string()).optional().default({}),
   mockModel: z.string().optional().default("gpt-4-mock"),
@@ -33,7 +34,7 @@ const SinglePromptRequestSchema = z.object({
 const ExperimentRequestSchema = z.object({
   experimentSlug: z.string().min(1),
   assignmentKey: z.string().min(1),
-  forceVariant: z.enum(["A", "B"]).optional(),
+  forceVariant: VariantNameSchema.optional(),
   variables: z.record(z.string(), z.string()).optional().default({}),
   mockModel: z.string().optional().default("gpt-4-mock"),
 });

@@ -46,9 +46,11 @@ const GetInstallationSchema = z.object({
   workspaceSlug: z.string(),
 });
 
+const RepoFilterSchema = z.enum(["enabled", "disabled", "all"]);
+
 const ListRepositoriesSchema = z.object({
   workspaceSlug: z.string(),
-  filter: z.enum(["enabled", "disabled", "all"]).default("all"),
+  filter: RepoFilterSchema.default("all"),
   search: z.string().optional(),
   page: z.number().min(1).default(1),
   pageSize: z.number().min(1).max(100).default(20),

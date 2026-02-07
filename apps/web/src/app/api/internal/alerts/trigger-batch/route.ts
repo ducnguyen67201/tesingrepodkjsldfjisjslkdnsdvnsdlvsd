@@ -17,6 +17,10 @@ import {
   type AlertType,
   type AlertOperator,
   type AlertState,
+  AlertSeveritySchema,
+  AlertStateSchema,
+  AlertTypeSchema,
+  AlertOperatorSchema,
 } from "@ducsigr/api/schemas";
 
 // Initialize alerting adapters on module load
@@ -24,12 +28,6 @@ initializeAlertingAdapters();
 
 const INTERNAL_SECRET_HEADER = "X-Internal-Secret";
 const CACHE_CONTROL_NO_STORE = "no-store, no-cache, must-revalidate";
-
-// Define schemas inline to avoid ESM import resolution issues in Next.js
-const AlertSeveritySchema = z.enum(["CRITICAL", "HIGH", "MEDIUM", "LOW"]);
-const AlertStateSchema = z.enum(["INACTIVE", "PENDING", "FIRING", "RESOLVED"]);
-const AlertTypeSchema = z.enum(["ERROR_RATE", "LATENCY_P50", "LATENCY_P95", "LATENCY_P99"]);
-const AlertOperatorSchema = z.enum(["GREATER_THAN", "LESS_THAN"]);
 
 // Schema for batch trigger items (matches TriggerQueueItem from worker)
 const BatchTriggerItemSchema = z.object({
