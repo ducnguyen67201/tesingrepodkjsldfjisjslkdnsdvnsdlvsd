@@ -20,6 +20,8 @@ import { rateLimitMiddleware } from "../middleware/rate-limit.js";
 import { hashApiKey } from "@ducsigr/shared";
 import {
   type PromptLabelName,
+  PromptLabelNameSchema,
+  PromptTypeSchema,
   DEFAULT_FETCH_LABEL,
 } from "@ducsigr/api/schemas";
 
@@ -32,9 +34,9 @@ promptsRouter.use(rateLimitMiddleware);
  * Query parameter schema
  */
 const QuerySchema = z.object({
-  label: z.enum(["production", "staging", "latest"]).optional(),
+  label: PromptLabelNameSchema.optional(),
   version: z.coerce.number().int().positive().optional(),
-  type: z.enum(["text", "chat"]).optional(),
+  type: PromptTypeSchema.optional(),
 });
 
 /**
@@ -462,7 +464,7 @@ promptsRouter.post("/compile", async (req: Request, res: Response) => {
   // Validate body
   const bodySchema = z.object({
     slug: z.string().min(1),
-    label: z.enum(["production", "staging", "latest"]).optional(),
+    label: PromptLabelNameSchema.optional(),
     version: z.number().int().positive().optional(),
     variables: z.record(z.string(), z.string()).default({}),
   });

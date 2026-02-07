@@ -12,7 +12,7 @@ import { validateInternalSecret } from "@ducsigr/shared";
 import { env } from "@/lib/env";
 import { AlertingAdapter } from "@ducsigr/api/lib/alerting";
 import { initializeAlertingAdapters } from "@ducsigr/api/lib/alerting/init";
-import { type ChannelProvider } from "@ducsigr/api/schemas";
+import { type ChannelProvider, AlertTypeSchema, AlertOperatorSchema } from "@ducsigr/api/schemas";
 import { internalApiError, internalApiSuccess } from "@/lib/api-responses";
 
 // Initialize alerting adapters on module load
@@ -26,10 +26,10 @@ const AlertPayloadSchema = z.object({
   alertName: z.string(),
   projectId: z.string(),
   projectName: z.string(),
-  type: z.enum(["ERROR_RATE", "LATENCY_P50", "LATENCY_P95", "LATENCY_P99"]),
+  type: AlertTypeSchema,
   threshold: z.number(),
   actualValue: z.number(),
-  operator: z.enum(["GREATER_THAN", "LESS_THAN"]),
+  operator: AlertOperatorSchema,
   triggeredAt: z.string(),
   dashboardUrl: z.string().url().optional(),
 });

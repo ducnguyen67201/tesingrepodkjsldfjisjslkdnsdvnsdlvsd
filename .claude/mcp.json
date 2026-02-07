@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ducsigr": {
+      "command": "node",
+      "args": ["/Users/ducng/Desktop/workspace/CognObserve/packages/mcp/dist/index.js"],
+      "env": {
+        "DUCSIGR_API_KEY": "co_sk_g3IwkiV4IcJoaF13jiGsg7ZtuYdtFU9h3xmjcjeun20",
+        "DUCSIGR_API_URL": "http://localhost:3000"
+      }
+    }
+  }
+}

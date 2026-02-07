@@ -592,6 +592,67 @@ export const isValidRole = (role: string): role is ProjectRole => {
 import { WORKSPACE_ADMIN_ROLES } from "@ducsigr/api/schemas";
 ```
 
+### Extract `z.enum()` Values to Named Constants (STRICT - MANDATORY)
+- **Never inline string arrays in `z.enum()`** - Extract to an UPPER_SNAKE_CASE `as const` array first
+- **If an enum constant already exists anywhere in the codebase, IMPORT AND REUSE IT** - Never re-declare the same values
+- **Define shared enums in `packages/api/src/schemas/`** - Single source of truth for the entire monorepo
+- **Name the constant by what it represents** - `TIME_RANGES`, `GROUP_BY_OPTIONS`, `SPAN_TYPES`
+
+**The Rule:**
+```
+1. Search the codebase for an existing enum constant BEFORE creating a new one
+2. If it exists → import and reuse it
+3. If it doesn't exist → create it as an UPPER_SNAKE_CASE `as const` array
+4. NEVER duplicate enum values across files
+```
+
+```typescript
+// ❌ BAD - Inline string arrays in z.enum()
+const InputSchema = z.object({
+  timeRange: z.enum(["24h", "7d", "30d"]).default("7d"),
+  groupBy: z.enum(["model", "day", "service"]).default("model"),
+  spanType: z.enum(["LLM", "HTTP", "DB", "RPC", "FUNCTION", "CUSTOM"]).optional(),
+});
+
+// ❌ BAD - Re-declaring an enum that already exists elsewhere
+// File: packages/mcp/src/tools/traces.ts
+const TIME_RANGES = ["1h", "6h", "24h", "7d", "30d"] as const;  // ALREADY defined in schemas!
+const InputSchema = z.object({
+  timeRange: z.enum(TIME_RANGES).default("24h"),
+});
+
+// ✅ GOOD - Define once, reuse everywhere
+// File: packages/api/src/schemas/common.ts (or domain-specific schema file)
+export const TIME_RANGES = ["1h", "6h", "24h", "7d", "30d"] as const;
+export const COST_TIME_RANGES = ["24h", "7d", "30d"] as const;
+export const GROUP_BY_OPTIONS = ["model", "day", "service"] as const;
+export const SPAN_TYPES = ["LLM", "HTTP", "DB", "RPC", "FUNCTION", "CUSTOM"] as const;
+
+// File: packages/mcp/src/tools/traces.ts (consumer)
+import { TIME_RANGES } from "@ducsigr/api/schemas";
+
+const InputSchema = z.object({
+  timeRange: z.enum(TIME_RANGES).default("24h"),
+});
+
+// File: apps/web/src/components/traces/trace-filter.tsx (consumer)
+import { TIME_RANGES, SPAN_TYPES } from "@ducsigr/api/schemas";
+
+// Use in dropdowns, validation, etc.
+const options = TIME_RANGES.map((range) => ({ label: range, value: range }));
+
+// Types can be derived from the constants
+type TimeRange = (typeof TIME_RANGES)[number];
+type SpanType = (typeof SPAN_TYPES)[number];
+```
+
+**Why?**
+- Single source of truth: change the constant once, all consumers update
+- No drift between files using the same enum values
+- Runtime access to valid values (e.g., for validation messages, UI dropdowns)
+- Type derivation via `(typeof CONST)[number]` keeps types in sync
+- Prevents bugs from typos or mismatched values across the app
+
 ### Zod for Runtime Validation (CRITICAL - MANDATORY)
 **ALL unknown data MUST be validated through Zod. No exceptions.**
 
@@ -1861,6 +1922,7 @@ When adding new response methods:
 | Rule | What to Do | What NOT to Do |
 |------|-----------|----------------|
 | **Types** | Import from `@ducsigr/db`, `@ducsigr/api/schemas`, `@ducsigr/proto` | Duplicate types, import from `@prisma/client` |
+| **Zod Enums** | Extract `z.enum()` values to UPPER_SNAKE_CASE `as const` arrays; reuse existing enums across the entire app | Inline string arrays in `z.enum()`, duplicating enum values that already exist elsewhere |
 | **Unknown Data** | Use Zod `safeParse()` for API responses, JSON parsing | Type assertions (`as`), manual type checking |
 | **Toasts** | Use `@/lib/errors` and `@/lib/success` | Import `toast` from "sonner" directly |
 | **API Responses** | Use `@/lib/api-responses` and `@/lib/webhook-responses` | Use `NextResponse.json()` directly |

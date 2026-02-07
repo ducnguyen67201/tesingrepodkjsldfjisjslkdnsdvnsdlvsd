@@ -45,6 +45,8 @@ For **each file** in the diff:
 - [ ] ALL webhook/external payloads validated with Zod
 - [ ] Zod schemas defined in `packages/api/src/schemas/`
 - [ ] Types inferred from Zod schemas (`z.infer<typeof Schema>`)
+- [ ] `z.enum()` values extracted to UPPER_SNAKE_CASE `as const` arrays (NO inline string arrays in `z.enum()`)
+- [ ] Enum constants reused across the entire app (NO duplicating values that already exist in another file — import and reuse)
 
 **Imports & Types:**
 - [ ] Types imported from `@ducsigr/db`, `@ducsigr/api/schemas`, `@ducsigr/proto`
@@ -172,7 +174,7 @@ After all chunks are reviewed, output:
 
 **REQUEST CHANGES** when:
 - Any CRITICAL finding exists
-- Red flags: inline JSX functions, `any` types, `process.env`, direct `toast` import, `NextResponse.json()`, type assertions on unknown data, direct DB writes in Temporal activities
+- Red flags: inline JSX functions, `any` types, `process.env`, direct `toast` import, `NextResponse.json()`, type assertions on unknown data, direct DB writes in Temporal activities, inline string arrays in `z.enum()`
 
 **COMMENT** when:
 - Only WARNINGs and SUGGESTIONs exist

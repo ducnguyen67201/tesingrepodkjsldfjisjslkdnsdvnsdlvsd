@@ -20,6 +20,7 @@ import { prisma } from "../lib/db.js";
 import { logger } from "../lib/logger.js";
 import { rateLimitMiddleware } from "../middleware/rate-limit.js";
 import { hashApiKey } from "@ducsigr/shared";
+import { VariantNameSchema } from "@ducsigr/api/schemas";
 
 export const promptExperimentsRouter: RouterType = Router();
 
@@ -45,7 +46,7 @@ const ALLOCATION_TO_BASIS_POINTS = 100;
  */
 const ResolveQuerySchema = z.object({
   assignmentKey: z.string().min(1, "Assignment key is required"),
-  forceVariant: z.enum(["A", "B"]).optional(),
+  forceVariant: VariantNameSchema.optional(),
 });
 
 // ============================================================

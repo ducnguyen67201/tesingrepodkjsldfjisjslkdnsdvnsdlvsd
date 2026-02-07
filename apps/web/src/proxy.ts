@@ -34,6 +34,12 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow v1 API routes (they use API key auth via Authorization: Bearer header)
+  const isApiV1Route = nextUrl.pathname.startsWith("/api/v1");
+  if (isApiV1Route) {
+    return NextResponse.next();
+  }
+
   // Redirect logged-in users away from auth pages
   if (isAuthRoute && isLoggedIn) {
     return NextResponse.redirect(new URL("/", nextUrl));
