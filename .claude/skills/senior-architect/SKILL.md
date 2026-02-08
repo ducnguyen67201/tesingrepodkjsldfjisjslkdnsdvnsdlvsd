@@ -198,7 +198,7 @@ After outputting the spec, always ask:
 
 **Every spec MUST be written as a `.md` file saved to `docs/specs/`.**
 
-The spec has 7 mandatory sections. Each section serves a purpose for downstream agents:
+The spec has 9 mandatory sections. Each section serves a purpose for downstream agents:
 
 ### Spec Template
 
@@ -224,7 +224,126 @@ The spec has 7 mandatory sections. Each section serves a purpose for downstream 
 
 ---
 
-## 2. Codebase Resource Map
+## 2. High-Level Architecture View
+
+**This section gives a quick visual understanding of how everything connects.**
+
+### System Flow Diagram
+Show the end-to-end data/request flow for this feature using ASCII diagrams:
+
+```
+┌──────────────┐     ┌──────────────────┐     ┌──────────────────┐
+│   Browser    │────▶│   Next.js App    │────▶│   tRPC Router    │
+│   (React)    │◀────│   (App Router)   │◀────│   ({domain})     │
+└──────────────┘     └──────────────────┘     └────────┬─────────┘
+                                                       │
+                                              ┌────────▼─────────┐
+                                              │   Service Layer   │
+                                              │  ({domain}.svc)   │
+                                              └────────┬─────────┘
+                                                       │
+                                              ┌────────▼─────────┐
+                                              │   PostgreSQL      │
+                                              │  (Prisma ORM)     │
+                                              └──────────────────┘
+```
+
+**Adapt the diagram to the actual feature.** Examples:
+
+**If the feature involves Temporal workers:**
+```
+┌──────────┐     ┌──────────┐     ┌──────────────┐     ┌───────────┐
+│  Ingest  │────▶│ Temporal │────▶│   Activity   │────▶│ tRPC      │
+│ Service  │     │ Workflow │     │ (READ-ONLY)  │     │ internal  │
+└──────────┘     └──────────┘     └──────────────┘     └─────┬─────┘
+                                                             │
+                                                    ┌────────▼────────┐
+                                                    │   PostgreSQL    │
+                                                    └─────────────────┘
+```
+
+**If the feature involves webhooks or external APIs:**
+```
+┌──────────────┐     ┌──────────────────┐     ┌──────────────┐
+│  External    │────▶│  Webhook Route   │────▶│  Temporal    │
+│  Service     │     │  (api/webhooks/) │     │  Workflow    │
+│  (GitHub)    │     └──────────────────┘     └──────┬───────┘
+└──────────────┘                                     │
+                     ┌───────────────────────────────┼────────────────┐
+                     │         Activities            │                │
+                     ▼                               ▼                ▼
+              ┌────────────┐                 ┌────────────┐   ┌────────────┐
+              │  Fetch     │                 │  Process   │   │  Store     │
+              │  Data      │                 │  (LLM)     │   │  (tRPC)    │
+              └────────────┘                 └────────────┘   └────────────┘
+```
+
+### Component Interaction Map
+Show how frontend components, hooks, and API procedures connect:
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    Page Component                     │
+│  apps/web/src/app/(dashboard)/[ws]/features/page.tsx │
+└──────────────────────┬──────────────────────────────┘
+                       │ renders
+          ┌────────────▼────────────┐
+          │     FeatureList         │
+          │  components/{domain}/   │
+          └────────────┬────────────┘
+                       │ uses
+          ┌────────────▼────────────┐
+          │   useFeatures() hook    │
+          │  hooks/use-{domain}.ts  │
+          └────────────┬────────────┘
+                       │ calls
+       ┌───────────────┼───────────────┐
+       ▼               ▼               ▼
+ ┌──────────┐   ┌──────────┐   ┌──────────┐
+ │ .list    │   │ .create  │   │ .delete  │
+ │ (query)  │   │ (mutate) │   │ (mutate) │
+ └────┬─────┘   └────┬─────┘   └────┬─────┘
+      │              │              │
+      └──────────────┼──────────────┘
+                     ▼
+          ┌──────────────────────┐
+          │   FeatureService     │
+          │  (business logic)    │
+          └──────────┬───────────┘
+                     ▼
+          ┌──────────────────────┐
+          │   Prisma / DB        │
+          └──────────────────────┘
+```
+
+### Data Model Relationships
+Show how new models relate to existing ones:
+
+```
+┌──────────────┐       ┌──────────────┐
+│  Workspace   │──1:N──│   Feature    │  ◀── NEW
+└──────┬───────┘       └──────┬───────┘
+       │                      │
+       │ 1:N            created by
+       │                      │
+┌──────▼───────┐       ┌──────▼───────┐
+│   Project    │       │     User     │
+└──────────────┘       └──────────────┘
+```
+
+### Guidelines for Architecture Diagrams
+| Rule | Description |
+|------|-------------|
+| **Always ASCII** | Use box-drawing characters (`┌─┐│└─┘▶▼`) — renders everywhere |
+| **Show data flow** | Arrows indicate direction of requests/data |
+| **Label connections** | Annotate arrows with relationship type (1:N, calls, renders) |
+| **Highlight NEW** | Mark new components/models with `◀── NEW` |
+| **Keep it scannable** | Max 3 diagrams per spec; each should fit in ~15 lines |
+| **Match the feature** | Only include diagrams relevant to THIS feature's scope |
+
+---
+
+## 3. Codebase Resource Map
 
 **This section shows the architect UNDERSTANDS the existing codebase.**
 
@@ -257,7 +376,7 @@ The spec has 7 mandatory sections. Each section serves a purpose for downstream 
 
 ---
 
-## 3. Rationale & Design Decisions
+## 4. Rationale & Design Decisions
 
 **This section explains WHY this approach is good.**
 
@@ -277,7 +396,7 @@ similar features that prove this pattern works.}
 
 ---
 
-## 4. Database Schema
+## 5. Database Schema
 
 ### Prisma Model
 
@@ -314,9 +433,9 @@ pnpm db:migrate --name add_features_table
 
 ---
 
-## 5. API Layer (Code Skeletons)
+## 6. API Layer (Code Skeletons)
 
-### 5.1 Zod Schemas
+### 6.1 Zod Schemas
 
 ```typescript
 // packages/api/src/schemas/{domain}.ts
@@ -358,7 +477,7 @@ export type ListFeaturesInput = z.infer<typeof ListFeaturesInputSchema>;
 // export * from "./{domain}";
 ```
 
-### 5.2 Service Layer
+### 6.2 Service Layer
 
 ```typescript
 // packages/api/src/services/{domain}.service.ts
@@ -408,7 +527,7 @@ export class FeatureService {
 }
 ```
 
-### 5.3 tRPC Router
+### 6.3 tRPC Router
 
 ```typescript
 // packages/api/src/routers/{domain}.ts
@@ -454,9 +573,9 @@ export const featuresRouter = createTRPCRouter({
 
 ---
 
-## 6. Frontend Layer (Code Skeletons)
+## 7. Frontend Layer (Code Skeletons)
 
-### 6.1 Domain Hook
+### 7.1 Domain Hook
 
 ```typescript
 // apps/web/src/hooks/use-{domain}.ts
@@ -519,7 +638,7 @@ export function useFeatures(workspaceId: string) {
 }
 ```
 
-### 6.2 Component Skeleton
+### 7.2 Component Skeleton
 
 ```typescript
 // apps/web/src/components/{domain}/{domain}-list.tsx
@@ -547,7 +666,7 @@ export function FeatureList({ workspaceId }: FeatureListProps) {
 }
 ```
 
-### 6.3 Toast Additions
+### 7.3 Toast Additions
 
 ```typescript
 // Add to apps/web/src/lib/success.ts:
@@ -569,7 +688,7 @@ export const featureError = {
 
 ---
 
-## 7. Test Specifications
+## 8. Test Specifications
 
 ### Unit Tests
 
@@ -644,7 +763,7 @@ describe("{domain}Router", () => {
 
 ---
 
-## 8. Execution Order
+## 9. Execution Order
 
 | Step | Action | Files | Depends On |
 |------|--------|-------|------------|
@@ -664,6 +783,13 @@ describe("{domain}Router", () => {
 ## Spec Quality Checklist
 
 Before outputting any spec, verify ALL of these:
+
+### Architecture Diagrams
+- [ ] System flow diagram showing end-to-end request/data path
+- [ ] Component interaction map (page → component → hook → API → service → DB)
+- [ ] Data model relationships showing how new models connect to existing ones
+- [ ] Diagrams use ASCII box-drawing characters (renders everywhere)
+- [ ] New components/models are marked with `◀── NEW`
 
 ### Resource Awareness
 - [ ] Listed ALL existing files that are related to this feature
