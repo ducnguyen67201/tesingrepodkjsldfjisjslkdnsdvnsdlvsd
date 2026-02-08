@@ -34,6 +34,8 @@ export {
   chunkCodeFiles,
   storeIndexedData,
   shouldIndexFile,
+  getTreeRootHash,
+  updateTreeRootHash,
 } from "./github.activities";
 
 // Repository indexing activities (UI-triggered full indexing)

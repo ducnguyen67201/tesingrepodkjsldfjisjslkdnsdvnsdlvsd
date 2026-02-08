@@ -2,7 +2,7 @@
 // GITHUB INDEX WORKFLOW - Process GitHub events and index code
 // ============================================================
 // This workflow processes GitHub push/PR events and indexes changed files.
-// Flow: extract files → filter → fetch → chunk → store
+// Flow: extract files → filter → fetch → chunk → merkle diff → store → embed
 // ============================================================
 
 import {
@@ -11,12 +11,12 @@ import {
   ApplicationFailure,
 } from "@temporalio/workflow";
 import type * as activities from "../temporal/activities";
-import type { GitHubIndexInput, GitHubIndexResult, ChangedFile } from "../temporal/types";
+import type { GitHubIndexInput, GitHubIndexResult, ChangedFile, EmbeddingChunk } from "../temporal/types";
 import {
   GitHubPushPayloadSchema,
   GitHubPRPayloadSchema,
 } from "@ducsigr/api/schemas";
-import { ACTIVITY_RETRY } from "@ducsigr/shared";
+import { ACTIVITY_RETRY, buildMerkleTree } from "@ducsigr/shared";
 
 // ============================================================
 // Activity Configuration
@@ -27,11 +27,25 @@ const {
   fetchFileContents,
   chunkCodeFiles,
   storeIndexedData,
+  getTreeRootHash,
+  updateTreeRootHash,
 } = proxyActivities<typeof activities>({
   startToCloseTimeout: "2m",
   retry: {
     ...ACTIVITY_RETRY.DEFAULT,
     maximumAttempts: 3,
+  },
+});
+
+// Embedding activities with longer timeout (LLM API calls can be slow)
+const {
+  generateEmbeddings,
+  storeEmbeddings,
+} = proxyActivities<typeof activities>({
+  startToCloseTimeout: "60m",
+  retry: {
+    ...ACTIVITY_RETRY.DEFAULT,
+    maximumAttempts: 5,
   },
 });
 
@@ -96,7 +110,11 @@ function shouldIndexFile(path: string): boolean {
  * 2. Filter to indexable files (by extension, exclude patterns)
  * 3. Fetch file contents from GitHub API
  * 4. Chunk code into semantic pieces
+ * 4b. Merkle tree diff to detect truly changed chunks
  * 5. Store chunks and metadata in database
+ * 6. Generate embeddings for new/changed chunks
+ * 7. Store embeddings in pgvector
+ * 8. Update Merkle tree root hash
  *
  * @param input - Workflow input from webhook
  * @returns Result with counts of files processed and chunks created
@@ -204,8 +222,36 @@ async function handlePushEvent(
   log.info("Fetched file contents", { count: fileContents.length });
 
   // Step 4: Chunk code files
-  const chunks = await chunkCodeFiles(fileContents);
-  log.info("Created code chunks", { count: chunks.length });
+  const allChunks = await chunkCodeFiles(fileContents);
+  log.info("Created code chunks", { count: allChunks.length });
+
+  // Step 4b: Merkle tree change detection
+  // Build a Merkle tree from the current push's chunks to get a root hash.
+  // This root hash is compared against the stored hash to short-circuit
+  // identical re-pushes (e.g., force-push of same content).
+  // Content-level deduplication is handled by skipDuplicates + contentHash at the DB layer.
+  const newTree = buildMerkleTree(
+    allChunks.map((c) => ({ path: c.filePath, contentHash: c.contentHash }))
+  );
+  const storedRootHash = await getTreeRootHash(repoId);
+
+  let chunks = allChunks;
+  let treeChanged = true;
+  if (storedRootHash && storedRootHash === newTree.rootHash) {
+    log.info("Merkle root unchanged, skipping chunk storage and embedding");
+    chunks = [];
+    treeChanged = false;
+  } else if (storedRootHash) {
+    log.info("Merkle root changed, processing chunks", {
+      oldRootHash: storedRootHash,
+      newRootHash: newTree.rootHash,
+      totalChunks: allChunks.length,
+    });
+  } else {
+    log.info("No previous Merkle root, processing all chunks", {
+      totalChunks: allChunks.length,
+    });
+  }
 
   // Step 5: Store indexed data via internal procedure
   const headCommit = parsed.head_commit;
@@ -220,6 +266,50 @@ async function handlePushEvent(
     changedFiles: changedFiles.map((f: ChangedFile) => f.path),
     chunks,
   });
+
+  // Step 6: Generate embeddings for new chunks
+  if (result.chunkIds.length > 0) {
+    log.info("Generating embeddings for push chunks", {
+      chunkCount: result.chunkIds.length,
+    });
+
+    // Map chunk IDs to content using contentHash (not index-based, since
+    // findMany doesn't guarantee ordering). Build a lookup by contentHash.
+    const contentByHash = new Map(
+      chunks.map((c) => [c.contentHash, c.content])
+    );
+
+    const embeddingChunks: EmbeddingChunk[] = result.chunkIds
+      .filter((chunk) => contentByHash.has(chunk.contentHash))
+      .map((chunk) => ({
+        id: chunk.id,
+        content: contentByHash.get(chunk.contentHash)!,
+        contentHash: chunk.contentHash,
+      }));
+
+    const embeddingResult = await generateEmbeddings({
+      chunks: embeddingChunks,
+    });
+    log.info("Generated embeddings", {
+      count: embeddingResult.chunksProcessed,
+      cached: embeddingResult.cached,
+      generated: embeddingResult.generated,
+    });
+
+    // Step 7: Store embeddings in pgvector
+    if (embeddingResult.embeddings.length > 0) {
+      const storeResult = await storeEmbeddings({
+        embeddings: embeddingResult.embeddings,
+      });
+      log.info("Stored embeddings", { count: storeResult.storedCount });
+    }
+  }
+
+  // Step 8: Update Merkle tree root hash (skip if unchanged)
+  if (treeChanged) {
+    await updateTreeRootHash(repoId, newTree.rootHash);
+    log.info("Updated Merkle tree root hash", { rootHash: newTree.rootHash });
+  }
 
   log.info("GitHub push workflow completed", {
     repoId,

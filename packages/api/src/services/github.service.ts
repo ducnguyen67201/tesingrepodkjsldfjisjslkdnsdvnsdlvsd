@@ -18,7 +18,7 @@ export class GitHubService {
    */
   static async storeIndexedData(
     input: StoreGitHubIndexInput
-  ): Promise<{ chunksCreated: number }> {
+  ): Promise<{ chunksCreated: number; chunkIds: Array<{ id: string; contentHash: string }> }> {
     const {
       repoId,
       event,
@@ -75,16 +75,16 @@ export class GitHubService {
       }
 
       // 4. Insert new chunks
-      const chunksCreated = await this.createChunks(tx, repoId, chunks);
+      const chunksResult = await this.createChunks(tx, repoId, chunks);
 
       // 5. Update repo lastIndexedAt
       await this.updateRepoIndexStatus(tx, repoId, "READY");
 
       console.log(
-        `[GitHubService:storeIndexedData] Stored ${chunksCreated} chunks for repo ${repoId}`
+        `[GitHubService:storeIndexedData] Stored ${chunksResult.count} chunks for repo ${repoId}`
       );
 
-      return { chunksCreated };
+      return { chunksCreated: chunksResult.count, chunkIds: chunksResult.chunkIds };
     });
   }
 
@@ -202,12 +202,12 @@ export class GitHubService {
       language: string | null;
       chunkType: string;
     }>
-  ): Promise<number> {
+  ): Promise<{ count: number; chunkIds: Array<{ id: string; contentHash: string }> }> {
     if (chunks.length === 0) {
-      return 0;
+      return { count: 0, chunkIds: [] };
     }
 
-    const result = await tx.codeChunk.createMany({
+    const createResult = await tx.codeChunk.createMany({
       data: chunks.map((chunk) => ({
         repoId,
         filePath: chunk.filePath,
@@ -218,9 +218,20 @@ export class GitHubService {
         language: chunk.language,
         chunkType: chunk.chunkType,
       })),
+      skipDuplicates: true,
     });
 
-    return result.count;
+    // Query back to get IDs (Prisma createMany doesn't return IDs)
+    const contentHashes = chunks.map((c) => c.contentHash);
+    const created = await tx.codeChunk.findMany({
+      where: {
+        repoId,
+        contentHash: { in: contentHashes },
+      },
+      select: { id: true, contentHash: true },
+    });
+
+    return { count: createResult.count, chunkIds: created.map((c) => ({ id: c.id, contentHash: c.contentHash })) };
   }
 
   /**

@@ -231,7 +231,8 @@ export async function getDetails(id: string): Promise<Details | null> {
 | `internal.validateScoreConfig` | `{ configId, value }` | Validate score config |
 | `internal.transitionAlertState` | `{ alertId, conditionMet }` | Transition alert state |
 | `internal.dispatchNotification` | `{ alertId, state, ... }` | Send notifications |
-| `internal.storeGitHubIndex` | `{ repoId, chunks, ... }` | Store indexed code |
+| `internal.storeGitHubIndex` | `{ repoId, chunks, ... }` | Store indexed code (returns chunkIds) |
+| `internal.updateTreeRootHash` | `{ repositoryId, treeRootHash }` | Update Merkle tree root hash |
 | `internal.updateRepositoryIndexStatus` | `{ repositoryId, status, lastIndexedAt? }` | Update repo index status |
 | `internal.deleteRepositoryChunks` | `{ repositoryId }` | Delete chunks for reindex |
 | `internal.storeRepositoryChunks` | `{ repositoryId, chunks }` | Store code chunks (returns chunkIds) |
@@ -287,16 +288,23 @@ Notification Rules:
 
 ## GitHub Indexing Details
 
-Processes GitHub webhook events and indexes code:
+Processes GitHub webhook events, indexes code, and generates embeddings:
 
 ```
-Push Event → extractChangedFiles → filter → fetchFileContents → chunkCodeFiles → storeIndexedData
+Push Event → extractChangedFiles → filter → fetchFileContents → chunkCodeFiles
+  → Merkle tree diff (skip if unchanged) → storeIndexedData
+  → generateEmbeddings → storeEmbeddings → updateTreeRootHash
 PR Event → parse payload → storeIndexedData (metadata only)
 ```
+
+**Incremental embedding generation**: When code is pushed, the workflow now generates and stores embeddings for new/changed chunks, making them immediately searchable by RCA vector search.
+
+**Merkle tree change detection**: A root hash is stored per repository. On push, the workflow builds a Merkle tree from chunks and compares root hashes. If identical, chunk storage and embedding generation are skipped entirely.
 
 **Key files:**
 - Workflow: `apps/worker/src/workflows/github-index.workflow.ts`
 - Activities: `apps/worker/src/temporal/activities/github.activities.ts`
+- Merkle tree: `packages/shared/src/merkle/index.ts`
 - Schemas: `packages/api/src/schemas/github.ts`
 - Chunking: `packages/shared/src/chunking/`
 

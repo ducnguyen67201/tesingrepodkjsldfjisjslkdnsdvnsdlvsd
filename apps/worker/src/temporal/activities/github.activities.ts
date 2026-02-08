@@ -252,9 +252,44 @@ export async function chunkCodeFiles(
  */
 export async function storeIndexedData(
   input: StoreGitHubIndexInput
-): Promise<{ chunksCreated: number }> {
+): Promise<{ chunksCreated: number; chunkIds: Array<{ id: string; contentHash: string }> }> {
   const caller = getInternalCaller();
   return caller.internal.storeGitHubIndex(input);
+}
+
+// ============================================
+// Activity: Get Tree Root Hash
+// ============================================
+
+/**
+ * Get the current Merkle tree root hash for a repository.
+ * READ-ONLY database operation.
+ */
+export async function getTreeRootHash(repoId: string): Promise<string | null> {
+  const repo = await prisma.gitHubRepository.findUnique({
+    where: { id: repoId },
+    select: { treeRootHash: true },
+  });
+  return repo?.treeRootHash ?? null;
+}
+
+// ============================================
+// Activity: Update Tree Root Hash
+// ============================================
+
+/**
+ * Update the Merkle tree root hash via tRPC internal procedure.
+ * Mutation goes through internal router - NOT direct database access.
+ */
+export async function updateTreeRootHash(
+  repoId: string,
+  hash: string
+): Promise<void> {
+  const caller = getInternalCaller();
+  await caller.internal.updateTreeRootHash({
+    repositoryId: repoId,
+    treeRootHash: hash,
+  });
 }
 
 // ============================================
