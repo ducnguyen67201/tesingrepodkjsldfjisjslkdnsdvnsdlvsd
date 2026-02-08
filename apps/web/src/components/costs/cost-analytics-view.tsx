@@ -8,8 +8,7 @@ import { CostOverviewCards } from "./cost-overview-cards";
 import { CostTrendChart } from "./cost-trend-chart";
 import { CostModelBreakdown } from "./cost-model-breakdown";
 import { CostPricingTable } from "./cost-pricing-table";
-import type { TimeRange } from "@ducsigr/api/schemas";
-import type { DashboardTimeRange } from "@ducsigr/api/schemas";
+import type { TimeRange, DashboardTimeRange } from "@ducsigr/api/schemas";
 
 interface CostAnalyticsViewProps {
   workspaceSlug: string;

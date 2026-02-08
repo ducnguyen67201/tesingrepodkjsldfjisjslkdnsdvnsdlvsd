@@ -1,7 +1,6 @@
 "use client";
 
-import { DollarSign, Coins, Receipt, Layers } from "lucide-react";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { DollarSign, Coins, Receipt, Layers, TrendingUp, TrendingDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCost, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";

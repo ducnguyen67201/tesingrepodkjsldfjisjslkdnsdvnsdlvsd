@@ -42,26 +42,24 @@ function renderTableRow(item: ModelCostBreakdown) {
 }
 
 export function CostModelBreakdown({ data }: CostModelBreakdownProps) {
-  const topModels = data.slice(0, 5);
-
   const chartConfig = useMemo(() => {
     const config: ChartConfig = {};
-    topModels.forEach((item, idx) => {
+    data.slice(0, 5).forEach((item, idx) => {
       config[item.model] = {
         label: item.displayName,
         color: MODEL_COLORS[idx % MODEL_COLORS.length],
       };
     });
     return config;
-  }, [topModels]);
+  }, [data]);
 
   const chartData = useMemo(
     () =>
-      topModels.map((item, idx) => ({
+      data.slice(0, 5).map((item, idx) => ({
         ...item,
         fill: MODEL_COLORS[idx % MODEL_COLORS.length],
       })),
-    [topModels]
+    [data]
   );
 
   if (data.length === 0) {
