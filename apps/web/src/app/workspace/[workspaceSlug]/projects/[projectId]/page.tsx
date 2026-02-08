@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { ArrowLeft, Activity, MessagesSquare, Users, ScrollText, BarChart3 } from "lucide-react";
+import { ArrowLeft, Activity, MessagesSquare, Users, ScrollText, BarChart3, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -15,10 +15,11 @@ import { TrackedUsersTable } from "@/components/tracked-users/tracked-users-tabl
 import { AlertsPanel } from "@/components/alerts/alerts-panel";
 import { EvalsPanel } from "@/components/evals";
 import { DashboardView } from "@/components/dashboard";
+import { CostAnalyticsView } from "@/components/costs";
 import { useProjectUserCount } from "@/hooks/project-user-count/use-project-user-count";
 import { Badge } from "@/components/ui/badge";
 
-type ProjectTab = "metrics" | "traces" | "logs" | "sessions" | "users";
+type ProjectTab = "metrics" | "traces" | "costs" | "logs" | "sessions" | "users";
 
 export default function ProjectDetailPage() {
   const params = useParams<{ workspaceSlug: string; projectId: string }>();
@@ -130,6 +131,10 @@ export default function ProjectDetailPage() {
             <Activity className="h-3 w-3" />
             Traces
           </TabsTrigger>
+          <TabsTrigger value="costs" className="h-7 gap-1.5 text-xs px-3">
+            <DollarSign className="h-3 w-3" />
+            Costs
+          </TabsTrigger>
           <TabsTrigger value="logs" className="h-7 gap-1.5 text-xs px-3">
             <ScrollText className="h-3 w-3" />
             Logs
@@ -153,6 +158,13 @@ export default function ProjectDetailPage() {
 
         <TabsContent value="traces" className="mt-2">
           <TracesTableV2
+            workspaceSlug={workspaceSlug ?? ""}
+            projectId={projectId}
+          />
+        </TabsContent>
+
+        <TabsContent value="costs" className="mt-2">
+          <CostAnalyticsView
             workspaceSlug={workspaceSlug ?? ""}
             projectId={projectId}
           />
