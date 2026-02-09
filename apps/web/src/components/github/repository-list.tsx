@@ -80,6 +80,7 @@ export function RepositoryList({
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead className="w-[180px]">Project</TableHead>
               <TableHead className="w-[150px] text-right">Status</TableHead>
             </TableRow>
           </TableHeader>

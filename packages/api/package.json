@@ -46,6 +46,8 @@
   "dependencies": {
     "@ducsigr/db": "workspace:*",
     "@ducsigr/shared": "workspace:*",
+    "@octokit/auth-app": "^6.0.0",
+    "@octokit/rest": "^20.0.0",
     "@temporalio/client": "^1.13.2",
     "@trpc/server": "^11.0.0",
     "date-fns": "^4.1.0",

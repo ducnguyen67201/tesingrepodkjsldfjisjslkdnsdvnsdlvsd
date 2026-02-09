@@ -24,6 +24,11 @@ import {
 } from "../trpc";
 import { WORKSPACE_ADMIN_ROLES, type WorkspaceRole } from "../middleware/workspace";
 import { getTemporalClient, getTaskQueue } from "../lib/temporal";
+import {
+  AssignRepoToProjectSchema,
+  UnassignRepoFromProjectSchema,
+} from "../schemas/github";
+import { createAppOctokit } from "../lib/github";
 
 // ============================================
 // LLM Center (Lazy Initialization)
@@ -156,6 +161,11 @@ export const githubRouter = createRouter({
               enabled: true,
               indexStatus: true,
               lastIndexedAt: true,
+              projectId: true,
+              indexBranch: true,
+              project: {
+                select: { id: true, name: true },
+              },
               _count: { select: { chunks: true } },
             },
           }),
@@ -172,6 +182,7 @@ export const githubRouter = createRouter({
         repositories: repositories.map((r) => ({
           ...r,
           chunkCount: r._count.chunks,
+          projectName: r.project?.name ?? null,
         })),
         counts: {
           enabled: enabledCount,
@@ -188,50 +199,70 @@ export const githubRouter = createRouter({
     }),
 
   /**
-   * Enable indexing for a repository
+   * Assign a repository to a project and start indexing
    */
-  enableRepository: protectedProcedure
-    .input(RepositoryActionSchema)
+  assignToProject: protectedProcedure
+    .input(AssignRepoToProjectSchema)
     .use(workspaceMiddleware)
     .mutation(async ({ ctx, input }) => {
-      const { repositoryId } = input;
+      const { repositoryId, projectId, indexBranch } = input;
 
-      // Only admins can enable repositories
+      // 1. Admin check
       const role = ctx.workspace.role as WorkspaceRole;
       if (!WORKSPACE_ADMIN_ROLES.includes(role)) {
         throw new TRPCError({
           code: "FORBIDDEN",
-          message: "Only workspace admins can enable repositories",
+          message: "Only workspace admins can assign repositories",
         });
       }
 
-      // Verify repository belongs to workspace's installation
+      // 2. Verify repo belongs to workspace installation
       const repo = await prisma.gitHubRepository.findFirst({
         where: {
           id: repositoryId,
-          installation: {
-            workspaceId: ctx.workspace.id,
-          },
+          installation: { workspaceId: ctx.workspace.id },
         },
+        select: { id: true, defaultBranch: true },
       });
-
       if (!repo) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
       }
 
-      // Enable and set to pending
+      // 3. Verify project belongs to workspace
+      const project = await prisma.project.findFirst({
+        where: { id: projectId, workspaceId: ctx.workspace.id },
+        select: { id: true, name: true },
+      });
+      if (!project) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
+      }
+
+      // 4. Check no other repo assigned to this project (unique constraint)
+      const existingAssignment = await prisma.gitHubRepository.findUnique({
+        where: { projectId },
+        select: { id: true, fullName: true },
+      });
+      if (existingAssignment && existingAssignment.id !== repositoryId) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: `Project already has repository "${existingAssignment.fullName}" assigned`,
+        });
+      }
+
+      // 5. Assign repo to project
+      const effectiveBranch = indexBranch || repo.defaultBranch;
       const updatedRepo = await prisma.gitHubRepository.update({
         where: { id: repositoryId },
         data: {
+          projectId,
+          indexBranch: indexBranch || null,
           enabled: true,
           indexStatus: "PENDING",
         },
-        include: {
-          installation: true,
-        },
+        include: { installation: true },
       });
 
-      // Trigger initial indexing workflow via Temporal
+      // 6. Start indexing workflow
       try {
         const client = await getTemporalClient();
         await client.workflow.start("repositoryIndexWorkflow", {
@@ -242,17 +273,155 @@ export const githubRouter = createRouter({
             installationId: Number(updatedRepo.installation.installationId),
             owner: updatedRepo.owner,
             repo: updatedRepo.repo,
-            branch: updatedRepo.defaultBranch,
+            branch: effectiveBranch,
             mode: "initial",
           }],
         });
         console.log(`[GitHub] Started indexing workflow for ${updatedRepo.fullName}`);
       } catch (error) {
-        // Log but don't fail the mutation - user can retry via re-index
         console.error("[GitHub] Failed to start indexing workflow:", error);
       }
 
+      return { success: true, projectName: project.name };
+    }),
+
+  /**
+   * Unassign a repository from its project
+   */
+  unassignFromProject: protectedProcedure
+    .input(UnassignRepoFromProjectSchema)
+    .use(workspaceMiddleware)
+    .mutation(async ({ ctx, input }) => {
+      const { repositoryId } = input;
+
+      const role = ctx.workspace.role as WorkspaceRole;
+      if (!WORKSPACE_ADMIN_ROLES.includes(role)) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only workspace admins can unassign repositories",
+        });
+      }
+
+      const repo = await prisma.gitHubRepository.findFirst({
+        where: {
+          id: repositoryId,
+          installation: { workspaceId: ctx.workspace.id },
+        },
+        select: { id: true },
+      });
+      if (!repo) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
+      }
+
+      await prisma.$transaction([
+        prisma.gitHubRepository.update({
+          where: { id: repositoryId },
+          data: {
+            projectId: null,
+            indexBranch: null,
+            enabled: false,
+            indexStatus: "PENDING",
+          },
+        }),
+        prisma.codeChunk.deleteMany({
+          where: { repoId: repositoryId },
+        }),
+      ]);
+
       return { success: true };
+    }),
+
+  /**
+   * List projects available for assignment
+   */
+  listProjectsForAssignment: protectedProcedure
+    .input(z.object({ workspaceSlug: z.string() }))
+    .use(workspaceMiddleware)
+    .query(async ({ ctx }) => {
+      const projects = await prisma.project.findMany({
+        where: { workspaceId: ctx.workspace.id },
+        orderBy: { name: "asc" },
+        select: {
+          id: true,
+          name: true,
+          githubRepo: {
+            select: { id: true, fullName: true },
+          },
+        },
+      });
+
+      return projects.map((p) => ({
+        id: p.id,
+        name: p.name,
+        hasRepo: !!p.githubRepo,
+        repoName: p.githubRepo?.fullName ?? null,
+      }));
+    }),
+
+  /**
+   * List branches for a repository from GitHub API
+   */
+  listBranches: protectedProcedure
+    .input(z.object({
+      workspaceSlug: z.string(),
+      repositoryId: z.string(),
+    }))
+    .use(workspaceMiddleware)
+    .query(async ({ ctx, input }) => {
+      const { repositoryId } = input;
+
+      // Find repo with installation details
+      const repo = await prisma.gitHubRepository.findFirst({
+        where: {
+          id: repositoryId,
+          installation: { workspaceId: ctx.workspace.id },
+        },
+        select: {
+          owner: true,
+          repo: true,
+          defaultBranch: true,
+          installation: {
+            select: { installationId: true },
+          },
+        },
+      });
+
+      if (!repo) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
+      }
+
+      // Get GitHub App credentials from environment
+      const appId = process.env.GITHUB_APP_ID;
+      const privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
+
+      if (!appId || !privateKey) {
+        console.warn("[GitHub] GitHub App credentials not configured, returning default branch only");
+        return [{ name: repo.defaultBranch, isDefault: true }];
+      }
+
+      try {
+        const octokit = createAppOctokit(
+          Number(repo.installation.installationId),
+          appId,
+          privateKey
+        );
+
+        // Fetch branches (paginated, up to 100)
+        const { data: branches } = await octokit.repos.listBranches({
+          owner: repo.owner,
+          repo: repo.repo,
+          per_page: 100,
+        });
+
+        return branches.map((b) => ({
+          name: b.name,
+          isDefault: b.name === repo.defaultBranch,
+        }));
+      } catch (error) {
+        console.error("[GitHub] Failed to fetch branches:", error);
+        // Fallback to just default branch on API failure
+        return [{ name: repo.defaultBranch, isDefault: true }];
+      }
     }),
 
   /**
@@ -287,11 +456,15 @@ export const githubRouter = createRouter({
         throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
       }
 
-      // Disable repository and clear chunks
+      // Disable repository, clear assignment, and delete chunks
       await prisma.$transaction([
         prisma.gitHubRepository.update({
           where: { id: repositoryId },
-          data: { enabled: false },
+          data: {
+            enabled: false,
+            projectId: null,
+            indexBranch: null,
+          },
         }),
         // Delete all chunks to free space
         prisma.codeChunk.deleteMany({
@@ -349,7 +522,7 @@ export const githubRouter = createRouter({
             installationId: Number(updatedRepo.installation.installationId),
             owner: updatedRepo.owner,
             repo: updatedRepo.repo,
-            branch: updatedRepo.defaultBranch,
+            branch: updatedRepo.indexBranch ?? updatedRepo.defaultBranch,
             mode: "reindex",
           }],
         });

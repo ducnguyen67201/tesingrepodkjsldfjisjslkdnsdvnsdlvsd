@@ -445,6 +445,16 @@ export const githubError = {
     toast.error("Disconnect Failed", {
       description: "Failed to disconnect GitHub. Please try again.",
     }),
+
+  projectAlreadyHasRepo: () =>
+    toast.error("Project Already Has Repository", {
+      description: "This project already has a repository assigned. Unassign it first.",
+    }),
+
+  assignFailed: () =>
+    toast.error("Assignment Failed", {
+      description: "Failed to assign repository to project. Please try again.",
+    }),
 } as const;
 
 // ============================================================

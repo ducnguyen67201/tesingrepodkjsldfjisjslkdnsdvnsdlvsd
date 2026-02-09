@@ -4,17 +4,18 @@ import { useState, useCallback } from "react";
 import {
   MoreHorizontal,
   RefreshCw,
-  Power,
-  PowerOff,
   ExternalLink,
   Loader2,
   Lock,
   BarChart3,
+  FolderKanban,
+  Unlink,
+  Link2,
 } from "lucide-react";
 import { GitHubIcon } from "@/components/icons";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
-import { showSuccess } from "@/lib/success";
+import { githubToast } from "@/lib/success";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -36,6 +37,7 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { RepositoryStatusBadge } from "./repository-status-badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { AssignRepoDialog } from "./assign-repo-dialog";
 import type { Repository } from "./types";
 
 /**
@@ -71,20 +73,13 @@ export function RepositoryRow({
   workspaceSlug,
   onRefresh,
 }: RepositoryRowProps) {
-  const [showDisableDialog, setShowDisableDialog] = useState(false);
+  const [showAssignDialog, setShowAssignDialog] = useState(false);
+  const [showUnassignDialog, setShowUnassignDialog] = useState(false);
 
-  const enable = trpc.github.enableRepository.useMutation({
+  const unassign = trpc.github.unassignFromProject.useMutation({
     onSuccess: () => {
-      showSuccess("Repository enabled", "Indexing will begin shortly.");
-      onRefresh();
-    },
-    onError: showError,
-  });
-
-  const disable = trpc.github.disableRepository.useMutation({
-    onSuccess: () => {
-      showSuccess("Repository disabled", "Indexing has been stopped.");
-      setShowDisableDialog(false);
+      githubToast.repositoryUnassigned(repository.fullName);
+      setShowUnassignDialog(false);
       onRefresh();
     },
     onError: showError,
@@ -92,28 +87,28 @@ export function RepositoryRow({
 
   const reindex = trpc.github.reindexRepository.useMutation({
     onSuccess: () => {
-      showSuccess("Re-indexing started", "This may take a few minutes.");
+      githubToast.reindexStarted(repository.fullName);
       onRefresh();
     },
     onError: showError,
   });
 
-  const isLoading = enable.isPending || disable.isPending || reindex.isPending;
+  const isLoading = unassign.isPending || reindex.isPending;
 
-  const handleEnable = useCallback(() => {
-    enable.mutate({ workspaceSlug, repositoryId: repository.id });
-  }, [enable, workspaceSlug, repository.id]);
-
-  const handleDisableClick = useCallback(() => {
-    setShowDisableDialog(true);
+  const handleAssignClick = useCallback(() => {
+    setShowAssignDialog(true);
   }, []);
 
-  const handleDisableConfirm = useCallback(() => {
-    disable.mutate({ workspaceSlug, repositoryId: repository.id });
-  }, [disable, workspaceSlug, repository.id]);
+  const handleUnassignClick = useCallback(() => {
+    setShowUnassignDialog(true);
+  }, []);
 
-  const handleDisableCancel = useCallback(() => {
-    setShowDisableDialog(false);
+  const handleUnassignConfirm = useCallback(() => {
+    unassign.mutate({ workspaceSlug, repositoryId: repository.id });
+  }, [unassign, workspaceSlug, repository.id]);
+
+  const handleUnassignCancel = useCallback(() => {
+    setShowUnassignDialog(false);
   }, []);
 
   const handleReindex = useCallback(() => {
@@ -121,6 +116,8 @@ export function RepositoryRow({
   }, [reindex, workspaceSlug, repository.id]);
 
   const githubUrl = `https://github.com/${repository.fullName}`;
+  const isAssigned = !!repository.projectId;
+  const branchDisplay = repository.indexBranch ?? repository.defaultBranch;
 
   return (
     <>
@@ -140,13 +137,26 @@ export function RepositoryRow({
                   </Tooltip>
                 )}
               </div>
-              {repository.enabled && repository.lastIndexedAt && (
-                <span className="text-xs text-muted-foreground">
-                  Indexed {formatRelativeTime(repository.lastIndexedAt)}
-                </span>
-              )}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                {isAssigned && repository.lastIndexedAt && (
+                  <span>Indexed {formatRelativeTime(repository.lastIndexedAt)}</span>
+                )}
+                {isAssigned && (
+                  <span>Branch: {branchDisplay}</span>
+                )}
+              </div>
             </div>
           </div>
+        </TableCell>
+        <TableCell>
+          {isAssigned ? (
+            <div className="flex items-center gap-1.5">
+              <FolderKanban className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="text-sm">{repository.projectName}</span>
+            </div>
+          ) : (
+            <span className="text-sm text-muted-foreground">Not assigned</span>
+          )}
         </TableCell>
         <TableCell className="text-right">
           <div className="flex items-center justify-end gap-2">
@@ -165,7 +175,7 @@ export function RepositoryRow({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {repository.enabled ? (
+                {isAssigned ? (
                   <>
                     <DropdownMenuItem onClick={handleReindex}>
                       <RefreshCw className="mr-2 h-4 w-4" />
@@ -177,15 +187,19 @@ export function RepositoryRow({
                         View Stats
                       </a>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleDisableClick}>
-                      <PowerOff className="mr-2 h-4 w-4" />
-                      Disable
+                    <DropdownMenuItem onClick={handleAssignClick}>
+                      <Link2 className="mr-2 h-4 w-4" />
+                      Reassign Project
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleUnassignClick}>
+                      <Unlink className="mr-2 h-4 w-4" />
+                      Unassign
                     </DropdownMenuItem>
                   </>
                 ) : (
-                  <DropdownMenuItem onClick={handleEnable}>
-                    <Power className="mr-2 h-4 w-4" />
-                    Enable
+                  <DropdownMenuItem onClick={handleAssignClick}>
+                    <FolderKanban className="mr-2 h-4 w-4" />
+                    Assign to Project
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
@@ -205,28 +219,40 @@ export function RepositoryRow({
         </TableCell>
       </TableRow>
 
-      <AlertDialog open={showDisableDialog} onOpenChange={setShowDisableDialog}>
+      <AssignRepoDialog
+        open={showAssignDialog}
+        onOpenChange={setShowAssignDialog}
+        repositoryId={repository.id}
+        repositoryName={repository.fullName}
+        defaultBranch={repository.defaultBranch}
+        currentProjectId={repository.projectId}
+        workspaceSlug={workspaceSlug}
+        onSuccess={onRefresh}
+      />
+
+      <AlertDialog open={showUnassignDialog} onOpenChange={setShowUnassignDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Disable repository indexing?</AlertDialogTitle>
+            <AlertDialogTitle>Unassign repository?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will stop indexing for{" "}
-              <span className="font-medium">{repository.fullName}</span> and
-              delete all existing code chunks. This action cannot be undone.
+              This will unlink{" "}
+              <span className="font-medium">{repository.fullName}</span> from{" "}
+              <span className="font-medium">{repository.projectName}</span> and
+              delete all indexed code chunks. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDisableCancel}>
+            <AlertDialogCancel onClick={handleUnassignCancel}>
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleDisableConfirm}
+              onClick={handleUnassignConfirm}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {disable.isPending ? (
+              {unassign.isPending ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : null}
-              Disable
+              Unassign
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
