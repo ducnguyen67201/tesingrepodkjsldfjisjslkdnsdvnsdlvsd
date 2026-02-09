@@ -571,6 +571,12 @@ importers:
       '@ducsigr/shared':
         specifier: workspace:*
         version: link:../shared
+      '@octokit/auth-app':
+        specifier: ^6.0.0
+        version: 6.1.4
+      '@octokit/rest':
+        specifier: ^20.0.0
+        version: 20.1.2
       '@temporalio/client':
         specifier: ^1.13.2
         version: 1.13.2

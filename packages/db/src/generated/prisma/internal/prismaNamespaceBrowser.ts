@@ -449,6 +449,7 @@ export const GitHubRepositoryScalarFieldEnum = {
   repo: 'repo',
   fullName: 'fullName',
   defaultBranch: 'defaultBranch',
+  indexBranch: 'indexBranch',
   isPrivate: 'isPrivate',
   enabled: 'enabled',
   indexStatus: 'indexStatus',

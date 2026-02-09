@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
   // 8. Extract repository info based on event type
   let owner: string;
   let repo: string;
+  let pushBranch: string | null = null;
 
   try {
     if (event === "push") {
@@ -88,16 +89,8 @@ export async function POST(req: NextRequest) {
       owner = repoInfo.owner;
       repo = repoInfo.repo;
 
-      // Only process pushes to default branch
-      const branch = parsed.ref.replace("refs/heads/", "");
-      if (branch !== parsed.repository.default_branch) {
-        console.log("Push to non-default branch, skipping", {
-          delivery,
-          branch,
-          defaultBranch: parsed.repository.default_branch,
-        });
-        return webhookSuccess.skipped(SKIP_REASONS.NON_DEFAULT_BRANCH);
-      }
+      // Extract push branch (check against tracked branch after repo lookup)
+      pushBranch = parsed.ref.replace("refs/heads/", "");
     } else if (event === "pull_request") {
       const parsed = GitHubPRPayloadSchema.parse(payload);
       const repoInfo = parseRepositoryFullName(parsed.repository.full_name);
@@ -178,7 +171,7 @@ export async function POST(req: NextRequest) {
   // 9. Look up repository in database
   const githubRepo = await prisma.gitHubRepository.findFirst({
     where: { owner, repo, enabled: true },
-    select: { id: true, projectId: true },
+    select: { id: true, projectId: true, indexBranch: true, defaultBranch: true },
   });
 
   if (!githubRepo) {
@@ -190,6 +183,19 @@ export async function POST(req: NextRequest) {
   if (!githubRepo.projectId) {
     console.log("Repository not linked to project", { delivery, owner, repo });
     return webhookSuccess.skipped(SKIP_REASONS.REPO_NOT_REGISTERED);
+  }
+
+  // 9.5 Check push branch against tracked branch (after repo lookup for indexBranch)
+  if (event === "push" && pushBranch) {
+    const trackedBranch = githubRepo.indexBranch ?? githubRepo.defaultBranch;
+    if (pushBranch !== trackedBranch) {
+      console.log("Push to non-tracked branch, skipping", {
+        delivery,
+        pushBranch,
+        trackedBranch,
+      });
+      return webhookSuccess.skipped(SKIP_REASONS.NON_DEFAULT_BRANCH);
+    }
   }
 
   // 10. Start Temporal workflow asynchronously

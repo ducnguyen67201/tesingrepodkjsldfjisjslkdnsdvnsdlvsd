@@ -49,6 +49,24 @@ export const ConnectRepositorySchema = z.object({
 export type ConnectRepositoryInput = z.infer<typeof ConnectRepositorySchema>;
 
 // ============================================
+// Repository-Project Assignment Schemas
+// ============================================
+
+export const AssignRepoToProjectSchema = z.object({
+  workspaceSlug: z.string(),
+  repositoryId: z.string(),
+  projectId: z.string(),
+  indexBranch: z.string().min(1).optional(),
+});
+export type AssignRepoToProjectInput = z.infer<typeof AssignRepoToProjectSchema>;
+
+export const UnassignRepoFromProjectSchema = z.object({
+  workspaceSlug: z.string(),
+  repositoryId: z.string(),
+});
+export type UnassignRepoFromProjectInput = z.infer<typeof UnassignRepoFromProjectSchema>;
+
+// ============================================
 // Code Chunk Schemas (for Temporal workflows)
 // ============================================
 

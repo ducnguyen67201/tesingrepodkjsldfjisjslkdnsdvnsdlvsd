@@ -185,12 +185,14 @@ export const appRouter = createRouter({
    *
    * Workspace-level GitHub repository management.
    *
-   * - github.getInstallation    - Get GitHub App installation
-   * - github.listRepositories   - List repos with filter/search
-   * - github.enableRepository   - Enable indexing
-   * - github.disableRepository  - Disable indexing
-   * - github.reindexRepository  - Trigger re-index
-   * - github.getRepository      - Get repo details
+   * - github.getInstallation            - Get GitHub App installation
+   * - github.listRepositories           - List repos with filter/search
+   * - github.assignToProject            - Assign repo to project + start indexing
+   * - github.unassignFromProject        - Unassign repo from project
+   * - github.listProjectsForAssignment  - List projects for assignment dropdown
+   * - github.disableRepository          - Disable indexing
+   * - github.reindexRepository          - Trigger re-index
+   * - github.getRepository              - Get repo details
    */
   github: githubRouter,
 

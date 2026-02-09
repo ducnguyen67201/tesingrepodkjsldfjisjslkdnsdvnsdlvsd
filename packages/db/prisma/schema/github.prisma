@@ -32,6 +32,7 @@ model GitHubRepository {
   repo           String
   fullName       String      // "owner/repo"
   defaultBranch  String      @default("main")
+  indexBranch    String?     // User-selected branch to index (falls back to defaultBranch)
   isPrivate      Boolean     @default(false)
   enabled        Boolean     @default(false)
   indexStatus    IndexStatus @default(PENDING)

@@ -40,4 +40,7 @@ export interface Repository {
   indexStatus: IndexStatus;
   lastIndexedAt: Date | null;
   chunkCount: number;
+  projectId: string | null;
+  indexBranch: string | null;
+  projectName: string | null;
 }
