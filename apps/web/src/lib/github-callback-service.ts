@@ -174,47 +174,14 @@ async function processInstallationUpdate(
     where: { installationId: BigInt(installationId) },
   });
 
-  // 2. If no existing installation, try to recover by creating one
+  // 2. If no existing installation, fail — the proper flow is created → updated.
+  //    Attempting to associate with a random workspace risks multi-tenant data mix-up.
   if (!existingInstallation) {
-    console.warn(
-      "[GitHub Callback] No existing installation for update, attempting recovery:",
+    console.error(
+      "[GitHub Callback] Installation not found for update, skipping:",
       installationId
     );
-
-    try {
-      const details = await fetchInstallationDetails(installationId);
-
-      // Find a workspace that doesn't already have a GitHub installation
-      // This is a best-effort recovery — associate with the first available workspace
-      const workspace = await prisma.workspace.findFirst({
-        where: {
-          githubInstallation: null,
-        },
-        select: { id: true },
-      });
-
-      if (!workspace) {
-        console.error("[GitHub Callback] No available workspace for orphaned installation");
-        return { success: false, error: "missing_installation" };
-      }
-
-      existingInstallation = await prisma.gitHubInstallation.create({
-        data: {
-          workspaceId: workspace.id,
-          installationId: BigInt(installationId),
-          accountLogin: details.accountLogin,
-          accountType: details.accountType,
-        },
-      });
-
-      console.log(
-        "[GitHub Callback] Recovered installation for workspace:",
-        workspace.id
-      );
-    } catch (err) {
-      console.error("[GitHub Callback] Recovery failed:", err);
-      return { success: false, error: "missing_installation" };
-    }
+    return { success: false, error: "missing_installation" };
   }
 
   // 3. Fetch updated repository list from GitHub
