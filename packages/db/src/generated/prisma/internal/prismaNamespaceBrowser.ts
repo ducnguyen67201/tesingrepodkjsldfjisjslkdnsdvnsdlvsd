@@ -506,8 +506,7 @@ export const CodeChunkScalarFieldEnum = {
   language: 'language',
   chunkType: 'chunkType',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  embedding: 'embedding'
+  updatedAt: 'updatedAt'
 } as const
 
 export type CodeChunkScalarFieldEnum = (typeof CodeChunkScalarFieldEnum)[keyof typeof CodeChunkScalarFieldEnum]
@@ -630,7 +629,6 @@ export const KnowledgeChunkScalarFieldEnum = {
   startOffset: 'startOffset',
   endOffset: 'endOffset',
   sectionTitle: 'sectionTitle',
-  embedding: 'embedding',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
