@@ -115,12 +115,55 @@ export function AssignRepoDialog({
     setBranchPopoverOpen(false);
   }, [defaultBranch]);
 
+  const handleCancel = useCallback(() => {
+    onOpenChange(false);
+  }, [onOpenChange]);
+
   const availableProjects = useMemo(
     () => projects?.filter((p) => !p.hasRepo || p.id === currentProjectId) ?? [],
     [projects, currentProjectId]
   );
 
   const displayBranch = selectedBranch || defaultBranch;
+
+  const renderProjectItem = useCallback(
+    (project: { id: string; name: string; hasRepo: boolean }) => (
+      <SelectItem key={project.id} value={project.id}>
+        <div className="flex items-center gap-2">
+          <FolderKanban className="h-4 w-4 text-muted-foreground" />
+          {project.name}
+        </div>
+      </SelectItem>
+    ),
+    []
+  );
+
+  const renderBranchItem = useCallback(
+    (branch: { name: string; isDefault: boolean }) => (
+      <CommandItem
+        key={branch.name}
+        value={branch.name}
+        onSelect={handleSelectBranch}
+      >
+        <Check
+          className={cn(
+            "mr-2 h-4 w-4",
+            displayBranch === branch.name
+              ? "opacity-100"
+              : "opacity-0"
+          )}
+        />
+        <GitBranch className="mr-2 h-4 w-4 text-muted-foreground" />
+        {branch.name}
+        {branch.isDefault && (
+          <span className="ml-auto text-xs text-muted-foreground">
+            default
+          </span>
+        )}
+      </CommandItem>
+    ),
+    [handleSelectBranch, displayBranch]
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -154,14 +197,7 @@ export function AssignRepoDialog({
                   <SelectValue placeholder="Select a project" />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableProjects.map((project) => (
-                    <SelectItem key={project.id} value={project.id}>
-                      <div className="flex items-center gap-2">
-                        <FolderKanban className="h-4 w-4 text-muted-foreground" />
-                        {project.name}
-                      </div>
-                    </SelectItem>
-                  ))}
+                  {availableProjects.map(renderProjectItem)}
                 </SelectContent>
               </Select>
             )}
@@ -195,29 +231,7 @@ export function AssignRepoDialog({
                       {branchesLoading ? "Loading branches..." : "No branches found."}
                     </CommandEmpty>
                     <CommandGroup>
-                      {branches?.map((branch) => (
-                        <CommandItem
-                          key={branch.name}
-                          value={branch.name}
-                          onSelect={handleSelectBranch}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              displayBranch === branch.name
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          <GitBranch className="mr-2 h-4 w-4 text-muted-foreground" />
-                          {branch.name}
-                          {branch.isDefault && (
-                            <span className="ml-auto text-xs text-muted-foreground">
-                              default
-                            </span>
-                          )}
-                        </CommandItem>
-                      ))}
+                      {branches?.map(renderBranchItem)}
                     </CommandGroup>
                   </CommandList>
                 </Command>
@@ -230,7 +244,7 @@ export function AssignRepoDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={handleCancel}>
             Cancel
           </Button>
           <Button

@@ -87,7 +87,7 @@ export function RepositoryRow({
 
   const reindex = trpc.github.reindexRepository.useMutation({
     onSuccess: () => {
-      githubToast.repositoryEnabled(repository.fullName);
+      githubToast.reindexStarted(repository.fullName);
       onRefresh();
     },
     onError: showError,

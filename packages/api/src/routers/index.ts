@@ -190,6 +190,7 @@ export const appRouter = createRouter({
    * - github.assignToProject            - Assign repo to project + start indexing
    * - github.unassignFromProject        - Unassign repo from project
    * - github.listProjectsForAssignment  - List projects for assignment dropdown
+   * - github.listBranches              - List branches from GitHub API
    * - github.disableRepository          - Disable indexing
    * - github.reindexRepository          - Trigger re-index
    * - github.getRepository              - Get repo details

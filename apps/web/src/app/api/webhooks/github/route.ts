@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
         pushBranch,
         trackedBranch,
       });
-      return webhookSuccess.skipped(SKIP_REASONS.NON_DEFAULT_BRANCH);
+      return webhookSuccess.skipped(SKIP_REASONS.NON_TRACKED_BRANCH);
     }
   }
 

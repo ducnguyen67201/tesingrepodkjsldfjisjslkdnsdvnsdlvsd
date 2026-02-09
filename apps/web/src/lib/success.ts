@@ -328,6 +328,11 @@ export const githubToast = {
       description: `"${name}" indexing has been stopped.`,
     }),
 
+  reindexStarted: (name: string) =>
+    toast.success("Re-indexing Started", {
+      description: `"${name}" re-indexing may take a few minutes.`,
+    }),
+
   repositoryAssigned: (repoName: string, projectName: string) =>
     toast.success("Repository Assigned", {
       description: `"${repoName}" is now linked to "${projectName}". Indexing will begin shortly.`,

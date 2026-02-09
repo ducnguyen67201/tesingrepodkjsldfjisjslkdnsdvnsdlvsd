@@ -222,6 +222,7 @@ export const githubRouter = createRouter({
           id: repositoryId,
           installation: { workspaceId: ctx.workspace.id },
         },
+        select: { id: true, defaultBranch: true },
       });
       if (!repo) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
@@ -306,6 +307,7 @@ export const githubRouter = createRouter({
           id: repositoryId,
           installation: { workspaceId: ctx.workspace.id },
         },
+        select: { id: true },
       });
       if (!repo) {
         throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });

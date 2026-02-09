@@ -97,7 +97,7 @@ export const webhookServerError = {
 
 export const SKIP_REASONS = {
   EVENT_NOT_SUPPORTED: "Event not supported",
-  NON_DEFAULT_BRANCH: "Non-default branch push ignored",
+  NON_TRACKED_BRANCH: "Non-tracked branch push ignored",
   PR_ACTION_NOT_RELEVANT: "PR action not relevant",
   REPO_NOT_REGISTERED: "Repository not registered",
 } as const;

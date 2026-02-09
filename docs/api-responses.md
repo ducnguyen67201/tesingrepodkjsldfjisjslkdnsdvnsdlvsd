@@ -109,7 +109,7 @@ import {
 // Success
 return webhookSuccess.received(workflowId);
 return webhookSuccess.pong();
-return webhookSuccess.skipped(SKIP_REASONS.NON_DEFAULT_BRANCH);
+return webhookSuccess.skipped(SKIP_REASONS.NON_TRACKED_BRANCH);
 
 // Errors
 return webhookError.invalidSignature();
@@ -125,7 +125,7 @@ const repoInfo = parseRepositoryFullName("owner/repo");
 | `webhookSuccess` | `received(workflowId?)`, `pong()`, `skipped(reason)` |
 | `webhookError` | `missingHeaders()`, `invalidJson()`, `invalidPayload()`, `invalidRepoFormat()`, `invalidSignature()` |
 | `webhookServerError` | `notConfigured()`, `processingFailed()` |
-| `SKIP_REASONS` | `EVENT_NOT_SUPPORTED`, `NON_DEFAULT_BRANCH`, `PR_ACTION_NOT_RELEVANT`, `REPO_NOT_REGISTERED` |
+| `SKIP_REASONS` | `EVENT_NOT_SUPPORTED`, `NON_TRACKED_BRANCH`, `PR_ACTION_NOT_RELEVANT`, `REPO_NOT_REGISTERED` |
 
 ---
 
