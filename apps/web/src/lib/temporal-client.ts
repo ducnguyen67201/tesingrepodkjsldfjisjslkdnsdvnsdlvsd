@@ -64,7 +64,7 @@ export async function startGitHubIndexWorkflow(
   const client = await getTemporalClient();
 
   const handle = await client.workflow.start("githubIndexWorkflow", {
-    taskQueue: "ducsigr-tasks",
+    taskQueue: env.TEMPORAL_TASK_QUEUE ?? "ducsigr-tasks",
     workflowId: `github-index-${input.deliveryId}`,
     args: [input],
   });
@@ -94,7 +94,7 @@ export async function startEvalWorkflow(
   const workflowId = `eval-${input.suiteId}-${triggerSuffix}`;
 
   const handle = await client.workflow.start("evalPipelineWorkflow", {
-    taskQueue: "ducsigr-tasks",
+    taskQueue: env.TEMPORAL_TASK_QUEUE ?? "ducsigr-tasks",
     workflowId,
     args: [input],
   });
