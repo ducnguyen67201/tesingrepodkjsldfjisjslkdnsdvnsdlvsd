@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { ApiClient } from "../lib/api-client.js";
+import { ApiClientError, type ApiClient } from "../lib/api-client.js";
 import { formatAlertList, formatRCADetail } from "../lib/formatters.js";
 import { errorResult, textResult } from "../lib/errors.js";
 
@@ -45,11 +45,7 @@ export async function handleGetRCA(
     const output = formatRCADetail(data);
     return textResult(output);
   } catch (error) {
-    if (
-      error instanceof Error &&
-      "status" in error &&
-      (error as { status: number }).status === 404
-    ) {
+    if (error instanceof ApiClientError && error.status === 404) {
       return errorResult(`RCA not found: ${input.rcaId}`);
     }
     throw error;

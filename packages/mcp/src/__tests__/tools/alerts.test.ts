@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { ApiClient } from "../../lib/api-client.js";
+import { ApiClientError } from "../../lib/api-client.js";
 import { handleListAlerts, handleGetRCA } from "../../tools/alerts.js";
 
 function createMockApiClient(): ApiClient {
@@ -39,7 +40,7 @@ describe("handleListAlerts", () => {
           enabled: true,
           lastTriggeredAt: new Date("2026-01-15"),
           history: [{ id: "h1", state: "FIRING", value: 0.12, triggeredAt: new Date() }],
-          _count: { rcas: 2 },
+          _count: { rcaAnalyses: 2 },
         },
       ],
     });
@@ -112,7 +113,6 @@ describe("handleGetRCA", () => {
           message: "fix: update connection handling",
           author: "dev@example.com",
           timestamp: new Date("2026-01-14"),
-          filesChanged: ["src/db.ts"],
         },
       ],
     });
@@ -129,8 +129,7 @@ describe("handleGetRCA", () => {
   });
 
   it("returns error for not found RCA", async () => {
-    const error = new Error("Not found");
-    (error as unknown as { status: number }).status = 404;
+    const error = new ApiClientError("Not found", 404);
     (apiClient.getRCA as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
     const result = await handleGetRCA(apiClient, { rcaId: "nonexistent" });

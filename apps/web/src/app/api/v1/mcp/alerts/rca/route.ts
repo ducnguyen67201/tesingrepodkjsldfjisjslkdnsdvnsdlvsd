@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!rca || rca.alert.project.id !== auth.projectId) {
+    if (!rca?.alert?.project || rca.alert.project.id !== auth.projectId) {
       return apiError.notFound("RCA");
     }
 
@@ -58,7 +58,6 @@ export async function POST(req: NextRequest) {
               message: true,
               author: true,
               timestamp: true,
-              filesChanged: true,
             },
             take: 10,
           })

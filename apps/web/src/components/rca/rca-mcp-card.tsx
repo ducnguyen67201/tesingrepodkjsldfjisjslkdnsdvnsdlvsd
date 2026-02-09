@@ -74,12 +74,12 @@ export function RCAMCPSetup({ rcaId, alertName }: RCAMCPSetupProps) {
     }
   }, [mcpPrompt]);
 
-  const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = useCallback((open: boolean) => {
     if (!open) {
       setCopiedConfig(false);
       setCopiedPrompt(false);
     }
-  };
+  }, []);
 
   return (
     <Dialog onOpenChange={handleOpenChange}>

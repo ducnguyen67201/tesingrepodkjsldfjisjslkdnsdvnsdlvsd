@@ -492,7 +492,7 @@ export function formatAlertList(alerts: AlertRow[]): string {
     output += `- **Type**: ${alert.type} | **Severity**: ${alert.severity}\n`;
     output += `- **State**: ${stateIcon} | **Enabled**: ${alert.enabled ? "Yes" : "No"}\n`;
     output += `- **Threshold**: ${alert.operator} ${alert.threshold} (window: ${alert.windowMins}m)\n`;
-    output += `- **RCA Reports**: ${alert._count.rcas}\n`;
+    output += `- **RCA Reports**: ${alert._count.rcaAnalyses}\n`;
 
     if (alert.history.length > 0) {
       output += `- **Recent History**:\n`;
@@ -515,7 +515,7 @@ export function formatRCADetail(data: RCADetail): string {
   output += `- **Severity**: ${alert.severity}\n`;
   output += `- **Threshold**: ${alert.operator} ${alert.threshold}\n`;
   output += `- **Trigger Value**: ${triggerValue ?? "N/A"}\n`;
-  output += `- **Triggered At**: ${rca.triggeredAt}\n`;
+  output += `- **Triggered At**: ${rca.triggeredAt.toISOString()} (${formatRelativeTime(rca.triggeredAt)})\n`;
   output += `- **Confidence**: ${rca.confidence !== null ? `${Math.round(rca.confidence * 100)}%` : "N/A"}\n\n`;
 
   if (rca.analysis) {
@@ -563,10 +563,7 @@ export function formatRCADetail(data: RCADetail): string {
   if (commits.length > 0) {
     output += `## Suspected Commits\n`;
     for (const c of commits) {
-      output += `- \`${c.sha.slice(0, 7)}\` ${c.message} (by ${c.author})\n`;
-      if (c.filesChanged.length > 0) {
-        output += `  Files: ${c.filesChanged.join(", ")}\n`;
-      }
+      output += `- \`${c.sha.slice(0, 7)}\` ${c.message} (by ${c.author}, ${formatRelativeTime(c.timestamp)})\n`;
     }
     output += `\n`;
   }

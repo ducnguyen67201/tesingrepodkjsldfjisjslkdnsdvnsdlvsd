@@ -266,7 +266,7 @@ const AlertRowSchema = z.object({
   enabled: z.boolean(),
   lastTriggeredAt: DateStringSchema.nullable(),
   history: z.array(AlertHistoryRowSchema),
-  _count: z.object({ rcas: z.number() }),
+  _count: z.object({ rcaAnalyses: z.number() }),
 });
 
 export const ListAlertsResponseSchema = z.object({
@@ -283,7 +283,6 @@ const RCACommitSchema = z.object({
   message: z.string(),
   author: z.string(),
   timestamp: DateStringSchema,
-  filesChanged: z.array(z.string()),
 });
 
 const RCAAnalysisSchema = z.object({

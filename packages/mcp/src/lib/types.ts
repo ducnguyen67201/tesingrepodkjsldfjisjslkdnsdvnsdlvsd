@@ -160,7 +160,7 @@ export interface AlertRow {
   enabled: boolean;
   lastTriggeredAt: Date | null;
   history: AlertHistoryRow[];
-  _count: { rcas: number };
+  _count: { rcaAnalyses: number };
 }
 
 export interface RCACommit {
@@ -168,7 +168,6 @@ export interface RCACommit {
   message: string;
   author: string;
   timestamp: Date;
-  filesChanged: string[];
 }
 
 export interface RCAAnalysis {

@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
           },
         },
         _count: {
-          select: { rcas: true },
+          select: { rcaAnalyses: true },
         },
       },
       orderBy: { lastTriggeredAt: "desc" },
