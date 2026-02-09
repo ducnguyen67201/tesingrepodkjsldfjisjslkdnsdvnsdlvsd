@@ -393,7 +393,7 @@ export const githubRouter = createRouter({
       const privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
 
       if (!appId || !privateKey) {
-        // Fallback: return just the default branch if GitHub App not configured
+        console.warn("[GitHub] GitHub App credentials not configured, returning default branch only");
         return [{ name: repo.defaultBranch, isDefault: true }];
       }
 

@@ -43,6 +43,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
+const BRANCH_LIST_STYLE = { height: "auto", maxHeight: "200px", overflowY: "auto" } as const;
+
 interface AssignRepoDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -188,7 +190,7 @@ export function AssignRepoDialog({
               <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                 <Command>
                   <CommandInput placeholder="Search branches..." />
-                  <CommandList style={{ height: "auto", maxHeight: "200px", overflowY: "auto" }}>
+                  <CommandList style={BRANCH_LIST_STYLE}>
                     <CommandEmpty>
                       {branchesLoading ? "Loading branches..." : "No branches found."}
                     </CommandEmpty>
