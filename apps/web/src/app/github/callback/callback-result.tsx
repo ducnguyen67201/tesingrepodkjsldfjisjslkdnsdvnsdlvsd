@@ -23,9 +23,11 @@ export function CallbackResult({ result }: CallbackResultProps) {
       );
 
       // Close popup after a brief delay to show success/error state
+      // Longer delay for errors so user can see details
+      const delay = result.success ? 1500 : 5000;
       const timeout = setTimeout(() => {
         window.close();
-      }, 1500);
+      }, delay);
 
       return () => clearTimeout(timeout);
     }
@@ -76,6 +78,11 @@ export function CallbackResult({ result }: CallbackResultProps) {
       <XCircle className="h-16 w-16 text-destructive" />
       <h1 className="mt-4 text-xl font-semibold">{errorInfo.title}</h1>
       <p className="mt-2 text-muted-foreground">{errorInfo.description}</p>
+      {result.errorDetail && (
+        <p className="mt-2 max-w-md rounded bg-muted p-2 text-xs font-mono text-muted-foreground">
+          {result.errorDetail}
+        </p>
+      )}
       <p className="mt-4 text-sm text-muted-foreground">
         This window will close automatically...
       </p>

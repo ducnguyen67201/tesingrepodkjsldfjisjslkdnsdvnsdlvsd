@@ -29,6 +29,7 @@ export interface GitHubStatePayload {
 export interface GitHubCallbackResult {
   success: boolean;
   error?: "cancelled" | "invalid_state" | "github_api_error" | "missing_installation";
+  errorDetail?: string;
   repoCount?: number;
 }
 
@@ -97,8 +98,9 @@ export async function processGitHubCallback(
     installationDetails = await fetchInstallationDetails(installationId);
     repositories = await fetchAccessibleRepositories(installationId);
   } catch (err) {
-    console.error("[GitHub Callback] GitHub API error:", err);
-    return { success: false, error: "github_api_error" };
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    console.error("[GitHub Callback] GitHub API error:", errorMessage, err);
+    return { success: false, error: "github_api_error", errorDetail: errorMessage };
   }
 
   // 6. Store installation in database (upsert to handle re-installs)
@@ -157,6 +159,10 @@ export async function processGitHubCallback(
  * This is called when setup_action=update, which happens when:
  * - User adds/removes repository access in GitHub settings
  * - No state token is present (not a new OAuth flow)
+ *
+ * If no existing installation record is found (e.g., user re-installed the app
+ * or the DB was reset), this function will attempt to find the workspace from
+ * the installation details and create the record.
  */
 async function processInstallationUpdate(
   installationId: number
@@ -164,16 +170,54 @@ async function processInstallationUpdate(
   console.log("[GitHub Callback] Processing installation update:", installationId);
 
   // 1. Find existing installation in database
-  const existingInstallation = await prisma.gitHubInstallation.findUnique({
+  let existingInstallation = await prisma.gitHubInstallation.findUnique({
     where: { installationId: BigInt(installationId) },
   });
 
+  // 2. If no existing installation, try to recover by creating one
   if (!existingInstallation) {
-    console.error("[GitHub Callback] Installation not found for update:", installationId);
-    return { success: false, error: "missing_installation" };
+    console.warn(
+      "[GitHub Callback] No existing installation for update, attempting recovery:",
+      installationId
+    );
+
+    try {
+      const details = await fetchInstallationDetails(installationId);
+
+      // Find a workspace that doesn't already have a GitHub installation
+      // This is a best-effort recovery — associate with the first available workspace
+      const workspace = await prisma.workspace.findFirst({
+        where: {
+          gitHubInstallation: null,
+        },
+        select: { id: true },
+      });
+
+      if (!workspace) {
+        console.error("[GitHub Callback] No available workspace for orphaned installation");
+        return { success: false, error: "missing_installation" };
+      }
+
+      existingInstallation = await prisma.gitHubInstallation.create({
+        data: {
+          workspaceId: workspace.id,
+          installationId: BigInt(installationId),
+          accountLogin: details.accountLogin,
+          accountType: details.accountType,
+        },
+      });
+
+      console.log(
+        "[GitHub Callback] Recovered installation for workspace:",
+        workspace.id
+      );
+    } catch (err) {
+      console.error("[GitHub Callback] Recovery failed:", err);
+      return { success: false, error: "missing_installation" };
+    }
   }
 
-  // 2. Fetch updated repository list from GitHub
+  // 3. Fetch updated repository list from GitHub
   let repositories;
   try {
     repositories = await fetchAccessibleRepositories(installationId);
@@ -182,7 +226,7 @@ async function processInstallationUpdate(
     return { success: false, error: "github_api_error" };
   }
 
-  // 3. Sync repositories (upsert each, preserving enabled status)
+  // 4. Sync repositories (upsert each, preserving enabled status)
   try {
     const currentRepoIds = new Set<bigint>();
 
@@ -213,7 +257,7 @@ async function processInstallationUpdate(
       });
     }
 
-    // 4. Remove repos that are no longer accessible (user revoked access)
+    // 5. Remove repos that are no longer accessible (user revoked access)
     const allRepos = await prisma.gitHubRepository.findMany({
       where: { installationId: existingInstallation.id },
       select: { id: true, githubId: true },
