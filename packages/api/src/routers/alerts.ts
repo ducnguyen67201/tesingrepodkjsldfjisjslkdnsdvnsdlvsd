@@ -44,7 +44,7 @@ const CreateAlertSchema = z.object({
   threshold: z.number().min(0),
   operator: AlertOperatorSchema.default("GREATER_THAN"),
   windowMins: z.number().int().min(1).max(60).default(5),
-  cooldownMins: z.number().int().min(1).max(1440).optional(),
+  cooldownMins: z.number().int().min(0).max(1440).optional(),
   severity: AlertSeveritySchema.default("MEDIUM"),
   pendingMins: z.number().int().min(0).max(30).optional(),
 });
@@ -56,7 +56,7 @@ const UpdateAlertSchema = z.object({
   threshold: z.number().min(0).optional(),
   operator: AlertOperatorSchema.optional(),
   windowMins: z.number().int().min(1).max(60).optional(),
-  cooldownMins: z.number().int().min(1).max(1440).optional(),
+  cooldownMins: z.number().int().min(0).max(1440).optional(),
   severity: AlertSeveritySchema.optional(),
   pendingMins: z.number().int().min(0).max(30).optional(),
   enabled: z.boolean().optional(),
