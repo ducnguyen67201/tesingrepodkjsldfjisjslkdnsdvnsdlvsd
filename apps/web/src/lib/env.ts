@@ -60,6 +60,7 @@ export const env = createEnv({
     // Example: "localhost:7233" or "your-ns.tmprl.cloud:7233"
     TEMPORAL_ADDRESS: z.string().optional(),
     TEMPORAL_NAMESPACE: z.string().default("default"),
+    TEMPORAL_TASK_QUEUE: z.string().default("ducsigr-tasks"),
     TEMPORAL_API_KEY: z.string().optional(),
   },
 
@@ -98,6 +99,7 @@ export const env = createEnv({
     GITHUB_STATE_SECRET: process.env.GITHUB_STATE_SECRET,
     TEMPORAL_ADDRESS: process.env.TEMPORAL_ADDRESS,
     TEMPORAL_NAMESPACE: process.env.TEMPORAL_NAMESPACE,
+    TEMPORAL_TASK_QUEUE: process.env.TEMPORAL_TASK_QUEUE,
     TEMPORAL_API_KEY: process.env.TEMPORAL_API_KEY,
   },
 
