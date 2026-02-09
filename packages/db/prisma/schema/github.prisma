@@ -36,6 +36,7 @@ model GitHubRepository {
   enabled        Boolean     @default(false)
   indexStatus    IndexStatus @default(PENDING)
   lastIndexedAt  DateTime?
+  treeRootHash   String?     // Merkle tree root hash for change detection
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 

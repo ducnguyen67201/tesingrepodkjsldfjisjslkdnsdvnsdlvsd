@@ -455,6 +455,29 @@ export const internalRouter = createRouter({
     .input(StoreGitHubIndexSchema)
     .mutation(({ input }) => GitHubService.storeIndexedData(input)),
 
+  /**
+   * Update Merkle tree root hash for a repository
+   * Called by: github.activities.ts → updateTreeRootHash
+   */
+  updateTreeRootHash: internalProcedure
+    .input(z.object({
+      repositoryId: z.string(),
+      treeRootHash: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      try {
+        await prisma.gitHubRepository.update({
+          where: { id: input.repositoryId },
+          data: { treeRootHash: input.treeRootHash },
+        });
+      } catch (e) {
+        if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2025") {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Repository not found" });
+        }
+        throw e;
+      }
+    }),
+
   // ============================================================
   // REPOSITORY INDEXING PROCEDURES
   // ============================================================

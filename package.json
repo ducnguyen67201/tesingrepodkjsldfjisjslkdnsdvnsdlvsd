@@ -19,6 +19,7 @@
     "db:push": "doppler run -- turbo db:push",
     "db:migrate": "doppler run -- turbo db:migrate",
     "db:seed": "doppler run -- pnpm --filter @ducsigr/db db:seed",
+    "db:seed-dev": "doppler run -- pnpm --filter @ducsigr/db db:seed-dev",
     "db:studio": "doppler run -- pnpm --filter @ducsigr/db db:studio",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
   },

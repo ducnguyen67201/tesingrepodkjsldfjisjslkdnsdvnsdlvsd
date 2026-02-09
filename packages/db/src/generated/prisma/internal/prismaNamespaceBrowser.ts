@@ -453,6 +453,7 @@ export const GitHubRepositoryScalarFieldEnum = {
   enabled: 'enabled',
   indexStatus: 'indexStatus',
   lastIndexedAt: 'lastIndexedAt',
+  treeRootHash: 'treeRootHash',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

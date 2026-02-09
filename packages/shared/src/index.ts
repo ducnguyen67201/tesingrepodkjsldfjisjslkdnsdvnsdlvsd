@@ -6,6 +6,7 @@ export * from "./utils";
 export * from "./api-keys";
 export * from "./chunking";
 export * from "./rca";
+export * from "./merkle";
 
 // LLM Center - import from "@ducsigr/shared/llm"
 // Cache utilities - import from "@ducsigr/shared/cache"
