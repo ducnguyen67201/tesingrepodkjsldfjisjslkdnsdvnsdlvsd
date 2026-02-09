@@ -188,7 +188,7 @@ async function processInstallationUpdate(
       // This is a best-effort recovery — associate with the first available workspace
       const workspace = await prisma.workspace.findFirst({
         where: {
-          gitHubInstallation: null,
+          githubInstallation: null,
         },
         select: { id: true },
       });

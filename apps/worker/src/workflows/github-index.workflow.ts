@@ -280,12 +280,15 @@ async function handlePushEvent(
     );
 
     const embeddingChunks: EmbeddingChunk[] = result.chunkIds
-      .filter((chunk) => contentByHash.has(chunk.contentHash))
-      .map((chunk) => ({
-        id: chunk.id,
-        content: contentByHash.get(chunk.contentHash)!,
-        contentHash: chunk.contentHash,
-      }));
+      .map((chunk) => {
+        const content = contentByHash.get(chunk.contentHash);
+        if (!content) {
+          log.warn("Chunk content not found for hash", { contentHash: chunk.contentHash, chunkId: chunk.id });
+          return null;
+        }
+        return { id: chunk.id, content, contentHash: chunk.contentHash };
+      })
+      .filter((c): c is EmbeddingChunk => c !== null);
 
     const embeddingResult = await generateEmbeddings({
       chunks: embeddingChunks,
