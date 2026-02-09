@@ -9,6 +9,8 @@ import type {
   CostServiceRow,
   TraceStatsData,
   ProjectInfo,
+  AlertRow,
+  RCADetail,
 } from "./types.js";
 
 // ============================================================
@@ -476,4 +478,98 @@ export function formatProjectInfo(project: ProjectInfo): string {
   lines.push(`**API Keys:** ${project._count.apiKeys}`);
 
   return lines.join("\n");
+}
+
+export function formatAlertList(alerts: AlertRow[]): string {
+  if (alerts.length === 0) return "No alerts configured for this project.";
+
+  let output = `# Alerts (${alerts.length})\n\n`;
+
+  for (const alert of alerts) {
+    const stateIcon = alert.state === "FIRING" ? "FIRING" : alert.state === "PENDING" ? "PENDING" : "OK";
+    output += `## ${alert.name}\n`;
+    output += `- **ID**: ${alert.id}\n`;
+    output += `- **Type**: ${alert.type} | **Severity**: ${alert.severity}\n`;
+    output += `- **State**: ${stateIcon} | **Enabled**: ${alert.enabled ? "Yes" : "No"}\n`;
+    output += `- **Threshold**: ${alert.operator} ${alert.threshold} (window: ${alert.windowMins}m)\n`;
+    output += `- **RCA Reports**: ${alert._count.rcas}\n`;
+
+    if (alert.history.length > 0) {
+      output += `- **Recent History**:\n`;
+      for (const h of alert.history) {
+        output += `  - ${formatRelativeTime(h.triggeredAt)}: value=${h.value} state=${h.state ?? "N/A"}\n`;
+      }
+    }
+    output += `\n`;
+  }
+
+  return output;
+}
+
+export function formatRCADetail(data: RCADetail): string {
+  const { rca, alert, triggerValue, commits } = data;
+
+  let output = `# Root Cause Analysis: ${alert.name}\n\n`;
+  output += `## Alert Context\n`;
+  output += `- **Alert**: ${alert.name} (${alert.type})\n`;
+  output += `- **Severity**: ${alert.severity}\n`;
+  output += `- **Threshold**: ${alert.operator} ${alert.threshold}\n`;
+  output += `- **Trigger Value**: ${triggerValue ?? "N/A"}\n`;
+  output += `- **Triggered At**: ${rca.triggeredAt}\n`;
+  output += `- **Confidence**: ${rca.confidence !== null ? `${Math.round(rca.confidence * 100)}%` : "N/A"}\n\n`;
+
+  if (rca.analysis) {
+    const a = rca.analysis;
+    output += `## Hypothesis\n${a.hypothesis}\n\n`;
+    output += `## Root Cause\n`;
+    output += `- **Category**: ${a.rootCause.category}\n`;
+    output += `- **Summary**: ${a.rootCause.summary}\n`;
+    output += `- **Evidence**:\n`;
+    for (const e of a.rootCause.evidence) {
+      output += `  - ${e}\n`;
+    }
+    output += `\n## Reasoning\n${a.reasoning}\n\n`;
+
+    if (a.affectedComponents.length > 0) {
+      output += `## Affected Components\n`;
+      for (const c of a.affectedComponents) {
+        output += `- ${c}\n`;
+      }
+      output += `\n`;
+    }
+
+    if (a.relatedChanges.length > 0) {
+      output += `## Related Changes\n`;
+      for (const rc of a.relatedChanges) {
+        output += `- [${rc.relevance}] ${rc.type} ${rc.changeId}: ${rc.explanation}\n`;
+      }
+      output += `\n`;
+    }
+
+    output += `## Remediation\n`;
+    output += `### Immediate Steps\n`;
+    for (const [i, step] of a.remediation.immediate.entries()) {
+      output += `${i + 1}. ${step}\n`;
+    }
+    output += `\n### Long-term Improvements\n`;
+    for (const [i, step] of a.remediation.longTerm.entries()) {
+      output += `${i + 1}. ${step}\n`;
+    }
+    output += `\n`;
+  } else {
+    output += `## Analysis\n*Analysis data not available*\n\n`;
+  }
+
+  if (commits.length > 0) {
+    output += `## Suspected Commits\n`;
+    for (const c of commits) {
+      output += `- \`${c.sha.slice(0, 7)}\` ${c.message} (by ${c.author})\n`;
+      if (c.filesChanged.length > 0) {
+        output += `  Files: ${c.filesChanged.join(", ")}\n`;
+      }
+    }
+    output += `\n`;
+  }
+
+  return output;
 }

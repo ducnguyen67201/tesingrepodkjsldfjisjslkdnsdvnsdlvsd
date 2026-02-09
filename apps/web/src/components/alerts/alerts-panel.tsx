@@ -121,6 +121,7 @@ function calculatePendingProgress(stateChangedAt: Date | null, pendingMins: numb
 
 function calculateCooldownProgress(lastTriggeredAt: Date | null, cooldownMins: number): number {
   if (!lastTriggeredAt) return 100;
+  if (cooldownMins === 0) return 100; // No cooldown — always ready to notify
   const elapsed = (Date.now() - new Date(lastTriggeredAt).getTime()) / 1000 / 60;
   return Math.min(100, (elapsed / cooldownMins) * 100);
 }
@@ -574,8 +575,8 @@ function AlertCard({ alert, workspaceSlug, onToggle, onDelete, onTestAlert, onDr
         </div>
       )}
 
-      {/* Cooldown Progress Bar */}
-      {alert.state === "FIRING" && cooldownProgress < 100 && (
+      {/* Cooldown Progress Bar — hidden when cooldown is 0 (instant alerting) */}
+      {alert.state === "FIRING" && alert.cooldownMins > 0 && cooldownProgress < 100 && (
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
             <span className="text-red-600">In cooldown...</span>
@@ -584,6 +585,11 @@ function AlertCard({ alert, workspaceSlug, onToggle, onDelete, onTestAlert, onDr
             </span>
           </div>
           <Progress value={cooldownProgress} className="h-1.5 bg-red-100" />
+        </div>
+      )}
+      {alert.state === "FIRING" && alert.cooldownMins === 0 && (
+        <div className="text-xs text-red-600 font-medium">
+          No cooldown — alerting every eval cycle
         </div>
       )}
 

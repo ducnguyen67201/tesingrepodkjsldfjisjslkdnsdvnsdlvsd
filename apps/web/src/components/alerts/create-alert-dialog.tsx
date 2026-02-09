@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,6 +34,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc/client";
 import { showError } from "@/lib/errors";
 import { alertToast } from "@/lib/success";
@@ -103,6 +105,7 @@ export function CreateAlertDialog({
 }: CreateAlertDialogProps) {
   const utils = trpc.useUtils();
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [instantAlerting, setInstantAlerting] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<ThresholdPreset | null>("BALANCED");
   const form = useForm<CreateAlertFormValues>({
     defaultValues: DEFAULT_VALUES,
@@ -120,12 +123,27 @@ export function CreateAlertDialog({
     },
   });
 
+  const handleInstantToggle = useCallback(
+    (checked: boolean) => {
+      setInstantAlerting(checked);
+      if (checked) {
+        form.setValue("cooldownMins", "0");
+        form.setValue("pendingMins", "0");
+        form.setValue("severity", "CRITICAL");
+      } else {
+        form.setValue("cooldownMins", "");
+        form.setValue("pendingMins", "");
+      }
+    },
+    [form]
+  );
+
   const handleSubmit = useCallback(
     (values: CreateAlertFormValues) => {
       const threshold = parseFloat(values.threshold);
       const windowMins = parseInt(values.windowMins, 10);
-      const cooldownMins = values.cooldownMins ? parseInt(values.cooldownMins, 10) : undefined;
-      const pendingMins = values.pendingMins ? parseInt(values.pendingMins, 10) : undefined;
+      const cooldownMins = values.cooldownMins !== "" ? parseInt(values.cooldownMins, 10) : undefined;
+      const pendingMins = values.pendingMins !== "" ? parseInt(values.pendingMins, 10) : undefined;
 
       if (isNaN(threshold) || threshold < 0) {
         form.setError("threshold", { message: "Must be a positive number" });
@@ -135,8 +153,8 @@ export function CreateAlertDialog({
         form.setError("windowMins", { message: "Must be 1-60" });
         return;
       }
-      if (cooldownMins !== undefined && (isNaN(cooldownMins) || cooldownMins < 1 || cooldownMins > 1440)) {
-        form.setError("cooldownMins", { message: "Must be 1-1440" });
+      if (cooldownMins !== undefined && (isNaN(cooldownMins) || cooldownMins < 0 || cooldownMins > 1440)) {
+        form.setError("cooldownMins", { message: "Must be 0-1440 (0 = no cooldown)" });
         return;
       }
       if (pendingMins !== undefined && (isNaN(pendingMins) || pendingMins < 0 || pendingMins > 30)) {
@@ -166,6 +184,7 @@ export function CreateAlertDialog({
         form.reset();
         setSelectedPreset("BALANCED");
         setShowAdvanced(false);
+        setInstantAlerting(false);
         onClose();
       }
     },
@@ -334,6 +353,26 @@ export function CreateAlertDialog({
               )}
             />
 
+            {/* Instant Alerting Toggle */}
+            <div className="flex items-center justify-between rounded-lg border p-3">
+              <div className="flex items-center gap-2">
+                <Zap className="h-4 w-4 text-amber-500" />
+                <div className="space-y-0.5">
+                  <Label htmlFor="instant-alerting" className="text-sm font-medium cursor-pointer">
+                    Instant Alerting
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    No cooldown, no pending delay. Alert fires immediately on every eval cycle.
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="instant-alerting"
+                checked={instantAlerting}
+                onCheckedChange={handleInstantToggle}
+              />
+            </div>
+
             <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" type="button" className="w-full justify-between">
@@ -359,6 +398,7 @@ export function CreateAlertDialog({
                             min={0}
                             max={30}
                             placeholder="Use severity default"
+                            disabled={instantAlerting}
                             {...field}
                             value={field.value ?? ""}
                           />
@@ -378,14 +418,15 @@ export function CreateAlertDialog({
                         <FormControl>
                           <Input
                             type="number"
-                            min={1}
+                            min={0}
                             max={1440}
                             placeholder="Use severity default"
+                            disabled={instantAlerting}
                             {...field}
                             value={field.value ?? ""}
                           />
                         </FormControl>
-                        <FormDescription>Min time between notifications</FormDescription>
+                        <FormDescription>Min time between notifications (0 = instant)</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}

@@ -140,3 +140,77 @@ export interface ProjectInfo {
     apiKeys: number;
   };
 }
+
+export interface AlertHistoryRow {
+  id: string;
+  state: string | null;
+  value: number;
+  triggeredAt: Date;
+}
+
+export interface AlertRow {
+  id: string;
+  name: string;
+  type: string;
+  severity: string;
+  state: string;
+  threshold: number;
+  operator: string;
+  windowMins: number;
+  enabled: boolean;
+  lastTriggeredAt: Date | null;
+  history: AlertHistoryRow[];
+  _count: { rcas: number };
+}
+
+export interface RCACommit {
+  sha: string;
+  message: string;
+  author: string;
+  timestamp: Date;
+  filesChanged: string[];
+}
+
+export interface RCAAnalysis {
+  hypothesis: string;
+  confidence: number;
+  reasoning: string;
+  rootCause: {
+    category: string;
+    summary: string;
+    evidence: string[];
+  };
+  relatedChanges: Array<{
+    changeId: string;
+    type: string;
+    relevance: string;
+    explanation: string;
+  }>;
+  affectedComponents: string[];
+  remediation: {
+    immediate: string[];
+    longTerm: string[];
+  };
+}
+
+export interface RCADetail {
+  rca: {
+    id: string;
+    alertId: string;
+    triggeredAt: Date;
+    confidence: number | null;
+    suspectedCommits: string[];
+    suspectedPRs: string[];
+    analysis: RCAAnalysis | null;
+  };
+  alert: {
+    id: string;
+    name: string;
+    type: string;
+    severity: string;
+    threshold: number;
+    operator: string;
+  };
+  triggerValue: number | null;
+  commits: RCACommit[];
+}

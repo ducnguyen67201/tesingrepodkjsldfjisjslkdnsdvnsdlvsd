@@ -242,3 +242,91 @@ export const ApiErrorResponseSchema = z.object({
   code: z.string().optional(),
   details: z.unknown().optional(),
 });
+
+// ============================================================
+// /api/v1/mcp/alerts
+// ============================================================
+
+const AlertHistoryRowSchema = z.object({
+  id: z.string(),
+  state: z.string().nullable(),
+  value: z.number(),
+  triggeredAt: DateStringSchema,
+});
+
+const AlertRowSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.string(),
+  severity: z.string(),
+  state: z.string(),
+  threshold: z.number(),
+  operator: z.string(),
+  windowMins: z.number(),
+  enabled: z.boolean(),
+  lastTriggeredAt: DateStringSchema.nullable(),
+  history: z.array(AlertHistoryRowSchema),
+  _count: z.object({ rcas: z.number() }),
+});
+
+export const ListAlertsResponseSchema = z.object({
+  alerts: z.array(AlertRowSchema),
+});
+export type ListAlertsResponse = z.infer<typeof ListAlertsResponseSchema>;
+
+// ============================================================
+// /api/v1/mcp/alerts/rca
+// ============================================================
+
+const RCACommitSchema = z.object({
+  sha: z.string(),
+  message: z.string(),
+  author: z.string(),
+  timestamp: DateStringSchema,
+  filesChanged: z.array(z.string()),
+});
+
+const RCAAnalysisSchema = z.object({
+  hypothesis: z.string(),
+  confidence: z.number(),
+  reasoning: z.string(),
+  rootCause: z.object({
+    category: z.string(),
+    summary: z.string(),
+    evidence: z.array(z.string()),
+  }),
+  relatedChanges: z.array(z.object({
+    changeId: z.string(),
+    type: z.string(),
+    relevance: z.string(),
+    explanation: z.string(),
+  })),
+  affectedComponents: z.array(z.string()),
+  remediation: z.object({
+    immediate: z.array(z.string()),
+    longTerm: z.array(z.string()),
+  }),
+});
+
+export const GetRCAResponseSchema = z.object({
+  rca: z.object({
+    id: z.string(),
+    alertId: z.string(),
+    triggeredAt: DateStringSchema,
+    confidence: z.number().nullable(),
+    suspectedCommits: z.array(z.string()),
+    suspectedPRs: z.array(z.string()),
+    analysis: RCAAnalysisSchema.nullable(),
+  }),
+  alert: z.object({
+    id: z.string(),
+    name: z.string(),
+    type: z.string(),
+    severity: z.string(),
+    threshold: z.number(),
+    operator: z.string(),
+  }),
+  triggerValue: z.number().nullable(),
+  commits: z.array(RCACommitSchema),
+});
+export type GetRCAResponse = z.infer<typeof GetRCAResponseSchema>;

@@ -11,6 +11,8 @@ import {
   CostSummaryResponseSchema,
   TraceStatsResponseSchema,
   ProjectResponseSchema,
+  ListAlertsResponseSchema,
+  GetRCAResponseSchema,
   ApiErrorResponseSchema,
   type ListTracesResponse,
   type GetTraceResponse,
@@ -19,6 +21,8 @@ import {
   type CostSummaryResponse,
   type TraceStatsResponse,
   type ProjectResponse,
+  type ListAlertsResponse,
+  type GetRCAResponse,
 } from "./schemas.js";
 
 export class ApiClientError extends Error {
@@ -40,6 +44,8 @@ export interface ApiClient {
   getCostSummary(input: Record<string, unknown>): Promise<CostSummaryResponse>;
   getTraceStats(input: Record<string, unknown>): Promise<TraceStatsResponse>;
   getProjectInfo(): Promise<ProjectResponse>;
+  listAlerts(input: Record<string, unknown>): Promise<ListAlertsResponse>;
+  getRCA(input: Record<string, unknown>): Promise<GetRCAResponse>;
 }
 
 async function request<T>(
@@ -107,5 +113,11 @@ export function createApiClient(baseUrl: string, apiKey: string): ApiClient {
 
     getProjectInfo: () =>
       request(base, apiKey, "/api/v1/mcp/project", ProjectResponseSchema),
+
+    listAlerts: (input) =>
+      request(base, apiKey, "/api/v1/mcp/alerts", ListAlertsResponseSchema, input),
+
+    getRCA: (input) =>
+      request(base, apiKey, "/api/v1/mcp/alerts/rca", GetRCAResponseSchema, input),
   };
 }

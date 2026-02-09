@@ -5,6 +5,7 @@ import { ArrowLeft, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RCACopyFixPrompt } from "./rca-copy-fix-prompt";
+import { RCAMCPSetup } from "./rca-mcp-card";
 import type { LLMRCAOutput } from "@ducsigr/api/schemas";
 
 interface RCAHeaderProps {
@@ -97,6 +98,7 @@ export function RCAHeader({
 
       {/* Right side - actions */}
       <div className="flex items-center gap-2">
+        <RCAMCPSetup rcaId={rca.id} alertName={alert.name} />
         <RCACopyFixPrompt workspaceSlug={workspaceSlug} rcaId={rca.id} />
       </div>
     </div>

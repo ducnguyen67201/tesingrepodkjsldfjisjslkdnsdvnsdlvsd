@@ -70,7 +70,9 @@ export function SeveritySelector({
               <div className="flex items-center gap-2">
                 <SeverityBadge severity={option.value} />
                 <span className="text-xs text-muted-foreground">
-                  ({option.defaults.cooldownMins}min cooldown)
+                  ({option.defaults.cooldownMins === 0
+                    ? "no cooldown"
+                    : `${option.defaults.cooldownMins}min cooldown`})
                 </span>
               </div>
             </SelectItem>
@@ -84,7 +86,9 @@ export function SeveritySelector({
             Pending: {selectedDefaults.pendingMins} min before firing
           </p>
           <p>
-            Cooldown: {selectedDefaults.cooldownMins} min between notifications
+            Cooldown: {selectedDefaults.cooldownMins === 0
+              ? "None (alert every eval cycle)"
+              : `${selectedDefaults.cooldownMins} min between notifications`}
           </p>
         </div>
       )}

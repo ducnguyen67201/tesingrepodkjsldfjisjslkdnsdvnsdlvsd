@@ -15,6 +15,8 @@ function createMockApiClient(): ApiClient {
     getCostSummary: vi.fn(),
     getTraceStats: vi.fn(),
     getProjectInfo: vi.fn(),
+    listAlerts: vi.fn(),
+    getRCA: vi.fn(),
   };
 }
 

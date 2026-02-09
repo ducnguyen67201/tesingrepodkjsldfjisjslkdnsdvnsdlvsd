@@ -20,6 +20,9 @@ importers:
 
   apps/ingest-demo:
     dependencies:
+      '@ducsigr/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@ducsigr/sdk':
         specifier: ^1.0.3
         version: 1.0.3(@anthropic-ai/sdk@0.20.9)(openai@4.104.0(ws@8.18.3)(zod@4.1.13))
