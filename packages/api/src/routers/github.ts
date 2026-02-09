@@ -237,30 +237,35 @@ export const githubRouter = createRouter({
         throw new TRPCError({ code: "NOT_FOUND", message: "Project not found" });
       }
 
-      // 4. Check no other repo assigned to this project (unique constraint)
-      const existingAssignment = await prisma.gitHubRepository.findUnique({
-        where: { projectId },
-        select: { id: true, fullName: true },
-      });
-      if (existingAssignment && existingAssignment.id !== repositoryId) {
-        throw new TRPCError({
-          code: "CONFLICT",
-          message: `Project already has repository "${existingAssignment.fullName}" assigned`,
-        });
-      }
-
-      // 5. Assign repo to project
+      // 4. Assign repo to project (unique constraint on projectId handles conflicts atomically)
       const effectiveBranch = indexBranch || repo.defaultBranch;
-      const updatedRepo = await prisma.gitHubRepository.update({
-        where: { id: repositoryId },
-        data: {
-          projectId,
-          indexBranch: indexBranch || null,
-          enabled: true,
-          indexStatus: "PENDING",
-        },
-        include: { installation: true },
-      });
+      let updatedRepo;
+      try {
+        updatedRepo = await prisma.gitHubRepository.update({
+          where: { id: repositoryId },
+          data: {
+            projectId,
+            indexBranch: indexBranch || null,
+            enabled: true,
+            indexStatus: "PENDING",
+          },
+          include: { installation: true },
+        });
+      } catch (error: unknown) {
+        // P2002 = unique constraint violation (another repo already assigned to this project)
+        if (
+          typeof error === "object" &&
+          error !== null &&
+          "code" in error &&
+          (error as { code: string }).code === "P2002"
+        ) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message: "Project already has a repository assigned",
+          });
+        }
+        throw error;
+      }
 
       // 6. Start indexing workflow
       try {

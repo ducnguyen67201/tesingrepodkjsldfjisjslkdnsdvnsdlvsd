@@ -1,6 +1,5 @@
 -- Enable pgvector extension for embeddings (requires pgvector-enabled PostgreSQL)
--- Uncomment when using Supabase, Neon, or other pgvector-enabled database
--- CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS vector;
 
 -- CreateEnum
 CREATE TYPE "AlertType" AS ENUM ('ERROR_RATE', 'LATENCY_P50', 'LATENCY_P95', 'LATENCY_P99');

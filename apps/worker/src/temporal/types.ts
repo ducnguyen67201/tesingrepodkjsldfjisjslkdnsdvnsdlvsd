@@ -293,7 +293,7 @@ export interface StoreRepositoryChunksInput {
  */
 export interface StoreRepositoryChunksResult {
   chunksCreated: number;
-  chunkIds: string[];
+  chunkIds: Array<{ id: string; contentHash: string }>;
 }
 
 // ============================================

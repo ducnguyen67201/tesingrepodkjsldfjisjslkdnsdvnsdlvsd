@@ -193,16 +193,18 @@ export async function repositoryIndexWorkflow(
       if (storeResult.chunkIds.length > 0) {
         log.info("Generating embeddings for chunks");
 
-        // Create EmbeddingChunk array by matching IDs with original chunks
+        // Build contentHash → content map from original chunks
+        const chunkContentMap = new Map(
+          chunks.map((c) => [c.contentHash, c.content])
+        );
+
+        // Create EmbeddingChunk array by matching via contentHash
         const embeddingChunks: EmbeddingChunk[] = storeResult.chunkIds.map(
-          (id, index) => {
-            const originalChunk = chunks[index]!;
-            return {
-              id,
-              content: originalChunk.content,
-              contentHash: originalChunk.contentHash,
-            };
-          }
+          (chunk) => ({
+            id: chunk.id,
+            content: chunkContentMap.get(chunk.contentHash) ?? "",
+            contentHash: chunk.contentHash,
+          })
         );
 
         const embeddingResult = await generateEmbeddings({

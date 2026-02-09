@@ -578,7 +578,7 @@ export const internalRouter = createRouter({
 
       // Step 3: Batch insert new chunks (in batches of 100 for safety)
       const BATCH_SIZE = 100;
-      const createdIds: string[] = [];
+      const createdIds: Array<{ id: string; contentHash: string }> = [];
 
       for (let i = 0; i < newChunks.length; i += BATCH_SIZE) {
         const batch = newChunks.slice(i, i + BATCH_SIZE);
@@ -605,19 +605,19 @@ export const internalRouter = createRouter({
             repoId: repositoryId,
             contentHash: { in: batchHashes },
           },
-          select: { id: true },
+          select: { id: true, contentHash: true },
         });
-        createdIds.push(...created.map((c) => c.id));
+        createdIds.push(...created.map((c) => ({ id: c.id, contentHash: c.contentHash })));
 
         if (i + BATCH_SIZE < newChunks.length) {
           console.log(`[Internal:storeRepositoryChunks] Batch ${Math.floor(i / BATCH_SIZE) + 1} complete`);
         }
       }
 
-      // Step 4: Combine existing + new IDs
+      // Step 4: Combine existing + new IDs (with contentHash for mapping)
       const existingIds = chunks
         .filter((c) => existingMap.has(c.contentHash))
-        .map((c) => existingMap.get(c.contentHash)!);
+        .map((c) => ({ id: existingMap.get(c.contentHash)!, contentHash: c.contentHash }));
 
       const allChunkIds = [...existingIds, ...createdIds];
       console.log(`[Internal:storeRepositoryChunks] Total: ${allChunkIds.length} chunks (${existingIds.length} existing, ${createdIds.length} new)`);
