@@ -170,7 +170,7 @@ async function processInstallationUpdate(
   console.log("[GitHub Callback] Processing installation update:", installationId);
 
   // 1. Find existing installation in database
-  let existingInstallation = await prisma.gitHubInstallation.findUnique({
+  const existingInstallation = await prisma.gitHubInstallation.findUnique({
     where: { installationId: BigInt(installationId) },
   });
 
